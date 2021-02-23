@@ -29,6 +29,8 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String productUrl;
     private String image;
+    private String size;
+    private String color;
     private String baseDescription;
     private String detailDescription;
     @Column(nullable = false)
@@ -38,6 +40,7 @@ public class Product {
     private int finalPrice;
     private double ratting;
     private int numberOfReviews;
+    private int amount;
 
     @JsonIgnore
     @CreationTimestamp
@@ -52,9 +55,6 @@ public class Product {
     @JsonIgnore
     private Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Warehouse> warehouses;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
@@ -62,12 +62,5 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Review> reviews;
-
-    public void addToStock(Warehouse warehouse) {
-        if(warehouses == null) {
-            warehouses = new HashSet<>();
-        }
-        warehouses.add(warehouse);
-    }
 
 }
