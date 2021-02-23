@@ -1,0 +1,73 @@
+package com.nguyenpham.oganicshop.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.sql.Date;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+@Entity
+@Table(name = "product")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(exclude={"category", "supplier"})
+@ToString(exclude = {"category", "supplier"})
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String productName;
+    @Column(nullable = false, unique = true)
+    private String productUrl;
+    private String image;
+    private String baseDescription;
+    private String detailDescription;
+    @Column(nullable = false)
+    private int price;
+    private int discount;
+    @Column(nullable = false)
+    private int finalPrice;
+    private double ratting;
+    private int numberOfReviews;
+
+    @JsonIgnore
+    @CreationTimestamp
+    private Date createdAt;
+
+    @JsonIgnore
+    @UpdateTimestamp
+    private Date updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    @JsonIgnore
+    private Category category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Warehouse> warehouses;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Review> reviews;
+
+    public void addToStock(Warehouse warehouse) {
+        if(warehouses == null) {
+            warehouses = new HashSet<>();
+        }
+        warehouses.add(warehouse);
+    }
+
+}

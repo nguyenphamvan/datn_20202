@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <!-- Title Tag  -->
+    <title th:utext="${product.getProductName()}">Chi tiết sản phẩm</title>
+
+</head>
+<body class="js">
+
+<!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-inner">
+        <div class="preloader-icon">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!-- End Preloader -->
+
+<!-- Header -->
+<th:block th:include="common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="blog-single.html">Shop Grid</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section">
+    <div class="container">
+        <div class="modal-body">
+            <div class="row no-gutters">
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <!-- Product Slider -->
+                    <div class="product-gallery">
+                        <div class="quickview-slider-active">
+                            <div class="single-slider">
+                                <img src="https://via.placeholder.com/569x528" alt="#">
+                            </div>
+                            <div class="single-slider">
+                                <img src="https://via.placeholder.com/569x528" alt="#">
+                            </div>
+                            <div class="single-slider">
+                                <img src="https://via.placeholder.com/569x528" alt="#">
+                            </div>
+                            <div class="single-slider">
+                                <img src="https://via.placeholder.com/569x528" alt="#">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Product slider -->
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="quickview-content">
+                        <h2 th:utext="${product.getProductName()}">Tên sản phẩm</h2>
+                        <div class="quickview-ratting-review">
+                            <div class="quickview-ratting-wrap">
+                                <div class="quickview-ratting">
+                                    <i th:each="i: ${#numbers.sequence(0, product.getRatting() - 1)}" class="yellow fa fa-star"></i>
+                                    <i th:each="i: ${#numbers.sequence(0, (4 - product.getRatting()))}" class="fa fa-star"></i>
+                                </div>
+                                <span>( <span th:utext="${product.getNumberOfReviews()}"></span> customer review)</span>
+                            </div>
+                            <div class="quickview-stock">
+                                <span><i class="fa fa-check-circle-o"></i> in stock</span>
+                            </div>
+                        </div>
+                        <h3 th:utext="${product.getFinalPrice()}">$29.00</h3>
+                        <div class="quickview-peragraph">
+                            <p th:utext="${product.getBaseDescription()}">Mô tả sơ lược sản phẩm</p>
+                        </div>
+                        <div class="quantity">
+                            <!-- Input Order -->
+                            <div class="input-group">
+                                <div class="button minus">
+                                    <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                        <i class="ti-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000" value="1">
+                                <div class="button plus">
+                                    <button type="button" class="btn btn-primary btn-number" data-type="plus"
+                                            data-field="quant[1]">
+                                        <i class="ti-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!--/ End Input Order -->
+                        </div>
+                        <div class="add-to-cart">
+                            <a id="add-cart" th:attr="data-productUrl=${product.getProductUrl()}" class="btn">Add to cart</a>
+                            <a href="#" class="btn min"><i class="ti-heart"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="product__details__tab" style="margin-top: 50px;">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">Thông tin về sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" aria-selected="false">Bình luận <span>(1)</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Infomation</h6>
+                                <p>Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.
+                                    Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Vivamus
+                                    suscipit tortor eget felis porttitor volutpat. Vestibulum ac diam sit amet quam
+                                    vehicula elementum sed sit amet dui. Donec rutrum congue leo eget malesuada.
+                                    Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur arcu erat,
+                                    accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a
+                                    pellentesque nec, egestas non nisi. Vestibulum ac diam sit amet quam vehicula
+                                    elementum sed sit amet dui. Vestibulum ante ipsum primis in faucibus orci luctus
+                                    et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam
+                                    vel, ullamcorper sit amet ligula. Proin eget tortor risus.</p>
+                                <p>Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Lorem
+                                    ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet
+                                    elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum
+                                    porta. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                                    nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.
+                                    Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed
+                                    porttitor lectus nibh. Vestibulum ac diam sit amet quam vehicula elementum
+                                    sed sit amet dui. Proin eget tortor risus.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-3" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <form class="form-horizontal" action="/postReview" method="post">
+                                    <h4 class="mt_20 mb_30">Thêm bình luận của bạn</h4>
+                                    <div class="btn-warning form-group required" id="lack-info-review" style="display: none;">
+                                        <div class="col-sm-12">
+                                            <p>Hãy nhập đầy đủ thông tin đánh giá !</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <div class="col-sm-12">
+                                            <label class="control-label" for="title">Tiêu đề</label>
+                                            <input id="title" name="title" class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <div class="col-sm-12">
+                                            <label class="control-label" for="comment">Nội dung</label>
+                                            <textarea rows="5" id="comment" name="comment" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group required">
+                                        <div class="col-md-6">
+                                            <div class="rates">
+                                                <label>Rating</label>
+                                                <span style="color: red;">Bad</span>
+                                                <input name="ratting" value="1" type="radio">
+                                                <input name="ratting" value="2" type="radio">
+                                                <input name="ratting" value="3" type="radio">
+                                                <input name="ratting" value="4" type="radio">
+                                                <input name="ratting" value="5" type="radio">
+                                                <span style="color: #4cae4c">Good</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="buttons pull-right">
+                                                <button id="post-comment" type="button" class="btn btn-md btn-link">
+                                                    Bình luận
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <th:block th:if="${product}">
+                                    <div class="list-review" style="margin-top: 30px;">
+                                        <h4>Các bình luận về sản phẩm</h4>
+                                        <ul id="list-review-group" th:each="review : ${product.getReviews()}">
+                                            <li class="review-item" th:attr="data-id_comment=${review.getId()}">
+                                                <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                                                    <div class="col-md-12">
+                                                        <div class="review-item-detail"
+                                                             style="display: flex; flex-direction: column;">
+                                                            <div class="review-user">
+                                                                <div style="float: left; border-radius: 10px;"
+                                                                     class="review-avater">
+                                                                    <img style="width: 40px;" th:src="@{/images/user-avatar.png}" alt="Image">
+                                                                </div>
+                                                                <div style="margin-left: 10px;float: left;">
+                                                                    <h5 class="user-name"
+                                                                        th:utext="${review.getUser().getFullName()}"></h5>
+                                                                    <p class="comment-date"
+                                                                       th:utext="${review.getCreatedAt()}"></p>
+                                                                </div>
+                                                                <div style="float: right">
+                                                                    Đánh giá : <label class="ratting"
+                                                                                      th:utext="${review.getRatting()}"></label><label>/5</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="review-des"
+                                                                 style="margin-top: 10px; margin-left: 50px;">
+                                                                <div class="title">
+                                                                    <p><strong
+                                                                            th:utext="${review.getTitle()}"></strong>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="review-content">
+                                                                    <span th:utext="${review.getComment()}"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" style="padding-top: 10px;">
+                                                        <div class="like-and-review">
+                                                                <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
+                                                                                            margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
+                                                                    <i class="fa fa-thumbs-up"
+                                                                       aria-hidden="true"></i><span>Like</span><span>(100)</span>
+                                                                </span>
+                                                            <span class="reply" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
+                                                                                            margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
+                                                                    <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>
+                                                                </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div th:attr="id=${'reply-review-' + review.getId()}"
+                                                         class="col-md-12 reply-input"
+                                                         style="margin-left: 25px; display: none;">
+                                                        <div class="row">
+                                                            <div class="form-group btn-warning" style="display: none;" id="lack-reply">
+                                                                <div class="col-md-12">
+                                                                    <p>Hãy viết phản hồi của bạn </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <form th:action="@{/postReplyReview}"
+                                                              class="form-horizontal" method="post">
+                                                            <div class="form-group required">
+                                                                <div class="col-sm-12">
+                                                                        <textarea
+                                                                                class="form-control reply-comment_input"
+                                                                                type="text"
+                                                                                placeholder="Viết câu trả lời"
+                                                                                rows="2"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="buttons pull-left">
+                                                                <button type="button"
+                                                                        class="btn btn-md btn-link reply-comment__submit">
+                                                                    Gửi
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <div th:attr="id=${'reply-items-review-' + review.getId()}"
+                                                         class="col-md-12 review-comment_sub-comments_reply">
+                                                        <th:block th:if="${review.getReplyReviewSet().size() > 0}">
+                                                            <div class="view-reply-more"
+                                                                 style="padding: 8px 16px 9px; cursor: pointer;">
+                                                                xem tất cả <span
+                                                                    th:utext="${review.getReplyReviewSet().size()}"></span>
+                                                                câu trả lời
+                                                            </div>
+                                                            <div class="reply-item"
+                                                                 style="margin-left: 8px; padding-top: 10px; padding-bottom: 20px; display: none;"
+                                                                 th:each="reply : ${review.getReplyReviewSet()}">
+                                                                <hr style="width:50% ;margin-left:10px; padding-bottom: 8px;"/>
+                                                                <div class="info_reply-user"
+                                                                     style="margin-left: 10px;">
+                                                                        <span style="margin-right: 10px;"><img style="width: 40px;" th:src="@{/images/user-avatar.png}"
+                                                                                                               alt="Image"></span>
+                                                                    <span class="user-name"
+                                                                          style="margin-right: 10px;"
+                                                                          th:utext="${reply.getUser().getFullName()}"></span>
+                                                                    <span class="comment-date"
+                                                                          style="margin-right: 10px;"
+                                                                          th:utext="${reply.getCreatedAt()}"></span>
+                                                                </div>
+                                                                <div class="reply-content" style="margin-left: 64px; margin-top: 5px;">
+                                                                    <p th:utext="${reply.getContent()}"></p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="view-reply-less"
+                                                                 style="padding: 8px 16px 9px; cursor: pointer; display: none;">
+                                                                Ẩn <span
+                                                                    th:utext="${review.getReplyReviewSet().size()}"></span>
+                                                                câu trả lời
+                                                            </div>
+                                                        </th:block>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <hr style="height:2px;border-width:0;color:gray;background-color:gray"/>
+                                        </ul>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Start Most Popular -->
+<div class="product-area most-popular section" style="padding-top: 100px; padding-left: 100px; padding-right: 100px; padding-bottom: 0px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title" style="margin-bottom: 0px;">
+                    <h2>Product relative</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="owl-carousel popular-slider">
+                    <!-- Start Single Product -->
+                    <div class="single-product">
+                        <div class="product-img">
+                            <a href="product-details.html">
+                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <span class="out-of-stock">Hot</span>
+                            </a>
+                            <div class="button-head">
+                                <div class="product-action">
+                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+                                    <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
+                                </div>
+                                <div class="product-action-2">
+                                    <a title="Add to cart" href="#">Add to cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h3><a href="product-details.html">Black Sunglass For Women</a></h3>
+                            <div class="product-price">
+                                <span class="old">$60.00</span>
+                                <span>$50.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Product -->
+                    <!-- Start Single Product -->
+                    <div class="single-product">
+                        <div class="product-img">
+                            <a href="product-details.html">
+                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                            </a>
+                            <div class="button-head">
+                                <div class="product-action">
+                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+                                    <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
+                                </div>
+                                <div class="product-action-2">
+                                    <a title="Add to cart" href="#">Add to cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h3><a href="product-details.html">Women Hot Collection</a></h3>
+                            <div class="product-price">
+                                <span>$50.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Product -->
+                    <!-- Start Single Product -->
+                    <div class="single-product">
+                        <div class="product-img">
+                            <a href="product-details.html">
+                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <span class="new">New</span>
+                            </a>
+                            <div class="button-head">
+                                <div class="product-action">
+                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+                                    <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
+                                </div>
+                                <div class="product-action-2">
+                                    <a title="Add to cart" href="#">Add to cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h3><a href="product-details.html">Awesome Pink Show</a></h3>
+                            <div class="product-price">
+                                <span>$50.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Product -->
+                    <!-- Start Single Product -->
+                    <div class="single-product">
+                        <div class="product-img">
+                            <a href="product-details.html">
+                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                            </a>
+                            <div class="button-head">
+                                <div class="product-action">
+                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+                                    <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
+                                </div>
+                                <div class="product-action-2">
+                                    <a title="Add to cart" href="#">Add to cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h3><a href="product-details.html">Awesome Bags Collection</a></h3>
+                            <div class="product-price">
+                                <span>$50.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Product -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Most Popular Area -->
+
+<!-- Start Shop Newsletter  -->
+<section class="shop-newsletter section">
+    <div class="container">
+        <div class="inner-top">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-12">
+                    <!-- Start Newsletter Inner -->
+                    <div class="inner">
+                        <h4>Newsletter</h4>
+                        <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
+                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                            <input name="EMAIL" placeholder="Your email address" required="" type="email">
+                            <button class="btn">Subscribe</button>
+                        </form>
+                    </div>
+                    <!-- End Newsletter Inner -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Newsletter -->
+
+<!-- Start Footer Area -->
+<th:block th:include="common/footer"/>
+<!-- /End Footer Area -->
+
+<script>
+    // A $( document ).ready() block.
+    $(document).ready(function() {
+        $("#post-comment").click(function () {
+            let url = $(this).closest("form").attr("action");
+            let idUser = $('#user-session').attr('data-idUser');
+            let title = $("input[id='title']").val();
+            let comment = $("textarea[id='comment']").val();
+            let ratting = $("input[name='ratting']:checked");
+            if (idUser === "null") {
+                $("#login-dialog").modal('show');
+            } else if((title === "") || (comment === "") ) {
+                $("#lack-info-review").show();
+            }  else {
+                let data = {
+                    product: {
+                        id: $("h4[data-name='product_name']").attr('data-idProduct')
+                    },
+                    user: {
+                        id: idUser
+                    },
+                    title: title,
+                    comment: comment,
+                    ratting: ratting.val()
+                }
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    contentType: "application/json",
+                    success: function (result) {
+                        let html = "<li class=\"review-item\" data-id_comment=\"" + result.id + "\">\n" +
+                            "                                                    <div class=\"row\" style=\"margin-top: 10px; margin-bottom: 10px;\">\n" +
+                            "                                                        <div class=\"col-md-12\">\n" +
+                            "                                                            <div class=\"review-user\">\n" +
+                            "                                                                <div style=\"float: left; border-radius: 10px;\" class=\"review-avater\">\n" +
+                            "                                                                    <img style=\"width: 40px;\" src=\"/images/user-avatar.png\" alt=\"Image\">\n" +
+                            "                                                                </div>\n" +
+                            "                                                                <div style=\"margin-left: 10px;float: left;\">\n" +
+                            "                                                                    <h5 class=\"user-name\">" + result.user.fullName + "</h5>\n" +
+                            "                                                                    <p class=\"comment-date\">" + result.createdAt + "</p>\n" +
+                            "                                                                </div>\n" +
+                            "                                                                <div style=\"float: right\">\n" +
+                            "                                                                    Đánh giá : <label class=\"ratting\">" + result.ratting + "</label><label>/5</label>\n" +
+                            "                                                                </div>\n" +
+                            "                                                            </div>\n" +
+                            "                                                        </div>\n" +
+                            "                                                        <div class=\"col-md-12\">\n" +
+                            "                                                            <div class=\"review-des\" style=\"margin-left: 8px;margin-top: 10px;\">\n" +
+                            "                                                                <div  class=\"title\"><p><strong>" + result.title + "</strong></p></div>\n" +
+                            "                                                                <div class=\"review-content\">\n" +
+                            "                                                                    <span>" + result.comment + "</span>\n" +
+                            "                                                                </div>\n" +
+                            "                                                            </div>\n" +
+                            "                                                        </div>\n" +
+                            "                                                    </div>\n" +
+                            "                                                </li>\n" +
+                            "<hr style=\"height:2px;border-width:0;color:gray;background-color:gray\"/>";
+
+                        $("#lack-info-review").hide();
+                        $(html).delay(1000).prependTo("#list-review-group").hide().slideDown().fadeIn();
+                    },
+                    error: function (e) {
+                        $("#err-dialog").modal('show');
+                    }
+                });
+            }
+        });
+
+        $("button.reply-comment__submit").click(function () {
+            let url = $(this).closest("form").attr("action");
+            let idUser = $('#user-session').attr('data-idUser');
+            let idReview = $(this).closest("li").attr("data-id_comment");
+            let content = $(this).closest("form").find("textarea.reply-comment_input").val();
+            if (idUser === "null") {
+                $("#login-dialog").modal('show');
+            } else if(content === "") {
+                $("#lack-reply").show();
+            }
+            else {
+                let data = {
+                    review: {
+                        id: idReview
+                    },
+                    user: {
+                        id: idUser
+                    },
+                    content: content
+                }
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    contentType: "application/json",
+                    success: function (result) {
+                        $("div.reply-input").hide();
+                        let html = "<div class=\"reply-item\" style=\"margin-left: 30px; padding-top: 10px; padding-bottom: 20px;\">\n" +
+                            "                                                                <hr style=\"width:50% ;margin-left:10px; padding-bottom: 8px;\"/>\n" +
+                            "                                                                    <div class=\"info_reply-user\" style=\"margin-left: 10px;\">\n" +
+                            "                                                                        <span style=\"margin-right: 10px;\"><img src=\"/images/user-avatar.png\" alt=\"Image\"></span>\n" +
+                            "                                                                        <span class=\"user-name\" style=\"margin-right: 10px;\">" + result.user.fullName + "</span>\n" +
+                            "                                                                        <span class=\"comment-date\" style=\"margin-right: 10px;\">" + result.createdAt + "</span>\n" +
+                            "                                                                    </div>\n" +
+                            "                                                                    <div class=\"reply-content\" style=\"margin-left: 64px; margin-top: 5px;\">\n" +
+                            "                                                                        <p>" + result.content + "</p>\n" +
+                            "                                                                    </div>\n" +
+                            "                                                                </div>";
+                        $("#lack-reply").show();
+                        $(html).delay(1000).prependTo("#reply-items-review-" + idReview).hide().slideDown().fadeIn();
+                    },
+                    error: function (e) {
+                        $("#err-dialog").modal('show');
+                    }
+                });
+            }
+        });
+
+        $("div.view-reply-more").click(function () {
+            $(this).hide();
+            $(this).nextAll(".reply-item").show();
+            $(this).parent().find(".view-reply-less").show();
+        });
+
+        $("div.view-reply-less").click(function () {
+            $(this).hide();
+            $(this).prevAll(".reply-item").hide();
+            $(this).parent().find(".view-reply-more").show();
+        });
+
+        $(".reply").click(function () {
+            let idUser = $('#user-session').attr('data-idUser');
+            if (idUser === "null") {
+                $("#login-dialog").modal('show');
+            } else {
+                let idReview = $(this).closest("li").attr("data-id_comment");
+                $("#reply-review-" + idReview).show();
+            }
+        });
+    });
+</script>
+</body>
+</html>
