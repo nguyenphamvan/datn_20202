@@ -133,7 +133,7 @@ $(document).ready(function () {
                 $('.quickview-content h3').text(product["finalPrice"]);
                 $('.quickview-peragraph p').text(product["description"]);
                 $('#add-cart').attr('data-productUrl', product["productUrl"]);
-                if (product["warehouses"].length === 1 && product["warehouses"][0]["available"] > 0) {
+                if (product["amount"] > 0) {
                     $('#in-stock').css('display', 'block');
                     $('#out-stock').css('display', 'none');
                 } else {
