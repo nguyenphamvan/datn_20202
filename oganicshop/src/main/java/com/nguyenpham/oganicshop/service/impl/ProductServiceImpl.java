@@ -62,6 +62,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId).orElse(null);
+    }
+
+    @Override
     public Page<Product> searchProductByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());

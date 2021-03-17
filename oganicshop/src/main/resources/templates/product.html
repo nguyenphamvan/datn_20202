@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <!-- Title Tag  -->
     <title th:utext="${product.getProductName()}">Chi tiết sản phẩm</title>
-
+    <th:block th:include="common/header_tag_common"/>
+    <!-- custom css  -->
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body class="js">
 
@@ -31,8 +33,9 @@
             <div class="col-12">
                 <div class="bread-inner">
                     <ul class="bread-list">
-                        <li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
-                        <li class="active"><a href="blog-single.html">Shop Grid</a></li>
+                        <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active">Chi tiết sản phẩm <i class="ti-arrow-right"></i></li>
+                        <li><a th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}" th:utext="${product.getProductName()}"></a></li>
                     </ul>
                 </div>
             </div>
@@ -48,7 +51,7 @@
             <div class="row no-gutters">
                 <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                     <!-- Product Slider -->
-                    <div class="product-gallery">
+                    <div class="product-gallery product-detail">
                         <div class="quickview-slider-active">
                             <div class="single-slider">
                                 <img src="https://via.placeholder.com/569x528" alt="#">
@@ -130,79 +133,33 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
-                            <div class="product__details__tab__desc">
-                                <form class="form-horizontal" action="/postReview" method="post">
-                                    <h4 class="mt_20 mb_30">Thêm bình luận của bạn</h4>
-                                    <div class="btn-warning form-group required" id="lack-info-review" style="display: none;">
-                                        <div class="col-sm-12">
-                                            <p>Hãy nhập đầy đủ thông tin đánh giá !</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-group required">
-                                        <div class="col-sm-12">
-                                            <label class="control-label" for="title">Tiêu đề</label>
-                                            <input id="title" name="title" class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="form-group required">
-                                        <div class="col-sm-12">
-                                            <label class="control-label" for="comment">Nội dung</label>
-                                            <textarea rows="5" id="comment" name="comment" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group required">
-                                        <div class="col-md-6">
-                                            <div class="rates">
-                                                <label>Rating</label>
-                                                <span style="color: red;">Bad</span>
-                                                <input name="ratting" value="1" type="radio">
-                                                <input name="ratting" value="2" type="radio">
-                                                <input name="ratting" value="3" type="radio">
-                                                <input name="ratting" value="4" type="radio">
-                                                <input name="ratting" value="5" type="radio">
-                                                <span style="color: #4cae4c">Good</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="buttons pull-right">
-                                                <button id="post-comment" type="button" class="btn btn-md btn-link">
-                                                    Bình luận
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
+                            <div class="col-md-12">
                                 <th:block th:if="${product}">
-                                    <div class="list-review" style="margin-top: 30px;">
-                                        <h4>Các bình luận về sản phẩm</h4>
-                                        <ul id="list-review-group" th:each="review : ${product.getReviews()}">
-                                            <li class="review-item" th:attr="data-id_comment=${review.getId()}">
+                                    <div class="list-review" style="margin: 40px;">
+                                        <ul id="list-review-group" th:each="review : ${product.getReviews()}" th:if="${review.getRootComment() == null}">
+                                            <li class="review-item" th:attr="data-id_comment=${review.getId()}" style="padding-bottom: 10px;">
                                                 <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
                                                     <div class="col-md-12">
-                                                        <div class="review-item-detail"
-                                                             style="display: flex; flex-direction: column;">
+                                                        <div class="review-item-detail" style="display: flex; flex-direction: column;">
                                                             <div class="review-user">
-                                                                <div style="float: left; border-radius: 10px;"
-                                                                     class="review-avater">
-                                                                    <img style="width: 40px;" th:src="@{/images/user-avatar.png}" alt="Image">
+                                                                <div style="float: left; border-radius: 10px;" class="review-avater">
+                                                                    <img style="width: 40px;" th:src="@{/images/user-avatar.jpg}" alt="Image">
                                                                 </div>
-                                                                <div style="margin-left: 10px;float: left;">
-                                                                    <h5 class="user-name"
-                                                                        th:utext="${review.getUser().getFullName()}"></h5>
-                                                                    <p class="comment-date"
-                                                                       th:utext="${review.getCreatedAt()}"></p>
+                                                                <div style="margin-left: 20px; float: left;">
+                                                                    <h6 class="user-name" th:utext="${review.getUser().getFullName()}"></h6>
+                                                                    <p class="comment-date" th:utext="${review.getCreatedAt()}"></p>
                                                                 </div>
                                                                 <div style="float: right">
-                                                                    Đánh giá : <label class="ratting"
-                                                                                      th:utext="${review.getRatting()}"></label><label>/5</label>
+                                                                    <span>Đánh giá</span>
+                                                                    <ul class="reviews">
+                                                                        <li class="yellow" th:each="i: ${#numbers.sequence(0, review.getRatting() - 1)}"><i class="ti-star"></i></li>
+                                                                        <li th:if="${(5 - review.getRatting()) > 0}" th:each="i: ${#numbers.sequence(0, (4 - review.getRatting()))}"><i class="ti-star"></i></li>
+                                                                    </ul>
                                                                 </div>
                                                             </div>
-                                                            <div class="review-des"
-                                                                 style="margin-top: 10px; margin-left: 50px;">
+                                                            <div class="review-des" style="margin-top: 10px; margin-left: 60px;">
                                                                 <div class="title">
-                                                                    <p><strong
-                                                                            th:utext="${review.getTitle()}"></strong>
+                                                                    <p><strong th:utext="${review.getTitle()}"></strong>
                                                                     </p>
                                                                 </div>
                                                                 <div class="review-content">
@@ -211,90 +168,55 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-md-12" style="padding-top: 10px;">
-                                                        <div class="like-and-review">
-                                                                <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
-                                                                                            margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
-                                                                    <i class="fa fa-thumbs-up"
-                                                                       aria-hidden="true"></i><span>Like</span><span>(100)</span>
-                                                                </span>
+                                                        <div class="like-and-review" style="padding-top: 10px; margin-left: 60px;">
+                                                            <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
+																									margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block; border: 1px solid #333;">
+                                                                <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span th:if="${review.getNumbersOfLike() != null}" th:utext="${'(' + review.getNumbersOfLike() + ')'}"></span></span>
+                                                            </span>
                                                             <span class="reply" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
-                                                                                            margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
-                                                                    <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>
-                                                                </span>
+																									margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
+                                                                <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>
+                                                            </span>
                                                         </div>
                                                     </div>
 
-                                                    <div th:attr="id=${'reply-review-' + review.getId()}"
-                                                         class="col-md-12 reply-input"
-                                                         style="margin-left: 25px; display: none;">
-                                                        <div class="row">
-                                                            <div class="form-group btn-warning" style="display: none;" id="lack-reply">
-                                                                <div class="col-md-12">
-                                                                    <p>Hãy viết phản hồi của bạn </p>
+                                                    <div class="col-md-12 reply-input" style="margin-left: 25px; display: none;" th:attr="id=${'reply-review-' + review.getId()}">
+                                                        <div class="form-group required">
+                                                            <div class="col-sm-12">
+                                                                <div style="margin-left: 20px; padding-top: 15px;">
+                                                                    <form action="/api/review/reply" class="form-inline" method="post">
+                                                                        <textarea class="form-control" type="text" placeholder="Viết câu trả lời" style="width: 90%;" rows="1"></textarea>
+                                                                        <input type="hidden" class="id-root-review" th:value="${review.getId()}">
+                                                                        <button type="button" class="btn btn-md btn-link send-reply-comment" style="width: 10%;">Gửi</button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <form th:action="@{/postReplyReview}"
-                                                              class="form-horizontal" method="post">
-                                                            <div class="form-group required">
-                                                                <div class="col-sm-12">
-                                                                        <textarea
-                                                                                class="form-control reply-comment_input"
-                                                                                type="text"
-                                                                                placeholder="Viết câu trả lời"
-                                                                                rows="2"></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="buttons pull-left">
-                                                                <button type="button"
-                                                                        class="btn btn-md btn-link reply-comment__submit">
-                                                                    Gửi
-                                                                </button>
-                                                            </div>
-                                                        </form>
                                                     </div>
-
-                                                    <div th:attr="id=${'reply-items-review-' + review.getId()}"
-                                                         class="col-md-12 review-comment_sub-comments_reply">
-                                                        <th:block th:if="${review.getReplyReviewSet().size() > 0}">
-                                                            <div class="view-reply-more"
-                                                                 style="padding: 8px 16px 9px; cursor: pointer;">
-                                                                xem tất cả <span
-                                                                    th:utext="${review.getReplyReviewSet().size()}"></span>
-                                                                câu trả lời
+                                                    <div class="col-md-12 review-comment_sub-comments">
+                                                        <th:block th:if="${review.getSubReviews().size() > 0}">
+                                                            <div class="view-reply-more">
+                                                                Xem tất cả <span th:utext="${review.getSubReviews().size()}"></span> câu trả lời
                                                             </div>
-                                                            <div class="reply-item"
-                                                                 style="margin-left: 8px; padding-top: 10px; padding-bottom: 20px; display: none;"
-                                                                 th:each="reply : ${review.getReplyReviewSet()}">
-                                                                <hr style="width:50% ;margin-left:10px; padding-bottom: 8px;"/>
-                                                                <div class="info_reply-user"
-                                                                     style="margin-left: 10px;">
-                                                                        <span style="margin-right: 10px;"><img style="width: 40px;" th:src="@{/images/user-avatar.png}"
-                                                                                                               alt="Image"></span>
-                                                                    <span class="user-name"
-                                                                          style="margin-right: 10px;"
-                                                                          th:utext="${reply.getUser().getFullName()}"></span>
-                                                                    <span class="comment-date"
-                                                                          style="margin-right: 10px;"
-                                                                          th:utext="${reply.getCreatedAt()}"></span>
-                                                                </div>
-                                                                <div class="reply-content" style="margin-left: 64px; margin-top: 5px;">
-                                                                    <p th:utext="${reply.getContent()}"></p>
+                                                            <div class="list-reply-item" th:attr="id=${'reply-items-list-' + review.getId()}" style="margin-left: 48px;">
+                                                                <div class="reply-item" th:each="reply : ${review.getSubReviews()}">
+                                                                    <div class="info-reply-user">
+                                                                        <span class="img-user-reply"><img style="width: 30px;" th:src="@{/images/user-avatar.jpg}" alt="Image"></span>
+                                                                        <span class="user-name" th:utext="${reply.getUser().getFullName()}"></span>
+                                                                        <span class="comment-date" th:utext="${reply.getCreatedAt()}"></span>
+                                                                        <p class="reply-content" th:utext="${reply.getComment()}"></p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-
-                                                            <div class="view-reply-less"
-                                                                 style="padding: 8px 16px 9px; cursor: pointer; display: none;">
-                                                                Ẩn <span
-                                                                    th:utext="${review.getReplyReviewSet().size()}"></span>
-                                                                câu trả lời
+                                                            <div class="view-reply-less">
+                                                                Ẩn <span th:utext="${review.getSubReviews().size()}"></span> câu trả lời
                                                             </div>
                                                         </th:block>
                                                     </div>
                                                 </div>
                                             </li>
-                                            <hr style="height:2px;border-width:0;color:gray;background-color:gray"/>
                                         </ul>
                                     </div>
                                 </th:block>
@@ -309,12 +231,12 @@
 <!--/ End Product Style 1  -->
 
 <!-- Start Most Popular -->
-<div class="product-area most-popular section" style="padding-top: 100px; padding-left: 100px; padding-right: 100px; padding-bottom: 0px;">
+<div class="product-area most-popular section" style="padding-left: 100px; padding-right: 100px; padding-bottom: 0px;">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="section-title" style="margin-bottom: 0px;">
-                    <h2>Product relative</h2>
+                    <h2>Sản phẩm tương tự</h2>
                 </div>
             </div>
         </div>
@@ -439,147 +361,83 @@
 <th:block th:include="common/footer"/>
 <!-- /End Footer Area -->
 
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function() {
-        $("#post-comment").click(function () {
-            let url = $(this).closest("form").attr("action");
-            let idUser = $('#user-session').attr('data-idUser');
-            let title = $("input[id='title']").val();
-            let comment = $("textarea[id='comment']").val();
-            let ratting = $("input[name='ratting']:checked");
-            if (idUser === "null") {
-                $("#login-dialog").modal('show');
-            } else if((title === "") || (comment === "") ) {
-                $("#lack-info-review").show();
-            }  else {
-                let data = {
-                    product: {
-                        id: $("h4[data-name='product_name']").attr('data-idProduct')
-                    },
-                    user: {
-                        id: idUser
-                    },
-                    title: title,
-                    comment: comment,
-                    ratting: ratting.val()
-                }
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: JSON.stringify(data),
-                    dataType: 'json',
-                    contentType: "application/json",
-                    success: function (result) {
-                        let html = "<li class=\"review-item\" data-id_comment=\"" + result.id + "\">\n" +
-                            "                                                    <div class=\"row\" style=\"margin-top: 10px; margin-bottom: 10px;\">\n" +
-                            "                                                        <div class=\"col-md-12\">\n" +
-                            "                                                            <div class=\"review-user\">\n" +
-                            "                                                                <div style=\"float: left; border-radius: 10px;\" class=\"review-avater\">\n" +
-                            "                                                                    <img style=\"width: 40px;\" src=\"/images/user-avatar.png\" alt=\"Image\">\n" +
-                            "                                                                </div>\n" +
-                            "                                                                <div style=\"margin-left: 10px;float: left;\">\n" +
-                            "                                                                    <h5 class=\"user-name\">" + result.user.fullName + "</h5>\n" +
-                            "                                                                    <p class=\"comment-date\">" + result.createdAt + "</p>\n" +
-                            "                                                                </div>\n" +
-                            "                                                                <div style=\"float: right\">\n" +
-                            "                                                                    Đánh giá : <label class=\"ratting\">" + result.ratting + "</label><label>/5</label>\n" +
-                            "                                                                </div>\n" +
-                            "                                                            </div>\n" +
-                            "                                                        </div>\n" +
-                            "                                                        <div class=\"col-md-12\">\n" +
-                            "                                                            <div class=\"review-des\" style=\"margin-left: 8px;margin-top: 10px;\">\n" +
-                            "                                                                <div  class=\"title\"><p><strong>" + result.title + "</strong></p></div>\n" +
-                            "                                                                <div class=\"review-content\">\n" +
-                            "                                                                    <span>" + result.comment + "</span>\n" +
-                            "                                                                </div>\n" +
-                            "                                                            </div>\n" +
-                            "                                                        </div>\n" +
-                            "                                                    </div>\n" +
-                            "                                                </li>\n" +
-                            "<hr style=\"height:2px;border-width:0;color:gray;background-color:gray\"/>";
 
-                        $("#lack-info-review").hide();
-                        $(html).delay(1000).prependTo("#list-review-group").hide().slideDown().fadeIn();
-                    },
-                    error: function (e) {
-                        $("#err-dialog").modal('show');
-                    }
-                });
-            }
-        });
-
-        $("button.reply-comment__submit").click(function () {
+        $("button.send-reply-comment").click(function () {
             let url = $(this).closest("form").attr("action");
-            let idUser = $('#user-session').attr('data-idUser');
+            let idUser = $('#login-user-id').attr('data-idUser');
             let idReview = $(this).closest("li").attr("data-id_comment");
             let content = $(this).closest("form").find("textarea.reply-comment_input").val();
-            if (idUser === "null") {
-                $("#login-dialog").modal('show');
-            } else if(content === "") {
-                $("#lack-reply").show();
-            }
-            else {
-                let data = {
-                    review: {
-                        id: idReview
-                    },
-                    user: {
-                        id: idUser
-                    },
-                    content: content
-                }
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: JSON.stringify(data),
-                    dataType: 'json',
-                    contentType: "application/json",
-                    success: function (result) {
-                        $("div.reply-input").hide();
-                        let html = "<div class=\"reply-item\" style=\"margin-left: 30px; padding-top: 10px; padding-bottom: 20px;\">\n" +
-                            "                                                                <hr style=\"width:50% ;margin-left:10px; padding-bottom: 8px;\"/>\n" +
-                            "                                                                    <div class=\"info_reply-user\" style=\"margin-left: 10px;\">\n" +
-                            "                                                                        <span style=\"margin-right: 10px;\"><img src=\"/images/user-avatar.png\" alt=\"Image\"></span>\n" +
-                            "                                                                        <span class=\"user-name\" style=\"margin-right: 10px;\">" + result.user.fullName + "</span>\n" +
-                            "                                                                        <span class=\"comment-date\" style=\"margin-right: 10px;\">" + result.createdAt + "</span>\n" +
-                            "                                                                    </div>\n" +
-                            "                                                                    <div class=\"reply-content\" style=\"margin-left: 64px; margin-top: 5px;\">\n" +
-                            "                                                                        <p>" + result.content + "</p>\n" +
-                            "                                                                    </div>\n" +
-                            "                                                                </div>";
-                        $("#lack-reply").show();
-                        $(html).delay(1000).prependTo("#reply-items-review-" + idReview).hide().slideDown().fadeIn();
-                    },
-                    error: function (e) {
-                        $("#err-dialog").modal('show');
-                    }
-                });
+            if (idUser === 'null') {
+                alert("bạn chưa đăng nhập");
             }
         });
 
         $("div.view-reply-more").click(function () {
             $(this).hide();
-            $(this).nextAll(".reply-item").show();
+            $(this).parent().find(".list-reply-item").show();
             $(this).parent().find(".view-reply-less").show();
         });
 
         $("div.view-reply-less").click(function () {
             $(this).hide();
-            $(this).prevAll(".reply-item").hide();
+            $(this).parent().find(".list-reply-item").hide();
             $(this).parent().find(".view-reply-more").show();
         });
 
         $(".reply").click(function () {
-            let idUser = $('#user-session').attr('data-idUser');
-            if (idUser === "null") {
-                $("#login-dialog").modal('show');
-            } else {
-                let idReview = $(this).closest("li").attr("data-id_comment");
+            let idReview = $(this).closest("li").attr("data-id_comment");
+            if ($("#reply-review-" + idReview).css('display') === 'block') {
+
+                $("#reply-review-" + idReview).hide();
+            } else if ($("#reply-review-" + idReview).css('display') === 'none') {
                 $("#reply-review-" + idReview).show();
             }
         });
+
+        $( ".send-reply-comment" ).click(function() {
+            let userLogged = [[${#request.userPrincipal}]];
+            if (userLogged !== null) {
+                let idReview = $(this).closest(".review-item").attr("data-id_comment");
+                let data = {
+                    "rootId" : $(this).parent().find(".id-root-review").val(),
+                    "comment": $(this).parent().find("textarea").val()
+                }
+                $.ajax({
+                    url: $(this).parent().attr('action'),
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        let numberOfReview = $("#reply-items-list-" + idReview).siblings(".view-reply-more").find('span').text();
+                        $("div.reply-input").hide();
+                        let html = "<div  class=\"reply-item\">\n" +
+                            "            <div class=\"info-reply-user\">\n" +
+                            "                 <span class=\"img-user-reply\"><img src='/images/user-avatar.jpg' style=\"width: 30px;\" alt=\"Image\"></span>\n" +
+                            "                 <span class=\"user-name\">" + result["reviewerName"] + "</span>\n" +
+                            "                 <span class=\"comment-date\">" + result["updatedAt"] + "</span>\n" +
+                            "                 <p class=\"reply-content\">" + result["comment"] + "</p>\n" +
+                            "            </div>\n" +
+                            "        </div>";
+                        $("#reply-items-list-" + idReview).siblings(".view-reply-more").find('span').text(parseInt(numberOfReview) + 1);
+                        $("#reply-items-list-" + idReview).siblings(".view-reply-less").find('span').text(parseInt(numberOfReview) + 1);
+                        $(html).delay(500).prependTo("#reply-items-list-" + idReview).hide().slideDown().fadeIn();
+                    },
+                    error: function() {
+                        alert("có lỗi xảy ra");
+                    }
+                });
+            } else {
+                alert("Bạn chưa đăng nhập");
+            }
+
+        });
     });
+    /*]]>*/
 </script>
 </body>
 </html>

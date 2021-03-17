@@ -85,7 +85,6 @@ $(document).ready(function () {
     /* function remove item cart using jquery ajax */
     $('td.action a').on('click', function () {
         let url = "/api/cart/remove/" + $(this).first().attr('id');
-        alert(url);
         $.ajax({
             url: url,
             type: "DELETE",
@@ -224,10 +223,16 @@ function onloadPage(sortBy, sort, pageSize, minPrice, maxPrice) {
     $('input[name="max-price"]').val(maxPrice);
 }
 
-function filterByPrice(categoryUrl) {
+function filterByPrice(categoryUrl, supplierName) {
     let minPrice = $('input[name="min-price"]').val();
     let maxPrice = $('input[name="max-price"]').val();
-    let url = "/collections.html?category=" + categoryUrl + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice;
+    let url = "/collections.html?minPrice=" + minPrice + "&maxPrice=" + maxPrice;
+    if (categoryUrl != null) {
+        url += "&category=" + categoryUrl;
+    }
+    if (supplierName != null) {
+        url += "&supplier=" + supplierName;
+    }
     window.location = url;
 }
 

@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.security;
+package com.nguyenpham.oganicshop.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

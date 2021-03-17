@@ -19,8 +19,12 @@ import java.util.Map;
 @RequestMapping("/api/cart")
 public class CartControllerApi {
 
-    @Autowired
     private CartService cartService;
+
+    @Autowired
+    public CartControllerApi(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getListItemCart(HttpSession session) {

@@ -1,17 +1,15 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
+@Builder
 @Entity
 @Table(name = "product")
 @Data

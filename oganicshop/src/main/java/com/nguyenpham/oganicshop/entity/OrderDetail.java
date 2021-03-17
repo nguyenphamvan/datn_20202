@@ -2,10 +2,12 @@ package com.nguyenpham.oganicshop.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
 @Entity
 @Table(name = "order_detail")
 @Data
@@ -33,5 +35,18 @@ public class OrderDetail {
     @JoinColumn(name = "orderId")
     @JsonIgnore
     private Order order;
+
+    public OrderDetailDto convertOrderDetailToOrderDetailDto() {
+        OrderDetailDto orderDetailDto = new OrderDetailDto();
+        orderDetailDto.setId(this.getId());
+        orderDetailDto.setProductName(this.getProduct().getProductName());
+        orderDetailDto.setQuantity(this.getQuantity());
+        orderDetailDto.setDiscount(this.getDiscount());
+        orderDetailDto.setTotalPrice(this.getTotalPrice());
+        orderDetailDto.setPrice(this.getPrice());
+        orderDetailDto.setReviewed(this.isReviewed());
+        orderDetailDto.setSupplierName(this.getProduct().getSupplier().getName());
+        return orderDetailDto;
+    }
 
 }

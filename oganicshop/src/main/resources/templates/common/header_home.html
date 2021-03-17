@@ -1,48 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-    <!-- Meta Tag -->
-    <meta charset="utf-8">
-    <!-- Title Tag  -->
-    <title>header</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name='copyright' content=''>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
-    <!-- Web Font -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap"
-          rel="stylesheet">
-
-    <!-- StyleSheet -->
-
-    <!-- Bootstrap -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
-    <!-- Magnific Popup -->
-    <link rel="stylesheet" th:href="@{/css/magnific-popup.min.css}">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
-    <!-- Fancybox -->
-    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
-    <!-- Themify Icons -->
-    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
-    <!-- Nice Select CSS -->
-    <link rel="stylesheet" th:href="@{/css/niceselect.css}">
-    <!-- Animate CSS -->
-    <link rel="stylesheet" th:href="@{/css/animate.css}">
-    <!-- Flex Slider CSS -->
-    <link rel="stylesheet" th:href="@{/css/flex-slider.min.css}">
-    <!-- Owl Carousel -->
-    <link rel="stylesheet" th:href="@{/css/owl-carousel.css}">
-    <!-- Slicknav -->
-    <link rel="stylesheet" th:href="@{/css/slicknav.min.css}">
-
-    <!-- Eshop StyleSheet -->
-    <link rel="stylesheet" th:href="@{/css/reset.css}">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/responsive.css}">
     <style type="text/css">
         .sub-category {
             background: #fff;
@@ -85,8 +44,8 @@
                     <div class="right-content">
                         <ul class="list-main">
                             <li><i class="ti-location-pin"></i>Địa chỉ của hàng</li>
-                            <li th:if="${#request.userPrincipal}"><i class="ti-user"></i> <a href="#">Tài khoản của tôi</a></li>
-                            <li th:unless="${#request.userPrincipal}"><i class="ti-power-off"></i><a href="login.html#">Đăng nhập</a></li>
+                            <li th:if="${#request.userPrincipal}"><i class="ti-user"></i> <a href="#" sec:authentication="principal.fullName">Tài khoản của tôi</a></li>
+                            <li th:unless="${#request.userPrincipal}"><i class="ti-power-off"></i><a th:href="@{/login}">Đăng nhập</a></li>
                         </ul>
                     </div>
                     <!-- End Top Right -->
@@ -135,7 +94,7 @@
                             <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
                         </div>
                         <div class="sinlge-bar" th:if="${#request.userPrincipal}">
-                            <a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                            <a th:href="@{/customer/account/edit}" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
                         </div>
 
                         <div class="sinlge-bar shopping">

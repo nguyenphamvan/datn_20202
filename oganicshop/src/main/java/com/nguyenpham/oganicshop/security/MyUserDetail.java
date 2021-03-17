@@ -55,5 +55,13 @@ public class MyUserDetail implements UserDetails {
     public User getUser() {
         return user;
     }
+
+    public Long getId() {
+        return user.getId();
+    }
+
+    public String getFullName() {
+        return user.getFullName();
+    }
 }
 

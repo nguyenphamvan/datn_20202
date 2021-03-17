@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <!-- Title Tag  -->
     <title>Danh mục sản phẩm</title>
-
+    <th:block th:include="common/header_tag_common"/>
     <style type="text/css">
         ul {
             list-style: none;
@@ -139,7 +139,8 @@
                                                                                               value="100"
                                                                                               style="border: ridge; width: 40%;"/>Đ
                                     </div>
-                                    <button type="submit" th:attr="onclick=|filterByPrice('${category.getCategoryUrl()}')|">Lọc</button>
+                                    <button th:if="${category}" type="submit" th:attr="onclick=|filterByPrice('${category.getCategoryUrl()}', null)|">Lọc</button>
+                                    <button th:if="${supplier}" type="submit" th:attr="onclick=|filterByPrice(null, '${supplier.getName()}')|">Lọc</button>
                                 </div>
                             </div>
                         </div>
@@ -277,6 +278,12 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-12">
+                        <p th:unless="${listProduct.size() > 0}" style="text-align: center">Không có sản phẩm nào thuộc
+                            <span th:if="${category}"> danh mục :  <span th:utext="${category.getCategoryName()}"></span></span>
+                            <span th:if="${supplier}"> hãng : <span th:utext="${supplier.getName()}"></span></span>
+                        </p>
+                    </div>
                     <div class="col-lg-4 col-md-6 col-12" th:each="product : ${listProduct}">
                         <div class="single-product">
                             <div class="product-img">

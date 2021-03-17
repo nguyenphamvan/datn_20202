@@ -12,4 +12,5 @@ public interface ProductService {
     Page<Product> getProductsByCategoryAndSupplier(String categoryUrl, String supplierName, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
     Page<Product> searchProductByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir);
     Product getProduct(String productUrl);
+    Product getProductById(Long productId);
 }

@@ -1,5 +1,6 @@
-package com.nguyenpham.oganicshop.security;
+package com.nguyenpham.oganicshop.config;
 
+import com.nguyenpham.oganicshop.security.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -44,7 +45,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // Các yêu cầu phải login với vai trò user hoặc admin
                 // Nếu chưa login, nó sẽ redirect tới trang /login.
-                .antMatchers("/my_account", "/order_history", "/checkout.html").access("hasAnyRole('USER', 'ADMIN')")
+                .antMatchers("/login", "/customer/account/edit", "/customer/address",
+                        "/customer/notification", "/customer/wishlist", "/customer/review", "/sales/order/history", "/checkout.html", "/add-product-review", "/api/review/reply",
+                        "/api/account")
+                .access("hasAnyRole('USER', 'ADMIN')")
                 // Các trang chỉ dành cho ADMIN
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .and()
