@@ -40,9 +40,11 @@ public class OrderDetail {
         OrderDetailDto orderDetailDto = new OrderDetailDto();
         orderDetailDto.setId(this.getId());
         orderDetailDto.setProductName(this.getProduct().getProductName());
+        orderDetailDto.setProductUrl(this.getProduct().getProductUrl());
+        orderDetailDto.setImage(this.getProduct().getImage());
         orderDetailDto.setQuantity(this.getQuantity());
         orderDetailDto.setDiscount(this.getDiscount());
-        orderDetailDto.setTotalPrice(this.getTotalPrice());
+        orderDetailDto.setRawTotal(this.getTotalPrice());
         orderDetailDto.setPrice(this.getPrice());
         orderDetailDto.setReviewed(this.isReviewed());
         orderDetailDto.setSupplierName(this.getProduct().getSupplier().getName());

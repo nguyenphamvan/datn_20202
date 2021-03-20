@@ -2,17 +2,19 @@ package com.nguyenpham.oganicshop.entity;
 
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.OrderDto;
-import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Builder
 @Entity
@@ -34,13 +36,14 @@ public class Order {
     private int shipFee;
     private int discount;
     private int total;
-    private int status;
+    private String status;
     private String paymentMethod;
+    private String message;
     private String note;
     @CreationTimestamp
-    private Date orderDate;
+    private Timestamp orderDate;
     @UpdateTimestamp
-    private Date deliveryDate;
+    private Timestamp deliveryDate;
 
     @ManyToOne
     @JoinColumn(name = "users_id")
@@ -49,15 +52,25 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<OrderDetail> orderDetails;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<OrderLogging> orderLoggings;
+
     public void addOrderDetail(OrderDetail orderDetail) {
-        if(orderDetails == null) {
+        if(this.orderDetails == null) {
             this.orderDetails = new HashSet<>();
         }
         this.orderDetails.add(orderDetail);
     }
 
-    // should user moder mapper
-    public OrderDto convertUserToUserDto() {
+    public void addLogOrder(OrderLogging logOrder) {
+        if(this.orderLoggings == null) {
+            this.orderLoggings = new HashSet<>();
+        }
+        this.orderLoggings.add(logOrder);
+    }
+
+    // should order moder mapper
+    public OrderDto convertOrderToOrderDto() {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(this.getId());
         orderDto.setContactReceiver(this.getContactReceiver());
@@ -67,30 +80,33 @@ public class Order {
         orderDto.setShipFee(this.getShipFee());
         orderDto.setDiscount(this.getDiscount());
         orderDto.setTotal(this.getTotal());
-        if (this.getStatus() == 1) {
-            orderDto.setStatus("Đang xử lý");
-        } else if (this.getStatus() == 2) {
-            orderDto.setStatus("Đã bàn giao vận chuyển");
-        } else if (this.getStatus() == 3) {
-            orderDto.setStatus("Đang vận chuyển");
-        } else if (this.getStatus() == 4) {
-            orderDto.setStatus("Giao hàng thành công");
-        } else {
-            orderDto.setStatus("Đã hủy");
-        }
+        orderDto.setStatus(this.getStatus());
+        orderDto.setMessage(this.getMessage());
         orderDto.setPaymentMethod(this.getPaymentMethod());
         orderDto.setNote(this.getNote());
         orderDto.setOrderDate(this.getOrderDate());
         orderDto.setDeliveryDate(this.getDeliveryDate());
         List<OrderDetailDto> orderDetailDtoList = new ArrayList<>();
-        StringBuilder summaryProductname = new StringBuilder("");
+        StringBuilder summaryProductName = new StringBuilder("");
         this.getOrderDetails().forEach(orderDetail -> {
-            summaryProductname.append(orderDetail.getProduct().getProductName());
+            summaryProductName.append(orderDetail.getProduct().getProductName());
             orderDetailDtoList.add(orderDetail.convertOrderDetailToOrderDetailDto());
         });
-        orderDto.setSummaryProductName(summaryProductname.toString());
+        orderDto.setSummaryProductName(summaryProductName.toString());
         orderDto.setListOrderDetail(orderDetailDtoList);
         return orderDto;
+    }
+
+    public OrderLoggingDto convertOrderLoggingToOrderLoggingDto() {
+        OrderLoggingDto orderLoggingDto = new OrderLoggingDto();
+        orderLoggingDto.setOrderId(this.getId());
+        orderLoggingDto.setLatestStatus(this.getStatus());
+        orderLoggingDto.setLastUpdatedTime(this.getDeliveryDate());
+        Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = this.getOrderLoggings().stream()
+                .map(ol -> new OrderLoggingDto.LoggingOrderStatus(ol.getStatus(), ol.getUpdateTime()))
+                .collect(Collectors.toSet());
+        orderLoggingDto.setLoggingStatus(loggingStatus);
+        return orderLoggingDto;
     }
 
 }

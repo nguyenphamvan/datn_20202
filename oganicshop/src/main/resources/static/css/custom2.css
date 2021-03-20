@@ -883,3 +883,438 @@ img {
     max-width: 100%;
     border-style: none;
 }
+
+
+/* css for order detail */
+.styles__StyledAccountOrderDetail {
+    font-size: 13px;
+    color: rgb(36, 36, 36);
+    line-height: 1.5;
+}
+
+.heading {
+    font-size: 19px;
+    font-weight: 300;
+    margin: 20px 0px 0px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.heading .split {
+    margin: 0px 5px;
+}
+
+.heading .status {
+    font-weight: bolder;
+}
+
+.created-date {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.styles__StyledSection {
+    margin: 10px 0px 20px;
+    display: flex;
+    flex-direction: column;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.styles__StyledSection .title {
+    font-size: 13px;
+    text-transform: uppercase;
+    margin: 0px 0px 15px;
+    color: rgb(36, 36, 36);
+}
+
+.notifications {
+    display: flex;
+    flex-direction: column;
+}
+
+.notifications__item {
+    display: flex;
+}
+
+.notifications__item .date {
+    min-width: 160px;
+}
+
+.notifications__item .comment {
+    text-align: left;
+}
+
+.styles__StyledGroupSection {
+    display: flex;
+    margin: 10px 0px 20px;
+}
+
+.styles__StyledGroupSection > div:first-child {
+    margin-left: 0px;
+}
+
+.styles__StyledGroupSection > div {
+    width: 33.3333%;
+    margin: 0px 5px;
+}
+
+.styles__StyledSection {
+    margin: 10px 0px 20px;
+    display: flex;
+    flex-direction: column;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    border-radius: 4px;
+    height: 100%;
+}
+
+
+.content .name {
+    text-transform: uppercase;
+    color: rgb(36, 36, 36);
+    font-weight: bold;
+}
+
+.styles__StyledGroupSection p {
+    margin: 5px 0px 0px;
+}
+
+.styles__StyledGroupSection .cc-info.description.orange {
+    color: rgb(253, 162, 35);
+    font-style: italic;
+}
+
+.styles__StyledGroupSection .cc-info.description {
+    font-weight: 300;
+    margin-top: 10px;
+}
+
+.styles__StyledProductList {
+    width: 100%;
+    color: rgb(66, 66, 66);
+    display: table;
+    font-size: 13px;
+    background: rgb(255, 255, 255);
+    border-radius: 4px;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.styles__StyledProductList thead {
+    display: table-header-group;
+}
+
+.styles__StyledProductList tr {
+    display: table-row;
+    padding: 10px;
+}
+
+.styles__StyledProductList thead tr th:first-child {
+    border-left: none;
+}
+
+.styles__StyledProductList thead tr th:last-child {
+    text-align: right;
+    min-width: 160px;
+}
+
+.styles__StyledProductList thead tr th {
+    display: table-cell;
+    padding: 20px 15px;
+    border-top: none;
+    min-width: 100px;
+    position: relative;
+    background: 0px 0px;
+    color: rgb(120, 120, 120);
+    font-size: 15px;
+    font-weight: 400;
+    border-bottom: 1px solid rgb(244, 244, 244);
+    text-align: left;
+}
+
+.styles__StyledProductList tbody {
+    display: table-row-group;
+}
+
+.styles__StyledProductList tbody tr:first-child {
+    border-top: none;
+}
+
+.styles__StyledProductList tbody tr {
+    border-bottom: 1px solid rgb(244, 244, 244);
+}
+
+.styles__StyledProductList tbody tr td:first-child {
+    border-top: none;
+    border-left: none;
+}
+
+.styles__StyledProductList tbody tr td:last-child {
+    text-align: right;
+    min-width: 160px;
+}
+
+.styles__StyledProductList tbody tr td {
+    border: none;
+    position: relative;
+    display: table-cell;
+    padding: 20px 15px;
+    color: rgb(36, 36, 36);
+    vertical-align: top;
+    min-width: 100px;
+}
+
+.styles__StyledProductList tbody tr td .product-item {
+    display: flex;
+}
+
+.styles__StyledProductList tbody tr td .product-item img {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+}
+
+.styles__StyledProductList tbody tr td .product-item .product-info .product-name {
+    font-size: 14px;
+    color: rgb(36, 36, 36);
+}
+
+.styles__StyledProductList tbody tr td .product-item .product-info p {
+    margin: 12px 0px 0px;
+}
+
+.styles__StyledProductList tbody tr td .product-item .product-info .product-review span, .styles__StyledProductList tbody tr td .product-item .product-info .product-review a {
+    display: inline-block;
+    margin-right: 10px;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(24, 158, 255);
+    font-size: 12px;
+    color: rgb(24, 158, 255);
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.styles__StyledProductList tfoot {
+    display: table-row-group;
+}
+
+.styles__StyledProductList tfoot tr {
+    border-top: none;
+}
+
+.styles__StyledProductList tfoot tr td:first-child {
+    border-top: none;
+}
+
+.styles__StyledProductList tfoot tr:first-child td {
+    padding-top: 30px;
+}
+
+.styles__StyledProductList tfoot tr td {
+    text-align: right;
+    display: table-cell;
+    padding: 5px 20px;
+    max-width: 550px;
+    min-width: 125px;
+    color: rgb(36, 36, 36);
+}
+
+.styles__StyledProductList tfoot tr td .sum {
+    color: rgb(255, 59, 39);
+    font-size: 18px;
+}
+
+.view-list-order {
+    margin-bottom: 30px;
+    margin-top: 20px;
+    display: inline-block;
+    border: 1px solid transparent;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.view-tracking-detail {
+    margin-bottom: 30px;
+    background: rgb(253, 216, 53);
+    border-color: rgb(253, 216, 53);
+    color: rgb(74, 74, 74);
+    margin-top: 20px;
+    padding: 9px 12px;
+    width: 225px;
+    display: inline-block;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.42857;
+    border-radius: 4px;
+    font-weight: bolder;
+}
+
+/* css for order-status */
+.order-heading {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin-bottom: 35px;
+}
+
+.order-heading h3 {
+    font-size: 19px;
+    font-weight: 300;
+    color: rgb(36, 36, 36);
+    margin: 0px;
+    align-self: flex-end;
+}
+
+.order-heading .view-detail {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(74, 74, 74);
+    border-radius: 4px;
+    background-color: rgb(253, 216, 53);
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.styles__StyledTrackingDetail .title {
+    font-weight: 400;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: rgb(36, 36, 36);
+}
+
+.styles__StyledOrderStatus .status-block {
+    border-radius: 4px;
+    background-color: rgb(255, 255, 255);
+    padding: 20px 20px 20px;
+}
+
+.styles__StyledOrderStatus .status-block .status-text {
+    font-size: 14px;
+    color: rgb(32, 32, 32);
+    display: block;
+}
+
+.styles__StyledOrderStatusDetail {
+    margin-top: 20px;
+}
+
+.styles__StyledOrderStatusDetail .title {
+    font-weight: 400;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: rgb(36, 36, 36);
+}
+
+.styles__StyledOrderStatusDetail .detail {
+    background: rgb(255, 255, 255);
+    padding: 20px;
+}
+
+.styles__StyledOrderStatusDetail .detail .border {
+    border-radius: 4px;
+    border: 1px solid rgb(218, 218, 218);
+}
+
+.cGrxj {
+    padding: 12px 15px;
+    font-size: 13px;
+    color: rgb(32, 32, 32);
+    border-bottom: 1px solid rgb(218, 218, 218);
+    background-color: rgb(241, 241, 241);
+    font-weight: bolder;
+}
+
+.cBkDRy {
+    padding: 15px;
+    font-size: 13px;
+    color: rgb(32, 32, 32);
+    border-bottom: 1px solid rgb(218, 218, 218);
+    font-weight: bolder;
+}
+.cBkDRy .left {
+    margin-right: 20px;
+}
+
+.dPnPGf {
+    padding: 15px;
+    font-size: 13px;
+    color: rgb(32, 32, 32);
+    border-bottom: 1px solid rgb(218, 218, 218);
+    font-weight: normal;
+}
+.dPnPGf .left {
+    margin-right: 20px;
+}
+
+.jDvHok {
+    padding: 15px;
+    font-size: 13px;
+    color: rgb(32, 32, 32);
+    font-weight: normal;
+}
+.jDvHok .left {
+    margin-right: 20px;
+}
+
+.styles__StyledOrderItems {
+    margin-top: 20px;
+}
+.styles__StyledOrderItems .title {
+    font-weight: 400;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: rgb(36, 36, 36);
+}
+
+.styles__StyledOrderItems .items {
+    display: flex;
+    padding: 15px 20px;
+    background: rgb(255, 255, 255);
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+}
+.styles__StyledOrderItems .items .item {
+    display: flex;
+    font-weight: 300;
+    flex: 0 1 49%;
+    padding: 10px 0px;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.styles__StyledOrderItems .items .item .image {
+    margin-right: 30px;
+    width: 90px;
+    height: 90px;
+}
+
+.styles__StyledOrderItems .items .item .info .name {
+    font-size: 14px;
+    color: rgb(32, 32, 32);
+    text-decoration: none;
+    outline: none;
+    padding: 8px 0px;
+}

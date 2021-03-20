@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='copyright' content=''>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title Tag  -->
+    <title>Theo dõi đơn hàng</title>
+    <th:block th:include="common/header_tag_common"/>
+
+    <!-- custom css  -->
+    <link rel="stylesheet" th:href="@{/css/custom2.css}">
+</head>
+<body class="js">
+
+<!-- Header -->
+<th:block th:include="common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="blog-single.html"></a>Thông tin tài khoản</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section" style="padding-top: 0px;">
+    <div class="container">
+        <div class="row">
+
+            <div class="Account__StyledSideBar">
+                <div class="Account__StyledAvatar">
+                    <img src="https://salt.tikicdn.com/desktop/img/avatar.png">
+                    <div class="info">Tài khoản của<strong>phạm văn nguyên</strong></div>
+                </div>
+                <ul class="Account__StyledNav">
+                    <li>
+                        <a class="" href="/customer/account/edit">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                            </svg>
+                            <span>Thông tin tài khoản</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/notification">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path>
+                            </svg>
+                            <span>Thông báo của tôi</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/sales/order/history">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"></path>
+                            </svg>
+                            <span>Quản lý đơn hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/sales/order/history">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                            </svg>
+                            <span>Sổ địa chỉ</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/sales/order/history">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                            </svg>
+                            <span>Nhận xét sản phẩm đã mua</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/sales/order/history">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                            </svg>
+                            <span>Sản phẩm yêu thích</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/sales/order/history">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"></path>
+                            </svg>
+                            <span>Nhận xét của tôi</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="Account__StyledAccountLayoutInner">
+                <div class="styles__StyledTrackingDetail">
+                    <div class="order-heading"><h3>Theo dõi đơn hàng #477918561</h3>
+                        <div class="view-detail"><a th:href="@{'/sales/order/view/' + ${orderId}}">Xem chi tiết đơn hàng</a></div>
+                    </div>
+                    <div>
+                        <div class="styles__StyledOrderStatus"><p class="title">Trạng thái đơn
+                            hàng</p>
+                            <div class="status-block"><span class="status-text">Trạng thái: <b>Giao hàng thành công | 20:39 Thứ tư, 11-11-2020</b></span>
+                            </div>
+                        </div>
+                        <div class="styles__StyledOrderStatusDetail">
+                            <p class="title">Chi tiết trạng thái đơn hàng</p>
+                            <div class="detail">
+                                <div class="border">
+                                    <div class="styles__StyledOrderStatusDetailItem cGrxj">Cập nhật mới
+                                        nhất: Thứ tư, 11-11-2020
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="styles__StyledOrderItems">
+                            <p class="title">Kiện hàng gồm có</p>
+                            <div class="items">
+                                <div class="item">
+                                    <img class="image">
+                                    <div class="info">
+                                        <a class="name"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Start Shop Newsletter  -->
+<section class="shop-newsletter section">
+    <div class="container">
+        <div class="inner-top">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-12">
+                    <!-- Start Newsletter Inner -->
+                    <div class="inner">
+                        <h4>Newsletter</h4>
+                        <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
+                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                            <input name="EMAIL" placeholder="Your email address" required="" type="email">
+                            <button class="btn">Subscribe</button>
+                        </form>
+                    </div>
+                    <!-- End Newsletter Inner -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Newsletter -->
+
+<!-- Start Footer Area -->
+<th:block th:include="common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function() {
+        var orderId = /*[[${orderId}]]*/;
+        getOrderLogging(orderId);
+        getListOrderItem(orderId);
+    });
+
+    function getOrderLogging(orderId) {
+        $.ajax({
+            url: "/api/sales/order/tracking/" + orderId,
+            type: "GET",
+            dataType: 'json',
+            success: function (orderLogging) {
+                $(".order-heading h3").text("Theo dõi đơn hàng #" + orderLogging["orderId"]);
+                $(".status-block .status-text b").text(orderLogging["latestStatus"] + " | " + orderLogging["lastUpdatedTime"]);
+                $(".cGrxj").text("Cập nhật mới nhất : " + orderLogging["lastUpdatedTime"]);
+                $.each(orderLogging["loggingStatus"], function( index, orderStatus ) {
+                    let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
+                        "           <span class=\"left\">" + orderStatus["updatedTime"] + "</span>" +
+                        "           <span class=\"right\">" + orderStatus["status"] + "</span>\n" +
+                        "       </div>";
+                    $(html).insertAfter(".cGrxj");
+                });
+            },
+            error: function() {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getListOrderItem(orderId) {
+        $.ajax({
+            url: "/api/sales/order/" + orderId + "/list-item",
+            type: "GET",
+            dataType: 'json',
+            success: function (orderItems) {
+                let itemClone = $(".styles__StyledOrderItems .items div:first-child");
+                $.each(orderItems, function (index, item) {
+                    let row = itemClone.clone();
+                    row.find("img.image").attr("src", "/images/products/" + item["image"]);
+                    row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                    row.insertAfter(".styles__StyledOrderItems .items div:first-child");
+                });
+                $(".styles__StyledOrderItems .items div:first-child").css("display", "none");
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

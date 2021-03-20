@@ -33,7 +33,7 @@ public class CheckoutControllerApi {
 
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
-            order.setStatus(1);
+            order.setStatus("Đặt hàng thành công");
             order.setSubTotal(cartService.totalSubCart(cart));
             order.setTotal(cartService.totalSubCart(cart) + order.getShipFee());
             for (CartItem item : cart.values()) {

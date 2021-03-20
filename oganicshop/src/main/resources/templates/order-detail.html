@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết đơn hàng</title>
+    <th:block th:include="common/header_tag_common"/>
+    <!-- custom css  -->
+    <link rel="stylesheet" th:href="@{/css/custom2.css}">
+</head>
+<body class="js">
+<!-- Header -->
+<th:block th:include="common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active">Thông tin tài khoản</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section" style="padding-top: 15px;">
+    <div class="container">
+        <div class="row">
+            <div class="Account__StyledSideBar">
+                <div class="Account__StyledAvatar">
+                    <img src="https://salt.tikicdn.com/desktop/img/avatar.png">
+                    <div class="info">Tài khoản của<strong>phạm văn nguyên</strong></div>
+                </div>
+                <ul class="Account__StyledNav">
+                    <li>
+                        <a class="" href="/customer/account/edit">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                            </svg>
+                            <span>Thông tin tài khoản</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/notification">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path>
+                            </svg>
+                            <span>Thông báo của tôi</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/sales/order/history">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"></path>
+                            </svg>
+                            <span>Quản lý đơn hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/address">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                            </svg>
+                            <span>Địa chỉ giao hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/nhan-xet-san-pham-ban-da-mua">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"></path>
+                            </svg>
+                            <span>Nhận xét sản phẩm đã mua</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/wishlist">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                            </svg>
+                            <span>Sản phẩm yêu thích</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/review">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"></path>
+                            </svg>
+                            <span>Nhận xét của tôi</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="Account__StyledAccountLayoutInner">
+                <div class="styles__StyledAccountOrderDetail">
+                    <div class="heading"><span></span><span class="split">-</span><span class="status"></span></div>
+                    <div class="created-date"></div>
+                    <div class="styles__StyledSection message">
+                        <div class="title">Thông báo</div>
+                        <div class="content">
+                            <div class="notifications">
+                                <div class="notifications__item">
+                                    <div class="date"></div>
+                                    <div class="comment">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="styles__StyledGroupSection">
+                        <div class="styles__StyledSection order-info-1">
+                            <div class="title">Địa chỉ người nhận</div>
+                            <div class="content">
+                                <p class="name">Phạm Văn Nguyên</p>
+                                <p class="address">
+                                    <span>Địa chỉ: </span> <span></span>
+                                </p>
+                                <p class="phone">
+                                    <span>Điện thoại: </span>
+                                    <span></span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="styles__StyledSection order-info-2">
+                            <div class="title">Hình thức giao hàng</div>
+                            <div class="content">
+                                <p></p>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="styles__StyledSection order-info-3">
+                            <div class="title">Hình thức thanh toán</div>
+                            <div class="content">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="styles__StyledProductList">
+                        <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Giảm giá</th>
+                            <th>Tạm tính</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="product-item">
+                                        <img>
+                                        <div class="product-info">
+                                            <a class="product-name"></a>
+                                            <p class="product-seller">Cung cấp bởi <a>Tiki Trading</a></p>
+                                            <div class="product-review">
+                                                <span>Viết nhận xét</span>
+                                                <a>Mua lại</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="price"></td>
+                                <td class="quantity"></td>
+                                <td class="discount-amount"></td>
+                                <td class="raw-total"></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4"><span>Tạm tính</span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><span>Giảm giá</span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><span>Phí vận chuyển</span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><span>Tổng cộng</span></td>
+                                <td><span class="sum"></span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <a class="view-list-order" th:href="@{/sales/order/history}">&lt;&lt; Quay lại đơn hàng của tôi</a>
+                    <a class="view-tracking-detail" th:href="@{'/sales/order/tracking/' + ${orderId}}">Theo dõi đơn hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Start Footer Area -->
+<th:block th:include="common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function() {
+        var orderId = /*[[${orderId}]]*/;
+        getInfoOrder(orderId);
+
+    });
+
+    function getInfoOrder(orderId) {
+        $.ajax({
+            url: "/api/sales/order/view/" + orderId,
+            type: "GET",
+            dataType: 'json',
+            success: function (order) {
+                $(".styles__StyledAccountOrderDetail .heading span:first-child").text("Chi tiết đơn hàng #" + order["id"]);
+                $(".styles__StyledAccountOrderDetail .heading span.status").text(order["status"]);
+                $(".styles__StyledAccountOrderDetail .created-date").text("Ngày đặt hàng: " + order["orderDate"]);
+                $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .date").text(order["message"].split(" - ")[0]);
+                $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .comment").text(order["message"].split(" - ")[1]);
+                $(".order-info-1 .content p.name").text(order["contactReceiver"]);
+                $(".order-info-1 .content p.address span:last-child").text(order["contactAddress"]);
+                $(".order-info-1 .content p.phone span:last-child").text(order["contactPhone"]);
+                $(".order-info-2 .content p:first-child").text("Giao hàng vào ngày : " + order["deliveryDate"]);
+                if (parseInt(order["shipFee"]) === 0) {
+                    $(".order-info-2 .content p:last-child").text("Miễn phí vận chuyển");
+                } else {
+                    $(".order-info-2 .content p:last-child").text("Giao hàng nhanh");
+                }
+                $(".order-info-3 .content p:first-child").text(order["paymentMethod"]);
+                $(".order-info-3 .content p.cc-info").text(order["paymentMethod"]);
+
+                genreListOrderDetail(order["listOrderDetail"]);
+
+                $("table tfoot tr:first-child td:last-child").text(order["subTotal"] + " ₫");
+                $("table tfoot tr:nth-child(2) td:last-child").text("-" + order["discount"] + " ₫");
+                $("table tfoot tr:nth-child(3) td:last-child").text(order["shipFee"] + " ₫");
+                $("table tfoot tr:nth-child(4) td:last-child span.sum").text(order["total"] + " ₫");
+            },
+            error: function() {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function genreListOrderDetail(listOrderDetail) {
+        let firstRow = $("tbody tr:first-child");
+        $.each(listOrderDetail, function( index, orderDetail ) {
+            let rowClone = firstRow.clone();
+            rowClone.find(".product-item img").attr("src", "/images/products/" + orderDetail["image"]).attr("alt", "productName");
+            rowClone.find(".product-info a.product-name").attr("href", "/products/" + orderDetail["productUrl"] + ".html").text(orderDetail["productName"]);
+            rowClone.find("td.price").text(orderDetail["price"] + " ₫");
+            rowClone.find("td.quantity").text(orderDetail["quantity"]);
+            rowClone.find("td.discount-amount").text(orderDetail["discount"] + " ₫");
+            rowClone.find("td.raw-total").text(orderDetail["rawTotal"] + " ₫");
+            rowClone.insertAfter("tbody tr:first-child");
+        });
+        $("tbody tr:first-child").css("display", "none");
+    }
+
+
+    /*]]>*/
+</script>
+</body>
+</html>

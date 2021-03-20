@@ -52,7 +52,7 @@ public class CheckoutController {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute("myCart");
         if (cart != null) {
             order.setUser(user);
-            order.setStatus(1);
+            order.setStatus("Đặt hàng thành công");
             order.setSubTotal(cartService.totalSubCart(cart));
             order.setTotal(cartService.totalSubCart(cart) + order.getShipFee());
             for (CartItem item : cart.values()) {

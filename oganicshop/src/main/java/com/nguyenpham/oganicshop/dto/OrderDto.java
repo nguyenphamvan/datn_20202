@@ -3,8 +3,7 @@ package com.nguyenpham.oganicshop.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -21,10 +20,11 @@ public class OrderDto {
     private int shipFee;
     private int discount;
     private int total;
+    private String message;
     private String status;
     private String paymentMethod;
     private String note;
-    private Date orderDate;
-    private Date deliveryDate;
+    private Timestamp orderDate;
+    private Timestamp deliveryDate;
     private List<OrderDetailDto> listOrderDetail;
 }

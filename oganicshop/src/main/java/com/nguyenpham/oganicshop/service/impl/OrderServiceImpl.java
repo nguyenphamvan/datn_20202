@@ -2,6 +2,8 @@ package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.dto.OrderDto;
 import com.nguyenpham.oganicshop.entity.Order;
+import com.nguyenpham.oganicshop.entity.OrderLogging;
+import com.nguyenpham.oganicshop.repository.OrderLoggingRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
 import com.nguyenpham.oganicshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +49,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order getOrderById(long orderId) {
+        return orderRepository.findById(orderId).get();
+    }
+
+    @Override
     public List<OrderDto> getListOrderHistory(Long userId, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id").ascending());
         Page<Order> page = orderRepository.findOrdersByUserId(userId, pageable);
         List<Order> ordersHistory = page.getContent();
         List<OrderDto> ordersDtoHistory = new ArrayList<>();
         ordersHistory.forEach(order -> {
-            ordersDtoHistory.add(order.convertUserToUserDto());
+            ordersDtoHistory.add(order.convertOrderToOrderDto());
         });
         return ordersDtoHistory;
     }
