@@ -7,16 +7,22 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetailDto {
+public class ProductDto {
+
     private Long id;
-    private Long productId;
     private String productName;
     private String productUrl;
     private String image;
-    private String SupplierName;
-    private int quantity;
+    private String size;
+    private String color;
+    private String baseDescription;
+    private String detailDescription;
     private int price;
     private int discount;
-    private int rawTotal;
-    private boolean reviewed;
+    private int finalPrice;
+    private int rating;
+    private int numberOfReviews;
+    private int amount;
+    private String categoryName;
+    private String supplierName;
 }

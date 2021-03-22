@@ -31,6 +31,7 @@ public class User {
     private String gender;
     private String address;
     private String phone;
+    private String wishlist;
     @Column(name = "verification_code")
     private String verificationCode;
     private boolean enabled;

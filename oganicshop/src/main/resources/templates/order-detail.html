@@ -255,6 +255,7 @@
             let rowClone = firstRow.clone();
             rowClone.find(".product-item img").attr("src", "/images/products/" + orderDetail["image"]).attr("alt", "productName");
             rowClone.find(".product-info a.product-name").attr("href", "/products/" + orderDetail["productUrl"] + ".html").text(orderDetail["productName"]);
+            rowClone.find(".product-review a").attr("href").attr("href", "/products/" + orderDetail["productUrl"] + ".html");
             rowClone.find("td.price").text(orderDetail["price"] + " ₫");
             rowClone.find("td.quantity").text(orderDetail["quantity"]);
             rowClone.find("td.discount-amount").text(orderDetail["discount"] + " ₫");

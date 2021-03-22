@@ -75,8 +75,8 @@
                         <div class="quickview-ratting-review">
                             <div class="quickview-ratting-wrap">
                                 <div class="quickview-ratting">
-                                    <i th:each="i: ${#numbers.sequence(0, product.getRatting() - 1)}" class="yellow fa fa-star"></i>
-                                    <i th:each="i: ${#numbers.sequence(0, (4 - product.getRatting()))}" class="fa fa-star"></i>
+                                    <i th:each="i: ${#numbers.sequence(0, product.getRating() - 1)}" class="yellow fa fa-star"></i>
+                                    <i th:each="i: ${#numbers.sequence(0, (4 - product.getRating()))}" class="fa fa-star"></i>
                                 </div>
                                 <span>( <span th:utext="${product.getNumberOfReviews()}"></span> customer review)</span>
                             </div>
@@ -107,7 +107,7 @@
                             <!--/ End Input Order -->
                         </div>
                         <div class="add-to-cart">
-                            <a id="add-cart" th:attr="data-productUrl=${product.getProductUrl()}" class="btn">Add to cart</a>
+                            <a id="add-cart" th:attr="data-productUrl=${product.getProductUrl()}" class="btn">Thêm vào giỏ hàng</a>
                             <a href="#" class="btn min"><i class="ti-heart"></i></a>
                         </div>
                     </div>
@@ -152,8 +152,8 @@
                                                                 <div style="float: right">
                                                                     <span>Đánh giá</span>
                                                                     <ul class="reviews">
-                                                                        <li class="yellow" th:each="i: ${#numbers.sequence(0, review.getRatting() - 1)}"><i class="ti-star"></i></li>
-                                                                        <li th:if="${(5 - review.getRatting()) > 0}" th:each="i: ${#numbers.sequence(0, (4 - review.getRatting()))}"><i class="ti-star"></i></li>
+                                                                        <li class="yellow" th:each="i: ${#numbers.sequence(0, review.getRating() - 1)}"><i class="ti-star"></i></li>
+                                                                        <li th:if="${(5 - review.getRating()) > 0}" th:each="i: ${#numbers.sequence(0, (4 - review.getRating()))}"><i class="ti-star"></i></li>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -164,6 +164,10 @@
                                                                 </div>
                                                                 <div class="review-content">
                                                                     <span th:utext="${review.getComment()}"></span>
+                                                                </div>
+                                                                <div class="review-comment-image" th:if="${review.getImg() != null}">
+                                                                    <img style="border: 1px solid #ada4a4; border-radius: 5px; max-width: 20%; max-height: 100px;"
+                                                                         th:src="@{'/images/image-product-review/' + ${review.getProduct().getId()} + '/' + ${review.getImg()}}">
                                                                 </div>
                                                             </div>
                                                         </div>

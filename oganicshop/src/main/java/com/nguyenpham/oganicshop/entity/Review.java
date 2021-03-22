@@ -26,24 +26,16 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "title")
     private String title;
-
-    @Column(name = "comment")
     private String comment;
-
-    @Column(name = "ratting")
-    private int ratting;
-
+    private String img;
+    private int rating;
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
-
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
-
     @Column(name = "numbers_of_like")
     private int numbersOfLike;
 
@@ -71,6 +63,8 @@ public class Review {
         response.setId(this.id);
         response.setComment(this.comment);
         response.setTitle(this.title);
+        response.setRating(this.getRating());
+        response.setImg(this.getImg());
         response.setReviewerName(this.user.getFullName());
         response.setUserId(this.user.getId());
         response.setProductId(this.product.getId());

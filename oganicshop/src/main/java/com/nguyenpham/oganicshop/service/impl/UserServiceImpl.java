@@ -1,7 +1,10 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.dto.ProductDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.UserService;
@@ -16,15 +19,22 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private ProductRepository productRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository) {
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -98,6 +108,21 @@ public class UserServiceImpl implements UserService {
         userDb.setPhone(phone);
         User userUpdated = userRepository.save(userDb);
         return userUpdated.convertUserToUserDto();
+    }
+
+    @Override
+    public Set<ProductDto> getWishlists() {
+//        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        User user = userRepository.findById((long) 1).get();
+        long[] idWishlistProductsArr = Arrays.stream(user.getWishlist().split(","))
+                .mapToLong(Long::parseLong).toArray();
+        Set<ProductDto> wishlistProducts = new HashSet<>();
+        for (int i = 0; i < idWishlistProductsArr.length ; i++) {
+            Product product = productRepository.findById(idWishlistProductsArr[i]).get();
+            wishlistProducts.add(product.convertProductToProductDto());
+        }
+
+        return wishlistProducts;
     }
 
     @Override

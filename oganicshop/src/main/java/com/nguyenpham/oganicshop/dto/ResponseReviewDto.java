@@ -24,6 +24,8 @@ public class ResponseReviewDto {
     private String reviewerName;
     private String title;
     private String comment;
+    private String img;
+    private int rating;
     @CreationTimestamp
     private Date createdAt;
     @UpdateTimestamp

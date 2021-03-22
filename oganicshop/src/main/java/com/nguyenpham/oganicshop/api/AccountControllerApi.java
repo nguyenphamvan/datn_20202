@@ -61,8 +61,18 @@ public class AccountControllerApi {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("my-review")
+    public ResponseEntity<?> getMyReviews() {
+        return null;
+    }
+
+    @GetMapping("/wishlist")
+    public ResponseEntity<?> getMyWishlist() {
+        return ResponseEntity.ok(userService.getWishlists());
+    }
+
     @GetMapping("/notification")
-    public ResponseEntity<?> getNotification() {
+    public ResponseEntity<?> getMyNotifications() {
         return null;
     }
 

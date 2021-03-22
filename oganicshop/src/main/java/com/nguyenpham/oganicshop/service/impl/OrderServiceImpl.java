@@ -1,8 +1,12 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.OrderDto;
+import com.nguyenpham.oganicshop.dto.ProductDto;
 import com.nguyenpham.oganicshop.entity.Order;
+import com.nguyenpham.oganicshop.entity.OrderDetail;
 import com.nguyenpham.oganicshop.entity.OrderLogging;
+import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
 import com.nguyenpham.oganicshop.repository.OrderLoggingRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
 import com.nguyenpham.oganicshop.service.OrderService;
@@ -15,15 +19,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
+    private OrderDetailRepository orderDetailRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository) {
         this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     @Override
@@ -31,10 +39,17 @@ public class OrderServiceImpl implements OrderService {
         try {
             Order savedOrder = orderRepository.save(order);
             return savedOrder;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public OrderDetail editReviewed(OrderDetailDto orderDetailDto) {
+        OrderDetail orderDetailDb = orderDetailRepository.findById(orderDetailDto.getId()).get();
+        orderDetailDb.setReviewed(orderDetailDto.isReviewed());
+        return orderDetailRepository.save(orderDetailDb);
     }
 
     @Override
@@ -63,5 +78,12 @@ public class OrderServiceImpl implements OrderService {
             ordersDtoHistory.add(order.convertOrderToOrderDto());
         });
         return ordersDtoHistory;
+    }
+
+    @Override
+    public Set<OrderDetailDto> getListProductNotReviewed(long userId) {
+        return orderDetailRepository.findAllByReviewedIsFalse(userId).stream()
+                .map(od -> od.convertOrderDetailToOrderDetailDto())
+                .collect(Collectors.toSet());
     }
 }

@@ -1,6 +1,7 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nguyenpham.oganicshop.dto.ProductDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -36,7 +37,7 @@ public class Product {
     private int discount;
     @Column(nullable = false)
     private int finalPrice;
-    private double ratting;
+    private int rating;
     private int numberOfReviews;
     private int amount;
 
@@ -60,5 +61,24 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Review> reviews;
+
+    public ProductDto convertProductToProductDto() {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(this.getId());
+        productDto.setProductName(this.getProductName());
+        productDto.setProductUrl(this.getProductUrl());
+        productDto.setBaseDescription(this.getBaseDescription());
+        productDto.setDetailDescription(this.getDetailDescription());
+        productDto.setCategoryName(this.getCategory().getCategoryName());
+        productDto.setSupplierName(this.getSupplier().getName());
+        productDto.setImage(this.getImage());
+        productDto.setPrice(this.getPrice());
+        productDto.setDiscount(this.getDiscount());
+        productDto.setFinalPrice(this.getFinalPrice());
+        productDto.setNumberOfReviews(this.getNumberOfReviews());
+        productDto.setRating(this.getRating());
+        productDto.setAmount(this.getAmount());
+        return productDto;
+    }
 
 }

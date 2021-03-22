@@ -55,4 +55,10 @@ public class SalesControllerApi {
     public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId) {
         return ResponseEntity.ok(orderService.getOrderById(orderId).convertOrderLoggingToOrderLoggingDto());
     }
+
+    @GetMapping("/order/product-not-reviewed")
+    public ResponseEntity<?> getListProductNotReviewed() {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        return ResponseEntity.ok(orderService.getListProductNotReviewed( user.getId()));
+    }
 }

@@ -1710,7 +1710,7 @@ Version:1.0
    Start Single Product CSS
 ========================================*/
 .product-area .nav-tabs {
-    text-align: center;
+    /*text-align: center;*/
     display: inline-block;
     width: 100%;
     border:none;

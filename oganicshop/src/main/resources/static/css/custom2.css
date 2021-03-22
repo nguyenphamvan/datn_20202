@@ -58,19 +58,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .product-detail .owl-nav {
     margin: 0;
     position: absolute;
@@ -161,7 +148,7 @@ body {
     border-radius: 4px;
 }
 
-form {
+.div-form > form {
     width: 600px;
 }
 
@@ -404,13 +391,13 @@ textarea {
 
 
 
-.styles__StyledAccountAdress .new svg {
+.styles__StyledAccountAddress .new svg {
     color: rgb(120, 120, 120);
     font-size: 28px;
     margin: 0px 20px;
 }
 
-.styles__StyledAccountAdress .new a {
+.styles__StyledAccountAddress .new a {
     background-color: rgb(255, 255, 255);
     font-size: 15px;
     height: 60px;
@@ -423,11 +410,11 @@ textarea {
     justify-content: center;
 }
 
-.styles__StyledAccountAdress .item:last-child {
+.styles__StyledAccountAddress .item:last-child {
     margin: 0px;
 }
 
-.styles__StyledAccountAdress .item {
+.styles__StyledAccountAddress .item {
     background-color: rgb(255, 255, 255);
     padding: 17px;
     border-radius: 4px;
@@ -439,16 +426,16 @@ textarea {
     line-height: 19px;
 }
 
-.styles__StyledAccountAdress .item .name {
+.styles__StyledAccountAddress .item .name {
     text-transform: uppercase;
     margin: 0px 0px 10px;
 }
 
-.styles__StyledAccountAdress .item .address {
+.styles__StyledAccountAddress .item .address {
     margin: 0px 0px 5px;
 }
 
-.styles__StyledAccountAdress .item .name > span:nth-child(2){
+.styles__StyledAccountAddress .item .name > span:nth-child(2){
     font-size: 12px;
     margin: 0px 0px 0px 15px;
     display: inline-block;
@@ -458,15 +445,15 @@ textarea {
     text-transform: none;
 }
 
-.styles__StyledAccountAdress .item .address span:first-child {
+.styles__StyledAccountAddress .item .address span:first-child {
     color: rgb(120, 120, 120);
 }
 
-.styles__StyledAccountAdress .item .phone span:first-child {
+.styles__StyledAccountAddress .item .phone span:first-child {
     color: rgb(120, 120, 120);
 }
 
-.styles__StyledAccountAdress .item .edit {
+.styles__StyledAccountAddress .item .edit {
     font-size: 14px;
     color: rgb(27, 168, 255);
     display: inline-block;
@@ -520,7 +507,7 @@ img {
     -webkit-box-orient: vertical;
 }
 
-.bVfYSc .my-reviews__button {
+.my-reviews__button {
     font-weight: 500;
     font-size: 13px;
     margin: 15px 0px 0px;
@@ -536,7 +523,7 @@ img {
     align-self: flex-end;
 }
 
-.bVfYSc .my-reviews__button:hover {
+.my-reviews__button:hover {
     box-shadow: rgb(0 0 0 / 20%) 0px 0px 7px 0px inset;
 }
 
@@ -864,21 +851,7 @@ img {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
-.my-reviews__button {
-    font-weight: 500;
-    font-size: 13px;
-    margin: 15px 0px 0px;
-    width: 100%;
-    height: 30px;
-    line-height: 30px;
-    background: rgb(253, 216, 53);
-    border: 0px;
-    color: rgb(36, 36, 36);
-    text-align: center;
-    border-radius: 4px;
-    cursor: pointer;
-    align-self: flex-end;
-}
+
 img {
     max-width: 100%;
     border-style: none;
@@ -1318,3 +1291,189 @@ img {
     outline: none;
     padding: 8px 0px;
 }
+
+
+
+/* form add review product */
+.write-review {
+    width: 605px;
+    background-color: rgb(255, 255, 255);
+    padding: 16px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+}
+
+.write-review__close {
+    width: 40px;
+    height: 40px;
+    font-size: 36px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    text-align: center;
+    line-height: 40px;
+    color: rgb(224, 224, 224);
+    cursor: pointer;
+}
+
+.write-review__product {
+    display: flex;
+    padding: 0px 40px 0px 0px;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 0px 0px 32px;
+}
+
+.write-review__product-img {
+    width: 40px;
+    margin: 0px 12px 0px 0px;
+}
+
+.write-review__product-wrap {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px;
+    padding: 0px 40px 0px 0px;
+}
+
+.write-review__product-name {
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1 1 0%;
+}
+
+.write-review__product-seller {
+    font-size: 12px;
+    line-height: 16px;
+    color: rgb(153, 153, 153);
+}
+
+.write-review__heading {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0px 0px 12px;
+}
+
+.write-review__stars {
+    text-align: center;
+}
+
+.write-review__star {
+    margin: 0px 8px;
+    cursor: pointer;
+}
+
+.write-review__input {
+    border: 1px solid rgb(238, 238, 238);
+    padding: 12px;
+    border-radius: 4px;
+    resize: none;
+    width: 100%;
+    outline: 0px;
+    margin: 24px 0px 12px;
+}
+
+.write-review__buttons {
+    flex: 1 1 0%;
+    align-items: flex-end;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 0px 0px 16px;
+    margin: 12px 0px 0px;
+}
+
+.write-review__file {
+    position: absolute;
+    height: 0px;
+    width: 0px;
+    visibility: hidden;
+    opacity: 0;
+    clip: rect(0px, 0px, 0px, 0px);
+}
+
+.write-review__button--image {
+    color: rgb(13, 92, 182);
+    border: 1px solid rgb(13, 92, 182);
+}
+
+.write-review__file {
+    position: absolute;
+    height: 0px;
+    width: 0px;
+    visibility: hidden;
+    opacity: 0;
+    clip: rect(0px, 0px, 0px, 0px);
+}
+
+.write-review__button--submit {
+    background-color: rgb(253, 216, 53);
+    color: rgb(36, 36, 36);
+}
+
+.write-review__button {
+    width: 49%;
+    height: 36px;
+    border: 0px;
+    background: 0px center;
+    padding: 0px;
+    line-height: 36px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    outline: 0px;
+}
+
+.write-review__button--image img {
+    width: 20px;
+    height: 20px;
+    margin: 0px 4px 0px 0px;
+}
+
+button, input, optgroup, select, textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0px;
+}
+
+textarea {
+    overflow: auto;
+}
+
+button, input {
+    overflow: visible;
+}
+.write-review__button .write-review__button--image{
+    position: relative;
+    cursor: pointer;
+}
+.upload__file--button{
+    position: absolute;
+    opacity: 0;
+}
+
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+
+
+i.yellow {
+    color: #f5b223;
+}
+
+

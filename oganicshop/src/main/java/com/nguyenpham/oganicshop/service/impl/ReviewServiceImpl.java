@@ -17,38 +17,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private UserRepository userRepository;
     private ReviewRepository reviewRepository;
     private ProductRepository productRepository;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, UserRepository userRepository, ProductRepository productRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, ProductRepository productRepository) {
         this.reviewRepository = reviewRepository;
-        this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
 
     @Override
     public ResponseReviewDto save(RequestReviewDto postReview) {
-        Review review = new Review();
-        review.setTitle(postReview.getTitle());
-        review.setComment(postReview.getComment());
-        review.setRatting(postReview.getRatting());
-        if (postReview.getRootId() != null) {
-            Review rootReview = reviewRepository.findById(postReview.getRootId()).orElse(null);
-            review.setRootComment(rootReview);
-            review.setProduct(rootReview.getProduct());
-        } else {
-            Product product = productRepository.findById(postReview.getProductId()).orElse(null);
-            if (product != null) {
-                review.setProduct(product);
-            }
-        }
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         if (user != null) {
+            Review review = new Review();
+            review.setTitle(postReview.getTitle());
+            review.setComment(postReview.getComment());
+            review.setRating(postReview.getRating());
+            review.setImg(postReview.getImage().getOriginalFilename()); // lấy hình ảnh, sẽ lưu ý để làm cách khác tưởng minh hơn
+            if (postReview.getRootId() != null) {
+                Review rootReview = reviewRepository.findById(postReview.getRootId()).orElse(null);
+                review.setRootComment(rootReview);
+                review.setProduct(rootReview.getProduct());
+            } else {
+                Product product = productRepository.findById(postReview.getProductId()).orElse(null);
+                if (product != null) {
+                    review.setProduct(product);
+                }
+            }
             review.setUser(user);
+            return reviewRepository.save(review).convertReviewToReviewDto();
         }
-        return reviewRepository.save(review).convertReviewToReviewDto();
+        return null;
     }
 
     @Override

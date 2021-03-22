@@ -39,6 +39,7 @@ public class OrderDetail {
     public OrderDetailDto convertOrderDetailToOrderDetailDto() {
         OrderDetailDto orderDetailDto = new OrderDetailDto();
         orderDetailDto.setId(this.getId());
+        orderDetailDto.setProductId(this.getProduct().getId());
         orderDetailDto.setProductName(this.getProduct().getProductName());
         orderDetailDto.setProductUrl(this.getProduct().getProductUrl());
         orderDetailDto.setImage(this.getProduct().getImage());
@@ -46,8 +47,8 @@ public class OrderDetail {
         orderDetailDto.setDiscount(this.getDiscount());
         orderDetailDto.setRawTotal(this.getTotalPrice());
         orderDetailDto.setPrice(this.getPrice());
-        orderDetailDto.setReviewed(this.isReviewed());
         orderDetailDto.setSupplierName(this.getProduct().getSupplier().getName());
+        orderDetailDto.setReviewed(this.isReviewed());
         return orderDetailDto;
     }
 
