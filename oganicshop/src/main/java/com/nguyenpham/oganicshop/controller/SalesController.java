@@ -26,7 +26,7 @@ public class SalesController {
     public String viewOrderHistory(Model model) {
         List<Category> listCategory = categoryService.getListCategory();
         model.addAttribute("listCategory", listCategory);
-        return "account";
+        return "order-manager";
     }
 
     @GetMapping("/order/view/{orderId}")

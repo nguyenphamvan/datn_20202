@@ -22,11 +22,39 @@ public class AccountController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(value = {"/customer/account/edit", "/customer/address", "/nhan-xet-san-pham-ban-da-mua",
-            "/customer/notification", "/customer/wishlist", "/customer/review"} )
+    @GetMapping(value = {"/customer/account/edit",
+            "/customer/notification"} )
     public String myAccountPage(Model model) {
         List<Category> listCategory = categoryService.getListCategory();
         model.addAttribute("listCategory", listCategory);
         return "account";
+    }
+
+    @GetMapping("/customer/wishlist")
+    public String getMyWishlish(Model model) {
+        List<Category> listCategory = categoryService.getListCategory();
+        model.addAttribute("listCategory", listCategory);
+        return "account-wishlist";
+    }
+
+    @GetMapping("/customer/address")
+    public String getMyShippingAddress(Model model) {
+        List<Category> listCategory = categoryService.getListCategory();
+        model.addAttribute("listCategory", listCategory);
+        return "account-shipping-address";
+    }
+
+    @GetMapping("/nhan-xet-san-pham-ban-da-mua")
+    public String getPurchasedProduct(Model model) {
+        List<Category> listCategory = categoryService.getListCategory();
+        model.addAttribute("listCategory", listCategory);
+        return "account-purchased-product";
+    }
+
+    @GetMapping("/customer/review")
+    public String getMyReview(Model model) {
+        List<Category> listCategory = categoryService.getListCategory();
+        model.addAttribute("listCategory", listCategory);
+        return "account-reviewed";
     }
 }

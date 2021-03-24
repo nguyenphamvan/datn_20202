@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Sản phẩm yêu thích</title>
+    <th:block th:include="common/header_tag_common"/>
+    <!-- custom css  -->
+    <link rel="stylesheet" th:href="@{/css/custom2.css}">
+</head>
+<body class="js">
+<!-- Header -->
+<th:block th:include="common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active">Thông tin tài khoản</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section" style="padding-top: 15px;">
+    <div class="container">
+        <div class="row">
+            <div class="Account__StyledSideBar">
+                <div class="Account__StyledAvatar">
+                    <img src="https://salt.tikicdn.com/desktop/img/avatar.png">
+                    <div th:if="${#request.userPrincipal}" class="info">Tài khoản của<strong sec:authentication="principal.fullName"></strong></div>
+                </div>
+                <ul class="Account__StyledNav">
+                    <li>
+                        <a class="" href="/customer/account/edit">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                            </svg>
+                            <span>Thông tin tài khoản</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/notification">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path>
+                            </svg>
+                            <span>Thông báo của tôi</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/sales/order/history">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM21 4H3c-1.1 0-2 .9-2 2v13c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 15h-9V6h9v13z"></path>
+                            </svg>
+                            <span>Quản lý đơn hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/address">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
+                            </svg>
+                            <span>Địa chỉ giao hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/nhan-xet-san-pham-ban-da-mua">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"></path>
+                            </svg>
+                            <span>Nhận xét sản phẩm đã mua</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/wishlist">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                            </svg>
+                            <span>Sản phẩm yêu thích</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="" href="/customer/review">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                                 height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"></path>
+                            </svg>
+                            <span>Nhận xét của tôi</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="Account__StyledAccountLayoutInner">
+                <div class="styles__StyledAccountWishList">
+                    <div class="heading">Danh sách yêu thích (<span></span>)</div>
+                    <div class="inner">
+                        <ul class="list">
+                            <li class="item">
+                                <button class="btn-delete">×</button>
+                                <div class="thumbnail">
+                                    <a>
+                                        <div class="Picture__StyledPicture fxEVSg  loaded">
+                                            <img class="image">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="body">
+                                    <a class="name"></a>
+                                    <div class="ratting">
+                                        <div class="ratting-wrap" style="display: flex;">
+                                            <div class="ratting-star">
+                                            </div>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    <span class="review-count"></span>
+                                    <div class="description">
+                                    </div>
+                                </div>
+                                <div class="footer_favourite">
+                                    <div class="price"></div>
+                                    <div class="wrap">
+                                        <div class="list-price"></div> |
+                                        <div class="discount"></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Start Footer Area -->
+<th:block th:include="common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        getWishlistProducts();
+        $(document).on("click", ".styles__StyledAccountWishList button.btn-delete", function () {
+            let productId = $(this).attr("product-id");
+            removeProductFromWishlist($(this), productId);
+        });
+    });
+
+    function getWishlistProducts() {
+        $.ajax({
+            url: "/api/account/wishlist",
+            type: "GET",
+            dataType: 'json',
+            success: function (wishlist) {
+                $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
+                if (wishlist.length > 0) {
+                    let firstItem = $(".styles__StyledAccountWishList ul.list li:first-child");
+                    $.each(wishlist, function (index, item) {
+                        let itemClone = firstItem.clone();
+                        itemClone.find(".btn-delete").attr("product-id", item["id"]);
+                        itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"] + ".html");
+                        itemClone.find(".thumbnail a img.image").attr("src", "/images/products/" + item["id"] + "/" + item["image"]);
+                        itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                        itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
+                        itemClone.find("div.my-reviews__name").text(item["productUrl"]);
+                        for (let i = 0; i < parseInt(item["rating"]); i++) {
+                            itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
+                        }
+                        for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
+                            itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
+                        }
+                        itemClone.find(".ratting-wrap span").text("(" + item["numberOfReviews"] + " customer review)")
+                        itemClone.find(".footer_favourite .price").text(item["finalPrice"] + " ₫");
+                        if (parseInt(item["discount"]) > 0) {
+                            itemClone.find(".footer_favourite .wrap .list-price").text(item["price"] + " ₫");
+                            itemClone.find(".footer_favourite .wrap .discount").text(item["discount"] + " ₫");
+                        }
+                        itemClone.insertAfter(".styles__StyledAccountWishList ul.list li:first-child");
+                    });
+                    firstItem.hide();
+                } else {
+                    $(".styles__StyledAccountWishList").empty()
+                        .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")
+                }
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+</body>
+</html>
