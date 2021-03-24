@@ -45,8 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // Các yêu cầu phải login với vai trò user hoặc admin
                 // Nếu chưa login, nó sẽ redirect tới trang /login.
-                .antMatchers("/login", "/nhan-xet-san-pham-ban-da-mua", "/sales/**", "/checkout.html", "/add-product-review", "/api/review/**"
-                        )
+                .antMatchers("/login", "/nhan-xet-san-pham-ban-da-mua", "/sales/**", "/checkout.html", "/add-product-review",
+                        "/customer/**", "/api/customer/**", "/sales/**", "/api/sales/**")
                 .access("hasAnyRole('USER', 'ADMIN')")
                 // Các trang chỉ dành cho ADMIN
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")

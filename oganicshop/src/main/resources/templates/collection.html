@@ -100,7 +100,7 @@
                                 </li>
                             </ul>
                         </th:block>
-                        <th:block th:if="${setCategory}" >
+                        <th:block th:if="${setCategory}">
                             <h3 class="title">Danh mục</h3>
                             <ul th:each="category : ${setCategory}" class="categor-list">
                                 <li>
@@ -116,11 +116,13 @@
                         <h3 class="title">Nhà cung cấp</h3>
                         <ul class="categor-list">
                             <li th:if="${setSupplier}" th:each="supplier : ${setSupplier}">
-                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()}}" th:utext="${supplier.getName()}">Forever</a>
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()}}"
+                                   th:utext="${supplier.getName()}">Forever</a>
                             </li>
 
                             <li th:if="${supplier}">
-                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()}}" th:utext="${supplier.getName()}">Forever</a>
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()}}"
+                                   th:utext="${supplier.getName()}">Forever</a>
                             </li>
                         </ul>
                     </div>
@@ -133,14 +135,15 @@
                                 <div class="price_slider_amount">
                                     <span>Range:</span><br>
                                     <div class="label-input" style="display: flex;">
-                                        <input type="text" name="min-price" value="0"
-                                               style="border: ridge; width: 40%;"/>Đ - <input type="text"
-                                                                                              name="max-price"
-                                                                                              value="100"
-                                                                                              style="border: ridge; width: 40%;"/>Đ
+                                        <input type="text" name="min-price" value="0"style="border: ridge; width: 40%;"/>Đ -
+                                        <input type="text" name="max-price" value="100" style="border: ridge; width: 40%;"/>Đ
                                     </div>
-                                    <button th:if="${category}" type="submit" th:attr="onclick=|filterByPrice('${category.getCategoryUrl()}', null)|">Lọc</button>
-                                    <button th:if="${supplier}" type="submit" th:attr="onclick=|filterByPrice(null, '${supplier.getName()}')|">Lọc</button>
+                                    <button th:if="${category}" type="submit"
+                                            th:attr="onclick=|filterByPrice('${category.getCategoryUrl()}', null)|">Lọc
+                                    </button>
+                                    <button th:if="${supplier}" type="submit"
+                                            th:attr="onclick=|filterByPrice(null, '${supplier.getName()}')|">Lọc
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +219,8 @@
                             <div class="shop-shorter" th:if="${category}">
                                 <div class="single-shorter">
                                     <label>Hiển thị :</label>
-                                    <select id="page-size" th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', null, null)|">
+                                    <select id="page-size"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', null, null)|">
                                         <option value="6">06</option>
                                         <option value="9">09</option>
                                         <option value="15">15</option>
@@ -225,7 +229,8 @@
                                 </div>
                                 <div class="single-shorter">
                                     <label>Sắp xếp theo :</label>
-                                    <select id="sort-by" th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', null, null)|" >
+                                    <select id="sort-by"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', null, null)|">
                                         <option value="productName-asc">Name (A - Z)</option>
                                         <option value="productName-desc">Name (Z - A)</option>
                                         <option value="finalPrice-asc">Price (Low &gt; High)</option>
@@ -236,7 +241,8 @@
                             <div class="shop-shorter" th:if="${supplier}">
                                 <div class="single-shorter">
                                     <label>Hiển thị :</label>
-                                    <select id="page-size" th:attr="onchange=|getSortAndShow('${filterByPrice}', null, '${supplier.getName()}', null)|">
+                                    <select id="page-size"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', null, '${supplier.getName()}', null)|">
                                         <option value="6">06</option>
                                         <option value="9">09</option>
                                         <option value="15">15</option>
@@ -245,7 +251,8 @@
                                 </div>
                                 <div class="single-shorter">
                                     <label>Sắp xếp theo :</label>
-                                    <select id="sort-by" th:attr="onchange=|getSortAndShow('${filterByPrice}', null, '${supplier.getName()}', null)|" >
+                                    <select id="sort-by"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', null, '${supplier.getName()}', null)|">
                                         <option value="productName-asc">Name (A - Z)</option>
                                         <option value="productName-desc">Name (Z - A)</option>
                                         <option value="finalPrice-asc">Price (Low &gt; High)</option>
@@ -256,7 +263,8 @@
                             <div class="shop-shorter" th:if="${(supplier != null) && (category != null)}">
                                 <div class="single-shorter">
                                     <label>Hiển thị :</label>
-                                    <select id="page-size" th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', '${supplier.getName()}', null)|">
+                                    <select id="page-size"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', '${supplier.getName()}', null)|">
                                         <option value="6">06</option>
                                         <option value="9">09</option>
                                         <option value="15">15</option>
@@ -265,7 +273,8 @@
                                 </div>
                                 <div class="single-shorter">
                                     <label>Sắp xếp theo :</label>
-                                    <select id="sort-by" th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', '${supplier.getName()}', null)|" >
+                                    <select id="sort-by"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', '${supplier.getName()}', null)|">
                                         <option value="productName-asc">Name (A - Z)</option>
                                         <option value="productName-desc">Name (Z - A)</option>
                                         <option value="finalPrice-asc">Price (Low &gt; High)</option>
@@ -280,7 +289,8 @@
                 <div class="row">
                     <div class="col-12">
                         <p th:unless="${listProduct.size() > 0}" style="text-align: center">Không có sản phẩm nào thuộc
-                            <span th:if="${category}"> danh mục :  <span th:utext="${category.getCategoryName()}"></span></span>
+                            <span th:if="${category}"> danh mục :  <span
+                                    th:utext="${category.getCategoryName()}"></span></span>
                             <span th:if="${supplier}"> hãng : <span th:utext="${supplier.getName()}"></span></span>
                         </p>
                     </div>
@@ -292,14 +302,18 @@
                                     <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
                                 </a>
                                 <div class="button-head">
-                                    <div class="product-action">
+                                    <div class="product-action" style="margin-right: 10px;">
                                         <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
                                            th:href="@{'/api/products/' + ${product.getProductUrl()}}">
-                                            <i class=" ti-eye"></i><span>Xem nhanh</span></a>
-                                        <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
+                                            <i class=" ti-eye"></i><span>Xem nhanh</span>
+                                        </a>
+                                        <a th:if="${#request.userPrincipal}" title="Wishlist" th:href="@{'/api/account/wishlist/add/' + ${product.getId()}}">
+                                            <i class=" ti-heart "></i><span>Thêm vào Wishlist</span>
+                                        </a>
                                     </div>
                                     <div class="product-action-2">
-                                        <a title="Add to cart" th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}">Thêm vào giỏ hàng</a>
+                                        <a title="Add to cart"
+                                           th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}">Thêm vào giỏ hàng</a>
                                     </div>
                                 </div>
                             </div>
@@ -314,7 +328,8 @@
                         </div>
                     </div>
                 </div>
-                <th:block th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier == null) && (category != null)}">
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier == null) && (category != null)}">
                     <div class="pagination-nav text-center mt_50">
                         <ul>
                             <li>
@@ -348,7 +363,8 @@
                         </ul>
                     </div>
                 </th:block>
-                <th:block th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier == null) && (category != null)}">
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier == null) && (category != null)}">
                     <div class="pagination-nav text-center mt_50">
                         <ul>
                             <li>
@@ -382,7 +398,8 @@
                         </ul>
                     </div>
                 </th:block>
-                <th:block th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier != null) && (category == null)}">
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier != null) && (category == null)}">
                     <div class="pagination-nav text-center mt_50">
                         <ul>
                             <li>
@@ -416,7 +433,8 @@
                         </ul>
                     </div>
                 </th:block>
-                <th:block th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier != null) && (category == null)}">
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier != null) && (category == null)}">
                     <div class="pagination-nav text-center mt_50">
                         <ul>
                             <li>
@@ -450,7 +468,8 @@
                         </ul>
                     </div>
                 </th:block>
-                <th:block th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier != null) && (category != null)}">
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier != null) && (category != null)}">
                     <div class="pagination-nav text-center mt_50">
                         <ul>
                             <li>
@@ -484,7 +503,8 @@
                         </ul>
                     </div>
                 </th:block>
-                <th:block th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier != null) && (category != null)}">
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier != null) && (category != null)}">
                     <div class="pagination-nav text-center mt_50">
                         <ul>
                             <li>
@@ -566,7 +586,8 @@
                                 </div>
                                 <div class="quickview-stock">
                                     <span id="in-stock"><i class="fa fa-check-circle-o"></i> in stock</span>
-                                    <span id="out-stock"><i class="fa fa-check-circle-o" style="background-color: #bd2130"></i> out of stock</span>
+                                    <span id="out-stock"><i class="fa fa-check-circle-o"
+                                                            style="background-color: #bd2130"></i> out of stock</span>
                                 </div>
                             </div>
                             <h3>$29.00</h3>

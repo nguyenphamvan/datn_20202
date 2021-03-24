@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.dto.MyReviewDto;
 import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import com.nguyenpham.oganicshop.entity.Product;
@@ -13,6 +14,9 @@ import com.nguyenpham.oganicshop.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -49,6 +53,14 @@ public class ReviewServiceImpl implements ReviewService {
             return reviewRepository.save(review).convertReviewToReviewDto();
         }
         return null;
+    }
+
+    @Override
+    public List<MyReviewDto> getListReviews() {
+//        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        List<Review> listReviews = reviewRepository.findAllByUserId((long) 1);
+        List<MyReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToMyReviewDto()).collect(Collectors.toList());;
+        return listReviewDto;
     }
 
     @Override

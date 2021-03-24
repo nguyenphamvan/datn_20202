@@ -8,19 +8,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ResponseReviewDto {
+public class MyReviewDto {
 
     private Long id;
     private Long idRootReview;
     private Long userId;
-    private Long productId;
+    private String productUrl;
+    private String productName;
     private String productImg;
     private String reviewerName;
     private String title;
@@ -31,13 +29,4 @@ public class ResponseReviewDto {
     private Date createdAt;
     @UpdateTimestamp
     private Date updatedAt;
-    private Set<ResponseReviewDto> subReviews;
-    public void addSubReview(ResponseReviewDto subReview) {
-        if (this.subReviews == null) {
-            this.subReviews = new HashSet<>();
-        }
-        this.subReviews.add(subReview);
-    }
-
-
 }

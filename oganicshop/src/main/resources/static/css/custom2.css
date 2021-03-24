@@ -795,7 +795,7 @@ img {
     color: rgb(38, 188, 78);
 }
 
-.styles__StyledReviewList .content {
+.styles__StyledReviewList .content-review {
     margin: 5px 0px 0px;
     font-size: 13px;
     word-break: break-word;

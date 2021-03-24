@@ -15,7 +15,8 @@ public interface OrderService {
     Order save(Order order);
     OrderDetail editReviewed(OrderDetailDto orderDetailDto);
     int getTotalOrderPage(Long userId, int pageSize);
-    Order getOrderById(long orderId);
+    OrderDto getOrderById(long orderId);
+    List<OrderDetailDto> getListOrderItem(long orderId);
     List<OrderDto> getListOrderHistory(Long userId, int pageNum, int pageSize);
     Set<OrderDetailDto> getListProductNotReviewed(long userId);
 }

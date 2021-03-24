@@ -32,6 +32,11 @@ public class ReviewControllerApi {
         this.orderService = orderService;
     }
 
+    @GetMapping("/my-review")
+    public ResponseEntity<?> getListReview() {
+        return ResponseEntity.ok(reviewService.getListReviews());
+    }
+
     @PostMapping("/post")
     public ResponseEntity<?> postReview(@ModelAttribute RequestReviewDto requestReviewDto) {
         OrderDetailDto orderDetailDto = new OrderDetailDto();

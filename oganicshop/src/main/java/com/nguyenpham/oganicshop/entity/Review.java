@@ -3,6 +3,7 @@ package com.nguyenpham.oganicshop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nguyenpham.oganicshop.dto.MyReviewDto;
 import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import lombok.*;
@@ -68,22 +69,41 @@ public class Review {
         response.setReviewerName(this.user.getFullName());
         response.setUserId(this.user.getId());
         response.setProductId(this.product.getId());
+        response.setProductImg(this.product.getImage());
         response.setCreatedAt(this.createdAt);
         response.setUpdatedAt(this.updatedAt);
         if (this.subReviews != null) {
             for (Review subReview : subReviews) {
                 ResponseReviewDto subReviewDto = new ResponseReviewDto();
-                subReviewDto.setId(this.id);
-                subReviewDto.setUserId(this.user.getId());
-                subReviewDto.setReviewerName(this.user.getFullName());
-                subReviewDto.setIdRootReview(this.rootComment.getId());
-                subReviewDto.setComment(this.comment);
-                subReviewDto.setTitle(this.title);
-                subReviewDto.setCreatedAt(this.createdAt);
-                subReviewDto.setUpdatedAt(this.updatedAt);
+                subReviewDto.setId(subReview.getId());
+                subReviewDto.setUserId(subReview.getUser().getId());
+                subReviewDto.setReviewerName(subReview.getUser().getFullName());
+                subReviewDto.setIdRootReview(subReview.getRootComment().getId());
+                subReviewDto.setComment(subReview.getComment());
+                subReviewDto.setTitle(subReview.getTitle());
+                subReviewDto.setCreatedAt(subReview.getCreatedAt());
+                subReviewDto.setUpdatedAt(subReview.getUpdatedAt());
                 response.addSubReview(subReviewDto);
             }
         }
+        return response;
+    }
+
+    public MyReviewDto convertReviewToMyReviewDto() {
+        MyReviewDto response = new MyReviewDto();
+        response.setId(this.getId());
+        response.setComment(this.getComment());
+        response.setTitle(this.getTitle());
+        response.setRating(this.getRating());
+        response.setImg(this.getImg());
+        response.setReviewerName(this.getUser().getFullName());
+        response.setUserId(this.getUser().getId());
+        response.setProductUrl(this.getProduct().getProductUrl());
+        response.setProductImg(this.getProduct().getImage());
+        response.setProductName(this.getProduct().getProductName());
+        response.setCreatedAt(this.getCreatedAt());
+        response.setUpdatedAt(this.getUpdatedAt());
+
         return response;
     }
 }

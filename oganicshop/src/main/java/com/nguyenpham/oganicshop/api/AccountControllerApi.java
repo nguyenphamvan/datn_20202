@@ -71,6 +71,16 @@ public class AccountControllerApi {
         return ResponseEntity.ok(userService.getWishlists());
     }
 
+    @PostMapping("/wishlist/add/{productId}")
+    public ResponseEntity<?> addProductToWishlist(@PathVariable("productId") long productId) {
+        return ResponseEntity.ok(userService.addProductToWishlist(productId));
+    }
+
+    @DeleteMapping("/wishlist/remove/{productId}")
+    public ResponseEntity<?> removeProductFromWishlist(@PathVariable("productId") long productId) {
+        return ResponseEntity.ok(userService.removeProductFromWishlist(productId));
+    }
+
     @GetMapping("/notification")
     public ResponseEntity<?> getMyNotifications() {
         return null;

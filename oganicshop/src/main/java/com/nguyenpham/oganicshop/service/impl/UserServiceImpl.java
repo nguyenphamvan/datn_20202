@@ -10,6 +10,7 @@ import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.UserService;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import net.bytebuddy.utility.RandomString;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,7 +80,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getInfoAccount() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        String userEmail = user.getEmail();
         return user.convertUserToUserDto();
     }
 
@@ -112,17 +113,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<ProductDto> getWishlists() {
-//        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        User user = userRepository.findById((long) 1).get();
-        long[] idWishlistProductsArr = Arrays.stream(user.getWishlist().split(","))
-                .mapToLong(Long::parseLong).toArray();
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        Set<Long> idWishlistProductsSet = getSetIdProductWishlist(user);
         Set<ProductDto> wishlistProducts = new HashSet<>();
-        for (int i = 0; i < idWishlistProductsArr.length ; i++) {
-            Product product = productRepository.findById(idWishlistProductsArr[i]).get();
+        for (Long productId : idWishlistProductsSet) {
+            Product product = productRepository.findById(productId).get();
             wishlistProducts.add(product.convertProductToProductDto());
         }
 
         return wishlistProducts;
+    }
+
+    @Override
+    public boolean addProductToWishlist(long productId) {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        Set<Long> idWishlistProductsSet = getSetIdProductWishlist(user);
+        if (productRepository.findById(productId).get() != null) { // check product exits in db
+            idWishlistProductsSet.add(productId);
+        } else {
+            return false;
+        }
+        String idWishlistStr = StringUtils.join(idWishlistProductsSet, ",");
+        user.setWishlist(idWishlistStr);
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean removeProductFromWishlist(long productId) {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        Set<Long> idWishlistProductsSet = getSetIdProductWishlist(user);
+        if (idWishlistProductsSet.contains(productId)) {
+            idWishlistProductsSet.remove(productId);
+        } else {
+            return false;
+        }
+        String idWishlistStr = StringUtils.join(idWishlistProductsSet, ",");
+        user.setWishlist(idWishlistStr);
+        userRepository.save(user);
+        return true;
     }
 
     @Override
@@ -132,5 +161,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean verify(String verificationCode) {
         return false;
+    }
+
+    public Set<Long> getSetIdProductWishlist(User user) {
+        Set<Long> idWishlistProductsSet = null;
+        if (user.getWishlist() == null) {
+            idWishlistProductsSet = new HashSet<>();
+        } else {
+            idWishlistProductsSet = Stream.of(user.getWishlist().split(",")).map(Long::valueOf).collect(Collectors.toSet());
+        }
+        return idWishlistProductsSet;
     }
 }

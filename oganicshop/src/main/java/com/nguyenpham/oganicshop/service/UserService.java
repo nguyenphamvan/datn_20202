@@ -18,6 +18,9 @@ public interface UserService {
     UserDto updateInfo (UserDto userRequest);
     UserDto updateShippingAddress (String newAddress, String phone);
     Set<ProductDto> getWishlists();
+    boolean addProductToWishlist(long productId);
+    boolean removeProductFromWishlist(long productId);
+
     void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException;
     boolean verify(String verificationCode);
 

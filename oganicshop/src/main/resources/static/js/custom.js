@@ -27,7 +27,7 @@ $(document).ready(function () {
     /* end function add item in cart */
 
     /* function minus item in cart using jquery ajax  */
-    $('.button-minus').click( function () {
+    $('.button-minus').on("click", function () {
         let quantity = $(this).parent().siblings('input').val();
         let unitPrice = $(this).closest('tr').find('td.price span').text();
         let totalAmountItem = parseInt(quantity) * parseInt(unitPrice);
@@ -55,7 +55,7 @@ $(document).ready(function () {
     /* end function minus item in cart */
 
     /* function minus item in cart using jquery ajax  */
-    $('.button-plus').click(function () {
+    $('.button-plus').on("click", function () {
         let quantity = $(this).parent().siblings('input').val();
         let unitPrice = $(this).closest('tr').find('td.price span').text();
         let totalAmountItem = parseInt(quantity) * parseInt(unitPrice);
@@ -114,7 +114,9 @@ $(document).ready(function () {
     })
     /* end function remove item cart */
 
-    $('.product-action a').click(function () {
+    /* function quick view product */
+    $(".product-action a[title='Quick View']").on("click", function (e) {
+        e.preventDefault();
         $.ajax({
             url: $(this).attr('href'),
             type: "GET",
@@ -143,6 +145,21 @@ $(document).ready(function () {
             }
         })
     });
+    /* end function quick view product */
+
+    /* function add product to wishlist */
+    $(".product-action a[title='Wishlist']").on("click", function (e) {
+        e.preventDefault();
+        let url = $(this).attr("href");
+        removeProductFromWishlist(url);
+    });
+
+    $(".add-to-cart a[title='Wishlist']").on("click", function (e) {
+        e.preventDefault();
+        let url = $(this).attr("href");
+        removeProductFromWishlist(url);
+    });
+    /* function end product to wishlist */
 });
 
 function updatePriceCart() {
@@ -157,7 +174,6 @@ function updatePriceCart() {
         }
     });
 }
-
 
 function loadHeaderCart() {
     $.ajax({
@@ -269,5 +285,20 @@ function getSortAndShow(filterByPrice, categoryUrl, supplierName, keyword) {
 function searchProduct() {
     let keyword = $('input[id="input-search-bar"]').val();
     window.location = "/search.html?search=" + keyword;
-    ;
+}
+
+function removeProductFromWishlist(url) {
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: 'json',
+        success: function (result) {
+            if (result === true) {
+                alert("Đã thêm vào danh sách yêu thích");
+            }
+        },
+        error: function (err) {
+            alert("có lỗi xảy ra");
+        }
+    });
 }

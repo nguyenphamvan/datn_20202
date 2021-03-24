@@ -64,8 +64,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(long orderId) {
-        return orderRepository.findById(orderId).get();
+    public OrderDto getOrderById(long orderId) {
+        return orderRepository.findById(orderId).get().convertOrderToOrderDto();
+    }
+
+    @Override
+    public List<OrderDetailDto> getListOrderItem(long orderId) {
+        List<OrderDetailDto> orderDetailDtos = orderRepository.findById(orderId).get().getOrderDetails().stream()
+                .map(od -> od.convertOrderDetailToOrderDetailDto())
+                .collect(Collectors.toList());
+        return orderDetailDtos;
     }
 
     @Override

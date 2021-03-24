@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <!-- Meta Tag -->
     <meta charset="utf-8">
@@ -108,7 +109,7 @@
                         </div>
                         <div class="add-to-cart">
                             <a id="add-cart" th:attr="data-productUrl=${product.getProductUrl()}" class="btn">Thêm vào giỏ hàng</a>
-                            <a href="#" class="btn min"><i class="ti-heart"></i></a>
+                            <a th:if="${#request.userPrincipal}" title="Wishlist" th:href="@{'/api/account/wishlist/add/' + ${product.getId()}}" class="btn min"><i class="ti-heart"></i></a>
                         </div>
                     </div>
                 </div>
@@ -139,28 +140,29 @@
                                         <ul id="list-review-group" th:each="review : ${product.getReviews()}" th:if="${review.getRootComment() == null}">
                                             <li class="review-item" th:attr="data-id_comment=${review.getId()}" style="padding-bottom: 10px;">
                                                 <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-3">
+                                                        <div class="review-user">
+                                                            <div style="float: left; border-radius: 10px;" class="review-avatar">
+                                                                <img style="width: 40px;" th:src="@{/images/user-avatar.jpg}" alt="Image">
+                                                            </div>
+                                                            <div style="float: left;">
+                                                                <h6 class="user-name" th:utext="${review.getUser().getFullName()}"></h6>
+                                                                <p class="comment-date" th:utext="${review.getCreatedAt()}"></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9">
                                                         <div class="review-item-detail" style="display: flex; flex-direction: column;">
-                                                            <div class="review-user">
-                                                                <div style="float: left; border-radius: 10px;" class="review-avater">
-                                                                    <img style="width: 40px;" th:src="@{/images/user-avatar.jpg}" alt="Image">
-                                                                </div>
-                                                                <div style="margin-left: 20px; float: left;">
-                                                                    <h6 class="user-name" th:utext="${review.getUser().getFullName()}"></h6>
-                                                                    <p class="comment-date" th:utext="${review.getCreatedAt()}"></p>
-                                                                </div>
-                                                                <div style="float: right">
+                                                            <div class="review-des">
+                                                                <div style="display: flex">
                                                                     <span>Đánh giá</span>
-                                                                    <ul class="reviews">
+                                                                    <ul class="reviews" style="margin-left: 5px;">
                                                                         <li class="yellow" th:each="i: ${#numbers.sequence(0, review.getRating() - 1)}"><i class="ti-star"></i></li>
                                                                         <li th:if="${(5 - review.getRating()) > 0}" th:each="i: ${#numbers.sequence(0, (4 - review.getRating()))}"><i class="ti-star"></i></li>
                                                                     </ul>
                                                                 </div>
-                                                            </div>
-                                                            <div class="review-des" style="margin-top: 10px; margin-left: 60px;">
                                                                 <div class="title">
-                                                                    <p><strong th:utext="${review.getTitle()}"></strong>
-                                                                    </p>
+                                                                    <p><strong th:utext="${review.getTitle()}"></strong></p>
                                                                 </div>
                                                                 <div class="review-content">
                                                                     <span th:utext="${review.getComment()}"></span>
@@ -170,55 +172,55 @@
                                                                          th:src="@{'/images/image-product-review/' + ${review.getProduct().getId()} + '/' + ${review.getImg()}}">
                                                                 </div>
                                                             </div>
+                                                            <div class="edit-review">chỉnh sửa</div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-md-12" style="padding-top: 10px;">
-                                                        <div class="like-and-review" style="padding-top: 10px; margin-left: 60px;">
-                                                            <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
-																									margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block; border: 1px solid #333;">
-                                                                <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span th:if="${review.getNumbersOfLike() != null}" th:utext="${'(' + review.getNumbersOfLike() + ')'}"></span></span>
-                                                            </span>
+                                                        <div class="like-and-review" style="padding-top: 10px;">
+                                                                <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
+                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block; border: 1px solid #333;">
+                                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span th:if="${review.getNumbersOfLike() != null}" th:utext="${'(' + review.getNumbersOfLike() + ')'}"></span></span>
+                                                                </span>
                                                             <span class="reply" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
-																									margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
-                                                                <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>
-                                                            </span>
+                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
+                                                                    <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>
+                                                                </span>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="col-md-12 reply-input" style="margin-left: 25px; display: none;" th:attr="id=${'reply-review-' + review.getId()}">
-                                                        <div class="form-group required">
-                                                            <div class="col-sm-12">
-                                                                <div style="margin-left: 20px; padding-top: 15px;">
-                                                                    <form action="/api/review/reply" class="form-inline" method="post">
-                                                                        <textarea class="form-control" type="text" placeholder="Viết câu trả lời" style="width: 90%;" rows="1"></textarea>
-                                                                        <input type="hidden" class="id-root-review" th:value="${review.getId()}">
-                                                                        <button type="button" class="btn btn-md btn-link send-reply-comment" style="width: 10%;">Gửi</button>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 review-comment_sub-comments">
-                                                        <th:block th:if="${review.getSubReviews().size() > 0}">
-                                                            <div class="view-reply-more">
-                                                                Xem tất cả <span th:utext="${review.getSubReviews().size()}"></span> câu trả lời
-                                                            </div>
-                                                            <div class="list-reply-item" th:attr="id=${'reply-items-list-' + review.getId()}" style="margin-left: 48px;">
-                                                                <div class="reply-item" th:each="reply : ${review.getSubReviews()}">
-                                                                    <div class="info-reply-user">
-                                                                        <span class="img-user-reply"><img style="width: 30px;" th:src="@{/images/user-avatar.jpg}" alt="Image"></span>
-                                                                        <span class="user-name" th:utext="${reply.getUser().getFullName()}"></span>
-                                                                        <span class="comment-date" th:utext="${reply.getCreatedAt()}"></span>
-                                                                        <p class="reply-content" th:utext="${reply.getComment()}"></p>
+                                                        <div class="reply-input" style="display: none;" th:attr="id=${'reply-review-' + review.getId()}">
+                                                            <div class="form-group required">
+                                                                <div class="col-sm-12">
+                                                                    <div style="padding-top: 15px;">
+                                                                        <form action="/api/review/reply" class="form-inline" method="post">
+                                                                            <textarea class="form-control" type="text" placeholder="Viết câu trả lời" style="width: 90%;" rows="1"></textarea>
+                                                                            <input type="hidden" class="id-root-review" th:value="${review.getId()}">
+                                                                            <button type="button" class="btn btn-md btn-link send-reply-comment" style="width: 10%;">Gửi</button>
+                                                                        </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="view-reply-less">
-                                                                Ẩn <span th:utext="${review.getSubReviews().size()}"></span> câu trả lời
-                                                            </div>
-                                                        </th:block>
+                                                        </div>
+                                                        <div class="review-comment_sub-comments">
+                                                            <th:block th:if="${review.getSubReviews().size() > 0}">
+                                                                <div class="view-reply-more">
+                                                                    Xem tất cả <span th:utext="${review.getSubReviews().size()}"></span> câu trả lời
+                                                                </div>
+                                                                <div class="list-reply-item" th:attr="id=${'reply-items-list-' + review.getId()}">
+                                                                    <div class="reply-item" th:each="reply : ${review.getSubReviews()}">
+                                                                        <div class="info-reply-user">
+                                                                            <span class="img-user-reply"><img style="width: 30px;" th:src="@{/images/user-avatar.jpg}" alt="Image"></span>
+                                                                            <span class="user-name" th:utext="${reply.getUser().getFullName()}"></span>
+                                                                            <span class="comment-date" th:utext="${reply.getCreatedAt()}"></span>
+                                                                            <p class="reply-content" th:utext="${reply.getComment()}"></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="view-reply-less">
+                                                                    Ẩn <span th:utext="${review.getSubReviews().size()}"></span> câu trả lời
+                                                                </div>
+                                                            </th:block>
+                                                        </div>
                                                     </div>
+
                                                 </div>
                                             </li>
                                         </ul>

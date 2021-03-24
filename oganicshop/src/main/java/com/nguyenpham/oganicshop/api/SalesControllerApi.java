@@ -40,20 +40,17 @@ public class SalesControllerApi {
 
     @GetMapping("/order/view/{orderId}")
     public ResponseEntity<?> getSingleOrderById(@PathVariable("orderId") long orderId) {
-        return ResponseEntity.ok(orderService.getOrderById(orderId).convertOrderToOrderDto());
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @GetMapping("/order/{orderId}/list-item")
     public ResponseEntity<?> getListOrderItem(@PathVariable("orderId") long orderId) {
-        Set<OrderDetailDto> orderDetailDtos = orderService.getOrderById(orderId).getOrderDetails().stream()
-                .map(od -> od.convertOrderDetailToOrderDetailDto())
-                .collect(Collectors.toSet());
-        return ResponseEntity.ok(orderDetailDtos);
+        return ResponseEntity.ok(orderService.getListOrderItem(orderId));
     }
 
     @GetMapping("/order/tracking/{orderId}")
     public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId) {
-        return ResponseEntity.ok(orderService.getOrderById(orderId).convertOrderLoggingToOrderLoggingDto());
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @GetMapping("/order/product-not-reviewed")
