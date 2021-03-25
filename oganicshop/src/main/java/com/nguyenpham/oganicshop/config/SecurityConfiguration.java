@@ -50,9 +50,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .access("hasAnyRole('USER', 'ADMIN')")
                 // Các trang chỉ dành cho ADMIN
                 .antMatchers("/admin/**").access("hasRole('ADMIN')")
+                .anyRequest().permitAll()
                 .and()
-                .formLogin().permitAll()
-                .and()
+                .httpBasic().and()
                 .logout().permitAll()
                 .and().exceptionHandling().accessDeniedPage("/403");
     }

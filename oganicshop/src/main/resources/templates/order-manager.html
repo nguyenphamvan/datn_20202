@@ -177,14 +177,13 @@
     }
 
     function getOrdersHistory(pageNum, pageSize) {
-        let data = {
-            "pageNum": pageNum,
-            "pageSize": pageSize
-        };
         $.ajax({
             url: "/api/sales/order/history",
             type: "GET",
-            data: data,
+            data: {
+                "pageNum": pageNum,
+                "pageSize": pageSize
+            },
             dataType: 'json',
             contentType: "application/json",
             success: function (orders) {

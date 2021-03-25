@@ -65,7 +65,7 @@
                     <div class="right-content">
                         <ul class="list-main">
                             <li><i class="ti-location-pin"></i>Địa chỉ cửa hàng</li>
-                            <li th:if="${#request.userPrincipal}"><i class="ti-user"></i><a href="#" sec:authentication="principal.fullName">Tài khoản của tôi</a></li>
+                            <li th:if="${#request.userPrincipal}"><i class="ti-power-on"></i>Đăng xuất</li>
                             <li th:unless="${#request.userPrincipal}"><i class="ti-power-off"></i><a th:href="@{/login}">Đăng nhập</a></li>
                         </ul>
                     </div>
@@ -84,19 +84,6 @@
                         <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a>
                     </div>
                     <!--/ End Logo -->
-                    <!-- Search Form -->
-                    <div class="search-top">
-                        <!-- Search Form -->
-                        <div class="search-top">
-                            <form class="search-form">
-                                <input type="text" placeholder="Search here..." name="search">
-                                <button value="search" type="submit"><i class="ti-search"></i></button>
-                            </form>
-                        </div>
-                        <!--/ End Search Form -->
-                    </div>
-                    <!--/ End Search Form -->
-                    <div class="mobile-nav"></div>
                 </div>
                 <div class="col-lg-8 col-md-7 col-12">
                     <div class="search-bar-top">
@@ -114,10 +101,12 @@
                     <div class="right-bar">
                         <!-- Search Form -->
                         <div class="sinlge-bar" th:if="${#request.userPrincipal}">
-                            <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                        </div>
-                        <div class="sinlge-bar" th:if="${#request.userPrincipal}">
-                            <a th:href="@{/customer/account/edit}" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                            <a th:href="@{/customer/account/edit}" class="single-icon">
+                                <div style="display: flex;">
+                                    <span style="font-size: 13px;" sec:authentication="principal.fullName"></span>
+                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                </div>
+                            </a>
                         </div>
                         <div class="sinlge-bar shopping">
                             <a th:href="@{/cart.html}" class="single-icon"><i class="ti-bag"></i>
