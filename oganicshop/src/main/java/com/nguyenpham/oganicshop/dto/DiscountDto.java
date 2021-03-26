@@ -1,23 +1,16 @@
-package com.nguyenpham.oganicshop.entity;
+package com.nguyenpham.oganicshop.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.sql.Date;
 
-@Builder
-@Entity
-@Table(name = "discount")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Discount {
+public class DiscountDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String code;
