@@ -45,6 +45,9 @@ public class CartControllerApi {
             cart = new HashMap<>();
         }
         cart = cartService.addItemCart(cart, productUrl, quantity);
+        if (cart == null) {
+            return new ResponseEntity<Object>(null, HttpStatus.OK);
+        }
         session.setAttribute(Constant.CART_SESSION_NAME, cart);
         session.setAttribute("subCart", cartService.totalSubCart(cart));
         List<CartItem> listItem = new ArrayList<>(cart.values());
@@ -60,6 +63,9 @@ public class CartControllerApi {
             cart = new HashMap<>();
         }
         cart = cartService.editItemCart(cart, productUrl, changeMethod);
+        if (cart == null) {
+            return new ResponseEntity<Object>(null, HttpStatus.OK);
+        }
         session.setAttribute(Constant.CART_SESSION_NAME, cart);
         session.setAttribute("subCart", cartService.totalSubCart(cart));
         List<CartItem> listItem = new ArrayList<>(cart.values());

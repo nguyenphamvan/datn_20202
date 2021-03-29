@@ -167,6 +167,8 @@ public class UserServiceImpl implements UserService {
         Set<Long> idWishlistProductsSet = null;
         if (user.getWishlist() == null) {
             idWishlistProductsSet = new HashSet<>();
+        } else if ("".equals(user.getWishlist())) {
+            idWishlistProductsSet = new HashSet<>();
         } else {
             idWishlistProductsSet = Stream.of(user.getWishlist().split(",")).map(Long::valueOf).collect(Collectors.toSet());
         }

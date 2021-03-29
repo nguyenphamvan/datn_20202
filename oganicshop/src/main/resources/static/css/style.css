@@ -3211,9 +3211,7 @@ Version:1.0
     line-height: 50px;
     padding: 0 20px;
     border-radius: 3px;
-    border-radius: 0px;
     color: #333 !important;
-    border: none;
     background: #F6F7FB;
 }
 .shop.checkout .form .form-group input:hover{

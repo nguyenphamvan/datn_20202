@@ -16,8 +16,12 @@ $(document).ready(function () {
                 data: JSON.stringify(data),
                 dataType: 'json',
                 contentType: 'application/json',
-                success: function (data) {
-                    alert("sản phẩm đã được thêm vào giỏ hàng");
+                success: function (result) {
+                    if (result !== null) {
+                        alert("không đủ số lượng cung cấp");
+                    } else {
+                        alert("sản phẩm đã được thêm vào giỏ hàng");
+                    }
                 }
             })
         ).then(function () {
@@ -44,7 +48,10 @@ $(document).ready(function () {
                 data: JSON.stringify(data),
                 dataType: 'json',
                 contentType: 'application/json',
-                success: function (data) {
+                success: function (result) {
+                    if (result !== null) {
+                        alert("không đủ số lượng cung cấp");
+                    }
                 }
             })
         ).then(function () {
@@ -72,7 +79,10 @@ $(document).ready(function () {
                 data: JSON.stringify(data),
                 dataType: 'json',
                 contentType: 'application/json',
-                success: function (data) {
+                success: function (result) {
+                    if (result === null) {
+                        alert("không đủ số lượng cung cấp");
+                    }
                 }
             })
         ).then(function () {

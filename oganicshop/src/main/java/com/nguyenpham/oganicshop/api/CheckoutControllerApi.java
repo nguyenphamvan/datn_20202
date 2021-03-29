@@ -3,17 +3,18 @@ package com.nguyenpham.oganicshop.api;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.dto.CartItem;
-import com.nguyenpham.oganicshop.entity.Order;
-import com.nguyenpham.oganicshop.entity.OrderDetail;
+import com.nguyenpham.oganicshop.dto.OrderDto;
+import com.nguyenpham.oganicshop.entity.Discount;
+import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CartService;
+import com.nguyenpham.oganicshop.service.CouponService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -22,37 +23,56 @@ import java.util.HashMap;
 @RequestMapping("/api/checkout")
 public class CheckoutControllerApi {
 
-    @Autowired
     private OrderService orderService;
+    private CartService cartService;
+    private CouponService couponService;
 
     @Autowired
-    private CartService cartService;
+    public CheckoutControllerApi(OrderService orderService, CartService cartService, CouponService couponService) {
+        this.orderService = orderService;
+        this.cartService = cartService;
+        this.couponService = couponService;
+    }
 
     @PostMapping("/payment")
-    public ResponseEntity<?> payOrder(HttpSession session, @RequestBody Order order) {
-
+    public ResponseEntity<?> payOrder(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderDto orderDto) {
+        User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        if (cart != null) {
-            order.setStatus("Đặt hàng thành công");
-            order.setSubTotal(cartService.totalSubCart(cart));
-            order.setTotal(cartService.totalSubCart(cart) + order.getShipFee());
-            for (CartItem item : cart.values()) {
-                OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setQuantity(item.getQuantity());
-                orderDetail.setPrice(item.caculateTotalItem());
-                orderDetail.setDiscount(item.getDiscount());
-                orderDetail.setTotalPrice(item.caculateTotalItem() - item.getDiscount());
-                orderDetail.setProduct(item.getProduct());
-                orderDetail.setOrder(order);
-
-                order.addOrderDetail(orderDetail);
+        if (cart != null) { // should convert order to orderDto use ordermapper
+            session.removeAttribute(Constant.CART_SESSION_NAME);
+            try {
+                orderService.paymentOrder(user, cart, orderDto);
+                return new ResponseEntity<Object>("Thanh toán thành công", HttpStatus.CREATED);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseEntity<Object>("Hệ thống gặp lỗi, vui lòng liên hệ số điện thoại ...", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            Order orderSaved = orderService.save(order);
-            session.removeAttribute(Constant.CART_SESSION_NAME);
-            return new ResponseEntity<Object>(orderSaved, HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<Object>("chưa có mặt hàng nào được chọn", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Object>("Chưa có mặt hàng nào được chọn", HttpStatus.OK);
         }
+    }
+
+    @PostMapping("/apply-couponCode")
+    public ResponseEntity<?> applyCoupon(HttpSession session, @RequestBody ObjectNode object) {
+        String couponCode = object.get("couponCode").asText();
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        if (cart != null) {
+            Discount discount = couponService.findCoupon(couponCode);
+            if (discount != null) {
+                int subTotal = cartService.totalSubCart(cart);
+                int discountValue = orderService.applyCoupon(cart, discount);
+                OrderDto orderDto = new OrderDto();
+                orderDto.setSubTotal(subTotal);
+                orderDto.setShipFee(Constant.SHIP_FEE);
+                orderDto.setDiscount(discountValue);
+                orderDto.setTotal(subTotal + Constant.SHIP_FEE + discountValue);
+
+                return new ResponseEntity<Object>(orderDto, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>("Mã giảm giá không hợp lệ", HttpStatus.NOT_FOUND);
+            }
+        }
+        return new ResponseEntity<Object>("Giỏ hàng trống, vui lòng thêm sản phẩm vào giỏ hàng", HttpStatus.BAD_REQUEST);
     }
 }

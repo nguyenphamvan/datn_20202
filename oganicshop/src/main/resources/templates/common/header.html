@@ -65,7 +65,7 @@
                     <div class="right-content">
                         <ul class="list-main">
                             <li><i class="ti-location-pin"></i>Địa chỉ cửa hàng</li>
-                            <li th:if="${#request.userPrincipal}"><i class="ti-power-on"></i>Đăng xuất</li>
+                            <li th:if="${#request.userPrincipal}"><i class="fa fa-sign-out"></i><a th:href="@{/logout}">Đăng xuất</a></li>
                             <li th:unless="${#request.userPrincipal}"><i class="ti-power-off"></i><a th:href="@{/login}">Đăng nhập</a></li>
                         </ul>
                     </div>
@@ -85,7 +85,7 @@
                     </div>
                     <!--/ End Logo -->
                 </div>
-                <div class="col-lg-8 col-md-7 col-12">
+                <div class="col-lg-7 col-md-6 col-12">
                     <div class="search-bar-top">
                         <div class="search-bar">
                             <form>
@@ -97,14 +97,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-12">
+                <div class="col-lg-3 col-md-4 col-12">
                     <div class="right-bar">
                         <!-- Search Form -->
                         <div class="sinlge-bar" th:if="${#request.userPrincipal}">
                             <a th:href="@{/customer/account/edit}" class="single-icon">
                                 <div style="display: flex;">
-                                    <span style="font-size: 13px;" sec:authentication="principal.fullName"></span>
-                                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                                    <i class="fa fa-user-circle-o" aria-hidden="true" style="margin: auto;"></i>
+                                    <span style="font-size: 13px; margin-left: 5px;" sec:authentication="principal.fullName"></span>
                                 </div>
                             </a>
                         </div>
@@ -165,29 +165,29 @@
                                                     <li th:each="category : ${listCategory}">
                                                         <th:block th:if="${category.getSubCategories().size() > 0}">
                                                             <a class="parent-category"
-                                                               th:href="@{'/collections/' + ${category.getCategoryUrl()} + '.html'}"
+                                                               th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"
                                                                th:utext="${category.getCategoryName()}"></a>
                                                             <ul class="list-child-category">
                                                                 <li th:each="subCategory : ${category.getSubCategories()}">
-                                                                    <a th:href="@{'/collections/' + ${subCategory.getCategoryUrl()} + '.html'}"
+                                                                    <a th:href="@{'/collections.html?category=' + ${subCategory.getCategoryUrl()}}"
                                                                        th:utext="${subCategory.getCategoryName()}"></a>
                                                                 </li>
                                                             </ul>
                                                         </th:block>
                                                         <th:block th:if="${category.getSubCategories().size() == 0}">
-                                                            <a th:href="@{'/collections/' + ${category.getCategoryUrl()} + '.html'}"
+                                                            <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"
                                                                th:utext="${category.getCategoryName()}"></a>
                                                         </th:block>
                                                     </li>
                                                 </ul>
                                             </li>
+                                            <li><a href="#">Thông tin khuyễn mãi</a></li>
                                             <li><a href="#">Blog<i class="ti-angle-down"></i><span
                                                     class="new">New</span></a>
                                                 <ul class="dropdown">
                                                     <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="#">Thông tin cửa hàng</a></li>
 
                                             <li><a href="contact.html">Liên hệ</a></li>
                                         </ul>

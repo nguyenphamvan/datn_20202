@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                     <div class="quickview-content">
-                        <h2 th:utext="${product.getProductName()}">Tên sản phẩm</h2>
+                        <h2 th:utext="${product.getProductName()}" th:attr="product-id=${product.getProductUrl()}">Tên sản phẩm</h2>
                         <div class="quickview-ratting-review">
                             <div class="quickview-ratting-wrap">
                                 <div class="quickview-ratting">
@@ -404,7 +404,7 @@
             }
         });
 
-        $( ".send-reply-comment" ).click(function() {
+        $(".send-reply-comment").click(function() {
             let userLogged = [[${#request.userPrincipal}]];
             if (userLogged !== null) {
                 let idReview = $(this).closest(".review-item").attr("data-id_comment");
@@ -441,6 +441,38 @@
                 alert("Bạn chưa đăng nhập");
             }
 
+        });
+
+
+        $(".quickview-content .quantity .button.minus").on("click", function () {
+            let quantity = $(".quickview-content .quantity .input-number").val();
+            let productUrl = $(".quickview-content h2").attr("product-id");
+            $.ajax({
+                url: "/api/products/check-provide-enough-quantity/" + productUrl + "?quantity=" + quantity,
+                type: "GET",
+                dataType: 'json',
+                success: function (check) {
+                    alert(check);
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $(".quickview-content .quantity .button.plus").on("click", function () {
+            let quantity = $(".quickview-content .quantity .input-number").val();
+            let productUrl = $(".quickview-content h2").attr("product-id");
+            $.ajax({
+                url: "/api/products/check-provide-enough-quantity/" + productUrl + "?quantity=" + quantity,
+                type: "GET",
+                dataType: 'json',
+                success: function (check) {
+                    alert(check);
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
         });
     });
     /*]]>*/

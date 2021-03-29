@@ -1,14 +1,12 @@
 package com.nguyenpham.oganicshop.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
 
-@Builder
 @Entity
 @Table(name = "discount")
 @Data
@@ -24,6 +22,7 @@ public class Discount {
     private double discountPercent;
     private int discountPrice;
     private int minOrderValue;
+    private int minDiscountValue;
     private Date startDate;
     private Date endDate;
     private int numberOfUses;

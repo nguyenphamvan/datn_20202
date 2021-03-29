@@ -72,4 +72,18 @@ public class ProductServiceImpl implements ProductService {
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
         return productRepository.findProductsByKeyword(keyword, pageable);
     }
+
+    @Override
+    public int getAmountAvailable(String productUrl) {
+        return productRepository.findByProductUrl(productUrl).get().getAmount();
+    }
+
+    @Override
+    public boolean isProvideEnoughQuantity(String productUrl, int quantity) {
+        int quantityAvailable = productRepository.findByProductUrl(productUrl).get().getAmount();
+        if (quantityAvailable >= quantity) {
+            return true;
+        }
+        return false;
+    }
 }

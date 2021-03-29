@@ -27,9 +27,15 @@ public class CartServiceImpl implements CartService {
         if (product != null) {
             CartItem item;
             if (cart.containsKey(product.getId())) {
+                if (!checkQuantityAvailable(quantity + cart.get(product.getId()).getQuantity(), product.getAmount())) {
+                    return null;
+                }
                 item = cart.get(product.getId());
                 item.setQuantity(item.getQuantity() + quantity);
             } else {
+                if (!checkQuantityAvailable(quantity , product.getAmount())) {
+                    return null;
+                }
                 item = new CartItem();
                 item.setProduct(product);
                 item.setQuantity(quantity);
@@ -40,13 +46,16 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public HashMap<Long, CartItem> editItemCart(HashMap<Long, CartItem> cart, String productUrl, String changeMothod) {
+    public HashMap<Long, CartItem> editItemCart(HashMap<Long, CartItem> cart, String productUrl, String changeMethod) {
         Product product = productRepository.findByProductUrl(productUrl).orElse(null);
         if(product != null && cart.containsKey(product.getId())) {
             CartItem item = cart.get(product.getId());
-            if(changeMothod.equals("plus")) {
+            if(changeMethod.equals("plus")) {
+                if (!checkQuantityAvailable((item.getQuantity() + 1) + cart.get(product.getId()).getQuantity(), product.getAmount())) {
+                    return null;
+                }
                 item.setQuantity(item.getQuantity() + 1);
-            } else if (changeMothod.equals("minus")) {
+            } else if (changeMethod.equals("minus")) {
                 item.setQuantity(item.getQuantity() - 1);
             }
             cart.put(product.getId(), item);
@@ -80,4 +89,11 @@ public class CartServiceImpl implements CartService {
         }
         return numberOfProduct;
     }
+
+    public boolean checkQuantityAvailable(int quantity, int quantityAvailable) {
+        if (quantity <= quantityAvailable) {
+            return true;
+        }
+        return false;
+    };
 }

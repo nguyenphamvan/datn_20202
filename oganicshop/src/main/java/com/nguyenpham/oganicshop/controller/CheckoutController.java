@@ -40,43 +40,7 @@ public class CheckoutController {
             session.setAttribute("cartEmpty", "Không có sản phẩm nào trong giỏ hàng");
             return "redirect:/cart.html";
         }
-        model.addAttribute("user", myUserDetail.getUser());
-        model.addAttribute("order", new Order());
         model.addAttribute("shipFee", Constant.SHIP_FEE);
         return "checkout";
-    }
-
-    @PostMapping("/payment")
-    public String payOrder(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, @ModelAttribute Order order) {
-        User user = myUserDetail.getUser();
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute("myCart");
-        if (cart != null) {
-            order.setUser(user);
-            order.setStatus("Đặt hàng thành công");
-            order.setSubTotal(cartService.totalSubCart(cart));
-            order.setTotal(cartService.totalSubCart(cart) + order.getShipFee());
-            for (CartItem item : cart.values()) {
-                OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setQuantity(item.getQuantity());
-                orderDetail.setPrice(item.caculateTotalItem());
-                orderDetail.setDiscount(item.getDiscount());
-                orderDetail.setTotalPrice(item.caculateTotalItem() - item.getDiscount());
-                orderDetail.setProduct(item.getProduct());
-                orderDetail.setOrder(order);
-                order.addOrderDetail(orderDetail);
-            }
-            try {
-                Order orderSaved = orderService.save(order);
-                session.removeAttribute(Constant.CART_SESSION_NAME);
-                session.removeAttribute("subCart");
-                // return về trang chủ hoặc trang thông báo thanh toán thành công
-                return "redirect:/";
-            } catch (Exception e) {
-                return "/403";
-            }
-        } else {
-            return "redirect:/cart.html";
-        }
-
     }
 }

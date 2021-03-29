@@ -115,39 +115,37 @@
 <section class="shop checkout section">
     <div class="container">
         <!-- Form -->
-        <form class="form" th:action="@{/payment}" method="post" th:object="${order}">
+        <form class="form" id="payment">
             <div class="row">
                 <div class="col-lg-4 col-12">
-                    <div class="checkout-form">
-                        <h2>Thông tin liên hệ</h2><br/>
-
-                        <div class="row">
+                    <div class="checkout-form" style="border: 1px solid #eee; margin-top: 0px;">
+                        <div class="single-widget">
+                            <h2>Thông tin liên hệ</h2>
+                        </div>
+                        <div class="row" style="padding: 10px 30px;">
                             <div class="col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
                                     <label>Họ tên người nhận<span>*</span></label>
-                                    <input type="text" th:field="*{contactReceiver}" th:value="${user.getFullName()}"
-                                           required="required">
+                                    <input type="text" name="contactReceiver" required="required">
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
                                     <label>Số điện thoại liên lạc<span>*</span></label>
-                                    <input type="text" th:field="*{contactPhone}" th:value="${user.getPhone()}"
-                                           required="required">
+                                    <input type="text" name="contactPhone" required="required">
                                 </div>
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
                                     <label>Địa chỉ giao hàng<span>*</span></label>
-                                    <input type="text" th:field="*{contactAddress}" th:value="${user.getAddress()}"
-                                           required="required">
+                                    <input type="text" name="contactAddress" required="required">
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-12">
                                 <div class="form-group">
                                     <label>Ghi chú<span>*</span></label>
-                                    <textarea th:field="*{note}" rows="5"/>
+                                    <textarea name="note" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -155,13 +153,11 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-12">
-                    <div class="header">
-                        <div class="dropdown-cart-header">
-                            <h2 style="margin-top: 25px; margin-bottom: 50px;">
-                                <a style="font-size: 25px; color: #333; font-weight: 700; line-height: 27px;" th:href="@{/cart.html}">Giỏ Hàng</a>
-                            </h2>
+                    <div class="header" style="border: 1px solid #eee; margin-top: 0px;">
+                        <div class="dropdown-cart-header single-widget">
+                            <h2>Giỏ Hàng</h2>
                         </div>
-                        <div class="shopping-item">
+                        <div class="shopping-item" style="padding: 10px 30px;">
                             <ul class="cart-item-list">
                                 <li id="item-for-cloning" th:each="item : ${session.myCart}">
                                     <a class="cart-img"
@@ -170,64 +166,87 @@
                                     </a>
                                     <h4>
                                         <a th:href="@{'/products/' + ${item.getValue().getProduct().getProductUrl()} + '.html'}"
-                                           class="cart-item-name" th:utext="${item.getValue().getProduct().getProductName()}"></a></h4>
+                                           class="cart-item-name" th:utext="${item.getValue().getProduct().getProductName()}">
+                                        </a>
+                                    </h4>
                                     <p><span class="quantity" th:utext="${item.getValue().getQuantity()}"> </span>x -
                                         <span class="amount"
                                               th:utext="${item.getValue().getProduct().getFinalPrice()}"></span> <span>vnđ</span>
                                     </p>
                                 </li>
                             </ul>
-                            <div class="bottom">
-                                <a th:href="@{/cart.html}" class="btn animate">Quay lại giỏ hàng</a>
+                            <div class="single-widget get-button">
+                                <div class="content">
+                                    <div class="button">
+                                        <button type="submit">
+                                            <a th:href="@{/cart.html}" class="btn animate">Quay lại giỏ hàng</a>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-12">
-                    <div class="order-details">
+                    <div class="order-details" style="margin-top: 0px;">
                         <!-- Order Widget -->
                         <div class="single-widget">
                             <h2>SỐ TIỀN THANH TOÁN</h2>
                             <div class="content">
                                 <ul>
-                                    <li>Tổng các mặt hàng<span id="sub-cart"
-                                                               th:utext="${session.subCart}">$330.00</span></li>
-                                    <li>(+) Phí vận chuyển<span id="ship-fee" th:utext="${shipFee}">$10.00</span></li>
-                                    <li class="last">Tổng thanh toán<span id="total-cart"
-                                                                          th:utext="${session.subCart + shipFee}">$340.00</span>
+                                    <li>Tổng các mặt hàng<span id="sub-total" th:utext="${session.subCart}"></span></li>
+                                    <li>(+) Phí vận chuyển<span id="ship-fee" th:if="${shipFee > 0}" th:utext="${shipFee}"></span></li>
+                                    <li class="last">Tổng thanh toán
+                                        <span id="total-cart" th:utext="${session.subCart + shipFee}"></span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <!--/ End Order Widget -->
+                        <div class="single-widget">
+                            <h2>Nhập mã giảm giá của bạn</h2>
+                            <div class="coupon" style="margin: 30px 30px;display: flex;">
+                                <form>
+                                    <input name="coupon" placeholder="Nhập mã giảm giá"
+                                           style="
+                                           margin-right: 10px;
+                                            width: 70%;
+                                            height: 48px;
+                                            color: #333;
+                                            padding: 0px 20px;
+                                            box-shadow: 0px 0px 5px #0000000a;
+                                            border: 1px solid #5a5656;
+                                            border-radius: 5px;">
+                                    <button class="btn" type="button"
+                                            style="height: 48px;
+                                            padding: 0px;
+                                            width: 30%;
+                                            color: #333;
+                                            background: #fff;
+                                            box-shadow: 0px 0px 5px #00000012;
+                                            border: 1px solid #5a5656;
+                                            border-radius: 5px;">Áp dụng
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                         <!-- Order Widget -->
                         <div class="single-widget">
                             <h2>Hình thức thanh toán</h2>
                             <div class="content">
                                 <div class="checkbox">
-                                    <span style="display: block; margin-bottom: 15px;"><input
-                                            th:field="*{paymentMethod}" type="radio" th:value="cod"> Thanh toán khi nhận hàng</span>
-                                    <span style="display: block; margin-bottom: 15px;"><input
-                                            th:field="*{paymentMethod}" type="radio" th:value="paypal"> PayPal</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="paymentMethod" value="cod"> Thanh toán khi nhận hàng</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="paymentMethod" value="paypal"> PayPal</span>
                                 </div>
                             </div>
                         </div>
                         <!--/ End Order Widget -->
-                        <!-- Payment Method Widget -->
-                        <div class="single-widget payement">
-                            <div class="content">
-                                <img src="images/payment-method.png" alt="#">
-                            </div>
-                        </div>
-                        <!--/ End Payment Method Widget -->
                         <!-- Button Widget -->
                         <div class="single-widget get-button">
                             <div class="content">
                                 <div class="button">
                                     <button type="submit">
-                                        <a class="btn">
-                                            Tiến hành đặt hàng
-                                        </a>
+                                        <a class="btn">Tiến hành đặt hàng</a>
                                     </button>
                                 </div>
                             </div>
@@ -289,5 +308,80 @@
 <!-- Start Footer Area -->
 <th:block th:include="common/footer"/>
 <!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        $(".coupon button").on("click", function () {
+            let couponCode = $(".coupon input[name='coupon']").val();
+            let data = {"couponCode" : couponCode}
+            applyCoupon(data);
+        });
+
+        $(".shop.checkout .single-widget.get-button .btn").on("click", function (e){
+            e.preventDefault();
+            payment();
+        });
+    });
+
+    function applyCoupon(couponCode) {
+        $.ajax({
+            url: "/api/checkout/apply-couponCode",
+            type: "POST",
+            data : JSON.stringify(couponCode),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (order) {
+                $(".error-msg").remove();
+                $(".order-details ul").empty();
+                $(".order-details ul").append(
+                    "<li>Tổng các mặt hàng<span id=\"sub-total\">" + order["subTotal"] + "</span></li>\n" +
+                    "<li>(+) Phí vận chuyển<span id=\"ship-fee\">" + order["shipFee"] + "</span></li>\n" +
+                    "<li>(-) Giảm giá<span id=\"discount\">" + order["discount"] + "</span></li>\n" +
+                    "<li class=\"last\">Tổng thanh toán\n" +
+                    "    <span id=\"total-cart\">" + order["total"] + "</span>\n" +
+                    "</li>"
+                )
+            },
+            error: function (xhr) {
+                $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>" + xhr.responseText +"</div>")
+            }
+        });
+    }
+
+
+    function payment() {
+        let data = {
+            "contactReceiver" : $("form[id='payment']").find("input[name='contactReceiver']").val(),
+            "contactPhone" : $("form[id='payment']").find("input[name='contactPhone']").val(),
+            "contactAddress" : $("form[id='payment']").find("input[name='contactAddress']").val(),
+            "note" : $("form[id='payment']").find("textarea").val(),
+            "subTotal" : $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(),
+            "discount" : $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(),
+            "shipFee" : $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(),
+            "total" : $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(),
+            "paymentMethod" : $("input[name='paymentMethod']:checked").val()
+        }
+
+        alert(JSON.stringify(data));
+
+        // $.ajax({
+        //     url: "/api/checkout/payment",
+        //     type: "POST",
+        //     data : JSON.stringify(data),
+        //     dataType: 'json',
+        //     contentType: 'application/json',
+        //     success: function (message) {
+        //         alert(message);
+        //         window.location.replace("/");
+        //     },
+        //     error: function (xhr) {
+        //         alert(xhr.responseText);
+        //     }
+        // });
+    }
+    /*]]>*/
+</script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.dto.CartItem;
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.OrderDto;
 import com.nguyenpham.oganicshop.dto.ProductDto;
-import com.nguyenpham.oganicshop.entity.Order;
-import com.nguyenpham.oganicshop.entity.OrderDetail;
-import com.nguyenpham.oganicshop.entity.OrderLogging;
+import com.nguyenpham.oganicshop.entity.*;
+import com.nguyenpham.oganicshop.repository.DiscountRepository;
 import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
 import com.nguyenpham.oganicshop.repository.OrderLoggingRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,11 +28,13 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
+    private DiscountRepository discountRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, DiscountRepository discountRepository) {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
+        this.discountRepository = discountRepository;
     }
 
     @Override
@@ -94,4 +97,51 @@ public class OrderServiceImpl implements OrderService {
                 .map(od -> od.convertOrderDetailToOrderDetailDto())
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public int applyCoupon(HashMap<Long, CartItem> cart, Discount discount) {
+        int total = 0;
+        for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
+            total += item.getValue().caculateTotalItem();
+        }
+        int discountValue = 0;
+        if (discount.getDiscountPercent() > 0 && discount.getDiscountPrice() == 0) {
+            discountValue = (int) (total * discount.getDiscountPercent());
+        } else if (discount.getDiscountPercent() == 0 && discount.getDiscountPrice() > 0) {
+            discountValue = discount.getDiscountPrice();
+        }
+
+        if (total > discount.getMinOrderValue()) {
+            discountValue = discountValue > discount.getMinDiscountValue() ?  discount.getMinDiscountValue() : discountValue;
+        }
+        return discountValue;
+    }
+
+    @Override
+    public void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDto orderDto) {
+        Order order = new Order();
+        order.setUser(user);
+        order.setContactReceiver(orderDto.getContactReceiver());
+        order.setContactAddress(orderDto.getContactAddress());
+        order.setContactPhone(orderDto.getContactPhone());
+        order.setNote(orderDto.getNote());
+        order.setStatus("Đặt hàng thành công");
+        order.setSubTotal(orderDto.getSubTotal());
+        order.setShipFee(orderDto.getShipFee());
+        order.setDiscount(orderDto.getDiscount());
+        order.setTotal(order.getSubTotal() + order.getShipFee() - order.getDiscount());
+        for (CartItem item : cart.values()) {
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setQuantity(item.getQuantity());
+            orderDetail.setPrice(item.caculateTotalItem());
+            orderDetail.setDiscount(item.getDiscount());
+            orderDetail.setTotalPrice(item.caculateTotalItem() - item.getDiscount());
+            orderDetail.setProduct(item.getProduct());
+            orderDetail.setOrder(order);
+            order.addOrderDetail(orderDetail);
+        }
+        this.save(order);
+    }
+
+
 }
