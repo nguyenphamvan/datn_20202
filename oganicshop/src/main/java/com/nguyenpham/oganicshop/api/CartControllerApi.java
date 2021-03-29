@@ -46,7 +46,7 @@ public class CartControllerApi {
         }
         cart = cartService.addItemCart(cart, productUrl, quantity);
         if (cart == null) {
-            return new ResponseEntity<Object>(null, HttpStatus.OK);
+            return new ResponseEntity<Object>(false, HttpStatus.OK);
         }
         session.setAttribute(Constant.CART_SESSION_NAME, cart);
         session.setAttribute("subCart", cartService.totalSubCart(cart));
@@ -64,7 +64,7 @@ public class CartControllerApi {
         }
         cart = cartService.editItemCart(cart, productUrl, changeMethod);
         if (cart == null) {
-            return new ResponseEntity<Object>(null, HttpStatus.OK);
+            return new ResponseEntity<Object>(false, HttpStatus.OK);
         }
         session.setAttribute(Constant.CART_SESSION_NAME, cart);
         session.setAttribute("subCart", cartService.totalSubCart(cart));

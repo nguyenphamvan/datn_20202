@@ -452,7 +452,10 @@
                 type: "GET",
                 dataType: 'json',
                 success: function (check) {
-                    alert(check);
+                    $(".quickview-content .error-msg").remove();
+                    if (check === false) {
+                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
+                    }
                 },
                 error: function (xhr) {
                     alert(xhr.responseText);
@@ -467,7 +470,10 @@
                 type: "GET",
                 dataType: 'json',
                 success: function (check) {
-                    alert(check);
+                    $(".quickview-content .error-msg").remove();
+                    if (check === false) {
+                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
+                    }
                 },
                 error: function (xhr) {
                     alert(xhr.responseText);

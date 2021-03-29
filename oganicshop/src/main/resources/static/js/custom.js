@@ -17,8 +17,8 @@ $(document).ready(function () {
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
-                    if (result !== null) {
-                        alert("không đủ số lượng cung cấp");
+                    if (result === false) {
+                        alert("không đủ số lượng cung cấp thêm");
                     } else {
                         alert("sản phẩm đã được thêm vào giỏ hàng");
                     }
@@ -49,8 +49,8 @@ $(document).ready(function () {
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
-                    if (result !== null) {
-                        alert("không đủ số lượng cung cấp");
+                    if (result === false) {
+                        alert("không đủ số lượng cung cấp thêm");
                     }
                 }
             })
