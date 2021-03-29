@@ -17,8 +17,9 @@ $(document).ready(function () {
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
+                    $(".quickview-content .error-msg").remove();
                     if (result === false) {
-                        alert("không đủ số lượng cung cấp thêm");
+                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                     } else {
                         alert("sản phẩm đã được thêm vào giỏ hàng");
                     }
@@ -49,8 +50,9 @@ $(document).ready(function () {
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
+                    $(".quickview-content .error-msg").remove();
                     if (result === false) {
-                        alert("không đủ số lượng cung cấp thêm");
+                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                     }
                 }
             })
