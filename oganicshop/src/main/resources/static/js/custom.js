@@ -32,48 +32,50 @@ $(document).ready(function () {
     /* end function add item in cart */
 
     /* function minus item in cart using jquery ajax  */
-    $('.button-minus').on("click", function () {
-        let quantity = $(this).parent().siblings('input').val();
-        let unitPrice = $(this).closest('tr').find('td.price span').text();
+    $('.shopping-cart .qty .button.minus button').on("click", function () {
+        let buttonMinus = $(this);
+        let quantity = buttonMinus.parent().siblings('input').val();
+        let unitPrice = buttonMinus.closest('tr').find('td.price span').text();
         let totalAmountItem = parseInt(quantity) * parseInt(unitPrice);
-        $(this).closest('tr').find('td.total-amount span').text(totalAmountItem);
         let data = {
-            productUrl : $(this).closest('tr').attr('data-productUrl'),
+            productUrl : buttonMinus.closest('tr').attr('data-productUrl'),
             changeMethod : "minus"
         }
-
-        $.when(
-            $.ajax({
-                url: "/api/cart/edit",
-                type: "PUT",
-                data: JSON.stringify(data),
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (result) {
-                    $(".quickview-content .error-msg").remove();
-                    if (result === false) {
-                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
+        if (quantity > 0) {
+            $.when(
+                $.ajax({
+                    url: "/api/cart/edit",
+                    type: "PUT",
+                    data: JSON.stringify(data),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        $(".quickview-content .error-msg").remove();
+                        if (result === false) {
+                            $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
+                        } else {
+                            buttonMinus.closest('tr').find('td.total-amount span').text(totalAmountItem);
+                        }
                     }
-                }
-            })
-        ).then(function () {
-            loadHeaderCart();
-            updatePriceCart()
-        });
+                })
+            ).then(function () {
+                loadHeaderCart();
+                updatePriceCart()
+            });
+        }
     });
     /* end function minus item in cart */
 
     /* function minus item in cart using jquery ajax  */
-    $('.button-plus').on("click", function () {
-        let quantity = $(this).parent().siblings('input').val();
-        let unitPrice = $(this).closest('tr').find('td.price span').text();
+    $('.shopping-cart .qty .button.plus button').on("click", function () {
+        let buttonPlus = $(this);
+        let quantity = buttonPlus.parent().siblings('input').val();
+        let unitPrice = buttonPlus.closest('tr').find('td.price span').text();
         let totalAmountItem = parseInt(quantity) * parseInt(unitPrice);
-        $(this).closest('tr').find('td.total-amount span').text(totalAmountItem);
         let data = {
-            productUrl : $(this).closest('tr').attr('data-productUrl'),
+            productUrl : buttonPlus.closest('tr').attr('data-productUrl'),
             changeMethod : "plus"
         }
-
         $.when(
             $.ajax({
                 url: "/api/cart/edit",
@@ -82,8 +84,10 @@ $(document).ready(function () {
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
-                    if (result === null) {
+                    if (result === false) {
                         alert("không đủ số lượng cung cấp");
+                    } else {
+                        buttonPlus.closest('tr').find('td.total-amount span').text(totalAmountItem);
                     }
                 }
             })
@@ -175,14 +179,12 @@ $(document).ready(function () {
 });
 
 function updatePriceCart() {
-    let shipFee = $('#ship-fee').text();
     $.ajax({
         url: "/api/cart/total-money-cart",
         type: "GET",
         dataType: 'json',
         success: function (data) {
             $('#sub-cart').text(data);
-            $('#total-cart').text(parseInt(data) + parseInt(shipFee));
         }
     });
 }

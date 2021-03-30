@@ -98,6 +98,12 @@
                             </td>
                         </tr>
                         </tbody>
+                        <tfoot>
+                            <td colspan="3"></td>
+                            <td style="text-align: right;">Tạm tính</td>
+                            <td id="sub-cart" th:utext="${session.subCart}"></td>
+                            <td></td>
+                        </tfoot>
                     </table>
                     <!--/ End Shopping Summery -->
                 </div>
@@ -108,15 +114,18 @@
                     <div class="total-amount">
                         <div class="row">
                             <div class="col-lg-4 col-md-7 col-12">
+                                <div class="left">
+                                    <div class="button5">
+                                        <a th:href="@{/}" class="btn">Tiếp tục mua sắm</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-7 col-12">
+                            </div>
+                            <div class="col-lg-4 col-md-7 col-12">
                                 <div class="right">
-                                    <ul>
-                                        <li>Tạm tính<span id="sub-cart" th:utext="${session.subCart}">330.00</span></li>
-                                        <li>Phí vận chuyển<span id="ship-fee" th:utext="${shipFee}">100</span></li>
-                                        <li class="last">Tổng thanh toán<span id="total-cart" th:utext="${session.subCart + shipFee}">310.00</span></li>
-                                    </ul>
                                     <div class="button5">
                                         <a th:href="@{/checkout.html}" class="btn">Thanh toán</a>
-                                        <a th:href="@{/}" class="btn">Tiếp tục mua sắm</a>
                                     </div>
                                 </div>
                             </div>

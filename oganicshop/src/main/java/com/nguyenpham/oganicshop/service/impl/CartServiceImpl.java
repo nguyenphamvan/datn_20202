@@ -56,7 +56,11 @@ public class CartServiceImpl implements CartService {
                 }
                 item.setQuantity(item.getQuantity() + 1);
             } else if (changeMethod.equals("minus")) {
-                item.setQuantity(item.getQuantity() - 1);
+                if (item.getQuantity() - 1 > 0) {
+                    item.setQuantity(item.getQuantity() - 1);
+                } else {
+                    return null;
+                }
             }
             cart.put(product.getId(), item);
         }

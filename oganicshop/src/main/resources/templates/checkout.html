@@ -118,34 +118,24 @@
         <form class="form" id="payment">
             <div class="row">
                 <div class="col-lg-4 col-12">
-                    <div class="checkout-form" style="border: 1px solid #eee; margin-top: 0px;">
+                    <div class="checkout-form" style="border: 1px solid #eee; margin-top: 0px; min-height: 430px;">
                         <div class="single-widget">
                             <h2>Thông tin liên hệ</h2>
-                        </div>
-                        <div class="row" style="padding: 10px 30px;">
-                            <div class="col-lg-12 col-md-12 col-12">
-                                <div class="form-group">
-                                    <label>Họ tên người nhận<span>*</span></label>
-                                    <input type="text" name="contactReceiver" required="required">
+                            <div class="contact-address">
+                                <div class="title" style="border-bottom: 1px solid rgb(201, 201, 201); display: flex;justify-content: space-between; line-height: 31px; padding-bottom: 10px;">
+                                    <span>Địa chỉ nhận hàng</span>
+                                    <a class="link" href="#" style="display: inline-block;text-decoration: none;font-size: 13px;color: rgb(13, 92, 182);">Thay đổi</a>
                                 </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-12">
-                                <div class="form-group">
-                                    <label>Số điện thoại liên lạc<span>*</span></label>
-                                    <input type="text" name="contactPhone" required="required">
+                                <div class="address" style="display: inline-grid; padding-bottom: 10px;">
+                                    <span class="name" style="font-size: 15px; font-weight: 700; margin-top: 15px;margin-bottom: 10px;">Phạm Văn Nguyên</span>
+                                    <span class="street" style="margin: 0px;color: rgb(120, 120, 120);font-size: 13px;">số nhà 249 ngõ Quỳnh, Thanh Nhàn, Hai Bà Trưng, Phường Quỳnh Lôi, Quận Hai Bà Trưng, Hà Nội</span>
+                                    <span class="phone">Điện thoại : 0947060528</span>
                                 </div>
-                            </div>
-
-                            <div class="col-lg-12 col-md-12 col-12">
-                                <div class="form-group">
-                                    <label>Địa chỉ giao hàng<span>*</span></label>
-                                    <input type="text" name="contactAddress" required="required">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-12">
-                                <div class="form-group">
-                                    <label>Ghi chú<span>*</span></label>
-                                    <textarea name="note" rows="5"></textarea>
+                                <div class="col-lg-12 col-md-12 col-12">
+                                    <div class="form-group">
+                                        <label>Ghi chú<span>*</span></label>
+                                        <textarea name="note" rows="3"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -153,42 +143,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-12">
-                    <div class="header" style="border: 1px solid #eee; margin-top: 0px;">
-                        <div class="dropdown-cart-header single-widget">
-                            <h2>Giỏ Hàng</h2>
-                        </div>
-                        <div class="shopping-item" style="padding: 10px 30px;">
-                            <ul class="cart-item-list">
-                                <li id="item-for-cloning" th:each="item : ${session.myCart}">
-                                    <a class="cart-img"
-                                       th:href="@{'/products/' + ${item.getValue().getProduct().getProductUrl()} + '.html'}">
-                                        <img src="https://via.placeholder.com/70x70" alt="#">
-                                    </a>
-                                    <h4>
-                                        <a th:href="@{'/products/' + ${item.getValue().getProduct().getProductUrl()} + '.html'}"
-                                           class="cart-item-name" th:utext="${item.getValue().getProduct().getProductName()}">
-                                        </a>
-                                    </h4>
-                                    <p><span class="quantity" th:utext="${item.getValue().getQuantity()}"> </span>x -
-                                        <span class="amount"
-                                              th:utext="${item.getValue().getProduct().getFinalPrice()}"></span> <span>vnđ</span>
-                                    </p>
-                                </li>
-                            </ul>
-                            <div class="single-widget get-button">
-                                <div class="content">
-                                    <div class="button">
-                                        <button type="submit">
-                                            <a th:href="@{/cart.html}" class="btn animate">Quay lại giỏ hàng</a>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-12">
-                    <div class="order-details" style="margin-top: 0px;">
+                    <div class="order-details" style="margin-top: 0px; min-height: 430px;">
                         <!-- Order Widget -->
                         <div class="single-widget">
                             <h2>SỐ TIỀN THANH TOÁN</h2>
@@ -230,6 +185,21 @@
                                 </form>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="header" style="border: 1px solid #eee; margin-top: 0px; min-height: 430px;">
+                        <!-- Order Widget -->
+                        <div class="single-widget">
+                            <h2>Hình thức giao hàng</h2>
+                            <div class="content">
+                                <div class="checkbox">
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio">Giao hàng tiêu chuẩn</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio">Giao hàng nhanh</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ End Order Widget -->
                         <!-- Order Widget -->
                         <div class="single-widget">
                             <h2>Hình thức thanh toán</h2>
@@ -241,21 +211,28 @@
                             </div>
                         </div>
                         <!--/ End Order Widget -->
-                        <!-- Button Widget -->
-                        <div class="single-widget get-button">
-                            <div class="content">
-                                <div class="button">
-                                    <button type="submit">
-                                        <a class="btn">Tiến hành đặt hàng</a>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!--/ End Button Widget -->
                     </div>
                 </div>
             </div>
         </form>
+        <div class="group-action-button" style="padding-top: 30px;">
+            <!-- Button Widget -->
+            <div class="single-widget get-button">
+                <div class="content" style="display: flex;">
+                    <div class="button">
+                        <button id="payment-order" type="submit">
+                            <a class="btn">Tiến hành đặt hàng</a>
+                        </button>
+                    </div>
+                    <div class="button">
+                        <button type="submit">
+                            <a th:href="@{/cart.html}" class="btn">Xem lại giỏ hàng</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--/ End Button Widget -->
+        </div>
     </div>
 </section>
 <!--/ End Checkout -->
@@ -315,11 +292,15 @@
     $(document).ready(function () {
         $(".coupon button").on("click", function () {
             let couponCode = $(".coupon input[name='coupon']").val();
-            let data = {"couponCode" : couponCode}
-            applyCoupon(data);
+            if (couponCode === "") {
+                $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>Bạn chưa nhập mã giảm giá</div>")
+            } else {
+                let data = {"couponCode" : couponCode}
+                applyCoupon(data);
+            }
         });
 
-        $(".shop.checkout .single-widget.get-button .btn").on("click", function (e){
+        $(".shop.checkout .single-widget.get-button #payment-order").on("click", function (e){
             e.preventDefault();
             payment();
         });
@@ -345,7 +326,7 @@
                 )
             },
             error: function (xhr) {
-                $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>" + xhr.responseText +"</div>")
+                $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>" + xhr.responseText +"</div>");
             }
         });
     }
@@ -353,9 +334,9 @@
 
     function payment() {
         let data = {
-            "contactReceiver" : $("form[id='payment']").find("input[name='contactReceiver']").val(),
-            "contactPhone" : $("form[id='payment']").find("input[name='contactPhone']").val(),
-            "contactAddress" : $("form[id='payment']").find("input[name='contactAddress']").val(),
+            "contactReceiver" : $(".contact-address .address .name").text(),
+            "contactPhone" : $(".contact-address .address .phone").text(),
+            "contactAddress" : $(".contact-address .address .street").text(),
             "note" : $("form[id='payment']").find("textarea").val(),
             "subTotal" : $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(),
             "discount" : $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(),
