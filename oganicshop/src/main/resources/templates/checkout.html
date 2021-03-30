@@ -121,21 +121,20 @@
                     <div class="checkout-form" style="border: 1px solid #eee; margin-top: 0px; min-height: 430px;">
                         <div class="single-widget">
                             <h2>Thông tin liên hệ</h2>
-                            <div class="contact-address">
+                            <div class="contact-address" style="margin: 25px 30px;">
                                 <div class="title" style="border-bottom: 1px solid rgb(201, 201, 201); display: flex;justify-content: space-between; line-height: 31px; padding-bottom: 10px;">
                                     <span>Địa chỉ nhận hàng</span>
-                                    <a class="link" href="#" style="display: inline-block;text-decoration: none;font-size: 13px;color: rgb(13, 92, 182);">Thay đổi</a>
+                                    <a class="link" th:href="@{/customer/address}" style="display: inline-block;text-decoration: none;font-size: 13px;color: rgb(13, 92, 182);">Thay đổi</a>
                                 </div>
                                 <div class="address" style="display: inline-grid; padding-bottom: 10px;">
                                     <span class="name" style="font-size: 15px; font-weight: 700; margin-top: 15px;margin-bottom: 10px;">Phạm Văn Nguyên</span>
                                     <span class="street" style="margin: 0px;color: rgb(120, 120, 120);font-size: 13px;">số nhà 249 ngõ Quỳnh, Thanh Nhàn, Hai Bà Trưng, Phường Quỳnh Lôi, Quận Hai Bà Trưng, Hà Nội</span>
                                     <span class="phone">Điện thoại : 0947060528</span>
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-12">
-                                    <div class="form-group">
-                                        <label>Ghi chú<span>*</span></label>
-                                        <textarea name="note" rows="3"></textarea>
-                                    </div>
+
+                                <div class="form-group note">
+                                    <label>Ghi chú<span>*</span></label>
+                                    <textarea name="note" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>

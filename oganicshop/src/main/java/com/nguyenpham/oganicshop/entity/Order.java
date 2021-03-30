@@ -92,6 +92,7 @@ public class Order {
             summaryProductName.append(orderDetail.getProduct().getProductName());
             orderDetailDtoList.add(orderDetail.convertOrderDetailToOrderDetailDto());
         });
+        orderDto.setOrderLogging(this.convertOrderLoggingToOrderLoggingDto());
         orderDto.setSummaryProductName(summaryProductName.toString());
         orderDto.setListOrderDetail(orderDetailDtoList);
         return orderDto;

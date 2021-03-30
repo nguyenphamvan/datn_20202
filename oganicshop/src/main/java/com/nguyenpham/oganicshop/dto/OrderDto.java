@@ -29,4 +29,5 @@ public class OrderDto {
     private Timestamp orderDate;
     private Timestamp deliveryDate;
     private List<OrderDetailDto> listOrderDetail;
+    private OrderLoggingDto orderLogging;
 }
