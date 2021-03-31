@@ -33,7 +33,7 @@ public class CartController {
         }
         List<Category> listCategory = categoryService.getListCategory();
         model.addAttribute("listCategory", listCategory);
-        model.addAttribute("shipFee", Constant.SHIP_FEE);
+        model.addAttribute("shipFee", Constant.SHIP_FEE_STANDARD);
         return "cart";
     }
 

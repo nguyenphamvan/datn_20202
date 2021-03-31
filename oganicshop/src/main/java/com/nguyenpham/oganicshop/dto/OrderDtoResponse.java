@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OrderDto {
+public class OrderDtoResponse {
 
     private Long id;
     private String contactReceiver;
@@ -24,10 +24,11 @@ public class OrderDto {
     private int total;
     private String message;
     private String status;
+    private String deliveryMethod;
     private String paymentMethod;
     private String note;
-    private Timestamp orderDate;
-    private Timestamp deliveryDate;
+    private String orderDate;
+    private String deliveryDate;
     private List<OrderDetailDto> listOrderDetail;
     private OrderLoggingDto orderLogging;
 }

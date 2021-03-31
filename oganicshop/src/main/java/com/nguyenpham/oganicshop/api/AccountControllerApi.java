@@ -41,11 +41,11 @@ public class AccountControllerApi {
 
     @GetMapping("/address")
     public ResponseEntity<?> getInfoShippingAddress() {
-        UserDto userUpdated = userService.getInfoAccount();
+        UserDto userResponse = userService.getInfoAccount();
         Map<String, Object> response = new HashMap<>();
-        response.put("name", userUpdated.getFullName());
-        response.put("address", userUpdated.getAddress());
-        response.put("phone", userUpdated.getPhone());
+        response.put("name", userResponse.getFullName());
+        response.put("address", userResponse.getAddress());
+        response.put("phone", userResponse.getPhone());
         return ResponseEntity.ok(response);
     }
 

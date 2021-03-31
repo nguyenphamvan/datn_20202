@@ -14,7 +14,7 @@ public class OrderLoggingDto {
 
     private long orderId;
     private String latestStatus;
-    private Timestamp lastUpdatedTime;
+    private String lastUpdatedTime;
     private Set<LoggingOrderStatus> loggingStatus;
 
     @Data
@@ -22,7 +22,7 @@ public class OrderLoggingDto {
     @AllArgsConstructor
     public static class LoggingOrderStatus implements Comparable<LoggingOrderStatus>{
         private String status;
-        private Timestamp updatedTime;
+        private String updatedTime;
 
         @Override
         public int compareTo(LoggingOrderStatus o) {

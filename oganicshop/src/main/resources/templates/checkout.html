@@ -149,9 +149,10 @@
                             <div class="content">
                                 <ul>
                                     <li>Tổng các mặt hàng<span id="sub-total" th:utext="${session.subCart}"></span></li>
-                                    <li>(+) Phí vận chuyển<span id="ship-fee" th:if="${shipFee > 0}" th:utext="${shipFee}"></span></li>
+                                    <li>(+) Phí vận chuyển<span id="ship-fee">0</span></li>
+                                    <li>(-) Giảm giá<span id="discount">0</span></li>
                                     <li class="last">Tổng thanh toán
-                                        <span id="total-cart" th:utext="${session.subCart + shipFee}"></span>
+                                        <span id="total-cart" th:utext="${session.subCart}"></span>
                                     </li>
                                 </ul>
                             </div>
@@ -196,8 +197,8 @@
                             <h2>Hình thức giao hàng</h2>
                             <div class="content">
                                 <div class="checkbox">
-                                    <span style="display: block; margin-bottom: 15px;"><input type="radio">Giao hàng tiêu chuẩn</span>
-                                    <span style="display: block; margin-bottom: 15px;"><input type="radio">Giao hàng nhanh</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="deliveryMethod" value="standard"> Giao hàng tiêu chuẩn</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="deliveryMethod" value="fast"> Giao hàng trong ngày (nội thành)</span>
                                 </div>
                             </div>
                         </div>
@@ -219,14 +220,14 @@
         </form>
         <div class="group-action-button" style="padding-top: 30px;">
             <!-- Button Widget -->
-            <div class="single-widget get-button">
+            <div class="single-widget get-button" style="padding: 0px;">
                 <div class="content" style="display: flex;">
-                    <div class="button">
+                    <div class="button" style="margin-right: 10px;">
                         <button id="payment-order" type="submit">
                             <a class="btn">Tiến hành đặt hàng</a>
                         </button>
                     </div>
-                    <div class="button">
+                    <div class="button" style="margin-right: 10px;">
                         <button type="submit">
                             <a th:href="@{/cart.html}" class="btn">Xem lại giỏ hàng</a>
                         </button>
@@ -293,7 +294,7 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
 
-        getTheShippingAddress();
+        getInfoPayment();
 
         $(".coupon button").on("click", function () {
             let couponCode = $(".coupon input[name='coupon']").val();
@@ -320,6 +321,7 @@
             contentType: 'application/json',
             success: function (order) {
                 $(".error-msg").remove();
+                alert("Mã giảm giá đã được áp dụng");
                 $(".order-details ul").empty();
                 $(".order-details ul").append(
                     "<li>Tổng các mặt hàng<span id=\"sub-total\">" + order["subTotal"] + "</span></li>\n" +
@@ -336,18 +338,33 @@
         });
     }
 
-    function getTheShippingAddress() {
+    function getInfoPayment() {
         $.ajax({
-            url: "/api/account/address",
+            url: "/api/checkout/getInfo",
             type: "GET",
             contentType: "application/json",
-            success: function (infoShippingAddress) {
-                $(".contact-address .address .name").text(infoShippingAddress["name"]);
-                $(".contact-address .address .street").text(infoShippingAddress["address"]);
-                $(".contact-address .address .phone").text("Điện thoại : " + infoShippingAddress["phone"]);
+            success: function (data) {
+                $(".contact-address .address .name").text(data["contactReceiver"]);
+                $(".contact-address .address .street").text(data["contactAddress"]);
+                $(".contact-address .address .phone").text("Điện thoại : " + data["contactPhone"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(data["subTotal"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(data["discount"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(data["shipFee"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(data["total"]);
+                $("input[name='deliveryMethod']").each(function () {
+                    if ($(this).val() === data["deliveryMethod"] ){
+                        $(this).prop('checked', true);
+                    }
+                });
+                $("input[name='paymentMethod']").each(function () {
+                    if ($(this).val() === data["paymentMethod"] ){
+                        $(this).prop('checked', true);
+                    }
+                });
+
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được địa chỉ giỏ hàng");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -355,32 +372,30 @@
     function payment() {
         let data = {
             "contactReceiver" : $(".contact-address .address .name").text(),
-            "contactPhone" : $(".contact-address .address .phone").text(),
+            "contactPhone" : $(".contact-address .address .phone").text().replace("Điện thoại : "),
             "contactAddress" : $(".contact-address .address .street").text(),
             "note" : $("form[id='payment']").find("textarea").val(),
             "subTotal" : $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(),
             "discount" : $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(),
             "shipFee" : $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(),
             "total" : $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(),
-            "paymentMethod" : $("input[name='paymentMethod']:checked").val()
+            "paymentMethod" : $("input[name='paymentMethod']:checked").val(),
+            "deliveryMethod" : $("input[name='deliveryMethod']:checked").val()
         }
-
-        alert(JSON.stringify(data));
-
-        // $.ajax({
-        //     url: "/api/checkout/payment",
-        //     type: "POST",
-        //     data : JSON.stringify(data),
-        //     dataType: 'json',
-        //     contentType: 'application/json',
-        //     success: function (message) {
-        //         alert(message);
-        //         window.location.replace("/");
-        //     },
-        //     error: function (xhr) {
-        //         alert(xhr.responseText);
-        //     }
-        // });
+        $.ajax({
+            url: "/api/checkout/payment",
+            type: "POST",
+            data : JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (message) {
+                alert(message);
+                window.location.replace("/");
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
     }
     /*]]>*/
 </script>

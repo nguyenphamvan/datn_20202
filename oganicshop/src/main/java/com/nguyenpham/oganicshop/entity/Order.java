@@ -1,17 +1,16 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
-import com.nguyenpham.oganicshop.dto.OrderDto;
+import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
+import com.nguyenpham.oganicshop.util.DateTimeUtil;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Builder
 @Entity
@@ -34,6 +33,7 @@ public class Order {
     private int discount;
     private int total;
     private String status;
+    private String deliveryMethod;
     private String paymentMethod;
     private String message;
     private String note;
@@ -68,8 +68,8 @@ public class Order {
     }
 
     // should order moder mapper
-    public OrderDto convertOrderToOrderDto() {
-        OrderDto orderDto = new OrderDto();
+    public OrderDtoResponse convertOrderToOrderDto() {
+        OrderDtoResponse orderDto = new OrderDtoResponse();
         orderDto.setId(this.getId());
         orderDto.setContactReceiver(this.getContactReceiver());
         orderDto.setContactPhone(this.getContactPhone());
@@ -82,8 +82,8 @@ public class Order {
         orderDto.setMessage(this.getMessage());
         orderDto.setPaymentMethod(this.getPaymentMethod());
         orderDto.setNote(this.getNote());
-        orderDto.setOrderDate(this.getOrderDate());
-        orderDto.setDeliveryDate(this.getDeliveryDate());
+        orderDto.setOrderDate(DateTimeUtil.dateTimeFormat(this.getOrderDate()));
+        orderDto.setDeliveryDate(DateTimeUtil.dateTimeFormat((this.getDeliveryDate())));
         List<OrderDetailDto> orderDetailDtoList = new ArrayList<>();
         StringBuilder summaryProductName = new StringBuilder("");
         this.getOrderDetails().forEach(orderDetail -> {
@@ -100,12 +100,12 @@ public class Order {
         OrderLoggingDto orderLoggingDto = new OrderLoggingDto();
         orderLoggingDto.setOrderId(this.getId());
         orderLoggingDto.setLatestStatus(this.getStatus());
-        orderLoggingDto.setLastUpdatedTime(this.getDeliveryDate());
+        orderLoggingDto.setLastUpdatedTime(DateTimeUtil.dateTimeFormat(this.getDeliveryDate()));
 //        Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = this.getOrderLoggings().stream()
 //                .map(ol -> new OrderLoggingDto.LoggingOrderStatus(ol.getStatus(), ol.getUpdateTime()))
 //                .collect(Collectors.toSet());
         Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = new TreeSet<>();
-        this.getOrderLoggings().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(ol.getStatus(), ol.getUpdateTime())));
+        this.getOrderLoggings().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(ol.getStatus(), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
 
         orderLoggingDto.setLoggingStatus(loggingStatus);
         return orderLoggingDto;

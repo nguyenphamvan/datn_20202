@@ -3,7 +3,9 @@ package com.nguyenpham.oganicshop.api;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.dto.CartItem;
-import com.nguyenpham.oganicshop.dto.OrderDto;
+import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
+import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
+import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.Discount;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -34,8 +36,28 @@ public class CheckoutControllerApi {
         this.couponService = couponService;
     }
 
+    @GetMapping("/getInfo")
+    public ResponseEntity<?> getInfoPayment(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
+        OrderDtoResponse orderResponse = new OrderDtoResponse();
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        if (cart != null) {
+            orderResponse.setContactReceiver(user.getFullName());
+            orderResponse.setContactAddress(user.getAddress());
+            orderResponse.setContactPhone(user.getPhone());
+            orderResponse.setSubTotal(cartService.totalSubCart(cart));
+            orderResponse.setDiscount(0);
+            orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD); // mặc định ban đầu phí giao hàng là giao hàng tiêu chuẩn
+            orderResponse.setTotal(orderResponse.getSubTotal() + orderResponse.getShipFee() - orderResponse.getDiscount());
+            orderResponse.setDeliveryMethod("standard");
+            orderResponse.setPaymentMethod("cod");
+            return ResponseEntity.ok(orderResponse);
+        }
+        return new ResponseEntity<Object>("Có lỗi xảy ra khi kiểm tra thông tin thanh toán", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @PostMapping("/payment")
-    public ResponseEntity<?> payOrder(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderDto orderDto) {
+    public ResponseEntity<?> payOrder(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderDtoRequest orderDto) {
         User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) { // should convert order to orderDto use ordermapper
@@ -54,21 +76,29 @@ public class CheckoutControllerApi {
     }
 
     @PostMapping("/apply-couponCode")
-    public ResponseEntity<?> applyCoupon(HttpSession session, @RequestBody ObjectNode object) {
+    public ResponseEntity<?> applyCoupon(HttpSession session, @RequestBody ObjectNode object, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         String couponCode = object.get("couponCode").asText();
+        User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
             Discount discount = couponService.findCoupon(couponCode);
             if (discount != null) {
                 int subTotal = cartService.totalSubCart(cart);
                 int discountValue = orderService.applyCoupon(cart, discount);
-                OrderDto orderDto = new OrderDto();
-                orderDto.setSubTotal(subTotal);
-                orderDto.setShipFee(Constant.SHIP_FEE);
-                orderDto.setDiscount(discountValue);
-                orderDto.setTotal(subTotal + Constant.SHIP_FEE + discountValue);
+                OrderDtoResponse orderResponse = new OrderDtoResponse();
+                orderResponse.setContactReceiver(user.getFullName());
+                orderResponse.setContactAddress(user.getAddress());
+                orderResponse.setContactPhone(user.getPhone());
+                orderResponse.setSubTotal(cartService.totalSubCart(cart));
+                orderResponse.setSubTotal(subTotal);
+                // ? nếu chọn hình thức giao hàng rồi mới áp dụng mã giảm giá thì ntn
+                orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD);
+                orderResponse.setDiscount(discountValue);
+                orderResponse.setTotal(orderResponse.getSubTotal() + orderResponse.getShipFee() - orderResponse.getDiscount());
+                orderResponse.setDeliveryMethod("standard");
+                orderResponse.setPaymentMethod("cod");
 
-                return new ResponseEntity<Object>(orderDto, HttpStatus.OK);
+                return new ResponseEntity<Object>(orderResponse, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Object>("Mã giảm giá không hợp lệ", HttpStatus.NOT_FOUND);
             }

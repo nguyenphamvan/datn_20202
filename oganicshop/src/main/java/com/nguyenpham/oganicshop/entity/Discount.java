@@ -22,7 +22,7 @@ public class Discount {
     private double discountPercent;
     private int discountPrice;
     private int minOrderValue;
-    private int minDiscountValue;
+    private int maxDiscountValue;
     private Date startDate;
     private Date endDate;
     private int numberOfUses;

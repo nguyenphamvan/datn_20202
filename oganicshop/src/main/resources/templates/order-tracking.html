@@ -54,16 +54,14 @@
                     <div>
                         <div class="styles__StyledOrderStatus"><p class="title">Trạng thái đơn
                             hàng</p>
-                            <div class="status-block"><span class="status-text">Trạng thái: <b>Giao hàng thành công | 20:39 Thứ tư, 11-11-2020</b></span>
+                            <div class="status-block"><span class="status-text">Trạng thái: <b></b></span>
                             </div>
                         </div>
                         <div class="styles__StyledOrderStatusDetail">
                             <p class="title">Chi tiết trạng thái đơn hàng</p>
                             <div class="detail">
                                 <div class="border">
-                                    <div class="styles__StyledOrderStatusDetailItem cGrxj">Cập nhật mới
-                                        nhất: Thứ tư, 11-11-2020
-                                    </div>
+                                    <div class="styles__StyledOrderStatusDetailItem cGrxj"></div>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +128,7 @@
             success: function (order) {
                 let orderLogging = order["orderLogging"];
                 $(".order-heading h3").text("Theo dõi đơn hàng #" + orderLogging["orderId"]);
-                $(".status-block .status-text b").text(orderLogging["latestStatus"] + " | " + orderLogging["lastUpdatedTime"]);
+                $(".status-block .status-text b").text(orderLogging["latestStatus"] + "  |  " + orderLogging["lastUpdatedTime"]);
                 $(".cGrxj").text("Cập nhật mới nhất : " + orderLogging["lastUpdatedTime"]);
                 $.each(orderLogging["loggingStatus"], function( index, orderStatus ) {
                     let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +

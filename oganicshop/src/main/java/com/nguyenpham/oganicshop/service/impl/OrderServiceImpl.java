@@ -1,15 +1,16 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.dto.CartItem;
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
-import com.nguyenpham.oganicshop.dto.OrderDto;
-import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
+import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.repository.DiscountRepository;
 import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
-import com.nguyenpham.oganicshop.repository.OrderLoggingRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
 import com.nguyenpham.oganicshop.service.OrderService;
+import com.nguyenpham.oganicshop.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getOrderById(long orderId) {
+    public OrderDtoResponse getOrderById(long orderId) {
         return orderRepository.findById(orderId).get().convertOrderToOrderDto();
     }
 
@@ -80,11 +84,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getListOrderHistory(Long userId, int pageNum, int pageSize) {
+    public List<OrderDtoResponse> getListOrderHistory(Long userId, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id").ascending());
         Page<Order> page = orderRepository.findOrdersByUserId(userId, pageable);
         List<Order> ordersHistory = page.getContent();
-        List<OrderDto> ordersDtoHistory = new ArrayList<>();
+        List<OrderDtoResponse> ordersDtoHistory = new ArrayList<>();
         ordersHistory.forEach(order -> {
             ordersDtoHistory.add(order.convertOrderToOrderDto());
         });
@@ -112,13 +116,13 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if (total > discount.getMinOrderValue()) {
-            discountValue = discountValue > discount.getMinDiscountValue() ?  discount.getMinDiscountValue() : discountValue;
+            discountValue = discountValue > discount.getMaxDiscountValue() ?  discount.getMaxDiscountValue() : discountValue;
         }
         return discountValue;
     }
 
     @Override
-    public void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDto orderDto) {
+    public void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto) {
         Order order = new Order();
         order.setUser(user);
         order.setContactReceiver(orderDto.getContactReceiver());
@@ -126,6 +130,9 @@ public class OrderServiceImpl implements OrderService {
         order.setContactPhone(orderDto.getContactPhone());
         order.setNote(orderDto.getNote());
         order.setStatus("Đặt hàng thành công");
+        order.setPaymentMethod(orderDto.getPaymentMethod());
+        order.setDeliveryMethod(orderDto.getDeliveryMethod());
+        order.setMessage(DateTimeUtil.dateTimeFormat(new Timestamp(System.currentTimeMillis())) + " - " + Constant.MESSAGE_ORDER_SUCCESS);
         order.setSubTotal(orderDto.getSubTotal());
         order.setShipFee(orderDto.getShipFee());
         order.setDiscount(orderDto.getDiscount());
