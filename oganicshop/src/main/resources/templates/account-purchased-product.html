@@ -135,18 +135,12 @@
 
         $("#btn-post-review").on("click", function () {
             let data = new FormData();
-            let orderDetailId = $("input[name='orderDetail-id']").val();
-            let productId = $("input[name='product-id']").val();
-            let title = $(".write-review__heading").text();
-            let comment = $("textarea.write-review__input").val();
-            let rating = $("input[name='rating-value']").val();
-            let imageFile = $("input[name='upload']")[0].files[0];
-            data.append("title", title);
-            data.append("comment", comment);
-            data.append("rating", rating);
-            data.append("productId", productId);
-            data.append("orderDetailId", orderDetailId);
-            data.append('image', imageFile);
+            data.append("title", $(".write-review__heading").text());
+            data.append("comment", $("textarea.write-review__input").val());
+            data.append("rating", $("input[name='rating-value']").val());
+            data.append("productId", $("input[name='product-id']").val());
+            data.append("orderDetailId", $("input[name='orderDetail-id']").val());
+            data.append('image', $("input[name='upload']")[0].files[0]);
             $.ajax({
                 url: "/api/review/post",
                 data: data,
@@ -159,9 +153,9 @@
                 timeout: 1000000,
                 success: function (result) {
                     $("#myModal").modal('hide');
-                    ;
-                    alert(result);
                     getListProductIsNotReviewed();
+                    alert(result);
+                    window.location.replace("/");
                 },
                 error: function () {
                     alert("có lỗi xảy ra");
@@ -177,7 +171,7 @@
             $("input[name='product-id']").val($(this).siblings(".my-reviews__info").attr("product-id"));
         });
 
-        var isClickStarRating = false;
+        let isClickStarRating = false;
         $('.write-review__star > svg').hover(
             function () {
                 if (!isClickStarRating) {

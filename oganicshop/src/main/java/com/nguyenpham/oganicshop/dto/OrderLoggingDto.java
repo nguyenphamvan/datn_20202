@@ -20,9 +20,14 @@ public class OrderLoggingDto {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class LoggingOrderStatus {
+    public static class LoggingOrderStatus implements Comparable<LoggingOrderStatus>{
         private String status;
         private Timestamp updatedTime;
+
+        @Override
+        public int compareTo(LoggingOrderStatus o) {
+            return this.getUpdatedTime().compareTo(o.getUpdatedTime());
+        }
     }
 
 }

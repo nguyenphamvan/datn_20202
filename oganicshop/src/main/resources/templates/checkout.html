@@ -127,9 +127,9 @@
                                     <a class="link" th:href="@{/customer/address}" style="display: inline-block;text-decoration: none;font-size: 13px;color: rgb(13, 92, 182);">Thay đổi</a>
                                 </div>
                                 <div class="address" style="display: inline-grid; padding-bottom: 10px;">
-                                    <span class="name" style="font-size: 15px; font-weight: 700; margin-top: 15px;margin-bottom: 10px;">Phạm Văn Nguyên</span>
-                                    <span class="street" style="margin: 0px;color: rgb(120, 120, 120);font-size: 13px;">số nhà 249 ngõ Quỳnh, Thanh Nhàn, Hai Bà Trưng, Phường Quỳnh Lôi, Quận Hai Bà Trưng, Hà Nội</span>
-                                    <span class="phone">Điện thoại : 0947060528</span>
+                                    <span class="name" style="font-size: 15px; font-weight: 700; margin-top: 15px;margin-bottom: 10px;"></span>
+                                    <span class="street" style="margin: 0px;color: rgb(120, 120, 120);font-size: 13px;"></span>
+                                    <span class="phone"></span>
                                 </div>
 
                                 <div class="form-group note">
@@ -158,7 +158,10 @@
                         </div>
                         <!--/ End Order Widget -->
                         <div class="single-widget">
-                            <h2>Nhập mã giảm giá của bạn</h2>
+                            <div style="display: flex; justify-content: space-between">
+                                <h2>Mã giảm giá</h2>
+                                <a style="margin: auto 30px auto 0px; font-size: 13px; color: rgb(13, 92, 182);">Dành cho bạn</a>
+                            </div>
                             <div class="coupon" style="margin: 30px 30px;display: flex;">
                                 <form>
                                     <input name="coupon" placeholder="Nhập mã giảm giá"
@@ -289,6 +292,9 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
+
+        getTheShippingAddress();
+
         $(".coupon button").on("click", function () {
             let couponCode = $(".coupon input[name='coupon']").val();
             if (couponCode === "") {
@@ -330,6 +336,21 @@
         });
     }
 
+    function getTheShippingAddress() {
+        $.ajax({
+            url: "/api/account/address",
+            type: "GET",
+            contentType: "application/json",
+            success: function (infoShippingAddress) {
+                $(".contact-address .address .name").text(infoShippingAddress["name"]);
+                $(".contact-address .address .street").text(infoShippingAddress["address"]);
+                $(".contact-address .address .phone").text("Điện thoại : " + infoShippingAddress["phone"]);
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được địa chỉ giỏ hàng");
+            }
+        });
+    }
 
     function payment() {
         let data = {

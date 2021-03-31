@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Set;
 
 public interface OrderLoggingRepository extends JpaRepository<OrderLogging, Long> {
-    Set<OrderLogging> findAllByOrderId(long orderId);
+    Set<OrderLogging> findAllByOrderIdOrderByUpdateTimeAsc(long orderId);
 }

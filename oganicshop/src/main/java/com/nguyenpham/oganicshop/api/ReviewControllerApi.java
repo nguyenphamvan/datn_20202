@@ -49,9 +49,9 @@ public class ReviewControllerApi {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             String uploadDir = "C:/Users/nguye/Desktop/datn_20202/oganicshop/src/main/resources/static/images/image-product-review/" + requestReviewDto.getProductId();
             FileUploadUtil.saveFile(uploadDir, fileName, file);
-            return ResponseEntity.ok("file " + file.getOriginalFilename() + " đã được upload vào thư mục : " + uploadDir);
+            return ResponseEntity.ok("file " + file.getOriginalFilename() + " đã được upload thành công");
         } catch (IOException e) {
-            return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

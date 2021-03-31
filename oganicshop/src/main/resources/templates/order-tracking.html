@@ -144,7 +144,7 @@
                 let itemClone = $(".styles__StyledOrderItems .items div:first-child");
                 $.each(listOrderItem, function (index, item) {
                     let row = itemClone.clone();
-                    row.find("img.image").attr("src", "/images/products/" + item["image"]);
+                    row.find("img.image").attr("src", "/images/products/" + item["productId"] + "/" + item["image"]);
                     row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
                     row.insertAfter(".styles__StyledOrderItems .items div:first-child");
                 });
