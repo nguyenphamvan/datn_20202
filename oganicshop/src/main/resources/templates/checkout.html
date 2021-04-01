@@ -310,13 +310,25 @@
             e.preventDefault();
             payment();
         });
+
+        $("input[name='deliveryMethod']").on("click", function () {
+            if ($(this).val() === "fast") {
+                $("span#ship-fee").text("200");
+            } else if ($(this).val() === "standard") {
+                $("span#ship-fee").text("100");
+            }
+            let subTotal = $("span#sub-total").text();
+            let discount = $("span#discount").text();
+            let shipFee = $("span#ship-fee").text();
+            $("span#total-cart").text(parseInt(subTotal) + parseInt(shipFee) - parseInt(discount));
+        });
     });
 
     function applyCoupon(couponCode) {
         $.ajax({
             url: "/api/checkout/apply-couponCode",
             type: "POST",
-            data : JSON.stringify(couponCode),
+            data: JSON.stringify(couponCode),
             dataType: 'json',
             contentType: 'application/json',
             success: function (order) {
@@ -333,7 +345,7 @@
                 )
             },
             error: function (xhr) {
-                $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>" + xhr.responseText +"</div>");
+                $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>" + xhr.responseText + "</div>");
             }
         });
     }
@@ -344,24 +356,23 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $(".contact-address .address .name").text(data["contactReceiver"]);
-                $(".contact-address .address .street").text(data["contactAddress"]);
-                $(".contact-address .address .phone").text("Điện thoại : " + data["contactPhone"]);
+                $(".contact-address .address .name").text(data["shippingAddress"]["contactReceiver"]);
+                $(".contact-address .address .street").text(data["shippingAddress"]["contactAddress"]);
+                $(".contact-address .address .phone").text("Điện thoại : " + data["shippingAddress"]["contactPhone"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(data["subTotal"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(data["discount"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(data["shipFee"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(data["total"]);
                 $("input[name='deliveryMethod']").each(function () {
-                    if ($(this).val() === data["deliveryMethod"] ){
+                    if ($(this).val() === data["deliveryMethod"]) {
                         $(this).prop('checked', true);
                     }
                 });
                 $("input[name='paymentMethod']").each(function () {
-                    if ($(this).val() === data["paymentMethod"] ){
+                    if ($(this).val() === data["paymentMethod"]) {
                         $(this).prop('checked', true);
                     }
                 });
-
             },
             error: function (xhr) {
                 alert(xhr.responseText);
@@ -371,21 +382,23 @@
 
     function payment() {
         let data = {
-            "contactReceiver" : $(".contact-address .address .name").text(),
-            "contactPhone" : $(".contact-address .address .phone").text().replace("Điện thoại : "),
-            "contactAddress" : $(".contact-address .address .street").text(),
-            "note" : $("form[id='payment']").find("textarea").val(),
-            "subTotal" : $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(),
-            "discount" : $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(),
-            "shipFee" : $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(),
-            "total" : $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(),
-            "paymentMethod" : $("input[name='paymentMethod']:checked").val(),
-            "deliveryMethod" : $("input[name='deliveryMethod']:checked").val()
+            "shippingAddress": {
+                "contactReceiver": $(".contact-address .address .name").text(),
+                "contactPhone": $(".contact-address .address .phone").text().replace("Điện thoại : "),
+                "contactAddress": $(".contact-address .address .street").text()
+            },
+            "note": $("form[id='payment']").find("textarea").val(),
+            "subTotal": $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(),
+            "discount": $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(),
+            "shipFee": $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(),
+            "total": $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(),
+            "paymentMethod": $("input[name='paymentMethod']:checked").val(),
+            "deliveryMethod": $("input[name='deliveryMethod']:checked").val()
         }
         $.ajax({
             url: "/api/checkout/payment",
             type: "POST",
-            data : JSON.stringify(data),
+            data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
             success: function (message) {

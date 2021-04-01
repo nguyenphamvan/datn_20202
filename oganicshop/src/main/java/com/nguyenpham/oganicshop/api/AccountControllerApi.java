@@ -1,6 +1,7 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -41,24 +42,12 @@ public class AccountControllerApi {
 
     @GetMapping("/address")
     public ResponseEntity<?> getInfoShippingAddress() {
-        UserDto userResponse = userService.getInfoAccount();
-        Map<String, Object> response = new HashMap<>();
-        response.put("name", userResponse.getFullName());
-        response.put("address", userResponse.getAddress());
-        response.put("phone", userResponse.getPhone());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(userService.getShippingAddress());
     }
 
     @PutMapping("/address/update")
-    public ResponseEntity<?> updateInfoShippingAddress(@RequestBody ObjectNode object) {
-        String newAddress = object.get("address").asText();
-        String phone = object.get("phone").asText();
-        UserDto userUpdated = userService.updateShippingAddress(newAddress, phone);
-        Map<String, Object> response = new HashMap<>();
-        response.put("name", userUpdated.getFullName());
-        response.put("address", userUpdated.getAddress());
-        response.put("phone", userUpdated.getPhone());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> updateInfoShippingAddress(@RequestBody ShippingAddressDto request) {
+        return ResponseEntity.ok(userService.updateShippingAddress(request));
     }
 
     @GetMapping("my-review")

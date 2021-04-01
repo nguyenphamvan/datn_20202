@@ -3,6 +3,7 @@ package com.nguyenpham.oganicshop.entity;
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
+import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.util.DateTimeUtil;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -71,9 +72,7 @@ public class Order {
     public OrderDtoResponse convertOrderToOrderDto() {
         OrderDtoResponse orderDto = new OrderDtoResponse();
         orderDto.setId(this.getId());
-        orderDto.setContactReceiver(this.getContactReceiver());
-        orderDto.setContactPhone(this.getContactPhone());
-        orderDto.setContactAddress(this.getContactAddress());
+        orderDto.setShippingAddress(new ShippingAddressDto(this.contactReceiver, this.contactPhone, this.contactAddress));
         orderDto.setSubTotal(this.getSubTotal());
         orderDto.setShipFee(this.getShipFee());
         orderDto.setDiscount(this.getDiscount());

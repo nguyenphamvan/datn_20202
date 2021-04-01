@@ -21,4 +21,5 @@ public interface OrderService {
     Set<OrderDetailDto> getListProductNotReviewed(long userId);
     int applyCoupon(HashMap<Long, CartItem> cart, Discount discount);
     void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto);
+    public OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart);
 }

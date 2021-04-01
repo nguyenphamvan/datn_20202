@@ -4,16 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDtoRequest {
     private Long id;
-    private String contactReceiver;
-    private String contactPhone;
-    private String contactAddress;
+    private ShippingAddressDto shippingAddress;
     private String summaryProductName;
     private int subTotal;
     private int shipFee;

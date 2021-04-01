@@ -29,16 +29,19 @@ public class User {
     private String fullName;
     private Date birthday;
     private String gender;
-    private String address;
     private String phone;
     private String wishlist;
     @Column(name = "verification_code")
     private String verificationCode;
     private boolean enabled;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Order> orders;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<ShippingAddress> shippingAddresses;
 
     // should user moderMapper
     public UserDto convertUserToUserDto() {
@@ -48,7 +51,6 @@ public class User {
         userDto.setFullName(this.getFullName());
         userDto.setPhone(this.getPhone());
         userDto.setBirthday(this.getBirthday());
-        userDto.setAddress(this.getAddress());
         userDto.setGender(this.getGender());
         return userDto;
     }

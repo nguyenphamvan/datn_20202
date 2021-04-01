@@ -1,10 +1,13 @@
 package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.Product;
+import com.nguyenpham.oganicshop.entity.ShippingAddress;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
+import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.UserService;
@@ -32,11 +35,13 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private ProductRepository productRepository;
+    private ShippingAddressRepository shippingAddressRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository) {
+    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository, ShippingAddressRepository shippingAddressRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.shippingAddressRepository = shippingAddressRepository;
     }
 
     @Override
@@ -102,13 +107,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateShippingAddress(String newAddress, String phone) {
+    public ShippingAddressDto addShippingAddress(ShippingAddressDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
-        userDb.setAddress(newAddress);
-        userDb.setPhone(phone);
-        User userUpdated = userRepository.save(userDb);
-        return userUpdated.convertUserToUserDto();
+        //map shippingAddress with shippingAddressDto
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setContactReceiver(request.getContactReceiver());
+        shippingAddress.setContactAddress(request.getContactAddress());
+        shippingAddress.setContactPhone(request.getContactPhone());
+        shippingAddress.setAddrDefault(request.isAddrDefault());
+        shippingAddress.setUser(userDb);
+        shippingAddress = shippingAddressRepository.save(shippingAddress);
+        request.setId(shippingAddress.getId());
+        return request;
+    }
+
+    @Override
+    public ShippingAddressDto getShippingAddress() {
+        ShippingAddress shippingAddress = shippingAddressRepository.findByAddrDefaultIsTrue();
+        return new ShippingAddressDto(shippingAddress.getId() ,shippingAddress.getContactReceiver(), shippingAddress.getContactPhone(), shippingAddress.getContactAddress(), shippingAddress.isAddrDefault());
+    }
+
+    @Override
+    @Transactional
+    public ShippingAddressDto updateShippingAddress(ShippingAddressDto request) {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        User userDb = userRepository.findById(user.getId()).get();
+        ShippingAddress shippingAddress = shippingAddressRepository.findById(request.getId()).get();
+        shippingAddress.setContactReceiver(request.getContactReceiver());
+        shippingAddress.setContactAddress(request.getContactAddress());
+        shippingAddress.setContactPhone(request.getContactPhone());
+        shippingAddress.setAddrDefault(request.isAddrDefault());
+        shippingAddress.setUser(userDb);
+        shippingAddressRepository.save(shippingAddress);
+        return request;
     }
 
     @Override

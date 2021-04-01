@@ -1,14 +1,12 @@
 package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.CartItem;
-import com.nguyenpham.oganicshop.dto.OrderDetailDto;
-import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
+import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.repository.DiscountRepository;
 import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
+import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +30,13 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
-    private DiscountRepository discountRepository;
+    private ShippingAddressRepository shippingAddressRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, DiscountRepository discountRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, ShippingAddressRepository shippingAddressRepository) {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
-        this.discountRepository = discountRepository;
+        this.shippingAddressRepository = shippingAddressRepository;
     }
 
     @Override
@@ -125,9 +123,9 @@ public class OrderServiceImpl implements OrderService {
     public void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto) {
         Order order = new Order();
         order.setUser(user);
-        order.setContactReceiver(orderDto.getContactReceiver());
-        order.setContactAddress(orderDto.getContactAddress());
-        order.setContactPhone(orderDto.getContactPhone());
+        order.setContactReceiver(orderDto.getShippingAddress().getContactReceiver());
+        order.setContactAddress(orderDto.getShippingAddress().getContactAddress());
+        order.setContactPhone(orderDto.getShippingAddress().getContactPhone());
         order.setNote(orderDto.getNote());
         order.setStatus("Đặt hàng thành công");
         order.setPaymentMethod(orderDto.getPaymentMethod());
@@ -148,6 +146,25 @@ public class OrderServiceImpl implements OrderService {
             order.addOrderDetail(orderDetail);
         }
         this.save(order);
+    }
+
+    @Override
+    public OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart) {
+        ShippingAddress addressDefault = shippingAddressRepository.findByAddrDefaultIsTrue();
+        int subCart = 0;
+        for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
+            subCart += item.getValue().caculateTotalItem();
+        }
+        OrderDtoResponse orderResponse = new OrderDtoResponse();
+        orderResponse.setShippingAddress(new ShippingAddressDto(addressDefault.getContactReceiver(), addressDefault.getContactPhone(), addressDefault.getContactAddress(), addressDefault.isAddrDefault()));
+        orderResponse.setSubTotal(subCart);
+        orderResponse.setDiscount(0);
+        orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD); // mặc định ban đầu phí giao hàng là giao hàng tiêu chuẩn
+        orderResponse.setTotal(orderResponse.getSubTotal() + orderResponse.getShipFee() - orderResponse.getDiscount());
+        orderResponse.setDeliveryMethod("standard");
+        orderResponse.setPaymentMethod("cod");
+
+        return orderResponse;
     }
 
 

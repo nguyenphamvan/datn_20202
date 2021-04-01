@@ -42,16 +42,7 @@ public class CheckoutControllerApi {
         OrderDtoResponse orderResponse = new OrderDtoResponse();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
-            orderResponse.setContactReceiver(user.getFullName());
-            orderResponse.setContactAddress(user.getAddress());
-            orderResponse.setContactPhone(user.getPhone());
-            orderResponse.setSubTotal(cartService.totalSubCart(cart));
-            orderResponse.setDiscount(0);
-            orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD); // mặc định ban đầu phí giao hàng là giao hàng tiêu chuẩn
-            orderResponse.setTotal(orderResponse.getSubTotal() + orderResponse.getShipFee() - orderResponse.getDiscount());
-            orderResponse.setDeliveryMethod("standard");
-            orderResponse.setPaymentMethod("cod");
-            return ResponseEntity.ok(orderResponse);
+            return ResponseEntity.ok(orderService.getInfoCheckout(cart));
         }
         return new ResponseEntity<Object>("Có lỗi xảy ra khi kiểm tra thông tin thanh toán", HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -83,21 +74,11 @@ public class CheckoutControllerApi {
         if (cart != null) {
             Discount discount = couponService.findCoupon(couponCode);
             if (discount != null) {
-                int subTotal = cartService.totalSubCart(cart);
                 int discountValue = orderService.applyCoupon(cart, discount);
-                OrderDtoResponse orderResponse = new OrderDtoResponse();
-                orderResponse.setContactReceiver(user.getFullName());
-                orderResponse.setContactAddress(user.getAddress());
-                orderResponse.setContactPhone(user.getPhone());
-                orderResponse.setSubTotal(cartService.totalSubCart(cart));
-                orderResponse.setSubTotal(subTotal);
                 // ? nếu chọn hình thức giao hàng rồi mới áp dụng mã giảm giá thì ntn
-                orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD);
+                OrderDtoResponse orderResponse = orderService.getInfoCheckout(cart);
                 orderResponse.setDiscount(discountValue);
                 orderResponse.setTotal(orderResponse.getSubTotal() + orderResponse.getShipFee() - orderResponse.getDiscount());
-                orderResponse.setDeliveryMethod("standard");
-                orderResponse.setPaymentMethod("cod");
-
                 return new ResponseEntity<Object>(orderResponse, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Object>("Mã giảm giá không hợp lệ", HttpStatus.NOT_FOUND);

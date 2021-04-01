@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -14,9 +13,7 @@ import java.util.List;
 public class OrderDtoResponse {
 
     private Long id;
-    private String contactReceiver;
-    private String contactPhone;
-    private String contactAddress;
+    private ShippingAddressDto shippingAddress;
     private String summaryProductName;
     private int subTotal;
     private int shipFee;

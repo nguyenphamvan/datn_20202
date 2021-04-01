@@ -1,7 +1,9 @@
 package com.nguyenpham.oganicshop.service;
 
 import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.entity.ShippingAddress;
 import com.nguyenpham.oganicshop.entity.User;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
@@ -16,11 +18,12 @@ public interface UserService {
     boolean checkOldPassword(String rawOldPassword);
     UserDto getInfoAccount();
     UserDto updateInfo (UserDto userRequest);
-    UserDto updateShippingAddress (String newAddress, String phone);
+    ShippingAddressDto addShippingAddress(ShippingAddressDto request);
+    ShippingAddressDto getShippingAddress();
+    ShippingAddressDto updateShippingAddress (ShippingAddressDto request);
     Set<ProductDto> getWishlists();
     boolean addProductToWishlist(long productId);
     boolean removeProductFromWishlist(long productId);
-
     void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException;
     boolean verify(String verificationCode);
 
