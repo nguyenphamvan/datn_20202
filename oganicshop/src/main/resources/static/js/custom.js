@@ -138,17 +138,17 @@ $(document).ready(function () {
             type: "GET",
             dataType: 'json',
             success: function (product) {
-                $('.quickview-content h2').text(product["productName"]);
-                $('.quickview-ratting').empty();
+                $('.quickView-content h2').text(product["productName"]);
+                $('.quickView-ratting').empty();
                 for (let i = 0; i < product["ratting"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
+                    $('.quickView-ratting').append("<i class=\"yellow fa fa-star\"></i>");
                 }
                 for (let i = 0; i < 5 - product["ratting"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
+                    $('.quickView-ratting').append("<i class=\"fa fa-star\"></i>");
                 }
                 $('#num-customer-review').text(product["numberOfReviews"]);
-                $('.quickview-content h3').text(product["finalPrice"]);
-                $('.quickview-peragraph p').text(product["description"]);
+                $('.quickView-content h3').text(product["finalPrice"]);
+                $('.quickView-peragraph p').text(product["description"]);
                 $('#add-cart').attr('data-productUrl', product["productUrl"]);
                 if (product["amount"] > 0) {
                     $('#in-stock').css('display', 'block');

@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                     <div class="quickview-content">
-                        <h2 th:utext="${product.getProductName()}" th:attr="product-id=${product.getProductUrl()}">Tên sản phẩm</h2>
+                        <h2>Tên sản phẩm</h2>
                         <div class="quickview-ratting-review">
                             <div class="quickview-ratting-wrap">
                                 <div class="quickview-ratting">
@@ -85,9 +85,9 @@
                                 <span><i class="fa fa-check-circle-o"></i> in stock</span>
                             </div>
                         </div>
-                        <h3 th:utext="${product.getFinalPrice()}">$29.00</h3>
+                        <h3></h3>
                         <div class="quickview-peragraph">
-                            <p th:utext="${product.getBaseDescription()}">Mô tả sơ lược sản phẩm</p>
+                            <p></p>
                         </div>
                         <div class="quantity">
                             <!-- Input Order -->
@@ -108,8 +108,8 @@
                             <!--/ End Input Order -->
                         </div>
                         <div class="add-to-cart">
-                            <a id="add-cart" th:attr="data-productUrl=${product.getProductUrl()}" class="btn">Thêm vào giỏ hàng</a>
-                            <a th:if="${#request.userPrincipal}" title="Wishlist" th:href="@{'/api/account/wishlist/add/' + ${product.getId()}}" class="btn min"><i class="ti-heart"></i></a>
+                            <a id="add-cart"  class="btn">Thêm vào giỏ hàng</a>
+                            <a th:if="${#request.userPrincipal}" class="btn min"><i class="ti-heart"></i></a>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Thông tin chi tiết về sản phẩm</h6>
-                                <p th:utext="${product.getDetailDescription()}"></p>
+                                <p></p>
                             </div>
                         </div>
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
@@ -372,6 +372,10 @@
     // A $( document ).ready() block.
     $(document).ready(function() {
 
+        let productUrl = /*[[${productUrl}]]*/;
+
+        loadInfoProduct();
+
         $("button.send-reply-comment").click(function () {
             let url = $(this).closest("form").attr("action");
             let idUser = $('#login-user-id').attr('data-idUser');
@@ -480,6 +484,25 @@
                 }
             });
         });
+
+        function loadInfoProduct() {
+            $.ajax({
+                url: "/api/products/"+ productUrl,
+                type: "GET",
+                dataType: 'json',
+                success: function (data) {
+                    $("div.modal-body > div > div:nth-child(2) > div > h2").text(data["productName"]).attr("product-url", data["productUrl"]);
+                    $("div.modal-body > div > div:nth-child(2) > div > h3").text(data["finalPrice"]);
+                    $("div.modal-body > div > div:nth-child(2) > div > div.quickview-peragraph > p").text(data["baseDescription"]);
+                    $("#add-cart").attr("data-producturl", data["productUrl"]);
+                    $("div.modal-body > div > div:nth-child(2) > div > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add" + data["id"]);
+                    $("#tabs-1 > div > p").text(data["detailDescription"]);
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
     });
     /*]]>*/
 </script>

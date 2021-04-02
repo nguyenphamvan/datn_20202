@@ -303,7 +303,7 @@
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action" style="margin-right: 10px;">
-                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
+                                        <a title="Quick View"
                                            th:href="@{'/api/products/' + ${product.getProductUrl()}}">
                                             <i class=" ti-eye"></i><span>Xem nhanh</span>
                                         </a>
@@ -319,10 +319,10 @@
                             </div>
                             <div class="product-content">
                                 <h3><a th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}"
-                                       th:utext="${product.getProductName()}">Tên sản phẩm</a></h3>
+                                       th:utext="${product.getProductName()}">/a></h3>
                                 <div class="product-price">
-                                    <span th:utext="${product.finalPrice}">$29.00</span>
-                                    <span class="old" th:utext="${product.price}">$60.00</span>
+                                    <span th:utext="${product.finalPrice}"></span>
+                                    <span class="old" th:utext="${product.price}"></span>
                                 </div>
                             </div>
                         </div>
@@ -558,7 +558,7 @@
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                         <!-- Product Slider -->
                         <div class="product-gallery">
-                            <div class="quickview-slider-active">
+                            <div class="quickView-slider-active">
                                 <div class="single-slider">
                                     <img src="https://via.placeholder.com/569x528" alt="#">
                                 </div>
@@ -576,22 +576,22 @@
                         <!-- End Product slider -->
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div class="quickview-content">
+                        <div class="quickView-content">
                             <h2>Flared Shift Dress</h2>
-                            <div class="quickview-ratting-review">
-                                <div class="quickview-ratting-wrap">
-                                    <div class="quickview-ratting">
+                            <div class="quickView-ratting-review">
+                                <div class="quickView-ratting-wrap">
+                                    <div class="quickView-ratting">
                                     </div>
                                     <span>( <span id="num-customer-review"></span> customer review)</span>
                                 </div>
-                                <div class="quickview-stock">
+                                <div class="quickView-stock">
                                     <span id="in-stock"><i class="fa fa-check-circle-o"></i> in stock</span>
                                     <span id="out-stock"><i class="fa fa-check-circle-o"
                                                             style="background-color: #bd2130"></i> out of stock</span>
                                 </div>
                             </div>
-                            <h3>$29.00</h3>
-                            <div class="quickview-peragraph">
+                            <h3></h3>
+                            <div class="quickView-peragraph">
                                 <p></p>
                             </div>
                             <div class="quantity">

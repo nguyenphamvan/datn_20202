@@ -37,9 +37,7 @@ public class CheckoutControllerApi {
     }
 
     @GetMapping("/getInfo")
-    public ResponseEntity<?> getInfoPayment(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail) {
-        User user = myUserDetail.getUser();
-        OrderDtoResponse orderResponse = new OrderDtoResponse();
+    public ResponseEntity<?> getInfoPayment(HttpSession session) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
             return ResponseEntity.ok(orderService.getInfoCheckout(cart));

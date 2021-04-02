@@ -99,6 +99,7 @@ public class ProductController {
         model.addAttribute("listCategory", listCategory);
         if(product != null) {
             model.addAttribute("product", product);
+            model.addAttribute("productUrl", product.getProductUrl());
         } else {
             model.addAttribute("message", "Not found product");
         }

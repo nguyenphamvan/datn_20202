@@ -35,4 +35,9 @@ public class ProductControllerApi {
     public boolean isProvideEnoughQuantity(@PathVariable("productUrl") String productUrl, @RequestParam("quantity") int quantity) {
         return productService.isProvideEnoughQuantity(productUrl, quantity);
     }
+
+    @GetMapping("/api/{productUrl}")
+    public ResponseEntity<?> getProductDetail(@PathVariable("productUrl") String productUrl) {
+        return null;
+    }
 }

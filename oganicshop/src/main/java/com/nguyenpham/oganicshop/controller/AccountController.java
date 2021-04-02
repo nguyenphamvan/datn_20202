@@ -22,8 +22,7 @@ public class AccountController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(value = {"/customer/account/edit",
-            "/customer/notification"} )
+    @GetMapping("/customer/account/edit")
     public String myAccountPage(Model model) {
         List<Category> listCategory = categoryService.getListCategory();
         model.addAttribute("listCategory", listCategory);

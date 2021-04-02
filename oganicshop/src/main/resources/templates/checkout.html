@@ -161,7 +161,7 @@
                         <div class="single-widget">
                             <div style="display: flex; justify-content: space-between">
                                 <h2>Mã giảm giá</h2>
-                                <a style="margin: auto 30px auto 0px; font-size: 13px; color: rgb(13, 92, 182);">Dành cho bạn</a>
+                                <a style="margin: auto 30px auto 0px; font-size: 13px; color: rgb(13, 92, 182);" data-toggle="modal" data-target="#productModal">Dành cho bạn</a>
                             </div>
                             <div class="coupon" style="margin: 30px 30px;display: flex;">
                                 <form>
@@ -284,6 +284,43 @@
     </div>
 </section>
 <!-- End Shop Services -->
+
+<!--modal for display discount code-->
+<!-- The Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-gallery">
+                            <div class="inner">
+                                <div class="list">
+                                    <div class="item">
+                                        <div class="thumb">
+                                            <div class="Picture__StyledPicture loaded">
+                                                <img class="image" src="/images/products/33/undefined">
+                                            </div>
+                                        </div>
+
+                                        <div class="info">
+                                            <a class="name">Giảm giá 30% cho đơn hàng trên 300k (tối đa 50k)</a>
+                                            <div class="date">2021-03-21T</div>
+                                            <div class="discount-detail">xem chi tiết</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Start Footer Area -->
 <th:block th:include="common/footer"/>

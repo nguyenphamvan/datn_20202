@@ -59,7 +59,6 @@ public class Product {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Review> reviews;
 
     public ProductDto convertProductToProductDto() {
