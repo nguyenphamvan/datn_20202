@@ -37,13 +37,13 @@ public class ProductController {
             @RequestParam(value = "category", required = false, defaultValue = "") String categoryUrl,
             @RequestParam(value = "supplier", required = false, defaultValue = "") String supplierName,
             @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
-            @RequestParam(value = "sortBy", required = false, defaultValue = "productName") String filed,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "name") String filed,
             @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
             @RequestParam(value = "pageSize", required = false, defaultValue = "6") int pageSize,
             @RequestParam(value = "minPrice", required = false, defaultValue = "0") int minPrice,
             @RequestParam(value = "maxPrice", required = false , defaultValue = "0") int maxPrice,
             Model model) {
-        List<Category> listCategory = categoryService.getListCategory();
+//        List<Category> listCategory = categoryService.getListCategory();
         Page<Product> page = null;
         if (categoryUrl.equals("") && !supplierName.equals("")) {
             Supplier supplier = supplierService.findSupplierByName(supplierName);
@@ -74,7 +74,7 @@ public class ProductController {
 
         }
 
-        model.addAttribute("listCategory", listCategory);
+//        model.addAttribute("listCategory", listCategory);
         model.addAttribute("listProduct", page.getContent());
         model.addAttribute("page", pageNum);
         model.addAttribute("totalPages", page.getTotalPages());
@@ -93,16 +93,7 @@ public class ProductController {
 
     @GetMapping("/products/{productUrl}.html")
     public String getProductDetail(@PathVariable("productUrl") String productUrl, Model model) {
-        Product product = productService.getProduct(productUrl);
-        List<Category> listCategory = categoryService.getListCategory();
-
-        model.addAttribute("listCategory", listCategory);
-        if(product != null) {
-            model.addAttribute("product", product);
-            model.addAttribute("productUrl", product.getProductUrl());
-        } else {
-            model.addAttribute("message", "Not found product");
-        }
+        model.addAttribute("productUrl", productUrl);
         return "product";
     }
 }

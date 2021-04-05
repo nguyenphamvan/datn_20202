@@ -61,16 +61,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="item : ${session.myCart}" th:data-productUrl="${item.getValue().getProduct().getProductUrl()}">
+                        <tr th:each="item : ${session.myCart}" th:data-url="${item.getValue().getProduct().getUrl()}">
                             <td class="image" data-title="No">
-                                <a th:href="@{'/products/' + ${item.getValue().getProduct().getProductUrl()} + '.html'}">
+                                <a th:href="@{'/products/' + ${item.getValue().getProduct().getUrl()} + '.html'}">
                                     <img src="https://via.placeholder.com/100x100" alt="Image">
                                 </a>
                             </td>
                             <td class="product-des" data-title="Description">
                                 <p class="product-name">
-                                    <a th:href="@{'/products/' + ${item.getValue().getProduct().getProductUrl()} + '.html'}"
-                                                           th:utext="${item.getValue().getProduct().getProductName()}">Tên sản phẩm</a>
+                                    <a th:href="@{'/products/' + ${item.getValue().getProduct().getUrl()} + '.html'}"
+                                                           th:utext="${item.getValue().getProduct().getName()}">Tên sản phẩm</a>
                                 </p>
                             </td>
                             <td class="price" data-title="Price"><span
@@ -94,7 +94,7 @@
                             </td>
                             <td class="total-amount" data-title="Total"><span
                                     th:utext="${item.getValue().caculateTotalItem()}">$220.88</span></td>
-                            <td class="action" data-title="Remove"><a th:id="${item.getValue().getProduct().getProductUrl()}"><i class="ti-trash remove-icon"></i></a>
+                            <td class="action" data-title="Remove"><a th:id="${item.getValue().getProduct().getUrl()}"><i class="ti-trash remove-icon"></i></a>
                             </td>
                         </tr>
                         </tbody>

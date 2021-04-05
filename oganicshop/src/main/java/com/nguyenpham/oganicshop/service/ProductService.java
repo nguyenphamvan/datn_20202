@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service;
 
+import com.nguyenpham.oganicshop.dto.ProductDto;
 import com.nguyenpham.oganicshop.entity.Product;
 import org.springframework.data.domain.Page;
 
@@ -13,6 +14,6 @@ public interface ProductService {
     Page<Product> searchProductByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir);
     int getAmountAvailable(String productUrl);
     boolean isProvideEnoughQuantity(String productUrl, int quantity);
-    Product getProduct(String productUrl);
+    ProductDto getProduct(String productUrl);
     Product getProductById(Long productId);
 }

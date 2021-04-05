@@ -31,8 +31,8 @@ public class CartController {
         if (cart == null) {
             cart = new HashMap<>();
         }
-        List<Category> listCategory = categoryService.getListCategory();
-        model.addAttribute("listCategory", listCategory);
+//        List<Category> listCategory = categoryService.getListCategory();
+//        model.addAttribute("listCategory", listCategory);
         model.addAttribute("shipFee", Constant.SHIP_FEE_STANDARD);
         return "cart";
     }

@@ -46,7 +46,6 @@ public class Review {
     private Review rootComment;
 
     @OneToMany(mappedBy = "rootComment", fetch = FetchType.LAZY)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Review> subReviews;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,7 +55,6 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    @JsonIgnore
     private User user;
 
     public ResponseReviewDto convertReviewToReviewDto() {
@@ -69,9 +67,8 @@ public class Review {
         response.setReviewerName(this.user.getFullName());
         response.setUserId(this.user.getId());
         response.setProductId(this.product.getId());
-        response.setProductImg(this.product.getImage());
         response.setCreatedAt(this.createdAt);
-        response.setUpdatedAt(this.updatedAt);
+        response.setNumbersOfLike(this.getNumbersOfLike());
         if (this.subReviews != null) {
             for (Review subReview : subReviews) {
                 ResponseReviewDto subReviewDto = new ResponseReviewDto();
@@ -82,7 +79,7 @@ public class Review {
                 subReviewDto.setComment(subReview.getComment());
                 subReviewDto.setTitle(subReview.getTitle());
                 subReviewDto.setCreatedAt(subReview.getCreatedAt());
-                subReviewDto.setUpdatedAt(subReview.getUpdatedAt());
+                subReviewDto.setNumbersOfLike(subReview.getNumbersOfLike());
                 response.addSubReview(subReviewDto);
             }
         }
@@ -98,9 +95,9 @@ public class Review {
         response.setImg(this.getImg());
         response.setReviewerName(this.getUser().getFullName());
         response.setUserId(this.getUser().getId());
-        response.setProductUrl(this.getProduct().getProductUrl());
+        response.setProductUrl(this.getProduct().getUrl());
         response.setProductImg(this.getProduct().getImage());
-        response.setProductName(this.getProduct().getProductName());
+        response.setProductName(this.getProduct().getName());
         response.setCreatedAt(this.getCreatedAt());
         response.setUpdatedAt(this.getUpdatedAt());
 

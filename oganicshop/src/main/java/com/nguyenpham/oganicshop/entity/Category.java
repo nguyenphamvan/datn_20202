@@ -3,14 +3,13 @@ package com.nguyenpham.oganicshop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nguyenpham.oganicshop.dto.CategoryDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Builder
 @Entity
@@ -44,7 +43,7 @@ public class Category {
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Category> subCategories;
+    private Set<Category> subCategories;
 
     public Category(String categoryUrl, String categoryName) {
         this.categoryUrl = categoryUrl;
@@ -53,9 +52,27 @@ public class Category {
 
     public void addSubCategory(Category category) {
         if (subCategories == null) {
-            subCategories = new ArrayList<>();
+            subCategories = new HashSet<>();
         }
         subCategories.add(category);
+    }
+
+    public CategoryDto convertToCategoryDto() {
+        CategoryDto category = new CategoryDto();
+        category.setId(this.getId());
+        category.setCategoryName(this.getCategoryName());
+        category.setCategoryUrl(this.getCategoryUrl());
+        if (this.getSubCategories() != null) {
+            for(Category c : this.getSubCategories()) {
+                CategoryDto subCategory = new CategoryDto();
+                subCategory.setId(c.getId());
+                subCategory.setCategoryName(c.getCategoryName());
+                subCategory.setCategoryUrl(c.getCategoryUrl());
+                subCategory.setParentId(c.getParent().getId());
+                category.addSubCategory(subCategory);
+            }
+        }
+        return category;
     }
 
 

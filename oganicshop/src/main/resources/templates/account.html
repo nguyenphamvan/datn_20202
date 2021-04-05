@@ -242,13 +242,35 @@
             url: "/api/account/info",
             type: "GET",
             dataType: 'json',
-            success: function (user) {
-                $("input[name='fullName']").val(user["fullName"]);
-                $("input[name='phoneNumber']").val(user["phone"]);
-                $("input[name='email']").val(user["email"]);
-                $("input[name='birthday']").val(user["birthday"]);
+            success: function (data) {
+
+                // show category
+                let categories = data["categories"];
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+                let info = data["infoAccount"];
+                $("input[name='fullName']").val(info["fullName"]);
+                $("input[name='phoneNumber']").val(info["phone"]);
+                $("input[name='email']").val(info["email"]);
+                $("input[name='birthday']").val(info["birthday"]);
                 let $radios = $('input:radio[name=gender]');
-                if (user["gender"] === "male") {
+                if (info["gender"] === "male") {
                     $radios.filter('[value=male]').prop('checked', true);
                 } else {
                     $radios.filter('[value=female]').prop('checked', true);

@@ -231,8 +231,8 @@
                                     <label>Sắp xếp theo :</label>
                                     <select id="sort-by"
                                             th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', null, null)|">
-                                        <option value="productName-asc">Name (A - Z)</option>
-                                        <option value="productName-desc">Name (Z - A)</option>
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
                                         <option value="finalPrice-asc">Price (Low &gt; High)</option>
                                         <option value="finalPrice-desc">Price (High &gt; Low)</option>
                                     </select>
@@ -253,8 +253,8 @@
                                     <label>Sắp xếp theo :</label>
                                     <select id="sort-by"
                                             th:attr="onchange=|getSortAndShow('${filterByPrice}', null, '${supplier.getName()}', null)|">
-                                        <option value="productName-asc">Name (A - Z)</option>
-                                        <option value="productName-desc">Name (Z - A)</option>
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
                                         <option value="finalPrice-asc">Price (Low &gt; High)</option>
                                         <option value="finalPrice-desc">Price (High &gt; Low)</option>
                                     </select>
@@ -275,8 +275,8 @@
                                     <label>Sắp xếp theo :</label>
                                     <select id="sort-by"
                                             th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', '${supplier.getName()}', null)|">
-                                        <option value="productName-asc">Name (A - Z)</option>
-                                        <option value="productName-desc">Name (Z - A)</option>
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
                                         <option value="finalPrice-asc">Price (Low &gt; High)</option>
                                         <option value="finalPrice-desc">Price (High &gt; Low)</option>
                                     </select>
@@ -297,14 +297,14 @@
                     <div class="col-lg-4 col-md-6 col-12" th:each="product : ${listProduct}">
                         <div class="single-product">
                             <div class="product-img">
-                                <a th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}">
-                                    <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                    <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <a th:href="@{'/products/' + ${product.getUrl()} + '.html'}">
+                                    <img class="default-img" th:src="@{https://via.placeholder.com/550x750}" alt="#">
+                                    <img class="hover-img" th:src="@{https://via.placeholder.com/550x750}" alt="#">
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action" style="margin-right: 10px;">
                                         <a title="Quick View"
-                                           th:href="@{'/api/products/' + ${product.getProductUrl()}}">
+                                           th:href="@{'/api/products/' + ${product.getUrl()}}">
                                             <i class=" ti-eye"></i><span>Xem nhanh</span>
                                         </a>
                                         <a th:if="${#request.userPrincipal}" title="Wishlist" th:href="@{'/api/account/wishlist/add/' + ${product.getId()}}">
@@ -313,13 +313,13 @@
                                     </div>
                                     <div class="product-action-2">
                                         <a title="Add to cart"
-                                           th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}">Thêm vào giỏ hàng</a>
+                                           th:href="@{'/products/' + ${product.getUrl()} + '.html'}">Thêm vào giỏ hàng</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}"
-                                       th:utext="${product.getProductName()}">/a></h3>
+                                <h3><a th:href="@{'/products/' + ${product.getUrl()} + '.html'}"
+                                       th:utext="${product.getName()}">/a></h3>
                                 <div class="product-price">
                                     <span th:utext="${product.finalPrice}"></span>
                                     <span class="old" th:utext="${product.price}"></span>

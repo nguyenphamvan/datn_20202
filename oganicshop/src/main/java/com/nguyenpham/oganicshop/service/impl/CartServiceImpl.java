@@ -23,7 +23,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public HashMap<Long, CartItem> addItemCart(HashMap<Long, CartItem> cart, String productUrl, int quantity) {
-        Product product = productRepository.findByProductUrl(productUrl).orElse(null);
+        Product product = productRepository.findByUrl(productUrl).orElse(null);
         if (product != null) {
             CartItem item;
             if (cart.containsKey(product.getId())) {
@@ -47,7 +47,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public HashMap<Long, CartItem> editItemCart(HashMap<Long, CartItem> cart, String productUrl, String changeMethod) {
-        Product product = productRepository.findByProductUrl(productUrl).orElse(null);
+        Product product = productRepository.findByUrl(productUrl).orElse(null);
         if(product != null && cart.containsKey(product.getId())) {
             CartItem item = cart.get(product.getId());
             if(changeMethod.equals("plus")) {
@@ -69,7 +69,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public HashMap<Long, CartItem> removeItemCart(HashMap<Long, CartItem> cart, String productUrl) {
-        Product product = productRepository.findByProductUrl(productUrl).orElse(null);
+        Product product = productRepository.findByUrl(productUrl).orElse(null);
         if (cart.containsKey(product.getId())) {
             cart.remove(product.getId());
         }

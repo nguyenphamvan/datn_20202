@@ -1,6 +1,8 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.dto.ProductDto;
 import com.nguyenpham.oganicshop.entity.Product;
+import com.nguyenpham.oganicshop.entity.Review;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,8 +61,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProduct(String productUrl) {
-        return productRepository.findByProductUrl(productUrl).orElse(null);
+    public ProductDto getProduct(String productUrl) {
+        Product product = productRepository.findByUrl(productUrl).orElse(null);
+        Set<Review> reviews = product.getReviews().stream().filter(rv -> rv.getRootComment() == null).collect(Collectors.toSet());
+        product.setReviews(reviews);
+        return product.convertProductToProductDto();
     }
 
     @Override
@@ -75,12 +82,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int getAmountAvailable(String productUrl) {
-        return productRepository.findByProductUrl(productUrl).get().getAmount();
+        return productRepository.findByUrl(productUrl).get().getAmount();
     }
 
     @Override
     public boolean isProvideEnoughQuantity(String productUrl, int quantity) {
-        int quantityAvailable = productRepository.findByProductUrl(productUrl).get().getAmount();
+        int quantityAvailable = productRepository.findByUrl(productUrl).get().getAmount();
         if (quantityAvailable >= quantity) {
             return true;
         }

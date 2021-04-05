@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,10 +28,9 @@ public class ResponseReviewDto {
     private String comment;
     private String img;
     private int rating;
-    @CreationTimestamp
+    private int numbersOfLike;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date createdAt;
-    @UpdateTimestamp
-    private Date updatedAt;
     private Set<ResponseReviewDto> subReviews;
     public void addSubReview(ResponseReviewDto subReview) {
         if (this.subReviews == null) {

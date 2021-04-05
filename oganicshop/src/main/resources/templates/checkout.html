@@ -393,20 +393,42 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $(".contact-address .address .name").text(data["shippingAddress"]["contactReceiver"]);
-                $(".contact-address .address .street").text(data["shippingAddress"]["contactAddress"]);
-                $(".contact-address .address .phone").text("Điện thoại : " + data["shippingAddress"]["contactPhone"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(data["subTotal"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(data["discount"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(data["shipFee"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(data["total"]);
+
+                // show category
+                let categories = data["categories"];
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+                let order = data["order"]
+                $(".contact-address .address .name").text(order["shippingAddress"]["contactReceiver"]);
+                $(".contact-address .address .street").text(order["shippingAddress"]["contactAddress"]);
+                $(".contact-address .address .phone").text("Điện thoại : " + order["shippingAddress"]["contactPhone"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(order["subTotal"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(order["discount"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(order["shipFee"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(order["total"]);
                 $("input[name='deliveryMethod']").each(function () {
-                    if ($(this).val() === data["deliveryMethod"]) {
+                    if ($(this).val() === order["deliveryMethod"]) {
                         $(this).prop('checked', true);
                     }
                 });
                 $("input[name='paymentMethod']").each(function () {
-                    if ($(this).val() === data["paymentMethod"]) {
+                    if ($(this).val() === order["paymentMethod"]) {
                         $(this).prop('checked', true);
                     }
                 });

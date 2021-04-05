@@ -86,7 +86,7 @@ public class Order {
         List<OrderDetailDto> orderDetailDtoList = new ArrayList<>();
         StringBuilder summaryProductName = new StringBuilder("");
         this.getOrderDetails().forEach(orderDetail -> {
-            summaryProductName.append(orderDetail.getProduct().getProductName());
+            summaryProductName.append(orderDetail.getProduct().getName());
             orderDetailDtoList.add(orderDetail.convertOrderDetailToOrderDetailDto());
         });
         orderDto.setOrderLogging(this.convertOrderLoggingToOrderLoggingDto());

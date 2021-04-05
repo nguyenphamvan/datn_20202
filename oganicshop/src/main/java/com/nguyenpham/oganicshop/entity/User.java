@@ -14,8 +14,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "orders")
-@ToString(exclude = "orders")
+@EqualsAndHashCode(exclude = {"orders", "shippingAddresses"})
+@ToString(exclude = {"orders", "shippingAddresses"})
 public class User {
 
     @Id
@@ -23,6 +23,7 @@ public class User {
     private Long id;
     @Column(nullable = false, unique = true)
     private String email;
+    @JsonIgnore
     private String password;
     private String role;
     @Column(name = "fullname")

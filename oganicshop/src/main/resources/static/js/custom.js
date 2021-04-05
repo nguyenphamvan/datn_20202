@@ -5,7 +5,7 @@ $(document).ready(function () {
     /* function add item in cart using jquery ajax  */
     $('#add-cart').on('click', function () {
         let data = {
-            productUrl: $(this).attr("data-productUrl"),
+            productUrl: $(this).attr("productUrl"),
             quantity: $('input[class="input-number"]').val()
         };
 
@@ -13,7 +13,10 @@ $(document).ready(function () {
             $.ajax({
                 url: "/api/cart/add",
                 type: "POST",
-                data: JSON.stringify(data),
+                data: JSON.stringify({
+                    "productUrl": $(this).attr("productUrl"),
+                    "quantity": $('input[class="input-number"]').val()
+                }),
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
@@ -38,7 +41,7 @@ $(document).ready(function () {
         let unitPrice = buttonMinus.closest('tr').find('td.price span').text();
         let totalAmountItem = parseInt(quantity) * parseInt(unitPrice);
         let data = {
-            productUrl : buttonMinus.closest('tr').attr('data-productUrl'),
+            url : buttonMinus.closest('tr').attr('data-url'),
             changeMethod : "minus"
         }
         if (quantity > 0) {
@@ -60,7 +63,7 @@ $(document).ready(function () {
                 })
             ).then(function () {
                 loadHeaderCart();
-                updatePriceCart()
+                updatePriceCart();
             });
         }
     });
@@ -73,7 +76,7 @@ $(document).ready(function () {
         let unitPrice = buttonPlus.closest('tr').find('td.price span').text();
         let totalAmountItem = parseInt(quantity) * parseInt(unitPrice);
         let data = {
-            productUrl : buttonPlus.closest('tr').attr('data-productUrl'),
+            url : buttonPlus.closest('tr').attr('data-url'),
             changeMethod : "plus"
         }
         $.when(
@@ -93,7 +96,7 @@ $(document).ready(function () {
             })
         ).then(function () {
             loadHeaderCart();
-            updatePriceCart()
+            updatePriceCart();
         });
     });
     /* end function minus item in cart */
@@ -138,7 +141,7 @@ $(document).ready(function () {
             type: "GET",
             dataType: 'json',
             success: function (product) {
-                $('.quickView-content h2').text(product["productName"]);
+                $('.quickView-content h2').text(product["name"]);
                 $('.quickView-ratting').empty();
                 for (let i = 0; i < product["ratting"]; i++) {
                     $('.quickView-ratting').append("<i class=\"yellow fa fa-star\"></i>");
@@ -149,7 +152,7 @@ $(document).ready(function () {
                 $('#num-customer-review').text(product["numberOfReviews"]);
                 $('.quickView-content h3').text(product["finalPrice"]);
                 $('.quickView-peragraph p').text(product["description"]);
-                $('#add-cart').attr('data-productUrl', product["productUrl"]);
+                $('#add-cart').attr('data-url', product["url"]);
                 if (product["amount"] > 0) {
                     $('#in-stock').css('display', 'block');
                     $('#out-stock').css('display', 'none');
@@ -205,10 +208,10 @@ function loadHeaderCart() {
                 let firstRow = $('#item-for-cloning');
                 $.each(data2["listItemCart"], function (index, item) {
                     let cloneRow = firstRow.clone();
-                    cloneRow.attr('id', item.product["productUrl"]);
+                    cloneRow.attr('id', item.product["url"]);
                     cloneRow.css('display', 'block');
-                    cloneRow.find('a.cart-img').attr('href', '/products/' + item.product["productUrl"]);
-                    cloneRow.find('a.cart-item-name').text(item.product["productName"]).attr('href', '/products/' + item.product["productUrl"]);
+                    cloneRow.find('a.cart-img').attr('href', '/products/' + item.product["url"]);
+                    cloneRow.find('a.cart-item-name').text(item.product["name"]).attr('href', '/products/' + item.product["url"]);
                     cloneRow.find('span.quantity').text(item.quantity);
                     cloneRow.find('span.amount').text(item.product["finalPrice"]);
                     cloneRow.insertAfter('ul.shopping-list li:last');

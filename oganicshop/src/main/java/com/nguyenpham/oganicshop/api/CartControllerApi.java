@@ -57,7 +57,7 @@ public class CartControllerApi {
     @PutMapping("/edit")
     public ResponseEntity<?> editItemCart(HttpSession session, @RequestBody ObjectNode object) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        String productUrl = object.get("productUrl").asText();
+        String productUrl = object.get("url").asText();
         String changeMethod = object.get("changeMethod").asText();
         if (cart == null) {
             cart = new HashMap<>();

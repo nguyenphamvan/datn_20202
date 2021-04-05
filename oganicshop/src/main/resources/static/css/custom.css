@@ -35,7 +35,7 @@
     display: inline-block;
 }
 
-.reviews li.yellow i {
+div.review-item-detail > div > div:nth-child(1) > span > i.yellow {
     color: #F7941D;
 }
 

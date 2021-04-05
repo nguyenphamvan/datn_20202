@@ -1,6 +1,6 @@
 package com.nguyenpham.oganicshop.api;
 
-import com.nguyenpham.oganicshop.dto.CategoryRequest;
+import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class CategoryControllerApi {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<?> insertCategory(@RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<?> insertCategory(@RequestBody CategoryDto categoryRequest) {
         Category savedCategory = categoryService.addCategory(categoryRequest);
         return new ResponseEntity<Object>(savedCategory, HttpStatus.OK);
     }

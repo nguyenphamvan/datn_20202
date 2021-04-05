@@ -27,7 +27,7 @@ public class HomeController {
 
     @GetMapping
     public String viewHomePage(Model model) {
-        List<Category> listCategory = categoryService.getListCategory();
+        List<Category> listCategory = categoryService.getCategories();
         model.addAttribute("listCategory", listCategory);
         return "home";
     }

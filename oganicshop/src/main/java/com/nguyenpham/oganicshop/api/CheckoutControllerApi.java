@@ -10,6 +10,7 @@ import com.nguyenpham.oganicshop.entity.Discount;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CartService;
+import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.CouponService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,27 +21,32 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/checkout")
 public class CheckoutControllerApi {
 
     private OrderService orderService;
-    private CartService cartService;
     private CouponService couponService;
+    private CategoryService categoryService;
 
     @Autowired
-    public CheckoutControllerApi(OrderService orderService, CartService cartService, CouponService couponService) {
+    public CheckoutControllerApi(OrderService orderService, CategoryService categoryService, CouponService couponService) {
         this.orderService = orderService;
-        this.cartService = cartService;
+        this.categoryService = categoryService;
         this.couponService = couponService;
     }
 
     @GetMapping("/getInfo")
     public ResponseEntity<?> getInfoPayment(HttpSession session) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        Map<String, Object> response = new HashMap<>();
+        response.put("categories", categoryService.getListCategory());
+        response.put("order", orderService.getInfoCheckout(cart));
         if (cart != null) {
-            return ResponseEntity.ok(orderService.getInfoCheckout(cart));
+            response.put("order", orderService.getInfoCheckout(cart));
+            return ResponseEntity.ok(response);
         }
         return new ResponseEntity<Object>("Có lỗi xảy ra khi kiểm tra thông tin thanh toán", HttpStatus.INTERNAL_SERVER_ERROR);
     }

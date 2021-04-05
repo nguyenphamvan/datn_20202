@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ReviewService {
 
+    List<ResponseReviewDto> getReviewsOfProduct(long productId);
     ResponseReviewDto save(RequestReviewDto postReview);
     List<MyReviewDto> getListReviews();
     Review update(RequestReviewDto review);

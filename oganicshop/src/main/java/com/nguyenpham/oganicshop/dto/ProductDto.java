@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +27,5 @@ public class ProductDto {
     private int amount;
     private String categoryName;
     private String supplierName;
+    private List<ResponseReviewDto> reviews;
 }

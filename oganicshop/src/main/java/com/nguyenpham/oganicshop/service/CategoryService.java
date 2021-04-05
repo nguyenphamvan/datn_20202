@@ -1,14 +1,15 @@
 package com.nguyenpham.oganicshop.service;
 
-import com.nguyenpham.oganicshop.dto.CategoryRequest;
+import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.entity.Category;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    List<Category> getListCategory();
+    List<Category> getCategories();
+    List<CategoryDto> getListCategory();
     Category getByCategoryUrl(String categoryUrl);
-    Category addCategory(CategoryRequest categoryRequest);
+    Category addCategory(CategoryDto categoryRequest);
     Category updateCategory(Category category);
 }

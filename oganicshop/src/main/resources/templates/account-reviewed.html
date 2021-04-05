@@ -91,7 +91,29 @@
             url: "/api/review/my-review",
             type: "GET",
             dataType: 'json',
-            success: function (listMyReview) {
+            success: function (data) {
+
+                // show category
+                let categories = data["categories"];
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+                let listMyReview = data["reviews"];
                 $(".styles__StyledReviewList .heading span").text(listMyReview.length);
                 if (listMyReview.length > 0) {
                     let firstItem = $(".styles__StyledReviewList div.list .item:first-child");

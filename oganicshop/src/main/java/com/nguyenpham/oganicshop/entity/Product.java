@@ -2,13 +2,16 @@ package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Builder
 @Entity
@@ -24,9 +27,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String productName;
+    private String name;
     @Column(nullable = false, unique = true)
-    private String productUrl;
+    private String url;
     private String image;
     private String size;
     private String color;
@@ -38,7 +41,6 @@ public class Product {
     @Column(nullable = false)
     private int finalPrice;
     private int rating;
-    private int numberOfReviews;
     private int amount;
 
     @JsonIgnore
@@ -64,8 +66,8 @@ public class Product {
     public ProductDto convertProductToProductDto() {
         ProductDto productDto = new ProductDto();
         productDto.setId(this.getId());
-        productDto.setProductName(this.getProductName());
-        productDto.setProductUrl(this.getProductUrl());
+        productDto.setProductName(this.getName());
+        productDto.setProductUrl(this.getUrl());
         productDto.setBaseDescription(this.getBaseDescription());
         productDto.setDetailDescription(this.getDetailDescription());
         productDto.setCategoryName(this.getCategory().getCategoryName());
@@ -74,9 +76,12 @@ public class Product {
         productDto.setPrice(this.getPrice());
         productDto.setDiscount(this.getDiscount());
         productDto.setFinalPrice(this.getFinalPrice());
-        productDto.setNumberOfReviews(this.getNumberOfReviews());
+        productDto.setNumberOfReviews(this.getReviews().size());
         productDto.setRating(this.getRating());
         productDto.setAmount(this.getAmount());
+
+        List<ResponseReviewDto> reviews = this.getReviews().stream().map(rv -> rv.convertReviewToReviewDto()).collect(Collectors.toList());;
+        productDto.setReviews(reviews);
         return productDto;
     }
 

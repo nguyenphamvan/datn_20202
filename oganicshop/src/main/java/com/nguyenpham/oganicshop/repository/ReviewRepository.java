@@ -10,4 +10,5 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findAllByUserId(long userId);
+    List<Review> findAllByProductIdAndRootCommentIsNull(long productId);
 }

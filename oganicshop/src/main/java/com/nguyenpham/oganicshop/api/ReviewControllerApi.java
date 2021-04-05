@@ -6,6 +6,7 @@ import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
+import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.ReviewService;
 import com.nguyenpham.oganicshop.util.FileUploadUtil;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/review")
@@ -25,16 +28,21 @@ public class ReviewControllerApi {
 
     private ReviewService reviewService;
     private OrderService orderService;
+    private CategoryService categoryService;
 
     @Autowired
-    public ReviewControllerApi(ReviewService reviewService, OrderService orderService) {
+    public ReviewControllerApi(ReviewService reviewService, OrderService orderService, CategoryService categoryService) {
         this.reviewService = reviewService;
         this.orderService = orderService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/my-review")
     public ResponseEntity<?> getListReview() {
-        return ResponseEntity.ok(reviewService.getListReviews());
+        Map<String, Object> response = new HashMap<>();
+        response.put("categories", categoryService.getListCategory());
+        response.put("reviews", reviewService.getListReviews());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/post")

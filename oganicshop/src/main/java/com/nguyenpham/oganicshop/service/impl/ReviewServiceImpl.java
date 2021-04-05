@@ -31,34 +31,41 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<ResponseReviewDto> getReviewsOfProduct(long productId) {
+        List<Review> listReviews = reviewRepository.findAllByProductIdAndRootCommentIsNull(productId);
+        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());;
+        return listReviewDto;
+    }
+
+    @Override
     public ResponseReviewDto save(RequestReviewDto postReview) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        if (user != null) {
-            Review review = new Review();
-            review.setTitle(postReview.getTitle());
-            review.setComment(postReview.getComment());
-            review.setRating(postReview.getRating());
+        Review review = new Review();
+        review.setTitle(postReview.getTitle());
+        review.setComment(postReview.getComment());
+        review.setRating(postReview.getRating());
+        if (postReview.getImage() != null) {
             review.setImg(postReview.getImage().getOriginalFilename()); // lấy hình ảnh, sẽ lưu ý để làm cách khác tưởng minh hơn
-            if (postReview.getRootId() != null) {
-                Review rootReview = reviewRepository.findById(postReview.getRootId()).orElse(null);
-                review.setRootComment(rootReview);
-                review.setProduct(rootReview.getProduct());
-            } else {
-                Product product = productRepository.findById(postReview.getProductId()).orElse(null);
-                if (product != null) {
-                    review.setProduct(product);
-                }
-            }
-            review.setUser(user);
-            return reviewRepository.save(review).convertReviewToReviewDto();
         }
-        return null;
+
+        if (postReview.getRootId() != null) {
+            Review rootReview = reviewRepository.findById(postReview.getRootId()).orElse(null);
+            review.setRootComment(rootReview);
+            review.setProduct(rootReview.getProduct());
+        } else {
+            Product product = productRepository.findById(postReview.getProductId()).orElse(null);
+            if (product != null) {
+                review.setProduct(product);
+            }
+        }
+        review.setUser(user);
+        return reviewRepository.save(review).convertReviewToReviewDto();
     }
 
     @Override
     public List<MyReviewDto> getListReviews() {
-//        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        List<Review> listReviews = reviewRepository.findAllByUserId((long) 1);
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
         List<MyReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToMyReviewDto()).collect(Collectors.toList());;
         return listReviewDto;
     }

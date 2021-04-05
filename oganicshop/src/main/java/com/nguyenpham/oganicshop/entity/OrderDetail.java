@@ -40,8 +40,8 @@ public class OrderDetail {
         OrderDetailDto orderDetailDto = new OrderDetailDto();
         orderDetailDto.setId(this.getId());
         orderDetailDto.setProductId(this.getProduct().getId());
-        orderDetailDto.setProductName(this.getProduct().getProductName());
-        orderDetailDto.setProductUrl(this.getProduct().getProductUrl());
+        orderDetailDto.setProductName(this.getProduct().getName());
+        orderDetailDto.setProductUrl(this.getProduct().getUrl());
         orderDetailDto.setImage(this.getProduct().getImage());
         orderDetailDto.setQuantity(this.getQuantity());
         orderDetailDto.setDiscount(this.getDiscount());

@@ -313,7 +313,29 @@
             url: "/api/sales/order/view/" + orderId,
             type: "GET",
             dataType: 'json',
-            success: function (order) {
+            success: function (data) {
+
+                // show category
+                let categories = data["categories"];
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+                let order = data["order"];
                 $(".styles__StyledAccountOrderDetail .heading span:first-child").text("Chi tiết đơn hàng #" + order["id"]);
                 $(".styles__StyledAccountOrderDetail .heading span.status").text(order["status"]);
                 $(".styles__StyledAccountOrderDetail .created-date").text("Ngày đặt hàng: " + order["orderDate"]);

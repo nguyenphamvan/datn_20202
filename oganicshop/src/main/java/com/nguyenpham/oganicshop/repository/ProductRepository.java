@@ -12,11 +12,11 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Optional<Product> findByProductUrl(String productUrl);
+    Optional<Product> findByUrl(String productUrl);
     Page findAll(Pageable pageable);
 
-    @Query(value = "SELECT p FROM Product p  WHERE p.productName LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%",
-           countQuery = "SELECT COUNT(p) FROM Product p WHERE p.productName LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%")
+    @Query(value = "SELECT p FROM Product p  WHERE p.name LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%",
+           countQuery = "SELECT COUNT(p) FROM Product p WHERE p.name LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%")
     Page findProductsByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
     @Query(value = "SELECT p FROM Product p  WHERE (p.category.categoryUrl =:categoryUrl OR p.category.parent.categoryUrl =:categoryUrl) AND p.supplier.name =:supplierName",

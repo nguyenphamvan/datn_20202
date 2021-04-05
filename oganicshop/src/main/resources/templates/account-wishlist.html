@@ -102,36 +102,63 @@
             url: "/api/account/wishlist",
             type: "GET",
             dataType: 'json',
-            success: function (wishlist) {
-                $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
-                if (wishlist.length > 0) {
-                    let firstItem = $(".styles__StyledAccountWishList ul.list li:first-child");
-                    $.each(wishlist, function (index, item) {
-                        let itemClone = firstItem.clone();
-                        itemClone.find(".btn-delete").attr("product-id", item["id"]);
-                        itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"] + ".html");
-                        itemClone.find(".thumbnail a img.image").attr("src", "/images/products/" + item["id"] + "/" + item["image"]);
-                        itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-                        itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
-                        itemClone.find("div.my-reviews__name").text(item["productUrl"]);
-                        for (let i = 0; i < parseInt(item["rating"]); i++) {
-                            itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
-                        }
-                        for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
-                            itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
-                        }
-                        itemClone.find(".ratting-wrap span").text("(" + item["numberOfReviews"] + " customer review)")
-                        itemClone.find(".footer_favourite .price").text(item["finalPrice"] + " ₫");
-                        if (parseInt(item["discount"]) > 0) {
-                            itemClone.find(".footer_favourite .wrap .list-price").text(item["price"] + " ₫");
-                            itemClone.find(".footer_favourite .wrap .discount").text(item["discount"] + " ₫");
-                        }
-                        itemClone.insertAfter(".styles__StyledAccountWishList ul.list li:first-child");
-                    });
-                    firstItem.hide();
+            success: function (data) {
+
+                // show category
+                let categories = data["categories"];
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+                if(data.hasOwnProperty("wishlist")) {
+                    let wishlist = data["wishlist"];
+                    $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
+                    if (wishlist.length > 0) {
+                        let firstItem = $(".styles__StyledAccountWishList ul.list li:first-child");
+                        $.each(wishlist, function (index, item) {
+                            let itemClone = firstItem.clone();
+                            itemClone.find(".btn-delete").attr("product-id", item["id"]);
+                            itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"] + ".html");
+                            itemClone.find(".thumbnail a img.image").attr("src", "/images/products/" + item["id"] + "/" + item["image"]);
+                            itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                            itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
+                            itemClone.find("div.my-reviews__name").text(item["productUrl"]);
+                            for (let i = 0; i < parseInt(item["rating"]); i++) {
+                                itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
+                            }
+                            for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
+                                itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
+                            }
+                            itemClone.find(".ratting-wrap span").text("(" + item["numberOfReviews"] + " customer review)")
+                            itemClone.find(".footer_favourite .price").text(item["finalPrice"] + " ₫");
+                            if (parseInt(item["discount"]) > 0) {
+                                itemClone.find(".footer_favourite .wrap .list-price").text(item["price"] + " ₫");
+                                itemClone.find(".footer_favourite .wrap .discount").text(item["discount"] + " ₫");
+                            }
+                            itemClone.insertAfter(".styles__StyledAccountWishList ul.list li:first-child");
+                        });
+                        firstItem.hide();
+                    } else {
+                        $(".styles__StyledAccountWishList").empty()
+                            .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")
+                    }
                 } else {
-                    $(".styles__StyledAccountWishList").empty()
-                        .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")
+                    $(".styles__StyledAccountWishList").empty().append("<div>Danh sách sản phẩm yêu thích rỗng</div>");
+
                 }
             },
             error: function () {

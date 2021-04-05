@@ -24,23 +24,23 @@ public class SalesController {
 
     @GetMapping("/order/history")
     public String viewOrderHistory(Model model) {
-        List<Category> listCategory = categoryService.getListCategory();
-        model.addAttribute("listCategory", listCategory);
+//        List<Category> listCategory = categoryService.getListCategory();
+//        model.addAttribute("listCategory", listCategory);
         return "order-manager";
     }
 
     @GetMapping("/order/view/{orderId}")
     public String viewOrderDetail(Model model, @PathVariable("orderId") long orderId) {
-        List<Category> listCategory = categoryService.getListCategory();
-        model.addAttribute("listCategory", listCategory);
+//        List<Category> listCategory = categoryService.getListCategory();
+//        model.addAttribute("listCategory", listCategory);
         model.addAttribute("orderId", orderId);
         return "order-detail";
     }
 
     @GetMapping("/order/tracking/{orderId}")
     public String viewOrderTracking(Model model, @PathVariable("orderId") long orderId) {
-        List<Category> listCategory = categoryService.getListCategory();
-        model.addAttribute("listCategory", listCategory);
+//        List<Category> listCategory = categoryService.getListCategory();
+//        model.addAttribute("listCategory", listCategory);
         model.addAttribute("orderId", orderId);
         return "order-tracking";
     }

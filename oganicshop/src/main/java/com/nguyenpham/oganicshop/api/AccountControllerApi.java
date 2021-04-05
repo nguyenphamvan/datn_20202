@@ -5,6 +5,7 @@ import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
+import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,12 @@ import java.util.Map;
 public class AccountControllerApi {
 
     private UserService userService;
+    private CategoryService categoryService;
 
     @Autowired
-    public AccountControllerApi(UserService userService) {
+    public AccountControllerApi(UserService userService, CategoryService categoryService) {
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/check-password")
@@ -32,7 +35,10 @@ public class AccountControllerApi {
 
     @GetMapping("/info")
     public ResponseEntity<?> getInfoAccount() {
-        return ResponseEntity.ok(userService.getInfoAccount());
+        Map<String, Object> response = new HashMap<>();
+        response.put("categories", categoryService.getListCategory());
+        response.put("infoAccount", userService.getInfoAccount());
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update")
@@ -42,7 +48,10 @@ public class AccountControllerApi {
 
     @GetMapping("/address")
     public ResponseEntity<?> getInfoShippingAddress() {
-        return ResponseEntity.ok(userService.getShippingAddress());
+        Map<String, Object> response = new HashMap<>();
+        response.put("categories", categoryService.getListCategory());
+        response.put("shippingAddr", userService.getShippingAddress());
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/address/update")
@@ -57,7 +66,10 @@ public class AccountControllerApi {
 
     @GetMapping("/wishlist")
     public ResponseEntity<?> getMyWishlist() {
-        return ResponseEntity.ok(userService.getWishlists());
+        Map<String, Object> response = new HashMap<>();
+        response.put("categories", categoryService.getListCategory());
+        response.put("wishLists", userService.getWishlists());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/wishlist/add/{productId}")
@@ -68,11 +80,6 @@ public class AccountControllerApi {
     @DeleteMapping("/wishlist/remove/{productId}")
     public ResponseEntity<?> removeProductFromWishlist(@PathVariable("productId") long productId) {
         return ResponseEntity.ok(userService.removeProductFromWishlist(productId));
-    }
-
-    @GetMapping("/notification")
-    public ResponseEntity<?> getMyNotifications() {
-        return null;
     }
 
 }

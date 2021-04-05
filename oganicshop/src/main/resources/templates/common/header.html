@@ -174,23 +174,23 @@
                                             <li class="active"><a th:href="@{/}">Trang chủ</a></li>
                                             <li><a>Danh mục<i class="ti-angle-down"></i></a>
                                                 <ul class="dropdown">
-                                                    <li th:each="category : ${listCategory}">
-                                                        <th:block th:if="${category.getSubCategories().size() > 0}">
-                                                            <a class="parent-category"
-                                                               th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"
-                                                               th:utext="${category.getCategoryName()}"></a>
-                                                            <ul class="list-child-category">
-                                                                <li th:each="subCategory : ${category.getSubCategories()}">
-                                                                    <a th:href="@{'/collections.html?category=' + ${subCategory.getCategoryUrl()}}"
-                                                                       th:utext="${subCategory.getCategoryName()}"></a>
-                                                                </li>
-                                                            </ul>
-                                                        </th:block>
-                                                        <th:block th:if="${category.getSubCategories().size() == 0}">
-                                                            <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"
-                                                               th:utext="${category.getCategoryName()}"></a>
-                                                        </th:block>
-                                                    </li>
+<!--                                                    <li th:each="category : ${listCategory}">-->
+<!--                                                        <th:block th:if="${category.getSubCategories().size() > 0}">-->
+<!--                                                            <a class="parent-category"-->
+<!--                                                               th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"-->
+<!--                                                               th:utext="${category.getCategoryName()}"></a>-->
+<!--                                                            <ul class="list-child-category">-->
+<!--                                                                <li th:each="subCategory : ${category.getSubCategories()}">-->
+<!--                                                                    <a th:href="@{'/collections.html?category=' + ${subCategory.getCategoryUrl()}}"-->
+<!--                                                                       th:utext="${subCategory.getCategoryName()}"></a>-->
+<!--                                                                </li>-->
+<!--                                                            </ul>-->
+<!--                                                        </th:block>-->
+<!--                                                        <th:block th:if="${category.getSubCategories().size() == 0}">-->
+<!--                                                            <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"-->
+<!--                                                               th:utext="${category.getCategoryName()}"></a>-->
+<!--                                                        </th:block>-->
+<!--                                                    </li>-->
                                                 </ul>
                                             </li>
                                             <li><a href="#">Thông tin khuyễn mãi</a></li>
