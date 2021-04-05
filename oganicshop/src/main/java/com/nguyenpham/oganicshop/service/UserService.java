@@ -8,6 +8,7 @@ import com.nguyenpham.oganicshop.entity.User;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Set;
 
 public interface UserService {
@@ -19,7 +20,7 @@ public interface UserService {
     UserDto getInfoAccount();
     UserDto updateInfo (UserDto userRequest);
     ShippingAddressDto addShippingAddress(ShippingAddressDto request);
-    ShippingAddressDto getShippingAddress();
+    List<ShippingAddressDto> getShippingAddress();
     ShippingAddressDto updateShippingAddress (ShippingAddressDto request);
     Set<ProductDto> getWishlists();
     boolean addProductToWishlist(long productId);

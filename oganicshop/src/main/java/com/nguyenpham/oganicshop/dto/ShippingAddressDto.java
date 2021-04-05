@@ -14,7 +14,7 @@ public class ShippingAddressDto {
     private String contactReceiver;
     private String contactPhone;
     private String contactAddress;
-    private boolean addrDefault;
+    private boolean isDefault;
 
     public ShippingAddressDto(String contactReceiver, String contactPhone, String contactAddress) {
         this.contactReceiver = contactReceiver;
@@ -22,12 +22,11 @@ public class ShippingAddressDto {
         this.contactAddress = contactAddress;
     }
 
-    public ShippingAddressDto(String contactReceiver, String contactPhone, String contactAddress, boolean addrDefault) {
-        this.id = id;
+    public ShippingAddressDto(String contactReceiver, String contactPhone, String contactAddress, boolean isDefault) {
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
         this.contactAddress = contactAddress;
-        this.addrDefault = addrDefault;
+        this.isDefault = isDefault;
     }
 
     public ShippingAddressDto(Long id, String contactReceiver, String contactPhone, String contactAddress, boolean addrDefault) {
@@ -35,6 +34,6 @@ public class ShippingAddressDto {
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
         this.contactAddress = contactAddress;
-        this.addrDefault = addrDefault;
+        this.isDefault = addrDefault;
     }
 }

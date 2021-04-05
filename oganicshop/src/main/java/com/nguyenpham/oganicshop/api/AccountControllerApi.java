@@ -54,8 +54,13 @@ public class AccountControllerApi {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/address/create")
+    public ResponseEntity<?> addShippingAddress(@RequestBody ShippingAddressDto request) {
+        return ResponseEntity.ok(userService.addShippingAddress(request));
+    }
+
     @PutMapping("/address/update")
-    public ResponseEntity<?> updateInfoShippingAddress(@RequestBody ShippingAddressDto request) {
+    public ResponseEntity<?> updateShippingAddress(@RequestBody ShippingAddressDto request) {
         return ResponseEntity.ok(userService.updateShippingAddress(request));
     }
 

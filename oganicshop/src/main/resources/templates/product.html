@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                     <div class="quickview-content">
-                        <h2>Tên sản phẩm</h2>
+                        <h2></h2>
                         <div class="quickview-ratting-review">
                             <div class="quickview-ratting-wrap">
                                 <div class="quickview-ratting">
@@ -106,7 +106,7 @@
                             <!--/ End Input Order -->
                         </div>
                         <div class="add-to-cart">
-                            <a id="add-cart"  class="btn">Thêm vào giỏ hàng</a>
+                            <a id="add-cart" class="btn">Thêm vào giỏ hàng</a>
                             <a th:if="${#request.userPrincipal}" class="btn min"><i class="ti-heart"></i></a>
                         </div>
                     </div>
@@ -168,14 +168,14 @@
                                                     </div>
 
                                                     <div class="like-and-review" style="padding-top: 10px;">
-                                                                <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
+                                                        <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
                                                                                                         margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block; border: 1px solid #333;">
-                                                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span></span></span>
-                                                                </span>
+                                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span></span></span>
+                                                        </span>
                                                         <span class="reply" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
                                                                                                         margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
-                                                                    <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>
-                                                                </span>
+                                                            <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>
+                                                        </span>
                                                     </div>
 
                                                     <div class="reply-input" style="display: none;">
@@ -190,16 +190,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="review-comment_sub-comments">
-                                                        <th:block>
-                                                            <div class="view-reply-more">
-                                                                Xem tất cả <span></span> câu trả lời
-                                                            </div>
-                                                            <div class="list-reply-item">
-                                                            </div>
-                                                            <div class="view-reply-less">
-                                                                Ẩn <span></span> câu trả lời
-                                                            </div>
-                                                        </th:block>
+                                                        <div class="view-reply-more">Xem tất cả <span></span> câu trả lời</div>
+                                                        <div class="list-reply-item"></div>
+                                                        <div class="view-reply-less">Ẩn <span></span> câu trả lời</div>
                                                     </div>
                                                 </div>
 
