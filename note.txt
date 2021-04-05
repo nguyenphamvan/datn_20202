@@ -1,0 +1,1 @@
+https://www.cloudkarafka.com/blog/part2-apache-kafka-for-beginners-example-and-sample-code.html
