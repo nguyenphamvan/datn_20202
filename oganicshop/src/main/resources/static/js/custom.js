@@ -140,19 +140,21 @@ $(document).ready(function () {
             url: $(this).attr('href'),
             type: "GET",
             dataType: 'json',
-            success: function (product) {
-                $('.quickView-content h2').text(product["name"]);
-                $('.quickView-ratting').empty();
-                for (let i = 0; i < product["ratting"]; i++) {
-                    $('.quickView-ratting').append("<i class=\"yellow fa fa-star\"></i>");
+            success: function (data) {
+                let product = data["product"];
+                // alert(JSON.stringify(product));
+                $('.quickview-content h2').text(product["productName"]);
+                $('.quickview-ratting').empty();
+                for (let i = 0; i < product["rating"]; i++) {
+                    $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
                 }
-                for (let i = 0; i < 5 - product["ratting"]; i++) {
-                    $('.quickView-ratting').append("<i class=\"fa fa-star\"></i>");
+                for (let i = 0; i < 5 - product["rating"]; i++) {
+                    $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
                 }
                 $('#num-customer-review').text(product["numberOfReviews"]);
-                $('.quickView-content h3').text(product["finalPrice"]);
-                $('.quickView-peragraph p').text(product["description"]);
-                $('#add-cart').attr('data-url', product["url"]);
+                $('.quickview-content h3').text(product["finalPrice"]);
+                $('.quickview-peragraph p').text(product["baseDescription"]);
+                $('#add-cart').attr('data-url', product["productUrl"]);
                 if (product["amount"] > 0) {
                     $('#in-stock').css('display', 'block');
                     $('#out-stock').css('display', 'none');

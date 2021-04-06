@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ShippingAddressDto {
+public class ShippingAddressDto implements Comparable<ShippingAddressDto>{
 
     private Long id;
     private String contactReceiver;
@@ -35,5 +35,10 @@ public class ShippingAddressDto {
         this.contactPhone = contactPhone;
         this.contactAddress = contactAddress;
         this.isDefault = addrDefault;
+    }
+
+    @Override
+    public int compareTo(ShippingAddressDto o) {
+        return o.getId().compareTo(this.getId());
     }
 }

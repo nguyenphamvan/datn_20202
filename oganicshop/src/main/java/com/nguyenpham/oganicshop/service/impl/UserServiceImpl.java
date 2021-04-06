@@ -15,19 +15,13 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -111,38 +105,34 @@ public class UserServiceImpl implements UserService {
     public ShippingAddressDto addShippingAddress(ShippingAddressDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
-        //map shippingAddress with shippingAddressDto
         ShippingAddress shippingAddress = new ShippingAddress();
-        shippingAddress.setContactReceiver(request.getContactReceiver());
-        shippingAddress.setContactAddress(request.getContactAddress());
-        shippingAddress.setContactPhone(request.getContactPhone());
-        shippingAddress.setAddrDefault(request.isDefault());
-        shippingAddress.setUser(userDb);
-        shippingAddress = shippingAddressRepository.save(shippingAddress);
+        saveAddress(shippingAddress, request, userDb);
+        if (request.isDefault()) {
+            shippingAddressRepository.setAddressDefault(shippingAddress.getId());
+        }
         request.setId(shippingAddress.getId());
+        return request;
+    }
+
+    @Override
+    @Transactional
+    public ShippingAddressDto updateShippingAddress(ShippingAddressDto request){
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        User userDb = userRepository.findById(user.getId()).get();
+        ShippingAddress shippingAddress = shippingAddressRepository.findById(request.getId()).get();
+        saveAddress(shippingAddress, request, userDb);
+        if (request.isDefault()) {
+            shippingAddressRepository.setAddressDefault(request.getId());
+        }
         return request;
     }
 
     @Override
     public List<ShippingAddressDto> getShippingAddress() {
         List<ShippingAddress> listShippingAddress = shippingAddressRepository.findAll();
-        List<ShippingAddressDto> resShippingAddress = listShippingAddress.stream().sorted((ad1, ad2) -> ad1.getId().compareTo(ad2.getId())).map(ad -> ad.convertToDto()).collect(Collectors.toList());
+        List<ShippingAddressDto> resShippingAddress = listShippingAddress.stream().map(ad -> ad.convertToDto()).collect(Collectors.toList());
+        Collections.sort(resShippingAddress);
         return resShippingAddress;
-    }
-
-    @Override
-    @Transactional
-    public ShippingAddressDto updateShippingAddress(ShippingAddressDto request) {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        User userDb = userRepository.findById(user.getId()).get();
-        ShippingAddress shippingAddress = shippingAddressRepository.findById(request.getId()).get();
-        shippingAddress.setContactReceiver(request.getContactReceiver());
-        shippingAddress.setContactAddress(request.getContactAddress());
-        shippingAddress.setContactPhone(request.getContactPhone());
-        shippingAddress.setAddrDefault(request.isDefault());
-        shippingAddress.setUser(userDb);
-        shippingAddressRepository.save(shippingAddress);
-        return request;
     }
 
     @Override
@@ -217,5 +207,14 @@ public class UserServiceImpl implements UserService {
             idWishlistProductsSet = Stream.of(user.getWishlist().split(",")).map(Long::valueOf).collect(Collectors.toSet());
         }
         return idWishlistProductsSet;
+    }
+
+    public void saveAddress(ShippingAddress shippingAddress, ShippingAddressDto request, User user){
+        shippingAddress.setContactReceiver(request.getContactReceiver());
+        shippingAddress.setContactAddress(request.getContactAddress());
+        shippingAddress.setContactPhone(request.getContactPhone());
+        shippingAddress.setAddrDefault(request.isDefault());
+        shippingAddress.setUser(user);
+        shippingAddressRepository.save(shippingAddress);
     }
 }

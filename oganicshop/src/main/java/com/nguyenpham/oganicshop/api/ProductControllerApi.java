@@ -40,10 +40,10 @@ public class ProductControllerApi {
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
-//    @GetMapping("/quantity-available/{productUrl}")
-//    public int getQuantityAvailable(@PathVariable("productUrl") String productUrl) {
-//        return productService.getAmountAvailable(productUrl);
-//    }
+    @GetMapping("/quantity-available/{productUrl}")
+    public int getQuantityAvailable(@PathVariable("productUrl") String productUrl) {
+        return productService.getAmountAvailable(productUrl);
+    }
 
     @GetMapping("/check-provide-enough-quantity")
     public boolean isProvideEnoughQuantity(@RequestParam("productUrl") String productUrl, @RequestParam("quantity") int quantity) {

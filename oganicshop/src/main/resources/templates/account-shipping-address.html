@@ -129,7 +129,7 @@
                                 <div class="div-form-control set-default">
                                     <label class="input-label">&nbsp;</label>
                                     <label class="Checkbox__StyledCheckbox" style="display: flex;">
-                                        <input type="checkbox" value="true">
+                                        <input type="checkbox" value="false">
                                         <span class="label">Đặt làm địa chỉ mặc định</span>
                                     </label>
                                 </div>
@@ -189,7 +189,7 @@
                                 <div class="div-form-control set-default" >
                                     <label class="input-label">&nbsp;</label>
                                     <label class="Checkbox__StyledCheckbox" style="display: flex;">
-                                        <input type="checkbox" value="true">
+                                        <input type="checkbox">
                                         <span class="label">Đặt làm địa chỉ mặc định</span>
                                     </label>
                                 </div>
@@ -241,7 +241,6 @@
             let contactReceiver = item.find("div.info > div.name > span:nth-child(1)").text();
             let contactPhone = item.find("div.info > div.phone > span:nth-child(2)").text();
             let isDefault = JSON.parse(item.attr("isDefault"));
-            $(".styles__StyledAccountAddressEdit").attr("isDefault", item.attr("isDefault"));
             $(".styles__StyledAccountAddressEdit").find("input[name='region']").val(addressArr[3]);
             $(".styles__StyledAccountAddressEdit").find("input[name='district']").val(addressArr[2]);
             $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val(addressArr[1]);
@@ -249,6 +248,7 @@
             $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(contactPhone);
             $(".styles__StyledAccountAddressEdit").find("input[name='receiver']").val(contactReceiver);
             $(".styles__StyledAccountAddressEdit").find("input[id='id-shippingAddr']").val(item.attr("id-shippingAddr"));
+            $(".styles__StyledAccountAddressEdit").find("div.div-form-control.set-default > label.Checkbox__StyledCheckbox > input[type=checkbox]").val(isDefault);
             $(".styles__StyledAccountAddressEdit > div.inner.div-form > div.form > form > div.set-default").show();
             if (isDefault === true) {
                 $(".styles__StyledAccountAddressEdit > div.inner.div-form > div.form > form > div.set-default").hide();
@@ -276,9 +276,9 @@
             let ward = $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val();
             let street = $(".styles__StyledAccountAddressEdit").find("textarea[name='street']").val();
             let addressArr = [street, ward, district, region];
-            let isDefault = null;
+            let isDefault = $(".styles__StyledAccountAddressEdit").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").val();
             if ($(".styles__StyledAccountAddressEdit").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").prop('checked') === true) {
-                isDefault = $(".styles__StyledAccountAddressEdit").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").val();
+                isDefault = true;
             }
             let data = {
                 "id": parseInt($(".styles__StyledAccountAddressEdit").find("input[id='id-shippingAddr']").val()),
@@ -287,7 +287,7 @@
                 "contactPhone": $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(),
                 "default" : isDefault
             };
-            alert(JSON.stringify(data));
+            saveShippingAddress(false, data);
         });
 
         $("div.styles__StyledAccountAddressCreate").find("button[type='button']").on('click', function () {
@@ -296,18 +296,17 @@
             let ward = $(".styles__StyledAccountAddressCreate").find("input[name='ward']").val();
             let street = $(".styles__StyledAccountAddressCreate").find("textarea[name='street']").val();
             let addressArr = [street, ward, district, region];
-            let isDefault = null;
+            let isDefault = $(".styles__StyledAccountAddressCreate").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").val();
             if ($(".styles__StyledAccountAddressCreate").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").prop('checked') === true) {
-                isDefault = $(".styles__StyledAccountAddressCreate").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").val();
+                isDefault = true;
             }
             let data = {
-                "id": parseInt($(".styles__StyledAccountAddressCreate").find("input[id='id-shippingAddr']").val()),
                 "contactReceiver" : $(".styles__StyledAccountAddressCreate").find("input[name='receiver']").val(),
                 "contactAddress": addressArr.join(" - "),
                 "contactPhone": $(".styles__StyledAccountAddressCreate").find("input[name='phone']").val(),
                 "default" : isDefault
             };
-            alert(JSON.stringify(data));
+            saveShippingAddress(true, data);
         });
 
         $(document).on("click", "div.action > button.delete", function () {
@@ -324,7 +323,6 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-
                 // show category
                 let categories = data["categories"];
                 let html = "";
@@ -349,6 +347,7 @@
                 let firstDivAddr = $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item");
                 $.each(infoShippingAddress, function( index, item ) {
                     let itemClone = firstDivAddr.clone();
+                    itemClone.show();
                     itemClone.attr("isDefault", item["default"]);
                     itemClone.attr("id-shippingAddr", item["id"]);
                     itemClone.find(".name span:first-child").text(item["contactReceiver"]);
@@ -361,7 +360,9 @@
                     itemClone.insertAfter(firstDivAddr);
                 });
                 firstDivAddr.hide();
-
+                $("div.styles__StyledAccountAddress").show();
+                $("div.styles__StyledAccountAddressEdit").hide();
+                $("div.styles__StyledAccountAddressCreate").hide();
             },
             error: function () {
                 alert("có lỗi xảy ra, không lấy được thông tin giao hàng");
@@ -369,27 +370,24 @@
         });
     }
 
-    function saveShippingAddress(isCreate) {
-        let region = $(".styles__StyledAccountAddressEdit").find("input[name='region']").val();
-        let district = $(".styles__StyledAccountAddressEdit").find("input[name='district']").val();
-        let ward = $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val();
-        let street = $(".styles__StyledAccountAddressEdit").find("textarea[name='street']").val();
-        let addressArr = [street, ward, district, region];
-        let data = {
-            "id": parseInt($(".styles__StyledAccountAddressEdit").find("input[id='id-shippingAddr']").val()),
-            "contactReceiver" : $(".styles__StyledAccountAddressEdit").find("input[name='receiver']").val(),
-            "contactAddress": addressArr.join(" - "),
-            "contactPhone": $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(),
-            "addrDefault" : true
-        };
+    function saveShippingAddress(isCreate, data) {
+        let url = "";
+        let type = "";
+        if(isCreate === true) {
+            url = "/api/account/address/create";
+            type = "POST";
+        } else {
+            url = "/api/account/address/update";
+            type = "PUT";
+        }
         $.ajax({
-            url: "/api/account/address/update",
-            type: "PUT",
+            url: url,
+            type: type,
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: "application/json",
-            success: function (infoShippingAddress) {
-                alert("update địa chỉ giao hàng thành công");
+            success: function (data) {
+                $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item").nextAll().remove();
                 getTheShippingAddress();
             },
             error: function () {
