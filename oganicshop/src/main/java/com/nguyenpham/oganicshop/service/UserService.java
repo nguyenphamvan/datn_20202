@@ -22,6 +22,7 @@ public interface UserService {
     ShippingAddressDto addShippingAddress(ShippingAddressDto request);
     List<ShippingAddressDto> getShippingAddress();
     ShippingAddressDto updateShippingAddress (ShippingAddressDto request);
+    boolean deleteShippingAddress(long addressId);
     Set<ProductDto> getWishlists();
     boolean addProductToWishlist(long productId);
     boolean removeProductFromWishlist(long productId);

@@ -1476,4 +1476,25 @@ i.yellow {
     color: #f5b223;
 }
 
+.styles__StyledAccountAddress .item .delete {
+    font-size: 14px;
+    color: rgb(255, 66, 78);
+    border: 0px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    outline: 0px;
+}
+
+.Checkbox__StyledCheckbox .label {
+    font-size: 14px;
+    line-height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: justify;
+    margin: auto;
+}
+
+
+
 

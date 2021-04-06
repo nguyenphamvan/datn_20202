@@ -146,6 +146,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean deleteShippingAddress(long addressId) {
+        try {
+            shippingAddressRepository.deleteById(addressId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public Set<ProductDto> getWishlists() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Set<Long> idWishlistProductsSet = getSetIdProductWishlist(user);

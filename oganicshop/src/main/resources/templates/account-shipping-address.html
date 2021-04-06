@@ -84,97 +84,121 @@
                 <div class="styles__StyledAccountAddressCreate" style="display: none;">
                     <div class="heading">Thêm địa chỉ mới</div>
                     <div class="inner div-form">
-                        <form>
-                            <input type="hidden">
-                            <div class="div-form-control">
-                                <label class="input-label">Người nhận:</label>
-                                <div>
-                                    <input type="text" required="" name="receiver" placeholder="Tên người nhận" maxlength="50" value="">
+                        <div align="right" style="margin-bottom: 10px;">
+                            <button class="btn-delete">×</button>
+                        </div>
+                        <div class="form">
+                            <form>
+                                <input type="hidden">
+                                <div class="div-form-control">
+                                    <label class="input-label">Người nhận:</label>
+                                    <div>
+                                        <input type="text" required="" name="receiver" placeholder="Tên người nhận" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Số điện thoại :</label>
-                                <div>
-                                    <input type="text" required="" name="phone" placeholder="Số điện thoại liên lạc" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Số điện thoại :</label>
+                                    <div>
+                                        <input type="text" required="" name="phone" placeholder="Số điện thoại liên lạc" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Tỉnh/Thành phố:</label>
-                                <div>
-                                    <input type="text" required="" name="region" placeholder="Tỉnh/thành phố" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Tỉnh/Thành phố:</label>
+                                    <div>
+                                        <input type="text" required="" name="region" placeholder="Tỉnh/thành phố" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Quận/huyện:</label>
-                                <div>
-                                    <input type="text" required="" name="district" placeholder="Huyện/thị xã" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Quận/huyện:</label>
+                                    <div>
+                                        <input type="text" required="" name="district" placeholder="Huyện/thị xã" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Phường/xã:</label>
-                                <div>
-                                    <input type="text" required="" name="ward" placeholder="Phường/xã" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Phường/xã:</label>
+                                    <div>
+                                        <input type="text" required="" name="ward" placeholder="Phường/xã" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Địa chỉ:</label>
-                                <div>
-                                    <textarea required="" name="street" rows="5" placeholder="Nhập địa chỉ"></textarea>
+                                <div class="div-form-control">
+                                    <label class="input-label">Địa chỉ:</label>
+                                    <div>
+                                        <textarea required="" name="street" rows="5" placeholder="Nhập địa chỉ"></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control"><label class="input-label">&nbsp;</label>
-                                <button type="button" class="btn-submit">Thêm mới</button>
-                            </div>
-                        </form>
+                                <div class="div-form-control set-default">
+                                    <label class="input-label">&nbsp;</label>
+                                    <label class="Checkbox__StyledCheckbox" style="display: flex;">
+                                        <input type="checkbox" value="true">
+                                        <span class="label">Đặt làm địa chỉ mặc định</span>
+                                    </label>
+                                </div>
+                                <div class="div-form-control"><label class="input-label">&nbsp;</label>
+                                    <button type="button" class="btn-submit">Thêm mới</button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
                 <div class="styles__StyledAccountAddressEdit" style="display: none;">
-                    <button class="btn-delete">×</button>
                     <div class="heading">Chỉnh sửa địa chỉ</div>
                     <div class="inner div-form">
-                        <form>
-                            <input type="hidden" id="id-shippingAddr">
-                            <div class="div-form-control">
-                                <label class="input-label">Người nhận:</label>
-                                <div>
-                                    <input type="text" required="" name="receiver" placeholder="Tên người nhận" maxlength="50" value="">
+                        <div align="right" style="margin-bottom: 10px;">
+                            <button class="btn-delete">×</button>
+                        </div>
+                        <div class="form">
+                            <form>
+                                <input type="hidden" id="id-shippingAddr">
+                                <div class="div-form-control">
+                                    <label class="input-label">Người nhận:</label>
+                                    <div>
+                                        <input type="text" required="" name="receiver" placeholder="Tên người nhận" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Số điện thoại liên lạc:</label>
-                                <div>
-                                    <input type="text" required="" name="phone" placeholder="Số điện thoại liên lạc" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Số điện thoại liên lạc:</label>
+                                    <div>
+                                        <input type="text" required="" name="phone" placeholder="Số điện thoại liên lạc" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Tỉnh/Thành phố:</label>
-                                <div>
-                                    <input type="text" required="" name="region" placeholder="Tỉnh/thành phố" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Tỉnh/Thành phố:</label>
+                                    <div>
+                                        <input type="text" required="" name="region" placeholder="Tỉnh/thành phố" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Quận huyện:</label>
-                                <div>
-                                    <input type="text" required="" name="district" placeholder="Huyện/thị xã" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Quận huyện:</label>
+                                    <div>
+                                        <input type="text" required="" name="district" placeholder="Huyện/thị xã" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Phường xã:</label>
-                                <div>
-                                    <input type="text" required="" name="ward" placeholder="Phường/xã" maxlength="50" value="">
+                                <div class="div-form-control">
+                                    <label class="input-label">Phường xã:</label>
+                                    <div>
+                                        <input type="text" required="" name="ward" placeholder="Phường/xã" maxlength="50" value="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="div-form-control">
-                                <label class="input-label">Địa chỉ:</label>
-                                <div>
-                                    <textarea required="" name="street" rows="5" placeholder="Nhập địa chỉ">số nhà 249 ngõ Quỳnh, Thanh Nhàn, Hai Bà Trưng</textarea>
+                                <div class="div-form-control">
+                                    <label class="input-label">Địa chỉ:</label>
+                                    <div>
+                                        <textarea required="" name="street" rows="5" placeholder="Nhập địa chỉ">số nhà 249 ngõ Quỳnh, Thanh Nhàn, Hai Bà Trưng</textarea>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="div-form-control set-default" >
+                                    <label class="input-label">&nbsp;</label>
+                                    <label class="Checkbox__StyledCheckbox" style="display: flex;">
+                                        <input type="checkbox" value="true">
+                                        <span class="label">Đặt làm địa chỉ mặc định</span>
+                                    </label>
+                                </div>
+                                <div class="div-form-control"><label class="input-label">&nbsp;</label>
+                                    <button type="button" class="btn-submit">Cập nhật</button>
+                                </div>
+                            </form>
+                        </div>
 
-                            <div class="div-form-control"><label class="input-label">&nbsp;</label>
-                                <button type="button" class="btn-submit">Cập nhật</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -206,20 +230,90 @@
         });
 
         $("div.styles__StyledAccountAddress > div.new > a").on('click', function () {
-            alert("Thêm địa chỉ giao hàng mới");
+            $("div.styles__StyledAccountAddress").hide();
+            $("div.styles__StyledAccountAddressEdit").hide();
+            $("div.styles__StyledAccountAddressCreate").show();
         });
 
         $(document).on("click", "div.action > a.edit", function () {
-            alert("cập nhật địa chỉ giao hàng");
+            let item = $(this).closest("div.item");
+            let addressArr = item.find("div.info > div.address > span:nth-child(2)").text().split(" - ");
+            let contactReceiver = item.find("div.info > div.name > span:nth-child(1)").text();
+            let contactPhone = item.find("div.info > div.phone > span:nth-child(2)").text();
+            let isDefault = JSON.parse(item.attr("isDefault"));
+            $(".styles__StyledAccountAddressEdit").attr("isDefault", item.attr("isDefault"));
+            $(".styles__StyledAccountAddressEdit").find("input[name='region']").val(addressArr[3]);
+            $(".styles__StyledAccountAddressEdit").find("input[name='district']").val(addressArr[2]);
+            $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val(addressArr[1]);
+            $(".styles__StyledAccountAddressEdit").find("textarea[name='street']").val(addressArr[0]);
+            $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(contactPhone);
+            $(".styles__StyledAccountAddressEdit").find("input[name='receiver']").val(contactReceiver);
+            $(".styles__StyledAccountAddressEdit").find("input[id='id-shippingAddr']").val(item.attr("id-shippingAddr"));
+            $(".styles__StyledAccountAddressEdit > div.inner.div-form > div.form > form > div.set-default").show();
+            if (isDefault === true) {
+                $(".styles__StyledAccountAddressEdit > div.inner.div-form > div.form > form > div.set-default").hide();
+            }
+            $("div.styles__StyledAccountAddress").hide();
+            $("div.styles__StyledAccountAddressEdit").show();
+            $("div.styles__StyledAccountAddressCreate").hide();
+        });
+
+        $("div.styles__StyledAccountAddressCreate > div.inner.div-form > div:nth-child(1) > button").on("click", function () {
+            $("div.styles__StyledAccountAddress").show();
+            $("div.styles__StyledAccountAddressEdit").hide();
+            $("div.styles__StyledAccountAddressCreate").hide();
+        });
+
+        $("div.styles__StyledAccountAddressEdit > div.inner.div-form > div:nth-child(1) > button").on("click", function () {
+            $("div.styles__StyledAccountAddress").show();
+            $("div.styles__StyledAccountAddressEdit").hide();
+            $("div.styles__StyledAccountAddressCreate").hide();
         });
 
         $("div.styles__StyledAccountAddressEdit").find("button[type='button']").on('click', function () {
-            updateTheShippingAddress();
+            let region = $(".styles__StyledAccountAddressEdit").find("input[name='region']").val();
+            let district = $(".styles__StyledAccountAddressEdit").find("input[name='district']").val();
+            let ward = $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val();
+            let street = $(".styles__StyledAccountAddressEdit").find("textarea[name='street']").val();
+            let addressArr = [street, ward, district, region];
+            let isDefault = null;
+            if ($(".styles__StyledAccountAddressEdit").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").prop('checked') === true) {
+                isDefault = $(".styles__StyledAccountAddressEdit").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").val();
+            }
+            let data = {
+                "id": parseInt($(".styles__StyledAccountAddressEdit").find("input[id='id-shippingAddr']").val()),
+                "contactReceiver" : $(".styles__StyledAccountAddressEdit").find("input[name='receiver']").val(),
+                "contactAddress": addressArr.join(" - "),
+                "contactPhone": $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(),
+                "default" : isDefault
+            };
+            alert(JSON.stringify(data));
         });
 
-        $(document).on("click", ".styles__StyledAccountWishList button.btn-delete", function () {
-            let productId = $(this).attr("product-id");
-            removeProductFromWishlist($(this), productId);
+        $("div.styles__StyledAccountAddressCreate").find("button[type='button']").on('click', function () {
+            let region = $(".styles__StyledAccountAddressCreate").find("input[name='region']").val();
+            let district = $(".styles__StyledAccountAddressCreate").find("input[name='district']").val();
+            let ward = $(".styles__StyledAccountAddressCreate").find("input[name='ward']").val();
+            let street = $(".styles__StyledAccountAddressCreate").find("textarea[name='street']").val();
+            let addressArr = [street, ward, district, region];
+            let isDefault = null;
+            if ($(".styles__StyledAccountAddressCreate").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").prop('checked') === true) {
+                isDefault = $(".styles__StyledAccountAddressCreate").find("label.Checkbox__StyledCheckbox > input[type=checkbox]").val();
+            }
+            let data = {
+                "id": parseInt($(".styles__StyledAccountAddressCreate").find("input[id='id-shippingAddr']").val()),
+                "contactReceiver" : $(".styles__StyledAccountAddressCreate").find("input[name='receiver']").val(),
+                "contactAddress": addressArr.join(" - "),
+                "contactPhone": $(".styles__StyledAccountAddressCreate").find("input[name='phone']").val(),
+                "default" : isDefault
+            };
+            alert(JSON.stringify(data));
+        });
+
+        $(document).on("click", "div.action > button.delete", function () {
+            $(this).closest("div.item").remove();
+            let addressId = $(this).closest("div.item").attr("id-shippingaddr");
+            deleteShippingAddress($(this), addressId);
         });
     });
 
@@ -255,24 +349,16 @@
                 let firstDivAddr = $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item");
                 $.each(infoShippingAddress, function( index, item ) {
                     let itemClone = firstDivAddr.clone();
-                    itemClone.attr("address-id", item["id"]);
+                    itemClone.attr("isDefault", item["default"]);
+                    itemClone.attr("id-shippingAddr", item["id"]);
                     itemClone.find(".name span:first-child").text(item["contactReceiver"]);
                     if (item["default"] === false) {
                         itemClone.find(".name span:nth-child(2)").hide();
-                        itemClone.find("div.action > a.edit").after("<button class='remove'>Xóa</button>");
+                        itemClone.find("div.action > a.edit").after("<button class='delete'>Xóa</button>");
                     }
                     itemClone.find(".address span:nth-child(2)").text(item["contactAddress"]);
                     itemClone.find(".phone span:nth-child(2)").text(item["contactPhone"]);
                     itemClone.insertAfter(firstDivAddr);
-
-                    // let addressArr = item["contactAddress"].split(" - ");
-                    // $(".styles__StyledAccountAddressEdit").find("input[name='region']").val(addressArr[3]);
-                    // $(".styles__StyledAccountAddressEdit").find("input[name='district']").val(addressArr[2]);
-                    // $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val(addressArr[1]);
-                    // $(".styles__StyledAccountAddressEdit").find("textarea[name='street']").val(addressArr[0]);
-                    // $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(item["contactPhone"]);
-                    // $(".styles__StyledAccountAddressEdit").find("input[name='receiver']").val(item["contactReceiver"]);
-                    // $(".styles__StyledAccountAddressEdit").find("input[id='id-shippingAddr']").val(item["id"]);
                 });
                 firstDivAddr.hide();
 
@@ -283,7 +369,7 @@
         });
     }
 
-    function updateTheShippingAddress() {
+    function saveShippingAddress(isCreate) {
         let region = $(".styles__StyledAccountAddressEdit").find("input[name='region']").val();
         let district = $(".styles__StyledAccountAddressEdit").find("input[name='district']").val();
         let ward = $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val();
@@ -303,24 +389,22 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (infoShippingAddress) {
-                $(".styles__StyledAccountAddress .item .name span:first-child").text(infoShippingAddress["contactReceiver"]);
-                if (infoShippingAddress["addrDefault"] === false) {
-                    $(".styles__StyledAccountAddress .item .name span:nth-child(2)").css("display", "none");
-                }
-                $(".styles__StyledAccountAddress .item .address span:nth-child(2)").text(infoShippingAddress["contactAddress"]);
-                $(".styles__StyledAccountAddress .item .phone span:nth-child(2)").text(infoShippingAddress["contactPhone"]);
+                alert("update địa chỉ giao hàng thành công");
+                getTheShippingAddress();
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
 
-                let addressArr = infoShippingAddress["contactAddress"].split(" - ");
-                $(".styles__StyledAccountAddressEdit").find("input[name='region']").val(addressArr[3]);
-                $(".styles__StyledAccountAddressEdit").find("input[name='district']").val(addressArr[2]);
-                $(".styles__StyledAccountAddressEdit").find("input[name='ward']").val(addressArr[1]);
-                $(".styles__StyledAccountAddressEdit").find("textarea[name='street']").val(addressArr[0]);
-                $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(infoShippingAddress["contactPhone"]);
-                $(".styles__StyledAccountAddressEdit").find("input[name='receiver']").val(infoShippingAddress["contactReceiver"]);
-                $(".styles__StyledAccountAddressEdit").find("input[id='id-shippingAddr']").val(infoShippingAddress["id"]);
-                $("div.styles__StyledAccountAddressEdit").hide();
-                $("div.styles__StyledAccountAddress").show();
-                $("div.styles__StyledAccountAddress").siblings("div[type='success']").show();
+    function deleteShippingAddress(thisItem, addressId) {
+        $.ajax({
+            url: "/api/account/address/delete/" + addressId,
+            type: "DELETE",
+            contentType: "application/json",
+            success: function (data) {
+                thisItem.closest("div.item").remove();
             },
             error: function () {
                 alert("có lỗi xảy ra");

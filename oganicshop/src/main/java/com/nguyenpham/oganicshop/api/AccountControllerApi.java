@@ -64,6 +64,11 @@ public class AccountControllerApi {
         return ResponseEntity.ok(userService.updateShippingAddress(request));
     }
 
+    @DeleteMapping("/address/delete/{addressId}")
+    public ResponseEntity<?> deleteShippingAddress(@PathVariable("addressId") long addressId) {
+        return ResponseEntity.ok(userService.deleteShippingAddress(addressId));
+    }
+
     @GetMapping("my-review")
     public ResponseEntity<?> getMyReviews() {
         return null;
