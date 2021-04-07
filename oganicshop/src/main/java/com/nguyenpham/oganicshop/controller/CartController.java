@@ -1,9 +1,7 @@
 package com.nguyenpham.oganicshop.controller;
 
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.CartItem;
-import com.nguyenpham.oganicshop.entity.Category;
-import com.nguyenpham.oganicshop.service.CartService;
+import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 @RequestMapping("/cart.html")

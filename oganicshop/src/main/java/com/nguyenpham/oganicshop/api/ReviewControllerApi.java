@@ -72,4 +72,15 @@ public class ReviewControllerApi {
         return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping("/likeComment")
+    public int likeComment(@RequestBody ObjectNode object) {
+        try {
+            long reviewId = object.get("reviewId").asLong();
+            String action = object.get("action").asText();
+            return reviewService.likeComment(reviewId, action);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
 }

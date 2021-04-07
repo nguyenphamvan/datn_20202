@@ -3,7 +3,6 @@ package com.nguyenpham.oganicshop.service.impl;
 import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
-import com.nguyenpham.oganicshop.repository.DiscountRepository;
 import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
 import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
@@ -17,8 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +101,7 @@ public class OrderServiceImpl implements OrderService {
     public int applyCoupon(HashMap<Long, CartItem> cart, Discount discount) {
         int total = 0;
         for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
-            total += item.getValue().caculateTotalItem();
+            total += item.getValue().calculateTotalItem();
         }
         int discountValue = 0;
         if (discount.getDiscountPercent() > 0 && discount.getDiscountPrice() == 0) {
@@ -138,9 +135,9 @@ public class OrderServiceImpl implements OrderService {
         for (CartItem item : cart.values()) {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setQuantity(item.getQuantity());
-            orderDetail.setPrice(item.caculateTotalItem());
+            orderDetail.setPrice(item.calculateTotalItem());
             orderDetail.setDiscount(item.getDiscount());
-            orderDetail.setTotalPrice(item.caculateTotalItem() - item.getDiscount());
+            orderDetail.setTotalPrice(item.calculateTotalItem() - item.getDiscount());
             orderDetail.setProduct(item.getProduct());
             orderDetail.setOrder(order);
             order.addOrderDetail(orderDetail);
@@ -153,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
         ShippingAddress addressDefault = shippingAddressRepository.findByAddrDefaultIsTrue();
         int subCart = 0;
         for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
-            subCart += item.getValue().caculateTotalItem();
+            subCart += item.getValue().calculateTotalItem();
         }
         OrderDtoResponse orderResponse = new OrderDtoResponse();
         orderResponse.setShippingAddress(new ShippingAddressDto(addressDefault.getContactReceiver(), addressDefault.getContactPhone(), addressDefault.getContactAddress(), addressDefault.isAddrDefault()));

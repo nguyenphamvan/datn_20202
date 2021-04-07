@@ -347,18 +347,8 @@
     $(document).ready(function() {
 
         let productUrl = /*[[${productUrl}]]*/;
-
+        getListCategory();
         loadInfoProduct();
-
-        $("button.send-reply-comment").click(function () {
-            let url = $(this).closest("form").attr("action");
-            let idUser = $('#login-user-id').attr('data-idUser');
-            let idReview = $(this).closest("li").attr("data-id_comment");
-            let content = $(this).closest("form").find("textarea.reply-comment_input").val();
-            if (idUser === 'null') {
-                alert("bạn chưa đăng nhập");
-            }
-        });
 
         $(document).on("click" , "div.view-reply-more", function () {
             $(this).hide();
@@ -387,7 +377,6 @@
                     "rootId" : $(this).parent().find(".id-root-review").val(),
                     "comment": $(this).parent().find("textarea").val()
                 }
-                console.log(data);
                 $.ajax({
                     url: $(this).parent().attr('action'),
                     type: "POST",
@@ -459,6 +448,36 @@
             });
         });
 
+        var actionLike = new Map();
+        $(document).on("click", "div.like-and-review > span.like", function () {
+            let thisLikeButton = $(this);
+            let reviewId = $(this).closest(".review-item").attr("data-id_comment");
+            if (actionLike.has(reviewId)) {
+                thisLikeButton.css("background-color", "transparent");
+                actionLike.set(reviewId, "cancel");
+            } else {
+                actionLike.set(reviewId, "like");
+                thisLikeButton.css("background-color", "#5ACAE9");
+            }
+            console.log(actionLike);
+            $.ajax({
+                url: "/api/review/likeComment",
+                data : JSON.stringify({
+                    "reviewId" : reviewId,
+                    "action" : actionLike.get(reviewId)
+                }),
+                type: "POST",
+                dataType : "json",
+                contentType: "application/json",
+                success: function (result) {
+                    thisLikeButton.find("span > span").text("(" + result + ")");
+                },
+                error: function () {
+                    alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+                }
+            });
+        });
+
         function loadInfoProduct() {
             $.ajax({
                 url: "/api/products/"+ productUrl,
@@ -473,13 +492,14 @@
                     $("div.modal-body > div > div:nth-child(2) > div > h3").text(product["finalPrice"]);
                     $("div.modal-body > div > div:nth-child(2) > div > div.quickview-peragraph > p").text(product["baseDescription"]);
                     $("#add-cart").attr("productUrl", product["productUrl"]);
-                    $("div.modal-body > div > div:nth-child(2) > div > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add" + product["id"]);
+                    $("div.modal-body > div > div:nth-child(2) > div > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
                     $("#tabs-1 > div > p").text(product["detailDescription"]);
                     $("section.product-area.shop-sidebar.shop.section > div > div.row > div > div > ul > li:nth-child(2) > a > span").text( "(" + product["numberOfReviews"] + ")");
                     $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span").text("(" + product["numberOfReviews"] + " lượt bình luận)");
                     if(product["amount"] <= 0) {
                         $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-stock > span").hide();
                     }
+                    // ratting
                     if (parseInt(product["rating"]) > 0) {
                         for (let i = 0; i < parseInt(data["rating"]); i++) {
                             $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > div")
@@ -495,6 +515,7 @@
                     $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span")
                         .text(" (" + product["numberOfReviews"] + " lượt bình luận)");
 
+                    // reviews
                     let firstUl = $("#tabs-3 > div > div > ul > li:first-child");
                     $.each(product["reviews"], function( index, item ) {
                         let rowClone = firstUl.clone();
@@ -545,9 +566,20 @@
                         rowClone.insertAfter(firstUl);
                     });
                     firstUl.hide();
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
 
+        function getListCategory() {
+            $.ajax({
+                url: "/api/categories",
+                type: "GET",
+                contentType: "application/json",
+                success: function (categories) {
                     // show category
-                    let categories = data["categories"];
                     let html = "";
                     $.each(categories, function( index, item ) {
                         html += "<li>\n" +
@@ -561,13 +593,14 @@
                             });
                         }
                         html += "     </ul>\n" +
-                                "</li>";
+                            "</li>";
 
                     });
                     $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
                 },
-                error: function (xhr) {
-                    alert(xhr.responseText);
+                error: function () {
+                    alert("có lỗi xảy ra, không lấy được danh sách danh mục");
                 }
             });
         }

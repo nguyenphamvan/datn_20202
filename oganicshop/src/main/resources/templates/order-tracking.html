@@ -117,6 +117,7 @@
     // A $( document ).ready() block.
     $(document).ready(function() {
         var orderId = /*[[${orderId}]]*/;
+        getListCategory();
         getOrderLogging(orderId);
     });
 
@@ -126,7 +127,7 @@
             type: "GET",
             dataType: 'json',
             success: function (order) {
-                let orderLogging = order["orderLogging"];
+                let orderLogging = order["order"]["orderLogging"];
                 $(".order-heading h3").text("Theo dõi đơn hàng #" + orderLogging["orderId"]);
                 $(".status-block .status-text b").text(orderLogging["latestStatus"] + "  |  " + orderLogging["lastUpdatedTime"]);
                 $(".cGrxj").text("Cập nhật mới nhất : " + orderLogging["lastUpdatedTime"]);
@@ -138,7 +139,7 @@
                     $(html).insertAfter(".cGrxj");
                 });
 
-                let listOrderItem = order["listOrderDetail"];
+                let listOrderItem = order["order"]["listOrderDetail"];
                 let itemClone = $(".styles__StyledOrderItems .items div:first-child");
                 $.each(listOrderItem, function (index, item) {
                     let row = itemClone.clone();
@@ -160,8 +161,29 @@
             type: "GET",
             dataType: 'json',
             success: function (data) {
+                let orderItems = data["orderItems"];
+                let itemClone = $(".styles__StyledOrderItems .items div:first-child");
+                $.each(orderItems, function (index, item) {
+                    let row = itemClone.clone();
+                    row.find("img.image").attr("src", "/images/products/" + item["image"]);
+                    row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                    row.insertAfter(".styles__StyledOrderItems .items div:first-child");
+                });
+                $(".styles__StyledOrderItems .items div:first-child").css("display", "none");
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
                 // show category
-                let categories = data["categories"];
                 let html = "";
                 $.each(categories, function( index, item ) {
                     html += "<li>\n" +
@@ -180,18 +202,9 @@
                 });
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
-                let orderItems = data["orderItems"];
-                let itemClone = $(".styles__StyledOrderItems .items div:first-child");
-                $.each(orderItems, function (index, item) {
-                    let row = itemClone.clone();
-                    row.find("img.image").attr("src", "/images/products/" + item["image"]);
-                    row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-                    row.insertAfter(".styles__StyledOrderItems .items div:first-child");
-                });
-                $(".styles__StyledOrderItems .items div:first-child").css("display", "none");
             },
             error: function () {
-                alert("có lỗi xảy ra");
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
             }
         });
     }

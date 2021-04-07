@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findByUrl(productUrl).orElse(null);
         Set<Review> reviews = product.getReviews().stream().filter(rv -> rv.getRootComment() == null).collect(Collectors.toSet());
         product.setReviews(reviews);
-        return product.convertProductToProductDto();
+        return product.convertToDto();
     }
 
     @Override

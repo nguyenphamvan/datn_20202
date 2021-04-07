@@ -1,6 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
-import com.nguyenpham.oganicshop.dto.CartItem;
+import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.service.CartService;
@@ -80,7 +80,7 @@ public class CartServiceImpl implements CartService {
     public int totalSubCart(HashMap<Long, CartItem> cart) {
         int total = 0;
         for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
-            total += item.getValue().caculateTotalItem();
+            total += item.getValue().calculateTotalItem();
         }
         return total;
     }

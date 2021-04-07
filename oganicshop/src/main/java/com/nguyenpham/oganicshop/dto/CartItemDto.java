@@ -5,19 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class UserDto {
-    private Long id;
-    private String email;
-    private String password;
-    private String role;
-    private String fullName;
-    private String gender;
-    private Date birthday;
-    private String phone;
+public class CartItemDto {
+    private ProductDto product;
+    private int quantity;
+    private int discount = 0;
+    private int totalItem;
+
 }

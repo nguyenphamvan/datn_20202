@@ -1,27 +1,18 @@
 package com.nguyenpham.oganicshop.controller;
 
-import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.CartItem;
-import com.nguyenpham.oganicshop.entity.Category;
-import com.nguyenpham.oganicshop.entity.Order;
-import com.nguyenpham.oganicshop.entity.OrderDetail;
-import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CartService;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 public class CheckoutController {

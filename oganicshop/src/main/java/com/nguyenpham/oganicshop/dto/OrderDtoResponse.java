@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class OrderDtoResponse {
     private String deliveryMethod;
     private String paymentMethod;
     private String note;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy@HH:mm:ss.SSSZ")
     private String orderDate;
     private String deliveryDate;
     private List<OrderDetailDto> listOrderDetail;

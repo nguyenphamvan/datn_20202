@@ -2,14 +2,12 @@ package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.CartItem;
+import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.Discount;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
-import com.nguyenpham.oganicshop.service.CartService;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.CouponService;
 import com.nguyenpham.oganicshop.service.OrderService;

@@ -13,19 +13,15 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RequestReviewDto {
     private Long id;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Long rootId;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Long productId;
     private Long orderDetailId;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Long userId;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String title;
     private String comment;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private int rating;
     private MultipartFile image;
     private Date createdAt;

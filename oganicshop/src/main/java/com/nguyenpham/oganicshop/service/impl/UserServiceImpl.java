@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
         Set<ProductDto> wishlistProducts = new HashSet<>();
         for (Long productId : idWishlistProductsSet) {
             Product product = productRepository.findById(productId).get();
-            wishlistProducts.add(product.convertProductToProductDto());
+            wishlistProducts.add(product.convertToDto());
         }
 
         return wishlistProducts;

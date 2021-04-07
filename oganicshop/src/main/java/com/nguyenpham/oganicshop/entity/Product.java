@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude={"category", "supplier"})
 @ToString(exclude = {"category", "supplier"})
+
 public class Product {
 
     @Id
@@ -51,7 +52,7 @@ public class Product {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     @JsonIgnore
     private Category category;
@@ -63,7 +64,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Review> reviews;
 
-    public ProductDto convertProductToProductDto() {
+    public ProductDto convertToDto() {
         ProductDto productDto = new ProductDto();
         productDto.setId(this.getId());
         productDto.setProductName(this.getName());
@@ -82,6 +83,25 @@ public class Product {
 
         List<ResponseReviewDto> reviews = this.getReviews().stream().map(rv -> rv.convertReviewToReviewDto()).collect(Collectors.toList());;
         productDto.setReviews(reviews);
+        return productDto;
+    }
+
+    public ProductDto convertToDtoNotIncludeReviews() {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(this.getId());
+        productDto.setProductName(this.getName());
+        productDto.setProductUrl(this.getUrl());
+        productDto.setBaseDescription(this.getBaseDescription());
+        productDto.setDetailDescription(this.getDetailDescription());
+        productDto.setCategoryName(this.getCategory().getCategoryName());
+        productDto.setSupplierName(this.getSupplier().getName());
+        productDto.setImage(this.getImage());
+        productDto.setPrice(this.getPrice());
+        productDto.setDiscount(this.getDiscount());
+        productDto.setFinalPrice(this.getFinalPrice());
+        productDto.setNumberOfReviews(this.getReviews().size());
+        productDto.setRating(this.getRating());
+        productDto.setAmount(this.getAmount());
         return productDto;
     }
 

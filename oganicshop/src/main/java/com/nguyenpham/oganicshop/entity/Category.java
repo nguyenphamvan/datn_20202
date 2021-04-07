@@ -50,13 +50,6 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public void addSubCategory(Category category) {
-        if (subCategories == null) {
-            subCategories = new HashSet<>();
-        }
-        subCategories.add(category);
-    }
-
     public CategoryDto convertToCategoryDto() {
         CategoryDto category = new CategoryDto();
         category.setId(this.getId());

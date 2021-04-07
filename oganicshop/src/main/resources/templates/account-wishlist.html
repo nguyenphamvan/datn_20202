@@ -90,6 +90,7 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
+        getListCategory();
         getWishlistProducts();
         $(document).on("click", ".styles__StyledAccountWishList button.btn-delete", function () {
             let productId = $(this).attr("product-id");
@@ -103,27 +104,6 @@
             type: "GET",
             dataType: 'json',
             success: function (data) {
-
-                // show category
-                let categories = data["categories"];
-                let html = "";
-                $.each(categories, function( index, item ) {
-                    html += "<li>\n" +
-                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
-                        "            <ul class=\"list-child-category\">\n";
-                    if (item.hasOwnProperty("subCategory")) {
-                        $.each(item["subCategory"], function( index, subItem ) {
-                            html += "<li>\n" +
-                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
-                                "    </li>\n";
-                        });
-                    }
-                    html += "     </ul>\n" +
-                        "</li>";
-
-                });
-                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
-
                 if(data.hasOwnProperty("wishlist")) {
                     let wishlist = data["wishlist"];
                     $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
@@ -163,6 +143,38 @@
             },
             error: function () {
                 alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
+                // show category
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
             }
         });
     }

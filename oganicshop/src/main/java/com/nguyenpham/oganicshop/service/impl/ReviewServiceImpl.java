@@ -64,9 +64,20 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<MyReviewDto> getListReviews() {
-//        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        List<Review> listReviews = reviewRepository.findAllByUserId((long) 2);
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
         List<MyReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToMyReviewDto()).collect(Collectors.toList());;
         return listReviewDto;
+    }
+
+    @Override
+    public int likeComment(long reviewId, String action) {
+        Review review = reviewRepository.findById(reviewId).get();
+        if (action.equals("like")) {
+            review.setNumbersOfLike(review.getNumbersOfLike() + 1);
+        } else if (action.equals("cancel")){
+            review.setNumbersOfLike(review.getNumbersOfLike() - 1);
+        }
+        return reviewRepository.save(review).getNumbersOfLike();
     }
 }

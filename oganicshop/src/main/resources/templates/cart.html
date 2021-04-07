@@ -44,7 +44,6 @@
 
 <!-- Shopping Cart -->
 <div class="shopping-cart section">
-    <th:block th:if="${session.myCart}">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -61,20 +60,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="item : ${session.myCart}" th:data-url="${item.getValue().getProduct().getUrl()}">
+                        <tr>
                             <td class="image" data-title="No">
-                                <a th:href="@{'/products/' + ${item.getValue().getProduct().getUrl()} + '.html'}">
+                                <a>
                                     <img src="https://via.placeholder.com/100x100" alt="Image">
                                 </a>
                             </td>
                             <td class="product-des" data-title="Description">
                                 <p class="product-name">
-                                    <a th:href="@{'/products/' + ${item.getValue().getProduct().getUrl()} + '.html'}"
-                                                           th:utext="${item.getValue().getProduct().getName()}">Tên sản phẩm</a>
+                                    <a></a>
                                 </p>
                             </td>
-                            <td class="price" data-title="Price"><span
-                                    th:utext="${item.getValue().getProduct().getFinalPrice()}">$110.00 </span></td>
+                            <td class="price" data-title="Price"><span></span></td>
                             <td class="qty" data-title="Qty"><!-- Input Order -->
                                 <div class="input-group">
                                     <div class="button minus">
@@ -82,8 +79,7 @@
                                             <i class="ti-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="100"
-                                           th:value="${item.getValue().getQuantity()}">
+                                    <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="100">
                                     <div class="button plus">
                                         <button type="button" class="btn btn-primary btn-number button-plus" data-type="plus" data-field="quant[1]">
                                             <i class="ti-plus"></i>
@@ -92,16 +88,15 @@
                                 </div>
                                 <!--/ End Input Order -->
                             </td>
-                            <td class="total-amount" data-title="Total"><span
-                                    th:utext="${item.getValue().caculateTotalItem()}">$220.88</span></td>
-                            <td class="action" data-title="Remove"><a th:id="${item.getValue().getProduct().getUrl()}"><i class="ti-trash remove-icon"></i></a>
+                            <td class="total-amount" data-title="Total"><span></span></td>
+                            <td class="action" data-title="Remove"><a><i class="ti-trash remove-icon"></i></a>
                             </td>
                         </tr>
                         </tbody>
                         <tfoot>
                             <td colspan="3"></td>
                             <td style="text-align: right;">Tạm tính</td>
-                            <td id="sub-cart" th:utext="${session.subCart}"></td>
+                            <td id="sub-cart"></td>
                             <td></td>
                         </tfoot>
                     </table>
@@ -135,14 +130,6 @@
                 </div>
             </div>
         </div>
-    </th:block>
-    <th:block th:unless="${session.myCart}">
-        <div class="container">
-            <div class="row">
-                Không có sản phẩm nào trong giỏ hàng
-            </div>
-        </div>
-    </th:block>
 </div>
 <!--/ End Shopping Cart -->
 
@@ -320,7 +307,49 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
         getListCategory();
+        getProductsInCart();
     });
+
+    function getProductsInCart() {
+        $.ajax({
+            url: "/api/cart/all",
+            type: "GET",
+            contentType: "application/json",
+            success: function (items) {
+
+                if (items.length > 0) {
+                    let totalCart = 0;
+                    let firstTr = $("body > div.shopping-cart.section > div > div:nth-child(1) > div > table > tbody > tr:first-child");
+                    $.each(items, function( index, item ) {
+                        totalCart = totalCart + parseInt(item["totalItem"]);
+                        let trClone = firstTr.clone();
+                        trClone.attr("data-url", item["product"]["productUrl"]);
+                        trClone.find("td.image > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html");
+                        trClone.find("td.product-des > p.product-name > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html")
+                            .text(item["product"]["productName"]);
+                        trClone.find("td.price > span").text(item["product"]["finalPrice"]);
+                        trClone.find("td.qty > div > input").val(item["quantity"]);
+                        trClone.find("td.total-amount > span").text(item["totalItem"]);
+                        trClone.find("td.action > a").attr("id", item["product"]["productUrl"]);
+                        trClone.insertAfter(firstTr);
+                    });
+                    firstTr.hide();
+                    $("#sub-cart").text(totalCart);
+                } else {
+                    let html = "<div class=\"row\">\n" +
+                        "                <div class=\"cart-empty\" style=\"text-align: center; margin: auto;\">\n" +
+                        "                    Không có sản phẩm nào trong giỏ hàng\n" +
+                        "                </div>\n" +
+                        "            </div>";
+                    $("body > div.shopping-cart.section > div.container").empty();
+                    $("body > div.shopping-cart.section > div.container").append(html);
+                }
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách sản phẩm trong giỏ hàng");
+            }
+        });
+    }
 
     function getListCategory() {
         $.ajax({

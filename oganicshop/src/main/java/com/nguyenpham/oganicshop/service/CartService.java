@@ -1,6 +1,6 @@
 package com.nguyenpham.oganicshop.service;
 
-import com.nguyenpham.oganicshop.dto.CartItem;
+import com.nguyenpham.oganicshop.entity.CartItem;
 
 import java.util.HashMap;
 

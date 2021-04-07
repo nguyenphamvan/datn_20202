@@ -531,6 +531,7 @@
                             "                                        </svg>\n" +
                             "                                        <span>Địa chỉ mặc định</span>\n" +
                             "                                    </span>");
+                        itemClone.find("p.action > button.saving-address").css("color", "rgb(38, 188, 78);");
                     }
                     itemClone.find("p.address > span:nth-child(2)").text(item["contactAddress"]);
                     itemClone.find("p.phone > span:nth-child(2)").text(item["contactPhone"]);
@@ -540,6 +541,38 @@
             },
             error: function () {
                 alert("có lỗi xảy ra, không lấy được danh sách địa chỉ giao hàng");
+            }
+        });
+    }
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
+                // show category
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
             }
         });
     }

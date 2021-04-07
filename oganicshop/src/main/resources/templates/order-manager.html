@@ -74,7 +74,7 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-
+        getListCategory();
         getOrdersHistory(1, 5);
         getTotalOrderPage();
 
@@ -130,9 +130,20 @@
                         "       </tr>";
                     $('tbody').append(node);
                 });
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
 
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
                 // show category
-                let categories = data["categories"];
                 let html = "";
                 $.each(categories, function( index, item ) {
                     html += "<li>\n" +
@@ -150,9 +161,10 @@
 
                 });
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
             },
             error: function () {
-                alert("có lỗi xảy ra");
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
             }
         });
     }

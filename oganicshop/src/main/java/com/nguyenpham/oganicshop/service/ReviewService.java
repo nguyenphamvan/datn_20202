@@ -12,4 +12,5 @@ public interface ReviewService {
     List<ResponseReviewDto> getReviewsOfProduct(long productId);
     ResponseReviewDto save(RequestReviewDto postReview);
     List<MyReviewDto> getListReviews();
+    int likeComment(long reviewId, String action);
 }

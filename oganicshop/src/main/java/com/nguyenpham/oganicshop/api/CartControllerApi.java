@@ -2,7 +2,8 @@ package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.CartItem;
+import com.nguyenpham.oganicshop.dto.CartItemDto;
+import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -33,6 +35,16 @@ public class CartControllerApi {
             cart = new HashMap<>();
         }
         List<CartItem> listItem = new ArrayList<>(cart.values());
+        return new ResponseEntity<Object>(listItem, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getListItemCartDto(HttpSession session) {
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute("myCart");
+        if (cart == null) {
+            cart = new HashMap<>();
+        }
+        List<CartItemDto> listItem = new ArrayList<>(cart.values().stream().map(item -> item.convertDto()).collect(Collectors.toList()));
         return new ResponseEntity<Object>(listItem, HttpStatus.OK);
     }
 
