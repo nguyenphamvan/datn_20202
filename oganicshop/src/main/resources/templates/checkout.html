@@ -391,7 +391,6 @@
 
         $(document).on("click", "#discountModal > div > div > div.modal-body > div > div > div > p.action", function () {
             let couponCode = $(this).closest("div.discount-item").find("p.code > span:nth-child(2)").text();
-            alert(couponCode);
             $("#payment > div > div:nth-child(2) > div > div:nth-child(2) > div.coupon > input").val(couponCode);
             $('#discountModal').modal('hide');
         });
