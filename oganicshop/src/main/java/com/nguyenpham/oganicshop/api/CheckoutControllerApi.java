@@ -8,29 +8,31 @@ import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.entity.Discount;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
-import com.nguyenpham.oganicshop.service.CategoryService;
-import com.nguyenpham.oganicshop.service.CouponService;
-import com.nguyenpham.oganicshop.service.OrderService;
+import com.nguyenpham.oganicshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/checkout")
 public class CheckoutControllerApi {
 
+    @Autowired
+    private UserService userService;
+    private CartService cartService;
     private OrderService orderService;
     private CouponService couponService;
     private CategoryService categoryService;
 
     @Autowired
-    public CheckoutControllerApi(OrderService orderService, CategoryService categoryService, CouponService couponService) {
+    public CheckoutControllerApi(CartService cartService, OrderService orderService, CategoryService categoryService, CouponService couponService) {
+        this.cartService = cartService;
         this.orderService = orderService;
         this.categoryService = categoryService;
         this.couponService = couponService;
@@ -87,5 +89,23 @@ public class CheckoutControllerApi {
             }
         }
         return new ResponseEntity<Object>("Giỏ hàng trống, vui lòng thêm sản phẩm vào giỏ hàng", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/getMyDiscount")
+    public ResponseEntity<?> getMyDiscount (HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
+        User userDb = userService.findUserByEmail(user.getEmail());
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        List<Discount> myDiscounts = new ArrayList<>();
+        if (userDb.getOrders().size() == 0) {
+            Discount discountFirstOrder = couponService.findCoupon("FIRSTORDER50");
+            myDiscounts.add(discountFirstOrder);
+        }
+
+        // select các dis count theo hạn còn áp dụng và số lượt sử dụng
+        List<Discount> loadDiscountList = couponService.getAllDiscountForOrder(cartService.totalSubCart(cart));
+        loadDiscountList.remove(couponService.findCoupon("FIRSTORDER50"));
+        myDiscounts.addAll(loadDiscountList);
+        return ResponseEntity.ok(new HashSet<>(myDiscounts));
     }
 }
