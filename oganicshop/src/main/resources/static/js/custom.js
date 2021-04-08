@@ -4,11 +4,6 @@ $(document).ready(function () {
 
     /* function add item in cart using jquery ajax  */
     $('#add-cart').on('click', function () {
-        let data = {
-            productUrl: $(this).attr("productUrl"),
-            quantity: $('input[class="input-number"]').val()
-        };
-
         $.when(
             $.ajax({
                 url: "/api/cart/add",
@@ -154,6 +149,7 @@ $(document).ready(function () {
             success: function (data) {
                 let product = data["product"];
                 // alert(JSON.stringify(product));
+                $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
                 $('.quickview-content h2').text(product["productName"]);
                 $('.quickview-ratting').empty();
                 for (let i = 0; i < product["rating"]; i++) {
@@ -165,7 +161,9 @@ $(document).ready(function () {
                 $('#num-customer-review').text(product["numberOfReviews"]);
                 $('.quickview-content h3').text(product["finalPrice"]);
                 $('.quickview-peragraph p').text(product["baseDescription"]);
-                $('#add-cart').attr('data-url', product["productUrl"]);
+                $('#add-cart').attr('productUrl', product["productUrl"]);
+                $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
+                $('.add-to-cart').attr('productUrl', product["productUrl"]);
                 if (product["amount"] > 0) {
                     $('#in-stock').css('display', 'block');
                     $('#out-stock').css('display', 'none');
@@ -183,13 +181,14 @@ $(document).ready(function () {
     $(".product-action a[title='Wishlist']").on("click", function (e) {
         e.preventDefault();
         let url = $(this).attr("href");
-        removeProductFromWishlist(url);
+        addProductFromWishlist(url);
     });
 
-    $(".add-to-cart a[title='Wishlist']").on("click", function (e) {
-        e.preventDefault();
-        let url = $(this).attr("href");
-        removeProductFromWishlist(url);
+    $("div.add-to-cart > a.btn.min").on("click", function (e) {
+         e.preventDefault();
+         let url = $(this).attr("href");
+         alert(url);
+        addProductFromWishlist(url);
     });
     /* function end product to wishlist */
 });
@@ -317,7 +316,7 @@ function searchProduct() {
     window.location = "/search.html?search=" + keyword;
 }
 
-function removeProductFromWishlist(url) {
+function addProductFromWishlist(url) {
     $.ajax({
         url: url,
         type: "POST",

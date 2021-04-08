@@ -92,7 +92,7 @@
     $(document).ready(function () {
         getListCategory();
         getWishlistProducts();
-        $(document).on("click", ".styles__StyledAccountWishList button.btn-delete", function () {
+        $(document).on("click", "div.Account__StyledAccountLayoutInner > div > div.inner > ul > li > button.btn-delete", function () {
             let productId = $(this).attr("product-id");
             removeProductFromWishlist($(this), productId);
         });
@@ -104,8 +104,8 @@
             type: "GET",
             dataType: 'json',
             success: function (data) {
-                if(data.hasOwnProperty("wishlist")) {
-                    let wishlist = data["wishlist"];
+                if(data.hasOwnProperty("wishLists")) {
+                    let wishlist = data["wishLists"];
                     $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
                     if (wishlist.length > 0) {
                         let firstItem = $(".styles__StyledAccountWishList ul.list li:first-child");
@@ -175,6 +175,24 @@
             },
             error: function () {
                 alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            }
+        });
+    }
+
+    function removeProductFromWishlist(buttonDelete, productId) {
+        $.ajax({
+            url: "/api/account/wishlist/remove/" + productId,
+            type: "DELETE",
+            dataType: 'json',
+            success: function (result) {
+                if (result === true) {
+                    let heading = $(".styles__StyledAccountWishList .heading span");
+                    heading.text(parseInt(heading.text()) - 1);
+                    buttonDelete.closest("li.item").remove();
+                }
+            },
+            error: function (err) {
+                alert("có lỗi xảy ra");
             }
         });
     }

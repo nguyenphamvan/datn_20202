@@ -459,7 +459,6 @@
                 actionLike.set(reviewId, "like");
                 thisLikeButton.css("background-color", "#5ACAE9");
             }
-            console.log(actionLike);
             $.ajax({
                 url: "/api/review/likeComment",
                 data : JSON.stringify({

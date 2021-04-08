@@ -313,24 +313,6 @@
         });
     }
 
-    function removeProductFromWishlist(buttonDelete, productId) {
-        $.ajax({
-            url: "/api/account/wishlist/remove/" + productId,
-            type: "DELETE",
-            dataType: 'json',
-            success: function (result) {
-                if (result === true) {
-                    let heading = $(".styles__StyledAccountWishList .heading span");
-                    heading.text(parseInt(heading.text()) - 1);
-                    buttonDelete.closest("li.item").remove();
-                }
-            },
-            error: function (err) {
-                alert("có lỗi xảy ra");
-            }
-        });
-    }
-
     function getListCategory() {
         $.ajax({
             url: "/api/categories",
