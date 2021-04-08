@@ -68,8 +68,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDtoResponse getOrderById(long orderId) {
-        return orderRepository.findById(orderId).get().convertOrderToOrderDto();
+    public OrderDtoResponse getOrderById(long userId, long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        if (order.getUser().getId() == userId) {
+            return order.convertOrderToOrderDto();
+        }
+        return null;
     }
 
     @Override
@@ -81,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDtoResponse> getListOrderHistory(Long userId, int pageNum, int pageSize) {
+    public List<OrderDtoResponse> getListOrderHistory(long userId, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id").ascending());
         Page<Order> page = orderRepository.findOrdersByUserId(userId, pageable);
         List<Order> ordersHistory = page.getContent();
@@ -145,6 +149,21 @@ public class OrderServiceImpl implements OrderService {
             order.addOrderDetail(orderDetail);
         }
         this.save(order);
+    }
+
+    @Override
+    public boolean cancelOrder(long userId, long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        if (order.getUser().getId() == userId && order.getStatus().equals("Đang xử lý")) {
+            order.setStatus("Đã Hủy");
+            try {
+                orderRepository.save(order);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -50,9 +50,10 @@ public class SalesControllerApi {
 
     @GetMapping("/order/view/{orderId}")
     public ResponseEntity<?> getSingleOrderById(@PathVariable("orderId") long orderId) {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
-        response.put("order", orderService.getOrderById(orderId));
+        response.put("order", orderService.getOrderById(user.getId(), orderId));
         return ResponseEntity.ok(response);
     }
 
@@ -66,10 +67,17 @@ public class SalesControllerApi {
 
     @GetMapping("/order/tracking/{orderId}")
     public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId) {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
-        response.put("order", orderService.getOrderById(orderId));
+        response.put("order", orderService.getOrderById(user.getId(), orderId));
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/order/cancel/{orderId}")
+    public ResponseEntity<?> cancel(@PathVariable("orderId") long orderId) {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        return ResponseEntity.ok(orderService.cancelOrder(user.getId(), orderId));
     }
 
     @GetMapping("/order/product-not-reviewed")

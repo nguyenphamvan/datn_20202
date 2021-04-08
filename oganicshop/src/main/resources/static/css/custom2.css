@@ -1496,5 +1496,19 @@ i.yellow {
 }
 
 
+.styles__StyledProductList tfoot tr td .cancel-order {
+    background-color: rgb(253, 216, 53);
+    color: rgb(74, 74, 74);
+    display: inline-block;
+    margin-bottom: 0px;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgb(253, 216, 53);
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+
 
 

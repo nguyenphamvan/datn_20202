@@ -15,11 +15,12 @@ public interface OrderService {
     Order save(Order order);
     OrderDetail editReviewed(OrderDetailDto orderDetailDto);
     int getTotalOrderPage(Long userId, int pageSize);
-    OrderDtoResponse getOrderById(long orderId);
+    OrderDtoResponse getOrderById(long userId, long orderId);
     List<OrderDetailDto> getListOrderItem(long orderId);
-    List<OrderDtoResponse> getListOrderHistory(Long userId, int pageNum, int pageSize);
+    List<OrderDtoResponse> getListOrderHistory(long userId, int pageNum, int pageSize);
     Set<OrderDetailDto> getListProductNotReviewed(long userId);
     int applyCoupon(HashMap<Long, CartItem> cart, Discount discount);
     void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto);
+    boolean cancelOrder(long userId, long orderId);
     public OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart);
 }

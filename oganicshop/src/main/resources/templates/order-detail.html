@@ -58,7 +58,7 @@
                         <div class="styles__StyledSection order-info-1">
                             <div class="title">Địa chỉ người nhận</div>
                             <div class="content">
-                                <p class="name">Phạm Văn Nguyên</p>
+                                <p class="name"></p>
                                 <p class="address">
                                     <span>Địa chỉ: </span> <span></span>
                                 </p>
@@ -307,6 +307,21 @@
             $(this).parent().nextAll().find('path').attr('fill', 'none');
             $("input[name='rating-value']").val(ratingValue);
         });
+
+        $(document).on("click", "tfoot > tr:nth-child(5) > td:nth-child(2) > a.cancel-order", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/api/sales/order/cancel/" + orderId,
+                type: "PUT",
+                contentType: "application/json",
+                success: function (result) {
+                    if (result === true) {
+                        window.location.href = "/sales/order/history";
+                    }
+
+                }
+            });
+        });
     });
 
     function getInfoOrder(orderId) {
@@ -316,28 +331,37 @@
             dataType: 'json',
             success: function (data) {
                 let order = data["order"];
-                $(".styles__StyledAccountOrderDetail .heading span:first-child").text("Chi tiết đơn hàng #" + order["id"]);
-                $(".styles__StyledAccountOrderDetail .heading span.status").text(order["status"]);
-                $(".styles__StyledAccountOrderDetail .created-date").text("Ngày đặt hàng: " + order["orderDate"]);
-                $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .date").text(order["message"].split(" - ")[0]);
-                $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .comment").text(order["message"].split(" - ")[1]);
-                $(".order-info-1 .content p.name").text(order["contactReceiver"]);
-                $(".order-info-1 .content p.address span:last-child").text(order["contactAddress"]);
-                $(".order-info-1 .content p.phone span:last-child").text(order["contactPhone"]);
-                $(".order-info-2 .content p:first-child").text("Giao hàng vào ngày : " + order["deliveryDate"]);
-                if (parseInt(order["shipFee"]) === 0) {
-                    $(".order-info-2 .content p:last-child").text("Miễn phí vận chuyển");
-                } else {
-                    $(".order-info-2 .content p:last-child").text("Giao hàng nhanh");
-                }
-                $(".order-info-3 .content p:first-child").text(order["paymentMethod"]);
-                $(".order-info-3 .content p.cc-info").text(order["paymentMethod"]);
+                if (order !== null) {
+                    $(".styles__StyledAccountOrderDetail .heading span:first-child").text("Chi tiết đơn hàng #" + order["id"]);
+                    $(".styles__StyledAccountOrderDetail .heading span.status").text(order["status"]);
+                    $(".styles__StyledAccountOrderDetail .created-date").text("Ngày đặt hàng: " + order["orderDate"]);
+                    $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .date").text(order["message"].split(" - ")[0]);
+                    $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .comment").text(order["message"].split(" - ")[1]);
+                    $(".styles__StyledSection.order-info-1 > div.content > p.name").text(order["shippingAddress"]["contactReceiver"]);
+                    $(".styles__StyledSection.order-info-1 .content p.address span:last-child").text(order["shippingAddress"]["contactAddress"]);
+                    $(".styles__StyledSection.order-info-1 .content p.phone span:last-child").text(order["shippingAddress"]["contactPhone"]);
+                    $(".styles__StyledSection.order-info-2 .content p:first-child").text("Giao hàng vào ngày : " + order["deliveryDate"]);
+                    if (parseInt(order["shipFee"]) === 0) {
+                        $(".styles__StyledSection.order-info-2 .content p:last-child").text("Miễn phí vận chuyển");
+                    } else {
+                        $(".styles__StyledSection.order-info-2 .content p:last-child").text("Giao hàng nhanh");
+                    }
+                    if (order["status"] === "Đang xử lý") {
+                        $("div.Account__StyledAccountLayoutInner > div > table > tfoot")
+                            .append("<tr><td colspan=\"4\"></td><td><a title=\"Hủy đơn hàng\" class=\"cancel-order\">Hủy đơn hàng</a></td></tr>");
+                    }
+                    $(".styles__StyledSection.order-info-3 .content p:first-child").text(order["paymentMethod"]);
+                    $(".styles__StyledSection.order-info-3 .content p.cc-info").text(order["paymentMethod"]);
 
-                genreListOrderDetail(order["listOrderDetail"]);
-                $("table tfoot tr:first-child td:nth-child(2)").text(order["subTotal"] + " ₫");
-                $("table tfoot tr:nth-child(2) td:nth-child(2)").text("-" + order["discount"] + " ₫");
-                $("table tfoot tr:nth-child(3) td:nth-child(2)").text(order["shipFee"] + " ₫");
-                $("table tfoot tr:nth-child(4) td:nth-child(2) span.sum").text(order["total"] + " ₫");
+                    genreListOrderDetail(order["listOrderDetail"]);
+                    $("table tfoot tr:first-child td:nth-child(2)").text(order["subTotal"] + " ₫");
+                    $("table tfoot tr:nth-child(2) td:nth-child(2)").text("-" + order["discount"] + " ₫");
+                    $("table tfoot tr:nth-child(3) td:nth-child(2)").text(order["shipFee"] + " ₫");
+                    $("table tfoot tr:nth-child(4) td:nth-child(2) span.sum").text(order["total"] + " ₫");
+                } else {
+                    $(".styles__StyledAccountOrderDetail").empty();
+                    $(".styles__StyledAccountOrderDetail").append("<div style='margin: auto;'>Không tìm thấy đơn hàng</div>")
+                }
             },
             error: function() {
                 alert("có lỗi xảy ra");
@@ -350,7 +374,7 @@
         $.each(listOrderDetail, function( index, orderDetail ) {
             let rowClone = firstRow.clone();
             rowClone.find("td:nth-child(1) > div").attr("orderDetail-id", orderDetail["id"]).attr("product-id", orderDetail["productId"]);
-            rowClone.find("td:nth-child(1) > div > img").attr("src", "/images/products/" + orderDetail["productId"] + "/" + orderDetail["image"]).attr("alt", orderDetail["productName"]);
+            rowClone.find("td:nth-child(1) > div > img").attr("src", "/images/products/" + orderDetail["productId"] + "/" + orderDetail["image"]);
             rowClone.find("td:nth-child(1) > div > div > a.product-name").attr("href", "/products/" + orderDetail["productUrl"] + ".html").text(orderDetail["productName"]);
             rowClone.find("td:nth-child(1) > div > div > div.product-review > a").attr("href", "/products/" + orderDetail["productUrl"] + ".html");
             rowClone.find("td.price").text(orderDetail["price"] + " ₫");
