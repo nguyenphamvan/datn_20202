@@ -11,14 +11,17 @@ import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.UserService;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -32,12 +35,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private ProductRepository productRepository;
     private ShippingAddressRepository shippingAddressRepository;
+    private JavaMailSender mailSender;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository, ShippingAddressRepository shippingAddressRepository) {
+    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository,
+                           ShippingAddressRepository shippingAddressRepository, JavaMailSender mailSender) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.shippingAddressRepository = shippingAddressRepository;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -53,6 +59,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean register(UserDto userRequest) {
         User user = new User();
+        user.setFullName(userRequest.getFullName());
+        user.setGender(userRequest.getGender());
+        user.setPhone(userRequest.getPhone());
+        user.setBirthday(user.getBirthday());
         user.setEmail(userRequest.getEmail());
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         user.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
@@ -65,6 +75,38 @@ public class UserServiceImpl implements UserService {
             return true;
         }catch (Exception e) {
             return false;
+        }
+    }
+
+    @Override
+    public void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException {
+        String subject = "Vui lòng xác minh đăng ký của bạn";
+        String senderName = "Admin Web shop";
+        String mailContent = "<p>Cảm ơn  <b>" + user.getFullName() + "</b>,</p>";
+        String verifyURL = siteURL + "/api/verifyAccount?code=" + user.getVerificationCode();
+
+        mailContent += "<p>Vui lòng nhấp vào liên kết bên dưới để xác minh đăng ký của bạn :</p>";
+        mailContent += "<a href=\"" + verifyURL + "\">Xác nhận</a>";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("nguyenphamvan1998@gmail.com", senderName);
+        helper.setTo(user.getEmail());
+        helper.setSubject(subject);
+        helper.setText(mailContent, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public boolean verify(String verificationCode) {
+        User User = userRepository.findByVerificationCode(verificationCode);
+        if (User == null || User.isEnabled()) {
+            return false;
+        } else {
+            userRepository.setActive(true, User.getId());
+            return true;
         }
     }
 
@@ -187,15 +229,6 @@ public class UserServiceImpl implements UserService {
         user.setWishlist(idWishlistStr);
         userRepository.save(user);
         return true;
-    }
-
-    @Override
-    public void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException {
-    }
-
-    @Override
-    public boolean verify(String verificationCode) {
-        return false;
     }
 
     public Set<Long> getSetIdProductWishlist(User user) {

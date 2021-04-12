@@ -92,7 +92,7 @@ public class CheckoutControllerApi {
     }
 
     @GetMapping("/getMyDiscount")
-    public ResponseEntity<?> getMyDiscount (HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+    public ResponseEntity<?> getMyDiscount(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
         User userDb = userService.findUserByEmail(user.getEmail());
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);

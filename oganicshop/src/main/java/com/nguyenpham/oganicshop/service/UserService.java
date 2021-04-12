@@ -3,12 +3,10 @@ package com.nguyenpham.oganicshop.service;
 import com.nguyenpham.oganicshop.dto.ProductDto;
 import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
-import com.nguyenpham.oganicshop.entity.ShippingAddress;
 import com.nguyenpham.oganicshop.entity.User;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 

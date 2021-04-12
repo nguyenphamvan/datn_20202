@@ -32,7 +32,7 @@ public class User {
     private String gender;
     private String phone;
     private String wishlist;
-    @Column(name = "verification_code")
+    @Column(name = "verification_code", length = 64)
     private String verificationCode;
     private boolean enabled;
 

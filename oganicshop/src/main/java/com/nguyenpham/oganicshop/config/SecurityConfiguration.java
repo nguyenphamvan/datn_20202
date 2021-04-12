@@ -44,7 +44,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests()
+        http.authorizeRequests().
+                antMatchers("/signup", "/api/registerAccount", "/api/verifyAccount").permitAll()
                 // Các yêu cầu phải login với vai trò user hoặc admin
                 // Nếu chưa login, nó sẽ redirect tới trang /login.
                 .antMatchers("/login", "/nhan-xet-san-pham-ban-da-mua", "/sales/**", "/checkout.html", "/add-product-review",
@@ -55,7 +56,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic().and()
+                .formLogin()
+                    .permitAll()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                .and()
                 .logout().permitAll()
+                .logoutSuccessUrl("/logout_success")
                 .and().exceptionHandling().accessDeniedPage("/403");
     }
 }

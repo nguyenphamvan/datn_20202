@@ -24,13 +24,7 @@ public class CartController {
 
     @GetMapping
     public String viewCart(HttpSession session, Model model) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        if (cart == null) {
-            cart = new HashMap<>();
-        }
-//        List<Category> listCategory = categoryService.getListCategory();
-//        model.addAttribute("listCategory", listCategory);
-        model.addAttribute("shipFee", Constant.SHIP_FEE_STANDARD);
+//        model.addAttribute("shipFee", Constant.SHIP_FEE_STANDARD);
         return "cart";
     }
 

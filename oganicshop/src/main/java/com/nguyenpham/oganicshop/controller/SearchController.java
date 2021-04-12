@@ -41,15 +41,13 @@ public class SearchController {
             Model model) {
 
         Page<Product> page = productService.searchProductByKeyword(search, pageNum, pageSize, filed, sort);
-//        List<Category> listCategory = categoryService.getListCategory();
         Set<Supplier> setSuppliers = new HashSet<>();
         Set<Category> setCategorySearch = new HashSet<>();
-        for(Product p : page.getContent()) {
+        for (Product p : page.getContent()) {
             setSuppliers.add(p.getSupplier());
             setCategorySearch.add(p.getCategory());
         }
 
-//        model.addAttribute("listCategory", listCategory);
         model.addAttribute("setCategorySearch", setCategorySearch);
         model.addAttribute("setSupplier", setSuppliers);
         model.addAttribute("search", search);

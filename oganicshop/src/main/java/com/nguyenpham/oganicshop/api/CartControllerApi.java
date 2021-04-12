@@ -95,7 +95,7 @@ public class CartControllerApi {
             session.setAttribute(Constant.CART_SESSION_NAME, cart);
             session.setAttribute("subCart", cartService.totalSubCart(cart));
             return new ResponseEntity<Object>(true, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<Object>(false, HttpStatus.OK);
         }

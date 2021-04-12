@@ -56,6 +56,7 @@
                         <ul class="list-main">
                             <li><i class="ti-location-pin"></i>Địa chỉ của hàng</li>
                             <li th:if="${#request.userPrincipal}"><i class="fa fa-sign-out"></i><a th:href="@{/logout}">Đăng xuất</a></li>
+                            <li th:unless="${#request.userPrincipal}"><i class="fa fa-user"></i><a th:href="@{/signup}">Đăng ký</a></li>
                             <li th:unless="${#request.userPrincipal}"><i class="ti-power-off"></i><a th:href="@{/login}">Đăng nhập</a></li>
                         </ul>
                     </div>

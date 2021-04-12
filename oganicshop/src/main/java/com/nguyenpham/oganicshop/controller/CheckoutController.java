@@ -29,13 +29,12 @@ public class CheckoutController {
     }
 
     @GetMapping("/checkout.html")
-    public String getCheckoutPage(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, Model model) {
+    public String getCheckoutPage(HttpSession session) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute("myCart");
         if (cart == null) {
             session.setAttribute("cartEmpty", "Không có sản phẩm nào trong giỏ hàng");
             return "redirect:/cart.html";
         }
-        model.addAttribute("listCategory", categoryService.getListCategory());
         return "checkout";
     }
 }

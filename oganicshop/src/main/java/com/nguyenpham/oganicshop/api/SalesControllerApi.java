@@ -85,7 +85,7 @@ public class SalesControllerApi {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
-        response.put("products", orderService.getListProductNotReviewed( user.getId()));
+        response.put("products", orderService.getListProductNotReviewed(user.getId()));
         return ResponseEntity.ok(response);
     }
 }
