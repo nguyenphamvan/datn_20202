@@ -84,6 +84,7 @@ public class ProductControllerApi {
         if (object.has("maxPrice")) {
             maxPrice = object.get("maxPrice").asInt();
         }
+
         Map<String, Object> result = new HashMap<>();
         if (categoryUrl.equals("") && !supplierName.equals("")) {
             Supplier supplier = supplierService.findSupplierByName(supplierName);
@@ -97,11 +98,8 @@ public class ProductControllerApi {
         } else if (!categoryUrl.equals("") && supplierName.equals("")) {
             Category category = categoryService.getByCategoryUrl(categoryUrl);
             page = productService.getProductsByCategory(categoryUrl, minPrice, maxPrice, pageNum, pageSize, filed, sort);
-            Set<Supplier> setSuppliers = new HashSet<>();
-            for (Product p : page.getContent()) {
-                setSuppliers.add(p.getSupplier());
-            }
-            result.put("suppliers", setSuppliers);
+            List<Supplier> suppliers = supplierService.findSuppliersByCategory(categoryUrl);
+            result.put("suppliers", suppliers);
             result.put("categories", Arrays.asList(category.convertToCategoryDto()));
 
         } else {
@@ -114,8 +112,7 @@ public class ProductControllerApi {
 
         }
 
-        List<ProductDto> products = new ArrayList<>();
-        page.getContent().forEach(product -> products.add(product.convertToDtoNotIncludeReviews()));
+        List<ProductDto> products = page.getContent().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
 
         result.put("products", products);
         result.put("page", pageNum);
@@ -125,12 +122,6 @@ public class ProductControllerApi {
         result.put("sort", sort);
         result.put("minPrice", minPrice);
         result.put("maxPrice", maxPrice);
-        result.put("filterByPrice", products);
-        if (((minPrice > 0) || (maxPrice > 0)) && (minPrice < maxPrice)) {
-            result.put("filterByPrice", true);
-        } else {
-            result.put("filterByPrice", false);
-        }
         return result;
     }
 
