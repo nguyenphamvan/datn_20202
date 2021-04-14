@@ -34,6 +34,8 @@ public class User {
     private String wishlist;
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
     private boolean enabled;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

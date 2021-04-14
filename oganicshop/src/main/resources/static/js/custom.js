@@ -313,7 +313,7 @@ function getSortAndShow(filterByPrice, categoryUrl, supplierName, keyword) {
 
 function searchProduct() {
     let keyword = $('input[id="input-search-bar"]').val();
-    window.location = "/search.html?search=" + keyword;
+    window.location.href = "/search.html?search=" + keyword;
 }
 
 function addProductFromWishlist(url) {

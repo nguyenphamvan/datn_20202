@@ -91,7 +91,7 @@ public class ProductController {
 //    }
 
     @GetMapping("/collections.html")
-    public String getListProductByCategoryUrl(@RequestParam(value = "category") String categoryUrl,
+    public String getListProductByCategoryUrl(@RequestParam(value = "category", required = false, defaultValue = "") String categoryUrl,
                                               @RequestParam(value = "supplier", required = false, defaultValue = "") String supplier, Model model) {
         model.addAttribute("category", categoryUrl);
         model.addAttribute("supplier", supplier);

@@ -70,11 +70,6 @@ public class AccountControllerApi {
         return ResponseEntity.ok(userService.deleteShippingAddress(addressId));
     }
 
-    @GetMapping("my-review")
-    public ResponseEntity<?> getMyReviews() {
-        return null;
-    }
-
     @GetMapping("/wishlist")
     public ResponseEntity<?> getMyWishlist() {
         Map<String, Object> response = new HashMap<>();

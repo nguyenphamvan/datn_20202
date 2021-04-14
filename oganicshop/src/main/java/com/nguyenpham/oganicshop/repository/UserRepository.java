@@ -10,6 +10,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
     User findByVerificationCode(String code);
+    public User findByResetPasswordToken(String token);
     @Modifying
     @Query("UPDATE User u SET u.enabled=:enabled where u.id=:id")
     void setActive(@Param("enabled") boolean enabled, @Param("id") Long id);

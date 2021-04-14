@@ -1,11 +1,13 @@
 package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
 import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.ShippingAddress;
 import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;
@@ -52,20 +54,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByResetPasswordToken(String token) {
+        return userRepository.findByResetPasswordToken(token);
+    }
+
+    @Override
+    public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setResetPasswordToken(token);
+            userRepository.save(user);
+        } else {
+            throw new UserNotFoundException("Could not find any customer with the email " + email);
+        }
+    }
+
+    @Override
+    public void updatePassword(User user, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+
+        user.setResetPasswordToken(null);
+        userRepository.save(user);
+    }
+
+    @Override
     public User findUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public boolean register(UserDto userRequest) {
+    public boolean register(RegisterAccountRequest accountRequest) {
         User user = new User();
-        user.setFullName(userRequest.getFullName());
-        user.setGender(userRequest.getGender());
-        user.setPhone(userRequest.getPhone());
-        user.setBirthday(user.getBirthday());
-        user.setEmail(userRequest.getEmail());
+        user.setFullName(accountRequest.getFullName());
+        user.setEmail(accountRequest.getEmail());
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        user.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(accountRequest.getPassword()));
         user.setEnabled(false);
         user.setRole("ROLE_USER");
         String randomCode = RandomString.make(64);
@@ -95,6 +120,30 @@ public class UserServiceImpl implements UserService {
         helper.setTo(user.getEmail());
         helper.setSubject(subject);
         helper.setText(mailContent, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        String senderName = "Web shop support";
+        String subject = "Here's the link to reset your password";
+
+        String content = "<p>Hello,</p>"
+                + "<p>Bạn đã yêu cầu đặt lại mật khẩu của mình.</p>"
+                + "<p>Nhấp vào liên kết bên dưới để thay đổi mật khẩu của bạn</p>"
+                + "<p><a href=\"" + link + "\">Thay đổi mật khẩu của tôi</a></p>"
+                + "<br>"
+                + "<p>Bỏ qua email này nếu bạn nhớ mật khẩu của mình, "
+                + "hoặc bạn đã không thực hiện yêu cầu.</p>";
+
+        helper.setFrom("nguyenphamvan1998@gmail.com", senderName);
+        helper.setTo(recipientEmail);
+        helper.setSubject(subject);
+        helper.setText(content, true);
 
         mailSender.send(message);
     }
@@ -172,7 +221,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ShippingAddressDto> getShippingAddress() {
-        List<ShippingAddress> listShippingAddress = shippingAddressRepository.findAll();
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        List<ShippingAddress> listShippingAddress = shippingAddressRepository.findAllByUserId(user.getId());
         List<ShippingAddressDto> resShippingAddress = listShippingAddress.stream().map(ad -> ad.convertToDto()).collect(Collectors.toList());
         Collections.sort(resShippingAddress);
         return resShippingAddress;

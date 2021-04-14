@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.api;
 
+import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
 import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 
 @RestController
@@ -23,11 +25,11 @@ public class LoginRegisterControllerApi {
     }
 
     @PostMapping("/api/registerAccount")
-    public boolean regisAccount(@RequestBody UserDto user, HttpServletRequest request)
+    public boolean regisAccount(@Valid @RequestBody RegisterAccountRequest accountRequest, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
 
-        if (userService.register(user)) {
-            User saveUser = userService.findUserByEmail(user.getEmail());
+        if (userService.register(accountRequest)) {
+            User saveUser = userService.findUserByEmail(accountRequest.getEmail());
             if (saveUser != null) {
                 String siteURL = Utitity.getSiteURL(request);
                 userService.sendVerificationEmail(saveUser, siteURL);

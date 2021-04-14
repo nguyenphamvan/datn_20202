@@ -120,16 +120,24 @@
             contentType: "application/json",
             success: function (data) {
                 let orders = data["orders"];
-                $.each(orders, function (index, value) {
-                    let node = "<tr>\n" +
-                        "           <td><a href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
-                        "           <td>" + value["orderDate"] + "</td>\n" +
-                        "           <td>" + value["summaryProductName"] + "</td>\n" +
-                        "           <td>" + value["total"] + " ₫</td>\n" +
-                        "           <td>" + value["status"] + "</td>\n" +
-                        "       </tr>";
-                    $('tbody').append(node);
-                });
+                if (orders.length > 0) {
+                    $.each(orders, function (index, value) {
+                        let node = "<tr>\n" +
+                            "           <td><a href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
+                            "           <td>" + value["orderDate"] + "</td>\n" +
+                            "           <td>" + value["summaryProductName"] + "</td>\n" +
+                            "           <td>" + value["total"] + " ₫</td>\n" +
+                            "           <td>" + value["status"] + "</td>\n" +
+                            "       </tr>";
+                        $('tbody').append(node);
+                    });
+                } else {
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner").empty();
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner")
+                    .append("<div style='text-align: center; padding-top: 50px;'>" +
+                        "<a href='/' class='btn-info'>Tiếp tục mua hàng</a> " +
+                        "</div>")
+                }
             },
             error: function () {
                 alert("có lỗi xảy ra");

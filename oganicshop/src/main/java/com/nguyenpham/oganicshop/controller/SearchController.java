@@ -31,32 +31,38 @@ public class SearchController {
         this.supplierService = supplierService;
     }
 
+//    @GetMapping("/search.html")
+//    public String getViewSearch(
+//            @RequestParam("search") String search,
+//            @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+//            @RequestParam(value = "sortBy", required = false, defaultValue = "productName") String filed,
+//            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+//            @RequestParam(value = "pageSize", required = false, defaultValue = "6") int pageSize,
+//            Model model) {
+//
+//        Page<Product> page = productService.searchProductByKeyword(search, pageNum, pageSize, filed, sort);
+//        Set<Supplier> setSuppliers = new HashSet<>();
+//        Set<Category> setCategorySearch = new HashSet<>();
+//        for (Product p : page.getContent()) {
+//            setSuppliers.add(p.getSupplier());
+//            setCategorySearch.add(p.getCategory());
+//        }
+//
+//        model.addAttribute("setCategorySearch", setCategorySearch);
+//        model.addAttribute("setSupplier", setSuppliers);
+//        model.addAttribute("search", search);
+//        model.addAttribute("listProduct", page.getContent());
+//        model.addAttribute("page", pageNum);
+//        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("pageSize", pageSize);
+//        model.addAttribute("sortBy", filed);
+//        model.addAttribute("sort", sort);
+//        return "search";
+//    }
+
     @GetMapping("/search.html")
-    public String getViewSearch(
-            @RequestParam("search") String search,
-            @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
-            @RequestParam(value = "sortBy", required = false, defaultValue = "productName") String filed,
-            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "6") int pageSize,
-            Model model) {
-
-        Page<Product> page = productService.searchProductByKeyword(search, pageNum, pageSize, filed, sort);
-        Set<Supplier> setSuppliers = new HashSet<>();
-        Set<Category> setCategorySearch = new HashSet<>();
-        for (Product p : page.getContent()) {
-            setSuppliers.add(p.getSupplier());
-            setCategorySearch.add(p.getCategory());
-        }
-
-        model.addAttribute("setCategorySearch", setCategorySearch);
-        model.addAttribute("setSupplier", setSuppliers);
-        model.addAttribute("search", search);
-        model.addAttribute("listProduct", page.getContent());
-        model.addAttribute("page", pageNum);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("sortBy", filed);
-        model.addAttribute("sort", sort);
-        return "search";
+    public String getViewSearch(@RequestParam("search") String search, Model model) {
+            model.addAttribute("keyword", search);
+        return "search1";
     }
 }

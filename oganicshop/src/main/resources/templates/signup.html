@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sign Up Form by Colorlib</title>
+    <title>Đăng ký</title>
 
     <!-- Font Icon -->
     <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
@@ -23,24 +23,20 @@
                     <h2 class="form-title">Đăng ký tài khoản</h2>
                     <form method="POST" class="register-form" id="register-form">
                         <div class="form-group">
-                            <label for="name"><i class="fa fa-user"></i></label>
-                            <input type="text" name="name" id="name" placeholder="Your Name"/>
+                            <label for="fullname"><i class="fa fa-user"></i></label>
+                            <input type="text" name="fullname" id="fullname" placeholder="Your Name" required="true"/>
                         </div>
                         <div class="form-group">
                             <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i></label>
-                            <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            <input type="email" name="email" id="email" placeholder="Your Email" required="true"/>
                         </div>
                         <div class="form-group">
-                            <label for="pass"><i class="fa fa-lock" aria-hidden="true"></i></label>
-                            <input type="password" name="pass" id="pass" placeholder="Password"/>
+                            <label for="password"><i class="fa fa-lock" aria-hidden="true"></i></label>
+                            <input type="password" name="password" id="password" placeholder="Password" required="true"/>
                         </div>
                         <div class="form-group">
                             <label for="re_pass"><i class="fa fa-lock" aria-hidden="true" style="background-color: white;"></i></label>
-                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-                        </div>
-                        <div class="form-group">
-                            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                            <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" required="true"/>
                         </div>
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
@@ -59,6 +55,51 @@
 
 <!-- JS -->
 <script src="vendor/jquery/jquery.min.js"></script>
-<script src="js/main.js"></script>
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+
+        $("#signup").on("click", function(e) {
+            e.preventDefault();
+            let fullName = $("#fullname").val();
+            let email = $("#email").val();
+            let password = $("#password").val();
+            let rePassword = $("#re_pass").val();
+            if (password !== rePassword) {
+                $("#register-form > div.form-group.form-button").before("<div style='color: red;'>Mật khẩu nhập lại không đúng</div>");
+            } else {
+                $.ajax({
+                    url: "/api/registerAccount",
+                    type: "POST",
+                    data : JSON.stringify({
+                        "fullName" : fullName,
+                        "email" : email,
+                        "password" : password
+                    }),
+                    dataType : "json",
+                    contentType: "application/json",
+                    success: function (result) {
+                        if (result === true) {
+                            $("body > div > section > div.container").empty();
+                            $("body > div > section > div.container")
+                                .append("<div class='singup-successfully' style='text-align: center; min-height: 400px;'>" +
+                                    "<div style='margin: 0 auto; padding-top: 50px;'>" +
+                                    "   <p>Đăng ký tài khoản thành công, vui lòng kiểm tra email của bàn để kích hoạt tài khoản</p>" +
+                                    "   <a href=\"/login\" class='form-submit' style='text-decoration: none;'>Đăng nhập ngay</a>" +
+                                    "</div>" +
+                                    "</div>");
+                        } else {
+                            window.location.href = "/403";
+                        }
+                    },
+                    error: function () {
+                        alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+                    }
+                });
+            }
+        });
+    });
+    /*]]>*/
+</script>
+</body>
 </html>

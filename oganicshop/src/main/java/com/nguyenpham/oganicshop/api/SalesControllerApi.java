@@ -11,6 +11,7 @@ import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,8 @@ public class SalesControllerApi {
     }
 
     @GetMapping("/order/history")
-    public ResponseEntity<?> getOrdersHistory(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public ResponseEntity<?> getOrdersHistory(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
         response.put("orders", orderService.getListOrderHistory(user.getId(), pageNum, pageSize));
@@ -43,14 +44,14 @@ public class SalesControllerApi {
     }
 
     @GetMapping("/order/paging")
-    public ResponseEntity<?> getTotalOrderPage(@RequestParam("pageSize") int pageSize) {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public ResponseEntity<?> getTotalOrderPage(@RequestParam("pageSize") int pageSize, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
         return ResponseEntity.ok(orderService.getTotalOrderPage(user.getId(), pageSize));
     }
 
     @GetMapping("/order/view/{orderId}")
-    public ResponseEntity<?> getSingleOrderById(@PathVariable("orderId") long orderId) {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public ResponseEntity<?> getSingleOrderById(@PathVariable("orderId") long orderId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
         response.put("order", orderService.getOrderById(user.getId(), orderId));
@@ -66,8 +67,8 @@ public class SalesControllerApi {
     }
 
     @GetMapping("/order/tracking/{orderId}")
-    public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId) {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
         response.put("order", orderService.getOrderById(user.getId(), orderId));
@@ -75,14 +76,14 @@ public class SalesControllerApi {
     }
 
     @PutMapping("/order/cancel/{orderId}")
-    public ResponseEntity<?> cancel(@PathVariable("orderId") long orderId) {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public ResponseEntity<?> cancel(@PathVariable("orderId") long orderId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
         return ResponseEntity.ok(orderService.cancelOrder(user.getId(), orderId));
     }
 
     @GetMapping("/order/product-not-reviewed")
-    public ResponseEntity<?> getListProductNotReviewed() {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public ResponseEntity<?> getListProductNotReviewed(@AuthenticationPrincipal MyUserDetail myUserDetail) {
+        User user = myUserDetail.getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
         response.put("products", orderService.getListProductNotReviewed(user.getId()));

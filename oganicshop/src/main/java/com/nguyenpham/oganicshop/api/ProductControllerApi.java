@@ -49,8 +49,7 @@ public class ProductControllerApi {
     }
 
     @PostMapping("/collections")
-    public Object getListProductByCategoryUrl(@RequestBody ObjectNode object,
-            Model model) {
+    public Object getListProductByCategoryUrl(@RequestBody ObjectNode object) {
         Page<Product> page = null;
         String categoryUrl = "";
         String supplierName = "";
