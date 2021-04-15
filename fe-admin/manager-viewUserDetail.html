@@ -58,12 +58,12 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="buttons.html">Quản lý người dùng</a>
-            <a class="collapse-item" href="cards.html">Quản lý sản phẩm</a>
-            <a class="collapse-item" href="cards.html">Quản lý đơn hàng</a>
-            <a class="collapse-item" href="cards.html">Chương trình khuyến mãi</a>
-            <a class="collapse-item" href="cards.html">Quản lý liên hệ</a>
-            <a class="collapse-item" href="cards.html">Banner</a>
+            <a class="collapse-item" href="manager-user.html">Quản lý người dùng</a>
+            <a class="collapse-item" href="manager-product.html">Quản lý sản phẩm</a>
+            <a class="collapse-item" href="manager-order.html">Quản lý đơn hàng</a>
+            <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+            <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
+            <a class="collapse-item">Banner</a>
           </div>
         </div>
       </li>
@@ -165,7 +165,7 @@
                 <span class="badge badge-danger badge-counter">3+</span>
               </a>
               <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby= alertsDropdown">
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
@@ -302,8 +302,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Quản lý người dùng</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <h1 class="h3 mb-0 text-gray-800">#1 Phạm Văn Nguyên</h1>
           </div>
 
           <div class="row">
@@ -316,7 +315,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng đơn hàng đã mua</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
-                      <div><a>danh sách</a></div>
+                      <div><a href="manager-orderHistory.html">danh sách</a></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -370,7 +369,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Số sản phẩm yêu thích</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
-                      <div><a>danh sách</a></div>
+                      <div><a class="collapsed">danh sách</a></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-heart fa-2x text-gray-300"></i>
@@ -379,43 +378,57 @@
                 </div>
               </div>
             </div>
-            
           </div>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3" style="display: flex; justify-content: space-between;">
-              <h6 class="m-0 font-weight-bold text-primary">Trạng thái</h6>
-              <h6 class="m-0 font-weight-bold text-primary">Phân quyền</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Thông tin cá nhân</h6>
             </div>
             <div class="card-body">
-              <form action="/action_page.php" class="was-validated">
-                <div class="form-group">
-                  <label for="uname">email:</label>
-                  <input type="text" class="form-control" id="uname" placeholder="Enter username" name="uname" required>
-                  <div class="valid-feedback">Valid.</div>
-                  <div class="invalid-feedback">Please fill out this field.</div>
+              <form>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="uname">Email:</label>
+                      <input type="text" class="form-control" id="email" name="email" value="nguyen@gmail.com" readonly="readonly">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="pwd">Họ tên:</label>
+                      <input type="text" class="form-control" id="name" name="name" value="Phạm Văn Nguyên" readonly="readonly">
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="pwd">Họ tên:</label>
-                  <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd" required>
-                  <div class="valid-feedback">Valid.</div>
-                  <div class="invalid-feedback">Please fill out this field.</div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="uname">ngày sinh:</label>
+                      <input type="date" class="form-control" id="birth" name="birth" value="2021-11-04" readonly="readonly">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="pwd">Số điện thoại:</label>
+                      <input type="phone" class="form-control" id="phone" name="phone" value="0947060528" readonly="readonly">
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="pwd">Ngày sinh:</label>
-                  <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd" required>
-                  <div class="valid-feedback">Valid.</div>
-                  <div class="invalid-feedback">Please fill out this field.</div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="uname">Trạng thái tài khoản:</label>
+                      <input type="text" class="form-control" id="status" name="status" value="Đã kích hoạt" readonly="readonly">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="pwd">Loại tài khoản:</label>
+                      <input type="text" class="form-control" id="account-type" name="account-type" value="Người dùng" readonly="readonly">
+                    </div>
+                  </div>
                 </div>
-                <div class="form-group form-check">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="remember" required> I agree on blabla.
-                    <div class="valid-feedback">Valid.</div>
-                    <div class="invalid-feedback">Check this checkbox to continue.</div>
-                  </label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
               </form>
             </div>
           </div>
