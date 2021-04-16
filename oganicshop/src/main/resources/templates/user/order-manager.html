@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Đơn hàng của tôi</title>
+    <th:block th:include="user/common/header_tag_common"/>
+    <!-- custom css  -->
+    <link rel="stylesheet" th:href="@{/css/custom2.css}">
+</head>
+<body class="js">
+<!-- Header -->
+<th:block th:include="user/common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active">Thông tin tài khoản</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section" style="padding-top: 15px;">
+    <div class="container">
+        <div class="row">
+            <!-- Start account items manager Area -->
+            <th:block th:include="user/common/acount-items-manager"/>
+            <!-- /End account items manager Area -->
+
+            <div class="Account__StyledAccountLayoutInner">
+                <div class="styles__StyledAccountListOrder">
+                    <div class="heading">Đơn hàng của tôi</div>
+                    <div class="inner">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Mã đơn hàng</th>
+                                <th>Ngày mua</th>
+                                <th>Sản phẩm</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái đơn hàng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <ul class="Pagination__StyledPagination">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Start Footer Area -->
+<th:block th:include="user/common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        getListCategory();
+        getOrdersHistory(1, 5);
+        getTotalOrderPage();
+
+        $(document).on('click', 'ul.Pagination__StyledPagination > li', function () {
+            $(".Pagination__StyledPagination").children("li").removeClass("is-active");
+            $(this).addClass("is-active");
+            $('tbody').empty();
+            getOrdersHistory(parseInt($(this).text()), 5);
+        });
+    });
+
+    function getTotalOrderPage() {
+        let data = {
+            "pageSize": 5
+        };
+        $.ajax({
+            url: "/api/sales/order/paging",
+            type: "GET",
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (totalPage) {
+                for (let i = 0; i < parseInt(totalPage); ++i) {
+                    $(".Pagination__StyledPagination").append("<li>" + (i + 1) + "</li>");
+                }
+                $(".Pagination__StyledPagination > li:first-child").addClass("is-active");
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getOrdersHistory(pageNum, pageSize) {
+        $.ajax({
+            url: "/api/sales/order/history",
+            type: "GET",
+            data: {
+                "pageNum": pageNum,
+                "pageSize": pageSize
+            },
+            dataType: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                let orders = data["orders"];
+                if (orders.length > 0) {
+                    $.each(orders, function (index, value) {
+                        let node = "<tr>\n" +
+                            "           <td><a href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
+                            "           <td>" + value["orderDate"] + "</td>\n" +
+                            "           <td>" + value["summaryProductName"] + "</td>\n" +
+                            "           <td>" + value["total"] + " ₫</td>\n" +
+                            "           <td>" + value["status"] + "</td>\n" +
+                            "       </tr>";
+                        $('tbody').append(node);
+                    });
+                } else {
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner").empty();
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner")
+                    .append("<div style='text-align: center; padding-top: 50px;'>" +
+                        "<a href='/' class='btn-info'>Tiếp tục mua hàng</a> " +
+                        "</div>")
+                }
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
+                // show category
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhận xét của tôi</title>
+    <th:block th:include="user/common/header_tag_common"/>
+    <!-- custom css  -->
+    <link rel="stylesheet" th:href="@{/css/custom2.css}">
+</head>
+<body class="js">
+<!-- Header -->
+<th:block th:include="user/common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active">Thông tin tài khoản</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section" style="padding-top: 15px;">
+    <div class="container">
+        <div class="row">
+            <!-- Start account items manager Area -->
+            <th:block th:include="common/acount-items-manager"/>
+            <!-- /End account items manager Area -->
+
+            <div class="Account__StyledAccountLayoutInner" id="customer_review">
+                <div class="styles__StyledReviewList">
+                    <div class="heading">Nhận xét của tôi (<span></span>)</div>
+                    <div class="inner">
+                        <div class="list">
+                            <div class="item">
+                                <div class="thumb">
+                                    <div class="Picture__StyledPicture loaded">
+                                        <img class="image">
+                                    </div>
+                                </div>
+
+                                <div class="info">
+                                    <a class="name"></a>
+                                    <div class="date"></div>
+                                    <div class="wrap">
+                                        <span class="title"></span>
+                                        <div class="rating">
+                                            <div class="ratting-wrap" style="display: flex;">
+                                                <div class="ratting-star">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="content-review"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Start Footer Area -->
+<th:block th:include="user/common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        getListCategory();
+        getListMyReview();
+    });
+
+    function getListMyReview() {
+        $.ajax({
+            url: "/api/review/my-review",
+            type: "GET",
+            dataType: 'json',
+            success: function (data) {
+                let listMyReview = data["reviews"];
+                $(".styles__StyledReviewList .heading span").text(listMyReview.length);
+                if (listMyReview.length > 0) {
+                    let firstItem = $(".styles__StyledReviewList div.list .item:first-child");
+                    $.each(listMyReview, function (index, item) {
+                        let itemClone = firstItem.clone();
+                        itemClone.find(".thumb div img.image").attr("src", "/images/products/" + item["id"] + "/" + item["image"]);
+                        itemClone.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                        itemClone.find(".info div.date").text(item["createdAt"]);
+                        if (item["title"] !== null) {
+                            itemClone.find(".info .wrap .title").text(item["title"]);
+                        }
+                        if (parseInt(item["rating"]) > 0) {
+                            for (let i = 0; i < parseInt(item["rating"]); i++) {
+                                itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
+                            }
+                            for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
+                                itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
+                            }
+                        }
+                        itemClone.find(".info .content-review").text(item["comment"]);
+                        itemClone.insertAfter(".styles__StyledReviewList div.list .item:first-child");
+                    });
+                    firstItem.hide();
+                } else {
+                    $(".styles__StyledReviewList").empty()
+                        .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")
+                }
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
+                // show category
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+</body>
+</html>

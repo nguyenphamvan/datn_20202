@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <!-- Title Tag  -->
+    <title>Trang tìm kiếm</title>
+    <th:block th:include="user/common/header_tag_common"/>
+    <style type="text/css">
+        ul {
+            list-style: none;
+            padding-left: 0px;
+            margin-bottom: 0;
+        }
+
+        .pagination-nav ul li {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        .pagination-nav ul li a {
+            background-color: #f7f7f7;
+            color: #808080;
+            display: block;
+            font-size: 14px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            width: 36px;
+        }
+
+        a, a:focus, a:active, a:link, img {
+            outline: none;
+            text-decoration: none;
+        }
+
+        .pagination-nav ul li.active a {
+            background: #e40001 none repeat scroll 0 0;
+            color: #fff;
+        }
+
+        .mt_50 {
+            margin-top: 50px;
+        }
+    </style>
+
+</head>
+<body class="js">
+
+<!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-inner">
+        <div class="preloader-icon">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!-- End Preloader -->
+
+<!-- Header -->
+<th:block th:include="user/common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a>Tìm kiếm sản phẩm</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-12">
+                <div class="shop-sidebar">
+                    <!-- Single Widget -->
+                    <div class="single-widget category">
+                        <h3 class="title">Danh mục</h3>
+                        <ul class="categor-list">
+                            <li>
+                                <a>danh mục con</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/ End Single Widget -->
+
+                    <!-- Single Widget -->
+                    <div class="single-widget category">
+                        <h3 class="title">Nhà cung cấp</h3>
+                        <ul class="categor-list">
+                            <li>
+                                <a>tên nhà cung cấp</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/ End Single Widget -->
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-8 col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Shop Top -->
+                        <div class="shop-top">
+                            <div class="shop-shorter">
+                                <div class="single-shorter">
+                                    <label>Hiển thị :</label>
+                                    <select id="page-size" th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category}', '${supplier}', '${search}')|">
+                                        <option value="6">06</option>
+                                        <option value="9">09</option>
+                                        <option value="15">15</option>
+                                        <option value="25">25</option>
+                                    </select>
+                                </div>
+                                </div>
+                                <div class="single-shorter">
+                                    <label>Sắp xếp theo :</label>
+                                    <select id="sort-by" th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category}', '${supplier}', '${search}')|" >
+                                        <option value="productName-asc">Name (A - Z)</option>
+                                        <option value="productName-desc">Name (Z - A)</option>
+                                        <option value="finalPrice-asc">Price (Low &gt; High)</option>
+                                        <option value="finalPrice-desc">Price (High &gt; Low)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ End Shop Top -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p th:if="${listProduct.size() == 0}" style="text-align: center">Không tìm thấy sản phảm với từ khóa <span th:utext="${search}"></span></p>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12" th:each="product : ${listProduct}">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}">
+                                    <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
+                                    <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
+                                           th:href="@{'/api/products/' + ${product.getProductUrl()}}">
+                                            <i class=" ti-eye"></i><span>Xem nhanh</span></a>
+                                        <a title="Wishlist" href="#"><i
+                                                class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Add to cart"
+                                           th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}">Thêm vào giỏ
+                                            hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a th:href="@{'/products/' + ${product.getProductUrl()} + '.html'}"
+                                       th:utext="${product.getProductName()}">Tên sản phẩm</a></h3>
+                                <div class="product-price">
+                                    <span th:utext="${product.finalPrice}">$29.00</span>
+                                    <span class="old" th:utext="${product.price}">$60.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <th:block th:if="${totalPages > 0}">
+                    <div class="pagination-nav text-center mt_50">
+                        <ul>
+                            <li>
+                                <a th:href="@{'/search.html?search=' + ${search} + '&page=1&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">First</a>
+                            </li>
+                            <li th:if="${page gt 1}"><a
+                                    th:href="@{'/search.html?search=' + ${search} + '&page=' + ${page -1 } + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <li th:if="${page eq 1}"><a
+                                    th:href="@{'/search.html?search=' + ${search} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li th:if="${page eq i}" class="active">
+                                    <a th:href="@{'/search.html?search=' + ${search} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                                <li th:unless="${page eq i}">
+                                    <a th:href="@{'/search.html?search=' + ${search} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${page lt totalPages}">
+                                <a th:href="@{'/search.html?search=' + ${search} + '&page=' + ${page + 1} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li th:if="${page eq totalPages}">
+                                <a th:href="@{'/search.html?search=' + ${search} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/search.html?search=' + ${search} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ti-close" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <!-- Product Slider -->
+                        <div class="product-gallery">
+                            <div class="quickview-slider-active">
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Product slider -->
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="quickview-content">
+                            <h2>Flared Shift Dress</h2>
+                            <div class="quickview-ratting-review">
+                                <div class="quickview-ratting-wrap">
+                                    <div class="quickview-ratting">
+                                    </div>
+                                    <span>( <span id="num-customer-review"></span> customer review)</span>
+                                </div>
+                                <div class="quickview-stock">
+                                    <span id="in-stock"><i class="fa fa-check-circle-o"></i> in stock</span>
+                                    <span id="out-stock"><i class="fa fa-check-circle-o" style="background-color: #bd2130"></i> out of stock</span>
+                                </div>
+                            </div>
+                            <h3>$29.00</h3>
+                            <div class="quickview-peragraph">
+                                <p></p>
+                            </div>
+                            <div class="quantity">
+                                <!-- Input Order -->
+                                <div class="input-group">
+                                    <div class="button minus">
+                                        <button type="button" class="btn btn-primary btn-number" disabled="disabled"
+                                                data-type="minus" data-field="quant[1]">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000"
+                                           value="1">
+                                    <div class="button plus">
+                                        <button type="button" class="btn btn-primary btn-number" data-type="plus"
+                                                data-field="quant[1]">
+                                            <i class="ti-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--/ End Input Order -->
+                            </div>
+                            <div class="add-to-cart">
+                                <a id="add-cart" class="btn">Add to cart</a>
+                                <a href="#" class="btn min"><i class="ti-heart"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+<!-- Start Footer Area -->
+<th:block th:include="user/common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        getListCategory();
+    });
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
+                // show category
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+</body>
+</html>

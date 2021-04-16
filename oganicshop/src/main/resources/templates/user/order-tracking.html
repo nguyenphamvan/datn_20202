@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='copyright' content=''>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title Tag  -->
+    <title>Theo dõi đơn hàng</title>
+    <th:block th:include="user/common/header_tag_common"/>
+
+    <!-- custom css  -->
+    <link rel="stylesheet" th:href="@{/css/custom2.css}">
+</head>
+<body class="js">
+
+<!-- Header -->
+<th:block th:include="user/common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="blog-single.html"></a>Thông tin tài khoản</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section" style="padding-top: 0px;">
+    <div class="container">
+        <div class="row">
+
+            <!-- Start account items manager Area -->
+            <th:block th:include="user/common/acount-items-manager"/>
+            <!-- /End account items manager Area -->
+
+            <div class="Account__StyledAccountLayoutInner">
+                <div class="styles__StyledTrackingDetail">
+                    <div class="order-heading"><h3></h3>
+                        <div class="view-detail"><a th:href="@{'/sales/order/view/' + ${orderId}}">Xem chi tiết đơn hàng</a></div>
+                    </div>
+                    <div>
+                        <div class="styles__StyledOrderStatus"><p class="title">Trạng thái đơn
+                            hàng</p>
+                            <div class="status-block"><span class="status-text">Trạng thái: <b></b></span>
+                            </div>
+                        </div>
+                        <div class="styles__StyledOrderStatusDetail">
+                            <p class="title">Chi tiết trạng thái đơn hàng</p>
+                            <div class="detail">
+                                <div class="border">
+                                    <div class="styles__StyledOrderStatusDetailItem cGrxj"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="styles__StyledOrderItems">
+                            <p class="title">Kiện hàng gồm có</p>
+                            <div class="items">
+                                <div class="item">
+                                    <img class="image">
+                                    <div class="info">
+                                        <a class="name"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Start Shop Newsletter  -->
+<section class="shop-newsletter section">
+    <div class="container">
+        <div class="inner-top">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-12">
+                    <!-- Start Newsletter Inner -->
+                    <div class="inner">
+                        <h4>Newsletter</h4>
+                        <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
+                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                            <input name="EMAIL" placeholder="Your email address" required="" type="email">
+                            <button class="btn">Subscribe</button>
+                        </form>
+                    </div>
+                    <!-- End Newsletter Inner -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Newsletter -->
+
+<!-- Start Footer Area -->
+<th:block th:include="user/common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function() {
+        var orderId = /*[[${orderId}]]*/;
+        getListCategory();
+        getOrderLogging(orderId);
+    });
+
+    function getOrderLogging(orderId) {
+        $.ajax({
+            url: "/api/sales/order/tracking/" + orderId,
+            type: "GET",
+            dataType: 'json',
+            success: function (order) {
+                let orderLogging = order["order"]["orderLogging"];
+                $(".order-heading h3").text("Theo dõi đơn hàng #" + orderLogging["orderId"]);
+                $(".status-block .status-text b").text(orderLogging["latestStatus"] + "  |  " + orderLogging["lastUpdatedTime"]);
+                $(".cGrxj").text("Cập nhật mới nhất : " + orderLogging["lastUpdatedTime"]);
+                $.each(orderLogging["loggingStatus"], function( index, orderStatus ) {
+                    let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
+                        "           <span class=\"left\">" + orderStatus["updatedTime"] + "</span>" +
+                        "           <span class=\"right\">" + orderStatus["status"] + "</span>\n" +
+                        "       </div>";
+                    $(html).insertAfter(".cGrxj");
+                });
+
+                let listOrderItem = order["order"]["listOrderDetail"];
+                let itemClone = $(".styles__StyledOrderItems .items div:first-child");
+                $.each(listOrderItem, function (index, item) {
+                    let row = itemClone.clone();
+                    row.find("img.image").attr("src", "/images/products/" + item["productId"] + "/" + item["image"]);
+                    row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                    row.insertAfter(".styles__StyledOrderItems .items div:first-child");
+                });
+                $(".styles__StyledOrderItems .items div:first-child").css("display", "none");
+            },
+            error: function() {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getListOrderItem(orderId) {
+        $.ajax({
+            url: "/api/sales/order/" + orderId + "/list-item",
+            type: "GET",
+            dataType: 'json',
+            success: function (data) {
+                let orderItems = data["orderItems"];
+                let itemClone = $(".styles__StyledOrderItems .items div:first-child");
+                $.each(orderItems, function (index, item) {
+                    let row = itemClone.clone();
+                    row.find("img.image").attr("src", "/images/products/" + item["image"]);
+                    row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                    row.insertAfter(".styles__StyledOrderItems .items div:first-child");
+                });
+                $(".styles__StyledOrderItems .items div:first-child").css("display", "none");
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
+                // show category
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            }
+        });
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

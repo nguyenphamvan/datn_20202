@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <!-- Title Tag  -->
+    <title>Danh mục sản phẩm</title>
+    <th:block th:include="user/common/header_tag_common"/>
+    <style type="text/css">
+        ul {
+            list-style: none;
+            padding-left: 0px;
+            margin-bottom: 0;
+        }
+
+        .pagination-nav ul li {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        .pagination-nav ul li a {
+            background-color: #f7f7f7;
+            color: #808080;
+            display: block;
+            font-size: 14px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            width: 36px;
+        }
+
+        a, a:focus, a:active, a:link, img {
+            outline: none;
+            text-decoration: none;
+        }
+
+        .pagination-nav ul li.active a {
+            background: #F7941D none repeat scroll 0 0;
+            color: #fff;
+        }
+
+        .mt_50 {
+            margin-top: 50px;
+        }
+    </style>
+
+</head>
+<body class="js" th:attr="onload=|onloadPage('${sortBy}', '${sort}', '${pageSize}', '${minPrice}', '${maxPrice}')|">
+
+<!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-inner">
+        <div class="preloader-icon">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!-- End Preloader -->
+
+<!-- Header -->
+<th:block th:include="user/common/header"/>
+<!--/ End Header -->
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="blog-single.html">Shop Grid</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-12">
+                <div class="shop-sidebar">
+                    <!-- Single Widget -->
+                    <div class="single-widget category">
+                        <th:block th:if="${category}">
+                            <h3 class="title" th:utext="${category.getCategoryName()}">Danh mục chính</h3>
+                            <ul th:if="${category.getSubCategories().size() > 0}" class="categor-list">
+                                <li th:each="subCategory : ${category.getSubCategories()}">
+                                    <a th:href="@{'/collections.html?category=' + ${subCategory.getCategoryUrl()}}"
+                                       th:utext="${subCategory.getCategoryName()}">danh mục con</a>
+                                </li>
+                            </ul>
+                        </th:block>
+                        <th:block th:if="${setCategory}">
+                            <h3 class="title">Danh mục</h3>
+                            <ul th:each="category : ${setCategory}" class="categor-list">
+                                <li>
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"
+                                       th:utext="${category.getCategoryName()}">danh mục con</a>
+                                </li>
+                            </ul>
+                        </th:block>
+                    </div>
+                    <!--/ End Single Widget -->
+                    <!-- Single Widget -->
+                    <div class="single-widget category">
+                        <h3 class="title">Nhà cung cấp</h3>
+                        <ul class="categor-list">
+                            <li th:if="${setSupplier}" th:each="supplier : ${setSupplier}">
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()}}"
+                                   th:utext="${supplier.getName()}">Forever</a>
+                            </li>
+
+                            <li th:if="${supplier}">
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()}}"
+                                   th:utext="${supplier.getName()}">Forever</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/ End Single Widget -->
+                    <!-- Shop By Price -->
+                    <div class="single-widget range">
+                        <h3 class="title">Lọc theo giá</h3>
+                        <div class="price-filter">
+                            <div class="price-filter-inner">
+                                <div class="price_slider_amount">
+                                    <span>Range:</span><br>
+                                    <div class="label-input" style="display: flex;">
+                                        <input type="text" name="min-price" value="0"style="border: ridge; width: 40%;"/>Đ -
+                                        <input type="text" name="max-price" value="100" style="border: ridge; width: 40%;"/>Đ
+                                    </div>
+                                    <button th:if="${category}" type="submit"
+                                            th:attr="onclick=|filterByPrice('${category.getCategoryUrl()}', null)|">Lọc
+                                    </button>
+                                    <button th:if="${supplier}" type="submit"
+                                            th:attr="onclick=|filterByPrice(null, '${supplier.getName()}')|">Lọc
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ End Shop By Price -->
+                    <!-- Single Widget -->
+                    <div class="single-widget recent-post">
+                        <h3 class="title">Sản phẩm nổi bật</h3>
+                        <!-- Single Post -->
+                        <div class="single-post first">
+                            <div class="image">
+                                <img src="https://via.placeholder.com/75x75" alt="#">
+                            </div>
+                            <div class="content">
+                                <h5><a href="#">Girls Dress</a></h5>
+                                <p class="price">$99.50</p>
+                                <ul class="reviews">
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li><i class="ti-star"></i></li>
+                                    <li><i class="ti-star"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Post -->
+                        <!-- Single Post -->
+                        <div class="single-post first">
+                            <div class="image">
+                                <img src="https://via.placeholder.com/75x75" alt="#">
+                            </div>
+                            <div class="content">
+                                <h5><a href="#">Women Clothings</a></h5>
+                                <p class="price">$99.50</p>
+                                <ul class="reviews">
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li><i class="ti-star"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Post -->
+                        <!-- Single Post -->
+                        <div class="single-post first">
+                            <div class="image">
+                                <img src="https://via.placeholder.com/75x75" alt="#">
+                            </div>
+                            <div class="content">
+                                <h5><a href="#">Man Tshirt</a></h5>
+                                <p class="price">$99.50</p>
+                                <ul class="reviews">
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                    <li class="yellow"><i class="ti-star"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Post -->
+                    </div>
+                    <!--/ End Single Widget -->
+
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-8 col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Shop Top -->
+                        <div class="shop-top">
+                            <div class="shop-shorter" th:if="${category}">
+                                <div class="single-shorter">
+                                    <label>Hiển thị :</label>
+                                    <select id="page-size"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', null, null)|">
+                                        <option value="6">06</option>
+                                        <option value="9">09</option>
+                                        <option value="15">15</option>
+                                        <option value="25">25</option>
+                                    </select>
+                                </div>
+                                <div class="single-shorter">
+                                    <label>Sắp xếp theo :</label>
+                                    <select id="sort-by"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', null, null)|">
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
+                                        <option value="finalPrice-asc">Price (Low &gt; High)</option>
+                                        <option value="finalPrice-desc">Price (High &gt; Low)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="shop-shorter" th:if="${supplier}">
+                                <div class="single-shorter">
+                                    <label>Hiển thị :</label>
+                                    <select id="page-size"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', null, '${supplier.getName()}', null)|">
+                                        <option value="6">06</option>
+                                        <option value="9">09</option>
+                                        <option value="15">15</option>
+                                        <option value="25">25</option>
+                                    </select>
+                                </div>
+                                <div class="single-shorter">
+                                    <label>Sắp xếp theo :</label>
+                                    <select id="sort-by"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', null, '${supplier.getName()}', null)|">
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
+                                        <option value="finalPrice-asc">Price (Low &gt; High)</option>
+                                        <option value="finalPrice-desc">Price (High &gt; Low)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="shop-shorter" th:if="${(supplier != null) && (category != null)}">
+                                <div class="single-shorter">
+                                    <label>Hiển thị :</label>
+                                    <select id="page-size"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', '${supplier.getName()}', null)|">
+                                        <option value="6">06</option>
+                                        <option value="9">09</option>
+                                        <option value="15">15</option>
+                                        <option value="25">25</option>
+                                    </select>
+                                </div>
+                                <div class="single-shorter">
+                                    <label>Sắp xếp theo :</label>
+                                    <select id="sort-by"
+                                            th:attr="onchange=|getSortAndShow('${filterByPrice}', '${category.getCategoryUrl()}', '${supplier.getName()}', null)|">
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
+                                        <option value="finalPrice-asc">Price (Low &gt; High)</option>
+                                        <option value="finalPrice-desc">Price (High &gt; Low)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ End Shop Top -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p th:unless="${listProduct.size() > 0}" style="text-align: center">Không có sản phẩm nào thuộc
+                            <span th:if="${category}"> danh mục :  <span
+                                    th:utext="${category.getCategoryName()}"></span></span>
+                            <span th:if="${supplier}"> hãng : <span th:utext="${supplier.getName()}"></span></span>
+                        </p>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-12" th:each="product : ${listProduct}">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a th:href="@{'/products/' + ${product.getUrl()} + '.html'}">
+                                    <img class="default-img" th:src="@{https://via.placeholder.com/550x750}" alt="#">
+                                    <img class="hover-img" th:src="@{https://via.placeholder.com/550x750}" alt="#">
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action" style="margin-right: 10px;">
+                                        <a title="Quick View"
+                                           th:href="@{'/api/products/' + ${product.getUrl()}}">
+                                            <i class=" ti-eye"></i><span>Xem nhanh</span>
+                                        </a>
+                                        <a th:if="${#request.userPrincipal}" title="Wishlist" th:href="@{'/api/account/wishlist/add/' + ${product.getId()}}">
+                                            <i class=" ti-heart "></i><span>Thêm vào Wishlist</span>
+                                        </a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Add to cart"
+                                           th:href="@{'/products/' + ${product.getUrl()} + '.html'}">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a th:href="@{'/products/' + ${product.getUrl()} + '.html'}"
+                                       th:utext="${product.getName()}">/a></h3>
+                                <div class="product-price">
+                                    <span th:utext="${product.finalPrice}"></span>
+                                    <span class="old" th:utext="${product.price}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier == null) && (category != null)}">
+                    <div class="pagination-nav text-center mt_50">
+                        <ul>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">First</a>
+                            </li>
+                            <li th:if="${page gt 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=' + ${page -1 } + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <li th:if="${page eq 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li th:if="${page eq i}" class="active">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                                <li th:unless="${page eq i}">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${page lt totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=' + ${page + 1} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li th:if="${page eq totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier == null) && (category != null)}">
+                    <div class="pagination-nav text-center mt_50">
+                        <ul>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">First</a>
+                            </li>
+                            <li th:if="${page gt 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${page -1 } + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <li th:if="${page eq 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li th:if="${page eq i}" class="active">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                                <li th:unless="${page eq i}">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${page lt totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${page + 1} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li th:if="${page eq totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier != null) && (category == null)}">
+                    <div class="pagination-nav text-center mt_50">
+                        <ul>
+                            <li>
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">First</a>
+                            </li>
+                            <li th:if="${page gt 1}"><a
+                                    th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=' + ${page -1 } + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <li th:if="${page eq 1}"><a
+                                    th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li th:if="${page eq i}" class="active">
+                                    <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                                <li th:unless="${page eq i}">
+                                    <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${page lt totalPages}">
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=' + ${page + 1} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li th:if="${page eq totalPages}">
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier != null) && (category == null)}">
+                    <div class="pagination-nav text-center mt_50">
+                        <ul>
+                            <li>
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">First</a>
+                            </li>
+                            <li th:if="${page gt 1}"><a
+                                    th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${page -1 } + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <li th:if="${page eq 1}"><a
+                                    th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li th:if="${page eq i}" class="active">
+                                    <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                                <li th:unless="${page eq i}">
+                                    <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${page lt totalPages}">
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${page + 1} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li th:if="${page eq totalPages}">
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/collections.html?supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == false) && (supplier != null) && (category != null)}">
+                    <div class="pagination-nav text-center mt_50">
+                        <ul>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">First</a>
+                            </li>
+                            <li th:if="${page gt 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=' + ${page -1 } + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <li th:if="${page eq 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li th:if="${page eq i}" class="active">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                                <li th:unless="${page eq i}">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${page lt totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=' + ${page + 1} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li th:if="${page eq totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+                <th:block
+                        th:if="${(totalPages > 0) && (filterByPrice == true) && (supplier != null) && (category != null)}">
+                    <div class="pagination-nav text-center mt_50">
+                        <ul>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">First</a>
+                            </li>
+                            <li th:if="${page gt 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${page -1 } + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <li th:if="${page eq 1}"><a
+                                    th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=1' + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                    class="fa fa-angle-left"></i></a></li>
+                            <th:block th:each="i : ${#numbers.sequence(1, totalPages)}">
+                                <li th:if="${page eq i}" class="active">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                                <li th:unless="${page eq i}">
+                                    <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${i} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li th:if="${page lt totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${page + 1} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li th:if="${page eq totalPages}">
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}"><i
+                                        class="fa fa-angle-right"></i></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()} + '&supplier=' + ${supplier.getName()} + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&page=' + ${totalPages} + '&sortBy=' + ${sortBy} + '&sort=' + ${sort} + '&pageSize=' + ${pageSize}}">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/ End Product Style 1  -->
+
+<!-- Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ti-close" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <!-- Product Slider -->
+                        <div class="product-gallery">
+                            <div class="quickview-slider-active">
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="https://via.placeholder.com/569x528" alt="#">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Product slider -->
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="quickview-content">
+                            <h2>Flared Shift Dress</h2>
+                            <div class="quickview-ratting-review">
+                                <div class="quickview-ratting-wrap">
+                                    <div class="quickview-ratting">
+                                    </div>
+                                    <span>( <span id="num-customer-review"></span> customer review)</span>
+                                </div>
+                                <div class="quickview-stock">
+                                    <span id="in-stock"><i class="fa fa-check-circle-o"></i> in stock</span>
+                                    <span id="out-stock"><i class="fa fa-check-circle-o"
+                                                            style="background-color: #bd2130"></i> out of stock</span>
+                                </div>
+                            </div>
+                            <h3></h3>
+                            <div class="quickview-peragraph">
+                                <p></p>
+                            </div>
+                            <div class="quantity">
+                                <!-- Input Order -->
+                                <div class="input-group">
+                                    <div class="button minus">
+                                        <button type="button" class="btn btn-primary btn-number" disabled="disabled"
+                                                data-type="minus" data-field="quant[1]">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000"
+                                           value="1">
+                                    <div class="button plus">
+                                        <button type="button" class="btn btn-primary btn-number" data-type="plus"
+                                                data-field="quant[1]">
+                                            <i class="ti-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--/ End Input Order -->
+                            </div>
+                            <div class="add-to-cart">
+                                <a id="add-cart" class="btn">Thêm vào giỏ hàng</a>
+                                <a th:if="${#request.userPrincipal}" class="btn min"><i class="ti-heart"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+
+<!-- Start Footer Area -->
+<th:block th:include="user/common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        getListCategory();
+        $(document).on("click", ".quickview-content .quantity .button.minus", function () {
+            $.ajax({
+                url: "/api/products/check-provide-enough-quantity",
+                data: {
+                    "quantity": $(".quickview-content .quantity .input-number").val(),
+                    "productUrl": $(".quickview-content").attr("product-url")
+                },
+                type: "GET",
+                dataType: 'json',
+                success: function (check) {
+                    $(".quickview-content .error-msg").remove();
+                    if (check === false) {
+                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $(document).on("click", ".quickview-content .quantity .button.plus", function () {
+            $.ajax({
+                url: "/api/products/check-provide-enough-quantity",
+                data: {
+                    "quantity": $(".quickview-content .quantity .input-number").val(),
+                    "productUrl": $(".quickview-content").attr("product-url")
+                },
+                type: "GET",
+                dataType: 'json',
+                success: function (check) {
+                    $(".quickview-content .error-msg").remove();
+                    if (check === false) {
+                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    });
+
+    function getListCategory() {
+        $.ajax({
+            url: "/api/categories",
+            type: "GET",
+            contentType: "application/json",
+            success: function (categories) {
+                // show category
+                let html = "";
+                $.each(categories, function( index, item ) {
+                    html += "<li>\n" +
+                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                        "            <ul class=\"list-child-category\">\n";
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function( index, subItem ) {
+                            html += "<li>\n" +
+                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                                "    </li>\n";
+                        });
+                    }
+                    html += "     </ul>\n" +
+                        "</li>";
+
+                });
+                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            }
+        });
+    }
+
+    /*]]>*/
+</script>
+
+</body>
+</html>
