@@ -30,7 +30,6 @@ public class ResetPasswordControllerApi {
     public boolean processForgotPassword(HttpServletRequest request, @RequestBody ObjectNode object) throws UserNotFoundException, UnsupportedEncodingException, MessagingException {
         String email = object.get("email").asText();
         String token = RandomString.make(30);
-
         try {
             userService.updateResetPasswordToken(token, email);
             String resetPasswordLink = Utitity.getSiteURL(request) + "/reset_password?token=" + token;
@@ -47,7 +46,6 @@ public class ResetPasswordControllerApi {
     public boolean processResetPassword(@RequestBody ObjectNode object) {
         String token = object.get("token").asText();
         String password = object.get("password").asText();
-
         User user = userService.getByResetPasswordToken(token);
         if (user == null) {
             return false;

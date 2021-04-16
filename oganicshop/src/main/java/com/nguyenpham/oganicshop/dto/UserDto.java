@@ -20,4 +20,6 @@ public class UserDto {
     private String gender;
     private Date birthday;
     private String phone;
+    private Date createdDate;
+    private boolean enabled;    
 }

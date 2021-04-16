@@ -24,18 +24,18 @@ public class SalesController {
 
     @GetMapping("/order/history")
     public String viewOrderHistory(Model model) {
-        return "order-manager";
+        return "user/order-manager";
     }
 
     @GetMapping("/order/view/{orderId}")
     public String viewOrderDetail(Model model, @PathVariable("orderId") long orderId) {
         model.addAttribute("orderId", orderId);
-        return "order-detail";
+        return "user/order-detail";
     }
 
     @GetMapping("/order/tracking/{orderId}")
     public String viewOrderTracking(Model model, @PathVariable("orderId") long orderId) {
         model.addAttribute("orderId", orderId);
-        return "order-tracking";
+        return "user/order-tracking";
     }
 }

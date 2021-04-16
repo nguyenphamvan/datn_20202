@@ -14,17 +14,19 @@ import java.util.Set;
 
 public interface UserService {
 
+    List<UserDto> findAll(long currentUserId);
+    Object getInfoDetailAccount(long userId);
+    User findUserById (Long id);
     User findUserByEmail (String email);
     User getByResetPasswordToken(String token);
     void updateResetPasswordToken(String token, String email) throws UserNotFoundException;
     void updatePassword(User user, String newPassword);
-    User findUserById (Long id);
     boolean register (RegisterAccountRequest accountRequest);
     boolean checkOldPassword(String rawOldPassword);
     UserDto getInfoAccount();
-    UserDto updateInfo (UserDto userRequest);
-    ShippingAddressDto addShippingAddress(ShippingAddressDto request);
+    UserDto updateInfoAccount (UserDto userRequest);
     List<ShippingAddressDto> getShippingAddress();
+    ShippingAddressDto addShippingAddress(ShippingAddressDto request);
     ShippingAddressDto updateShippingAddress (ShippingAddressDto request);
     boolean deleteShippingAddress(long addressId);
     Set<ProductDto> getWishlists();

@@ -25,7 +25,7 @@ public class CartController {
     @GetMapping
     public String viewCart(HttpSession session, Model model) {
 //        model.addAttribute("shipFee", Constant.SHIP_FEE_STANDARD);
-        return "cart";
+        return "user/cart";
     }
 
 }

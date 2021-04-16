@@ -29,6 +29,6 @@ public class HomeController {
     public String viewHomePage(Model model) {
         List<Category> listCategory = categoryService.getCategories();
         model.addAttribute("listCategory", listCategory);
-        return "home";
+        return "user/home";
     }
 }

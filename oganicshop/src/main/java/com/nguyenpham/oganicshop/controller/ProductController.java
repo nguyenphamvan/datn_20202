@@ -95,12 +95,12 @@ public class ProductController {
                                               @RequestParam(value = "supplier", required = false, defaultValue = "") String supplier, Model model) {
         model.addAttribute("category", categoryUrl);
         model.addAttribute("supplier", supplier);
-        return "collection1";
+        return "user/collection1";
     }
 
     @GetMapping("/products/{productUrl}.html")
     public String getProductDetail(@PathVariable("productUrl") String productUrl, Model model) {
         model.addAttribute("productUrl", productUrl);
-        return "product";
+        return "user/product";
     }
 }

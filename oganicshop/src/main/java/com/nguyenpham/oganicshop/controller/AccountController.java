@@ -26,14 +26,14 @@ public class AccountController {
     public String myAccountPage(Model model) {
 //        List<Category> listCategory = categoryService.getListCategory();
 //        model.addAttribute("listCategory", listCategory);
-        return "account";
+        return "user/account";
     }
 
     @GetMapping("/customer/wishlist")
     public String getMyWishlish(Model model) {
 //        List<Category> listCategory = categoryService.getListCategory();
 //        model.addAttribute("listCategory", listCategory);
-        return "account-wishlist";
+        return "user/account-wishlist";
     }
 
     @GetMapping("/customer/address")
@@ -47,13 +47,13 @@ public class AccountController {
     public String getPurchasedProduct(Model model) {
 //        List<Category> listCategory = categoryService.getListCategory();
 //        model.addAttribute("listCategory", listCategory);
-        return "account-purchased-product";
+        return "user/account-purchased-product";
     }
 
     @GetMapping("/customer/review")
     public String getMyReview(Model model) {
 //        List<Category> listCategory = categoryService.getListCategory();
 //        model.addAttribute("listCategory", listCategory);
-        return "account-reviewed";
+        return "user/account-reviewed";
     }
 }

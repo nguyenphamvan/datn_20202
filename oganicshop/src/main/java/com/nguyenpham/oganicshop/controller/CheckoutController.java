@@ -35,6 +35,6 @@ public class CheckoutController {
             session.setAttribute("cartEmpty", "Không có sản phẩm nào trong giỏ hàng");
             return "redirect:/cart.html";
         }
-        return "checkout";
+        return "user/checkout";
     }
 }

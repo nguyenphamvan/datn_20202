@@ -63,6 +63,6 @@ public class SearchController {
     @GetMapping("/search.html")
     public String getViewSearch(@RequestParam("search") String search, Model model) {
             model.addAttribute("keyword", search);
-        return "search1";
+        return "user/search1";
     }
 }

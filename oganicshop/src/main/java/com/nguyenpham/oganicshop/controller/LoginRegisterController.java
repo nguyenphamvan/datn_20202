@@ -16,12 +16,12 @@ public class LoginRegisterController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "signin";
+        return "user/signin";
     }
 
     @GetMapping("/signup")
     public String viewRegisterPage() {
-        return "signup";
+        return "user/signup";
     }
 
     @GetMapping("/logout_success")
@@ -31,7 +31,7 @@ public class LoginRegisterController {
 
     @GetMapping("/forgot_password")
     public String showForgotPasswordForm() {
-        return "forgot_password_form";
+        return "user/forgot_password_form";
     }
 
     @GetMapping("/reset_password")
@@ -39,8 +39,8 @@ public class LoginRegisterController {
         User user = userService.getByResetPasswordToken(token);
         model.addAttribute("token", token);
         if (user == null) {
-            return "message";
+            return "user/message";
         }
-        return "reset_password_form";
+        return "user/reset_password_form";
     }
 }

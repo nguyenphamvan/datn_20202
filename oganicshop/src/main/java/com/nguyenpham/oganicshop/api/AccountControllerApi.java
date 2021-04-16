@@ -4,13 +4,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -29,6 +33,23 @@ public class AccountControllerApi {
         this.categoryService = categoryService;
     }
 
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllAccount(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
+        User user = myUserDetail.getUser();
+        try {
+            return ResponseEntity.ok(userService.findAll(user.getId()));
+        } catch (Exception e) {
+            throw new Exception("Not found");
+        }
+    }
+
+    @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getInfoAccountDetail(@PathVariable("userId") long userId) {
+        return ResponseEntity.ok(userService.getInfoDetailAccount(userId));
+    }
+
     @GetMapping("/check-password")
     public ResponseEntity<?> checkPassword(@RequestParam("oldPassword") String rawOldPassword) {
         return ResponseEntity.ok(userService.checkOldPassword(rawOldPassword));
@@ -44,7 +65,7 @@ public class AccountControllerApi {
 
     @PutMapping("/update")
     public ResponseEntity<?> updateInfoAccount(@RequestBody UserDto userRequest) {
-        return ResponseEntity.ok(userService.updateInfo(userRequest));
+        return ResponseEntity.ok(userService.updateInfoAccount(userRequest));
     }
 
     @GetMapping("/address")

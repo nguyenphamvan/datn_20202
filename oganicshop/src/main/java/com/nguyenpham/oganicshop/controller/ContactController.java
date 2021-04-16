@@ -8,6 +8,6 @@ public class ContactController {
 
     @GetMapping("/contact")
     public String viewContactPage() {
-        return "contact";
+        return "user/contact";
     }
 }

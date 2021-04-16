@@ -8,6 +8,6 @@ public class BlogController {
 
     @GetMapping("/blogs")
     public String viewBlogPage() {
-        return "blogs";
+        return "user/blogs";
     }
 }

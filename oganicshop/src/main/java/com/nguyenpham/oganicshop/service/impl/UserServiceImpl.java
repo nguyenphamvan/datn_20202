@@ -4,6 +4,7 @@ import com.nguyenpham.oganicshop.dto.ProductDto;
 import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
 import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.ShippingAddress;
 import com.nguyenpham.oganicshop.entity.User;
@@ -46,6 +47,30 @@ public class UserServiceImpl implements UserService {
         this.productRepository = productRepository;
         this.shippingAddressRepository = shippingAddressRepository;
         this.mailSender = mailSender;
+    }
+
+    @Override
+    public List<UserDto> findAll(long currentUserId) {
+        return userRepository.findAllByIdIsNot(currentUserId).stream().map(u -> u.convertUserToUserDto()).collect(Collectors.toList());
+    }
+
+    @Override
+    public Object getInfoDetailAccount(long userId) {
+        Map<String, Object> objectMap = new HashMap<>();
+        User user = userRepository.findById(userId).get();
+        long numbersOfOrder = user.getOrders().stream().count();
+        long maxOrderPrice = user.getOrders().stream().max(Comparator.comparing(Order::getTotal)).orElseThrow(NoSuchElementException::new).getTotal();
+        long numbersOfReview = user.getReviews().stream().count();
+        long numbersOfWishlist = 0;
+        if (user.getWishlist() != null) {
+            numbersOfWishlist = user.getWishlist().split(",").length;
+        }
+        objectMap.put("account", user.convertUserToUserDto());
+        objectMap.put("numbersOfOrder", numbersOfOrder);
+        objectMap.put("maxOrderPrice", maxOrderPrice);
+        objectMap.put("numbersOfReview", numbersOfReview);
+        objectMap.put("numbersOfWishlist", numbersOfWishlist);
+        return objectMap;
     }
 
     @Override
@@ -132,7 +157,7 @@ public class UserServiceImpl implements UserService {
         String senderName = "Web shop support";
         String subject = "Here's the link to reset your password";
 
-        String content = "<p>Hello,</p>"
+        String content = "<p>Chào bạn,</p>"
                 + "<p>Bạn đã yêu cầu đặt lại mật khẩu của mình.</p>"
                 + "<p>Nhấp vào liên kết bên dưới để thay đổi mật khẩu của bạn</p>"
                 + "<p><a href=\"" + link + "\">Thay đổi mật khẩu của tôi</a></p>"
@@ -177,7 +202,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateInfo(UserDto userRequest) {
+    public UserDto updateInfoAccount(UserDto userRequest) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         userDb.setFullName(userRequest.getFullName());
