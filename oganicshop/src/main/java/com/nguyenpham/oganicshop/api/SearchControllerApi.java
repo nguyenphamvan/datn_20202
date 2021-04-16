@@ -2,15 +2,12 @@ package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.dto.CategoryDto;
-import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.Supplier;
-import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.ProductService;
-import com.nguyenpham.oganicshop.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -58,7 +55,7 @@ public class SearchControllerApi {
             setSuppliers.add(p.getSupplier());
             setCategorySearch.add(p.getCategory().convertToCategoryDto());
         }
-        List<ProductDto> products = page.getContent().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
+        List<ProductResponseDto> products = page.getContent().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
         result.put("suppliers", setSuppliers);
         result.put("categories", setCategorySearch);
         result.put("products", products);

@@ -1,6 +1,6 @@
 package com.nguyenpham.oganicshop.service;
 
-import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
 import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
@@ -29,7 +29,7 @@ public interface UserService {
     ShippingAddressDto addShippingAddress(ShippingAddressDto request);
     ShippingAddressDto updateShippingAddress (ShippingAddressDto request);
     boolean deleteShippingAddress(long addressId);
-    Set<ProductDto> getWishlists();
+    Set<ProductResponseDto> getWishlists(User user);
     boolean addProductToWishlist(long productId);
     boolean removeProductFromWishlist(long productId);
     void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException;

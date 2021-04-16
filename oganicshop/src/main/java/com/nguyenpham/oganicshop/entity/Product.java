@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -64,45 +64,45 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Review> reviews;
 
-    public ProductDto convertToDto() {
-        ProductDto productDto = new ProductDto();
-        productDto.setId(this.getId());
-        productDto.setProductName(this.getName());
-        productDto.setProductUrl(this.getUrl());
-        productDto.setBaseDescription(this.getBaseDescription());
-        productDto.setDetailDescription(this.getDetailDescription());
-        productDto.setCategoryName(this.getCategory().getCategoryName());
-        productDto.setSupplierName(this.getSupplier().getName());
-        productDto.setImage(this.getImage());
-        productDto.setPrice(this.getPrice());
-        productDto.setDiscount(this.getDiscount());
-        productDto.setFinalPrice(this.getFinalPrice());
-        productDto.setNumberOfReviews(this.getReviews().size());
-        productDto.setRating(this.getRating());
-        productDto.setAmount(this.getAmount());
+    public ProductResponseDto convertToDto() {
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setId(this.getId());
+        productResponseDto.setProductName(this.getName());
+        productResponseDto.setProductUrl(this.getUrl());
+        productResponseDto.setBaseDescription(this.getBaseDescription());
+        productResponseDto.setDetailDescription(this.getDetailDescription());
+        productResponseDto.setCategoryName(this.getCategory().getCategoryName());
+        productResponseDto.setSupplierName(this.getSupplier().getName());
+        productResponseDto.setImage(this.getImage());
+        productResponseDto.setPrice(this.getPrice());
+        productResponseDto.setDiscount(this.getDiscount());
+        productResponseDto.setFinalPrice(this.getFinalPrice());
+        productResponseDto.setNumberOfReviews(this.getReviews().size());
+        productResponseDto.setRating(this.getRating());
+        productResponseDto.setAmount(this.getAmount());
 
         List<ResponseReviewDto> reviews = this.getReviews().stream().map(rv -> rv.convertReviewToReviewDto()).collect(Collectors.toList());;
-        productDto.setReviews(reviews);
-        return productDto;
+        productResponseDto.setReviews(reviews);
+        return productResponseDto;
     }
 
-    public ProductDto convertToDtoNotIncludeReviews() {
-        ProductDto productDto = new ProductDto();
-        productDto.setId(this.getId());
-        productDto.setProductName(this.getName());
-        productDto.setProductUrl(this.getUrl());
-        productDto.setBaseDescription(this.getBaseDescription());
-        productDto.setDetailDescription(this.getDetailDescription());
-        productDto.setCategoryName(this.getCategory().getCategoryName());
-        productDto.setSupplierName(this.getSupplier().getName());
-        productDto.setImage(this.getImage());
-        productDto.setPrice(this.getPrice());
-        productDto.setDiscount(this.getDiscount());
-        productDto.setFinalPrice(this.getFinalPrice());
-        productDto.setNumberOfReviews(this.getReviews().size());
-        productDto.setRating(this.getRating());
-        productDto.setAmount(this.getAmount());
-        return productDto;
+    public ProductResponseDto convertToDtoNotIncludeReviews() {
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setId(this.getId());
+        productResponseDto.setProductName(this.getName());
+        productResponseDto.setProductUrl(this.getUrl());
+        productResponseDto.setBaseDescription(this.getBaseDescription());
+        productResponseDto.setDetailDescription(this.getDetailDescription());
+        productResponseDto.setCategoryName(this.getCategory().getCategoryName());
+        productResponseDto.setSupplierName(this.getSupplier().getName());
+        productResponseDto.setImage(this.getImage());
+        productResponseDto.setPrice(this.getPrice());
+        productResponseDto.setDiscount(this.getDiscount());
+        productResponseDto.setFinalPrice(this.getFinalPrice());
+        productResponseDto.setNumberOfReviews(this.getReviews().size());
+        productResponseDto.setRating(this.getRating());
+        productResponseDto.setAmount(this.getAmount());
+        return productResponseDto;
     }
 
 }

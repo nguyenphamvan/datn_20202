@@ -1,12 +1,14 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CategoryService;
+import com.nguyenpham.oganicshop.service.ReviewService;
 import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,28 +28,13 @@ public class AccountControllerApi {
 
     private UserService userService;
     private CategoryService categoryService;
+    private ReviewService reviewService;
 
     @Autowired
-    public AccountControllerApi(UserService userService, CategoryService categoryService) {
+    public AccountControllerApi(UserService userService, CategoryService categoryService, ReviewService reviewService) {
         this.userService = userService;
         this.categoryService = categoryService;
-    }
-
-    @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getAllAccount(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
-        User user = myUserDetail.getUser();
-        try {
-            return ResponseEntity.ok(userService.findAll(user.getId()));
-        } catch (Exception e) {
-            throw new Exception("Not found");
-        }
-    }
-
-    @GetMapping("/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getInfoAccountDetail(@PathVariable("userId") long userId) {
-        return ResponseEntity.ok(userService.getInfoDetailAccount(userId));
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/check-password")
@@ -91,11 +78,14 @@ public class AccountControllerApi {
         return ResponseEntity.ok(userService.deleteShippingAddress(addressId));
     }
 
+
+
     @GetMapping("/wishlist")
     public ResponseEntity<?> getMyWishlist() {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
-        response.put("wishLists", userService.getWishlists());
+        response.put("wishLists", userService.getWishlists(user));
         return ResponseEntity.ok(response);
     }
 

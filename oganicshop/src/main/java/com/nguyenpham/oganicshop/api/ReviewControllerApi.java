@@ -13,6 +13,7 @@ import com.nguyenpham.oganicshop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,9 +40,10 @@ public class ReviewControllerApi {
 
     @GetMapping("/my-review")
     public ResponseEntity<?> getListReview() {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
-        response.put("reviews", reviewService.getListReviews());
+        response.put("reviews", reviewService.getListReviews(user));
         return ResponseEntity.ok(response);
     }
 
