@@ -2,20 +2,17 @@ package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.dto.CategoryDto;
-import com.nguyenpham.oganicshop.dto.ProductDto;
-import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
+import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.Supplier;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.ProductService;
-import com.nguyenpham.oganicshop.service.ReviewService;
 import com.nguyenpham.oganicshop.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -40,7 +37,7 @@ public class ProductControllerApi {
     @GetMapping("/{productUrl}")
     public ResponseEntity<?> getListProductByCategoryUrl(@PathVariable("productUrl") String productUrl) {
         Map<String, Object> response = new HashMap<>();
-        ProductDto product = productService.getProduct(productUrl);
+        ProductResponseDto product = productService.getProduct(productUrl);
         List<CategoryDto> categories = categoryService.getListCategory();
         Collections.sort(categories);
         response.put("product", product);
@@ -111,7 +108,7 @@ public class ProductControllerApi {
 
         }
 
-        List<ProductDto> products = page.getContent().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
+        List<ProductResponseDto> products = page.getContent().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
 
         result.put("products", products);
         result.put("page", pageNum);

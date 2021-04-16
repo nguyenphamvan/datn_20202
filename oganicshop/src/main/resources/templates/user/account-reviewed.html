@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Nhận xét của tôi</title>
-    <th:block th:include="common/header_tag_common"/>
+    <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
 </head>
 <body class="js">
 <!-- Header -->
-<th:block th:include="common/header"/>
+<th:block th:include="user/common/header"/>
 <!--/ End Header -->
 
 <!-- Breadcrumbs -->
@@ -35,7 +35,7 @@
     <div class="container">
         <div class="row">
             <!-- Start account items manager Area -->
-            <th:block th:include="common/acount-items-manager"/>
+            <th:block th:include="user/common/acount-items-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner" id="customer_review">
@@ -76,7 +76,7 @@
 <!--/ End Product Style 1  -->
 
 <!-- Start Footer Area -->
-<th:block th:include="common/footer"/>
+<th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
 
 <script th:inline="javascript">

@@ -95,14 +95,30 @@ public class Order {
         return orderDto;
     }
 
+    // should order moder mapper
+    public OrderDtoResponse convertToDtoNotDetail() {
+        OrderDtoResponse orderDto = new OrderDtoResponse();
+        orderDto.setId(this.getId());
+        orderDto.setSubTotal(this.getSubTotal());
+        orderDto.setShipFee(this.getShipFee());
+        orderDto.setDiscount(this.getDiscount());
+        orderDto.setTotal(this.getTotal());
+        orderDto.setStatus(this.getStatus());
+        orderDto.setOrderDate(DateTimeUtil.dateTimeFormat(this.getOrderDate()));
+        orderDto.setDeliveryDate(DateTimeUtil.dateTimeFormat((this.getDeliveryDate())));
+        StringBuilder summaryProductName = new StringBuilder("");
+        this.getOrderDetails().forEach(orderDetail -> {
+            summaryProductName.append(orderDetail.getProduct().getName());
+        });
+        orderDto.setSummaryProductName(summaryProductName.toString());
+        return orderDto;
+    }
+
     public OrderLoggingDto convertOrderLoggingToOrderLoggingDto() {
         OrderLoggingDto orderLoggingDto = new OrderLoggingDto();
         orderLoggingDto.setOrderId(this.getId());
         orderLoggingDto.setLatestStatus(this.getStatus());
         orderLoggingDto.setLastUpdatedTime(DateTimeUtil.dateTimeFormat(this.getDeliveryDate()));
-//        Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = this.getOrderLoggings().stream()
-//                .map(ol -> new OrderLoggingDto.LoggingOrderStatus(ol.getStatus(), ol.getUpdateTime()))
-//                .collect(Collectors.toSet());
         Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = new TreeSet<>();
         this.getOrderLoggings().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(ol.getStatus(), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
 

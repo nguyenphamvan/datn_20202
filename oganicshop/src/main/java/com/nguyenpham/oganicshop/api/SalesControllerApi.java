@@ -1,14 +1,13 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.nguyenpham.oganicshop.dto.CategoryDto;
-import com.nguyenpham.oganicshop.dto.OrderDetailDto;
-import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
+import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.OrderDetail;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
+import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,11 +24,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/sales")
 public class SalesControllerApi {
 
+    private UserService userService;
     private OrderService orderService;
     private CategoryService categoryService;
 
     @Autowired
-    public SalesControllerApi(OrderService orderService, CategoryService categoryService) {
+    public SalesControllerApi(UserService userService, OrderService orderService, CategoryService categoryService) {
+        this.userService = userService;
         this.orderService = orderService;
         this.categoryService = categoryService;
     }

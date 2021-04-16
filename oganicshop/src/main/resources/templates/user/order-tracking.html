@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Title Tag  -->
     <title>Theo dõi đơn hàng</title>
-    <th:block th:include="common/header_tag_common"/>
+    <th:block th:include="user/common/header_tag_common"/>
 
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
@@ -17,7 +17,7 @@
 <body class="js">
 
 <!-- Header -->
-<th:block th:include="common/header"/>
+<th:block th:include="user/common/header"/>
 <!--/ End Header -->
 
 <!-- Breadcrumbs -->
@@ -43,7 +43,7 @@
         <div class="row">
 
             <!-- Start account items manager Area -->
-            <th:block th:include="common/acount-items-manager"/>
+            <th:block th:include="user/common/acount-items-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner">
@@ -109,7 +109,7 @@
 <!-- End Shop Newsletter -->
 
 <!-- Start Footer Area -->
-<th:block th:include="common/footer"/>
+<th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
 
 <script th:inline="javascript">

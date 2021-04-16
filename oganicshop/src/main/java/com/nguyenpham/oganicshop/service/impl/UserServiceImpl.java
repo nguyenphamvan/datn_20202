@@ -1,6 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
-import com.nguyenpham.oganicshop.dto.ProductDto;
+import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
 import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
 import com.nguyenpham.oganicshop.dto.UserDto;
@@ -264,10 +264,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<ProductDto> getWishlists() {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+    public Set<ProductResponseDto> getWishlists(User user) {
         Set<Long> idWishlistProductsSet = getSetIdProductWishlist(user);
-        Set<ProductDto> wishlistProducts = new HashSet<>();
+        Set<ProductResponseDto> wishlistProducts = new HashSet<>();
         for (Long productId : idWishlistProductsSet) {
             Product product = productRepository.findById(productId).get();
             wishlistProducts.add(product.convertToDto());

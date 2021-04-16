@@ -1,0 +1,94 @@
+package com.nguyenpham.oganicshop.api.admin;
+
+import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
+import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.security.MyUserDetail;
+import com.nguyenpham.oganicshop.service.OrderService;
+import com.nguyenpham.oganicshop.service.ReviewService;
+import com.nguyenpham.oganicshop.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/admin/account")
+public class ManagerAccountApi {
+
+    private UserService userService;
+    private OrderService orderService;
+    private ReviewService reviewService;
+
+    @Autowired
+    public ManagerAccountApi(UserService userService, OrderService orderService, ReviewService reviewService) {
+        this.userService = userService;
+        this.orderService = orderService;
+        this.reviewService = reviewService;
+    }
+
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllAccount(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
+        User user = myUserDetail.getUser();
+        try {
+            return ResponseEntity.ok(userService.findAll(user.getId()));
+        } catch (Exception e) {
+            throw new Exception("Not found");
+        }
+    }
+
+    @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getInfoAccountDetail(@PathVariable("userId") long userId) {
+        return ResponseEntity.ok(userService.getInfoDetailAccount(userId));
+    }
+
+    @GetMapping("{userId}/wishlist")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getMyWishlist(@PathVariable("userId") long userId) {
+        User user = userService.findUserById(userId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", user.convertUserToUserDto());
+        response.put("wishLists", userService.getWishlists(user));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{userId}/reviews")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAccountReviews(@PathVariable("userId") long userId) {
+        User user = userService.findUserById(userId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", user.convertUserToUserDto());
+        response.put("reviews", reviewService.getListReviews(user));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{userId}/order/history")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getUserOrdersHistory(@PathVariable("userId") long userId) {
+        Map<String, Object> response = new HashMap<>();
+        UserDto user = userService.findUserById(userId).convertUserToUserDto();
+        response.put("user", user);
+        response.put("ordersHistory", orderService.getAllOrderByUserId(userId));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user/{userId}/order/view/{orderId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getOrderDetailHistory(@PathVariable("orderId") long orderId, @PathVariable("userId") long userId) {
+        UserDto user = userService.findUserById(userId).convertUserToUserDto();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", user);
+        OrderDtoResponse orderDtoResponse = orderService.getOrderById(user.getId(), orderId);
+        orderDtoResponse.setMessage(null);
+        response.put("order", orderDtoResponse);
+        return ResponseEntity.ok(response);
+    }
+
+}

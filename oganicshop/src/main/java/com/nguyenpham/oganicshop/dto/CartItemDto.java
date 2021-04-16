@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CartItemDto {
-    private ProductDto product;
+    private ProductResponseDto product;
     private int quantity;
     private int discount = 0;
     private int totalItem;

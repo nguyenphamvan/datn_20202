@@ -68,6 +68,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDtoResponse> getAllOrderByUserId(long userId) {
+        return orderRepository.findAllByUserId(userId).stream().map(od -> od.convertToDtoNotDetail()).collect(Collectors.toList());
+    }
+
+    @Override
     public OrderDtoResponse getOrderById(long userId, long orderId) {
         Order order = orderRepository.findById(orderId).get();
         if (order.getUser().getId() == userId) {
