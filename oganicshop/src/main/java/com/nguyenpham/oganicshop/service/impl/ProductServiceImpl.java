@@ -53,8 +53,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponseDto editProduct(ProductRequestDto productRequestDto) {
+        return null;
+    }
+
+    @Override
+    public boolean stopBusinessProduct(long productId) {
+        Product product = productRepository.findById(productId).get();
+        product.setStopBusiness(true);
+        try {
+            productRepository.save(product);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+
+    }
+
+    @Override
     public List<ProductResponseDto> getAllProduct() {
-        return productRepository.findAll().stream().map(product -> product.convertToDto()).collect(Collectors.toList());
+        return productRepository.findAll().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
     }
 
     @Override

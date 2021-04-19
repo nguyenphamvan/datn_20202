@@ -136,10 +136,10 @@ public class OrderServiceImpl implements OrderService {
         order.setContactAddress(orderDto.getShippingAddress().getContactAddress());
         order.setContactPhone(orderDto.getShippingAddress().getContactPhone());
         order.setNote(orderDto.getNote());
-        order.setStatus("Đặt hàng thành công");
+        order.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(1));
         order.setPaymentMethod(orderDto.getPaymentMethod());
         order.setDeliveryMethod(orderDto.getDeliveryMethod());
-        order.setMessage(DateTimeUtil.dateTimeFormat(new Timestamp(System.currentTimeMillis())) + " - " + Constant.MESSAGE_ORDER_SUCCESS);
+        order.setMessage(DateTimeUtil.dateTimeFormat(new Timestamp(System.currentTimeMillis())) + " - " + Constant.MAP_ORDER_TRACKING_STATUS.get(1));
         order.setSubTotal(orderDto.getSubTotal());
         order.setShipFee(orderDto.getShipFee());
         order.setDiscount(orderDto.getDiscount());

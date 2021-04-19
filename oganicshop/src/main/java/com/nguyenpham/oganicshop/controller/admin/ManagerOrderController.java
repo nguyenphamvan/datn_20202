@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ManagerOrderController {
 
     @GetMapping
-    public String viewManagerOrders() {
+    public String viewManagerOrdersPage() {
         return "admin/manager-order";
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/order/{orderId}")
     public String viewManagerOrderDetail(@PathVariable("orderId") long orderId,
                                          @RequestParam(value = "userOrderHistory", required = false, defaultValue = "false") boolean userOrderHistory,
                                          Model model) {

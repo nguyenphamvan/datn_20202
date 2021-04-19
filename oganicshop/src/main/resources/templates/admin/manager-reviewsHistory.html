@@ -45,7 +45,8 @@
         <li class="nav-item">
             <a class="nav-link" th:href="@{/admin}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+                <span>Dashboard</span>
+            </a>
         </li>
 
         <!-- Divider -->
@@ -59,7 +60,7 @@
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item active" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item">Quản lý sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
                     <a class="collapse-item">Chương trình khuyến mãi</a>
                     <a class="collapse-item">Quản lý liên hệ</a>
@@ -266,6 +267,7 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
+                console.log(data);
                 $("#dataTable").dataTable( {
                     destroy: true,
                     data: data["reviews"],

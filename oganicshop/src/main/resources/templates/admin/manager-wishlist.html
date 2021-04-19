@@ -43,9 +43,10 @@
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" th:href="@{/admin}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+                <span>Dashboard</span>
+            </a>
         </li>
 
         <!-- Divider -->
@@ -59,7 +60,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item" href="manager-product.html">Quản lý sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
                     <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>

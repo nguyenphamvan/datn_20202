@@ -27,6 +27,7 @@ public class ProductResponseDto {
     private int rating;
     private int numberOfReviews;
     private int amount;
+    private String status;
     private String categoryName;
     private String supplierName;
     private List<ResponseReviewDto> reviews;

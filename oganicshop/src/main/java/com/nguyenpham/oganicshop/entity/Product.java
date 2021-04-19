@@ -38,11 +38,13 @@ public class Product {
     private String detailDescription;
     @Column(nullable = false)
     private int price;
+    @Column(nullable = false)
     private int discount;
     @Column(nullable = false)
     private int finalPrice;
     private int rating;
     private int amount;
+    private boolean stopBusiness;
 
     @JsonIgnore
     @CreationTimestamp
@@ -80,6 +82,15 @@ public class Product {
         productResponseDto.setNumberOfReviews(this.getReviews().size());
         productResponseDto.setRating(this.getRating());
         productResponseDto.setAmount(this.getAmount());
+        if (this.isStopBusiness()) {
+            productResponseDto.setStatus("Ngừng kinh doanh");
+        } else if ((this.getAmount() > 0 ) && (this.getAmount() < 10)) {
+            productResponseDto.setStatus("Sắp hết hàng");
+        } else if (this.getAmount() == 0 ) {
+            productResponseDto.setStatus("Đã hết hàng");
+        } else {
+            productResponseDto.setStatus("Còn hàng, đang kinh doanh");
+        }
 
         List<ResponseReviewDto> reviews = this.getReviews().stream().map(rv -> rv.convertReviewToReviewDto()).collect(Collectors.toList());;
         productResponseDto.setReviews(reviews);
@@ -102,6 +113,15 @@ public class Product {
         productResponseDto.setNumberOfReviews(this.getReviews().size());
         productResponseDto.setRating(this.getRating());
         productResponseDto.setAmount(this.getAmount());
+        if (this.isStopBusiness()) {
+            productResponseDto.setStatus("Ngừng kinh doanh");
+        } else if ((this.getAmount() > 0 ) && (this.getAmount() < 10)) {
+            productResponseDto.setStatus("Sắp hết hàng");
+        } else if (this.getAmount() == 0 ) {
+            productResponseDto.setStatus("Đã hết hàng");
+        } else {
+            productResponseDto.setStatus("Còn hàng, đang kinh doanh");
+        }
         return productResponseDto;
     }
 

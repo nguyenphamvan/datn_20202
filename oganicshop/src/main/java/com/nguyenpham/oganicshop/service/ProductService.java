@@ -19,4 +19,6 @@ public interface ProductService {
     ProductResponseDto getProduct(String productUrl);
     Product getProductById(Long productId);
     ProductResponseDto insertProduct(ProductRequestDto productRequestDto);
+    ProductResponseDto editProduct(ProductRequestDto productRequestDto);
+    boolean stopBusinessProduct(long productId);
 }

@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Lịch sử đơn hàng</title>
+    <title>Chi tiết sản phẩm</title>
 
     <!-- Custom fonts for this template -->
     <link th:href="@{/admin/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -174,123 +174,146 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <div class="row justify-content-between" id="div-info-1">
-                    <div class="col-xl-8 col-md-8">
-                        <p class="mb-0 text-gray-800"><span>Mã đơn hàng #12345</span> - <span>Giao hàng thành công</span></p>
-                    </div>
-                    <div class="col-xl-4 col-md-4" style="text-align: end;">
-                        <p>Ngày giao hàng : 2021-11-04</p>
-                    </div>
-                </div>
+                <!--Section: Block Content-->
+                <section class="mb-5">
 
-                <div class="row" id="div-info-2">
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-4 col-md-4 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2">
-                            <div class="card-header">Địa chỉ người nhânh</div>
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div style="text-transform: uppercase;"><b></b></div>
-                                        <div></div>
-                                        <div></div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+
+                            <div id="mdb-lightbox-ui"></div>
+
+                            <div class="mdb-lightbox">
+
+                                <div class="row product-gallery mx-1">
+
+                                    <div class="col-12 mb-0">
+                                        <figure class="view overlay rounded z-depth-1 main-img">
+                                            <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                               data-size="710x823">
+                                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                                     class="img-fluid z-depth-1">
+                                            </a>
+                                        </figure>
+<!--                                        <figure class="view overlay rounded z-depth-1" style="visibility: hidden;">-->
+<!--                                            <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg"-->
+<!--                                               data-size="710x823">-->
+<!--                                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg"-->
+<!--                                                     class="img-fluid z-depth-1">-->
+<!--                                            </a>-->
+<!--                                        </figure>-->
+<!--                                        <figure class="view overlay rounded z-depth-1" style="visibility: hidden;">-->
+<!--                                            <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"-->
+<!--                                               data-size="710x823">-->
+<!--                                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"-->
+<!--                                                     class="img-fluid z-depth-1">-->
+<!--                                            </a>-->
+<!--                                        </figure>-->
+<!--                                        <figure class="view overlay rounded z-depth-1" style="visibility: hidden;">-->
+<!--                                            <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"-->
+<!--                                               data-size="710x823">-->
+<!--                                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"-->
+<!--                                                     class="img-fluid z-depth-1">-->
+<!--                                            </a>-->
+<!--                                        </figure>-->
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="view overlay rounded z-depth-1 gallery-item">
+                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg"
+                                                         class="img-fluid">
+                                                    <div class="mask rgba-white-slight"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="view overlay rounded z-depth-1 gallery-item">
+                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
+                                                         class="img-fluid">
+                                                    <div class="mask rgba-white-slight"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="view overlay rounded z-depth-1 gallery-item">
+                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"
+                                                         class="img-fluid">
+                                                    <div class="mask rgba-white-slight"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="view overlay rounded z-depth-1 gallery-item">
+                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                                         class="img-fluid">
+                                                    <div class="mask rgba-white-slight"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <h5>Fantasy T-shirt</h5>
+                            <p class="mb-2 text-muted text-uppercase small">Shirts</p>
+                            <ul class="rating" style="display: flex; list-style-type: none; padding: 0;">
+                                <li>
+                                    <i class="fas fa-star fa-sm text-primary"></i>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star fa-sm text-primary"></i>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star fa-sm text-primary"></i>
+                                </li>
+                                <li>
+                                    <i class="fas fa-star fa-sm text-primary"></i>
+                                </li>
+                                <li>
+                                    <i class="far fa-star fa-sm text-primary"></i>
+                                </li>
+                            </ul>
+                            <p><span class="mr-1"><strong>$12.99</strong></span></p>
+                            <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
+                                error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
+                                officia quis dolore quos sapiente tempore alias.</p>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless mb-0">
+                                    <tbody>
+                                    <tr>
+                                        <th class="pl-0 w-25" scope="row"><strong>Model</strong></th>
+                                        <td>Shirt 5407X</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="pl-0 w-25" scope="row"><strong>Color</strong></th>
+                                        <td>Black</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="pl-0 w-25" scope="row"><strong>Delivery</strong></th>
+                                        <td>USA, Europe</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
+                            <div class="table-responsive mb-2">
+                                <table class="table table-sm table-borderless">
+                                    <tbody>
+                                    <tr>
+                                        <td class="pl-0 pb-0 w-25">Quantity</td>
+                                        <td class="pb-0">Select size</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-4 col-md-4 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2">
-                            <div class="card-header">Loại hình giao hàng</div>
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div>Giao hàng nội thành</div>
-                                        <div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </section>
+                <!--Section: Block Content-->
 
-                    <!-- Pending Requests Card Example -->
-                    <div class="col-xl-4 col-md-4 mb-4">
-                        <div class="card border-left-warning shadow h-100 py-2">
-                            <div class="card-header">Phương thức thanh toán</div>
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4" id="div-info-3">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Kiện hàng gồm có</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="list-order-detail" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Tên</th>
-                                    <th>Đơn giá</th>
-                                    <th>Giảm giá</th>
-                                    <th>Số lượng</th>
-                                    <th>Tổng</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3" style="display: flex; justify-content: space-between;">
-                        <h6 class="m-0 font-weight-bold text-primary">Lịch sử trạng thái</h6>
-                        <div class="form-inline" sec:authorize="hasRole('ADMIN')">
-                                <label for="status" class="mr-sm-2">Trạng thái hiện tại</label>
-                                <select class="form-control mb-2 mr-sm-2" id="status">
-                                    <option value="#">Đóng gói xong</option>
-                                    <option value="#">Bàn giao vận chuyển</option>
-                                    <option value="#">Đang vận chuyển</option>
-                                    <option value="#">Giao hàng thành công</option>
-                                    <option value="#">Hủy</option>
-                                </select>
-                                <button class="btn-info form-control mb-2">Cập nhật</button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="logging-status" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Thời gian</th>
-                                    <th>Trạng thái đơn hàng</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <a class="btn btn-light btn-icon-split">
+                <a th:href="@{/admin/manager_products}" class="btn btn-light btn-icon-split">
                     <span class="icon text-gray-600">
                         <i class="fas fa-arrow-left"></i>
                     </span>
@@ -345,67 +368,8 @@
 
     /*<![CDATA[*/
     $(document).ready(function () {
-        let orderId = /*[[${orderId}]]*/;
-        let userOrderHistory = /*[[${userOrderHistory}]]*/;
-        getOrdersDetail(orderId, userOrderHistory);
     });
 
-    function getOrdersDetail(userId, userOrderHistory) {
-        $.ajax({
-            url: "/api/admin/order/" + userId,
-            type: "GET",
-            contentType: "application/json",
-            success: function (data) {
-                let order = data["order"];
-                let contact = order["shippingAddress"];
-                let listOrderDetail = order["listOrderDetail"];
-                let loggingStatus = order["orderLogging"]["loggingStatus"];
-                $("#div-info-1").find("div:first-child > p:first-child > span:first-child").text("Mã đơn hàng #" + order["id"]);
-                $("#div-info-1").find("div:nth-child(2) > p:nth-child(2)").text("Ngày giao hàng" + order["deliveryDate"]);
-
-                $("#div-info-2 > div:nth-child(1) > div > div.card-body > div > div > div:nth-child(1) > b").text(contact["contactReceiver"]);
-                $("#div-info-2 > div:nth-child(1) > div > div.card-body > div > div > div:nth-child(2)").text("Địa chỉ : " + contact["contactAddress"]);
-                $("#div-info-2 > div:nth-child(1) > div > div.card-body > div > div > div:nth-child(3)").text("SĐT : " + contact["contactPhone"]);
-
-                $("#div-info-2 > div:nth-child(2) > div > div.card-body > div > div > div:nth-child(2)").text("Phí vận chuyển : " + order["shipFee"]);
-                $("#div-info-2 > div:nth-child(3) > div > div.card-body > div > div > div:nth-child(1)").text(order["paymentMethod"]);
-
-                $.each(listOrderDetail, function (index, product) {
-                    let row = "<tr>\n" +
-                        "           <td><img style='width: 80px; height: 80px;' src='/images/products/2/laptop-asus.jpg'></td>\n" +
-                        "           <td><a>" + product["productName"] + "</a><p>Hãng sx : " + product["supplierName"] + "</p></td>\n" +
-                        "           <td>" + product["price"] + "</td>\n" +
-                        "           <td>" + product["discount"] + "</td>\n" +
-                        "           <td>" + product["quantity"] + "</td>\n" +
-                        "           <td>" + product["rawTotal"] + "</td>\n" +
-                        "       </tr>;"
-                    $("#list-order-detail").find("tbody").append(row);
-                });
-
-                if ( (order["status"] === "Giao hàng thành công") || (order["status"] === "Đã hủy")) {
-                    $("#content > div > div:nth-child(4) > div.card-header.py-3 > div").hide();
-                }
-                $.each(loggingStatus, function (index, logging) {
-                    let row = "<tr>\n" +
-                        "           <td>" + logging["status"] + "</td>\n" +
-                        "           <td>" + logging["updatedTime"] + "</td>\n" +
-                        "      </tr>";
-                    $("#logging-status").find("tbody").append(row);
-                });
-
-                if (userOrderHistory === true) {
-                    $("#content > div > a").attr("href", "/admin/manager_users/user/" + data["user"]["id"] + "/orderHistory");
-                } else {
-                    $("#content > div > a").attr("href", "/admin/manager_orders");
-                }
-
-
-            },
-            error: function () {
-                alert("có lỗi xảy ra");
-            }
-        });
-    }
     /*]]>*/
 </script>
 

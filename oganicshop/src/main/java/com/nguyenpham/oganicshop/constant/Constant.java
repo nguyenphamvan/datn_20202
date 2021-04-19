@@ -16,10 +16,12 @@ public class Constant {
     static{
         HashMap<Integer,String> tmp = new HashMap<>();
         tmp.put(1, "Đặt hàng thành công");
-        tmp.put(2, "Đã đóng gói xong");
-        tmp.put(3, "Bàn giao vận chuyển");
-        tmp.put(4, "Đang vận chuyển");
-        tmp.put(5, "Giao hàng thành công");
+        tmp.put(2, "Đã hủy");
+        tmp.put(3, "Đã đóng gói xong");
+        tmp.put(4, "Bàn giao vận chuyển");
+        tmp.put(5, "Đang vận chuyển");
+        tmp.put(6, "Giao hàng thành công");
+        tmp.put(7, "Giao hàng không thành công");
         MAP_ORDER_TRACKING_STATUS = Collections.unmodifiableMap(tmp);
     }
 

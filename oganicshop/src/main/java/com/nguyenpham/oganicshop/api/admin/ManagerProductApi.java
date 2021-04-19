@@ -26,13 +26,23 @@ public class ManagerProductApi {
         return productService.getAllProduct();
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/view/{productId}")
     public ProductResponseDto getProductDetail(@PathVariable("productId") long productId) {
         return productService.getProductById(productId).convertToDto();
     }
 
-    @PostMapping("/insert")
-    public ProductResponseDto insertProduct(@RequestBody ProductRequestDto productRequestDto) {
+    @PostMapping("/add")
+    public ProductResponseDto addProduct(@RequestBody ProductRequestDto productRequestDto) {
         return productService.insertProduct(productRequestDto);
+    }
+
+    @PutMapping("/edit")
+    public ProductResponseDto editProduct(@RequestBody ProductRequestDto productRequestDto) {
+        return productService.insertProduct(productRequestDto);
+    }
+
+    @PutMapping("/stopBusiness/{productId}")
+    public boolean stopBusiness(@PathVariable("productId") long productId) {
+        return productService.stopBusinessProduct(productId);
     }
 }

@@ -44,7 +44,7 @@
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" th:href="@{/admin}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -52,16 +52,16 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed active" href="#" data-toggle="collapse" data-target="#collapseTwo"
+        <li class="nav-item active">
+            <a class="nav-link collapsed show" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Quản lý</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item" href="manager-product.html">Quản lý sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item active" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
                     <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
@@ -204,7 +204,7 @@
                     </div>
                 </div>
 
-                <a th:href="@{'/admin/manager_users/user/' + ${userId}}" class="btn btn-light btn-icon-split">
+                <a class="btn btn-light btn-icon-split">
                     <span class="icon text-gray-600">
                         <i class="fas fa-arrow-left"></i>
                     </span>
@@ -280,7 +280,7 @@
                         {data: 'status'},
                         {
                             data: "id", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_orders/" + data + "'><button id='manageBtn' type='button' class='btn btn-success btn-xs'>Chi tiết</button></a>";
+                                return "<a href='/admin/manager_orders/order/" + data + "'><button id='manageBtn' type='button' class='btn btn-success btn-xs'>Chi tiết</button></a>";
                             }
                         }
                     ]

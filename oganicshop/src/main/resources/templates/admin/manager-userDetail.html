@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Quản lý người dùng</title>
+    <title>Chi tiết tài khoản người dùng</title>
 
     <!-- Custom fonts for this template -->
     <link th:href="@{/admin/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -46,7 +46,8 @@
         <li class="nav-item">
             <a class="nav-link" th:href="@{/admin}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
+                <span>Dashboard</span>
+            </a>
         </li>
 
         <!-- Divider -->
@@ -61,7 +62,7 @@
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item active" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item">Quản lý sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
                     <a class="collapse-item">Chương trình khuyến mãi</a>
                     <a class="collapse-item">Quản lý liên hệ</a>
@@ -235,8 +236,7 @@
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng đơn
-                                            hàng đã mua
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tổng đơn hàng đã mua
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="number-of-orders"></div>
                                         <div><a>danh sách</a></div>
@@ -255,8 +255,7 @@
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Đơn hàng
-                                            giá trị nhất
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Đơn hàng giá trị nhất
                                         </div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800" id="max-order-price"></div>
                                         <div><a>chi tiết đơn hàng</a></div>
@@ -275,11 +274,9 @@
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Số lượt
-                                            bình luận
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Số lượt bình luận
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                             id="numbers-of-reviews"></div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="numbers-of-reviews"></div>
                                         <div><a>danh sách</a></div>
                                     </div>
                                     <div class="col-auto">
@@ -296,11 +293,9 @@
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Số sản
-                                            phẩm yêu thích
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Số sản phẩm yêu thích
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                             id="number-of-wishlish"></div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="number-of-wishlish"></div>
                                         <div><a>danh sách</a></div>
                                     </div>
                                     <div class="col-auto">
@@ -532,8 +527,8 @@
 
                     $.each(data["shippingAddress"], function (index, address) {
                         let html = "<div class='col-md-6'>\n" +
-                            "       <div class='form-group' style='border: 1px solid; border-radius: 5px;'>\n" +
-                            "            <div class='account-address' style='margin: 10px;'>\n";
+                            "       <div class=\"card mb-4 py-3 border-left-dark\">\n" +
+                            "            <div class='account-address card-body'>\n";
                         if (address["default"] === true) {
                             html += "           <p class='contact-receiver' style='text-transform: uppercase; color: black;'>" + address["contactReceiver"] + "\n" +
                                 "                    <span  style='float: right;'><i class=\"fas fa-check\"></i> Địa chỉ mặc định</span></p>\n";
