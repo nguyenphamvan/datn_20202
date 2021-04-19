@@ -58,14 +58,24 @@ public class UserServiceImpl implements UserService {
     public Object getInfoDetailAccount(long userId) {
         Map<String, Object> objectMap = new HashMap<>();
         User user = userRepository.findById(userId).get();
-        long numbersOfOrder = user.getOrders().stream().count();
-        long maxOrderPrice = user.getOrders().stream().max(Comparator.comparing(Order::getTotal)).orElseThrow(NoSuchElementException::new).getTotal();
-        long numbersOfReview = user.getReviews().stream().count();
+        long numbersOfOrder = 0;
+        long maxOrderPrice = 0;
+        long numbersOfReview = 0;
         long numbersOfWishlist = 0;
         if (user.getWishlist() != null) {
             numbersOfWishlist = user.getWishlist().split(",").length;
         }
+        if (user.getOrders().size() > 0) {
+            numbersOfOrder = user.getOrders().stream().count();
+        }
+        if (user.getOrders().size() > 0) {
+            maxOrderPrice = user.getOrders().stream().max(Comparator.comparing(Order::getTotal)).get().getTotal();
+        }
+        if (user.getReviews().size() > 0) {
+            numbersOfReview = user.getReviews().stream().count();
+        }
         objectMap.put("account", user.convertUserToUserDto());
+        objectMap.put("shippingAddress", user.getShippingAddresses().stream().map(a -> a.convertToDto()).collect(Collectors.toList()));
         objectMap.put("numbersOfOrder", numbersOfOrder);
         objectMap.put("maxOrderPrice", maxOrderPrice);
         objectMap.put("numbersOfReview", numbersOfReview);
@@ -182,6 +192,13 @@ public class UserServiceImpl implements UserService {
             userRepository.setActive(true, User.getId());
             return true;
         }
+    }
+
+    @Override
+    public void doBlockAccount(long userId, boolean isBlock) {
+        User user = userRepository.findById(userId).get();
+        user.setBlocked(isBlock);
+        userRepository.save(user);
     }
 
     @Override

@@ -65,9 +65,9 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<MyReviewDto> getListReviews(User user) {
+    public List<ResponseReviewDto> getListReviews(User user) {
         List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
-        List<MyReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToMyReviewDto()).collect(Collectors.toList());;
+        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());;
         return listReviewDto;
     }
 

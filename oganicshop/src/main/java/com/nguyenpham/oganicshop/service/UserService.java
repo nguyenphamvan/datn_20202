@@ -35,5 +35,6 @@ public interface UserService {
     void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException;
     void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException;
     boolean verify(String verificationCode);
+    void doBlockAccount(long userId, boolean isBlock);
 
 }

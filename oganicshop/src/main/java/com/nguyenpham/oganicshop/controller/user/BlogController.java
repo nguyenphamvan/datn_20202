@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.controller;
+package com.nguyenpham.oganicshop.controller.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

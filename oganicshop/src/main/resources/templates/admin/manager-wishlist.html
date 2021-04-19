@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Quản lý người dùng</title>
+    <title>Lịch sử đơn hàng</title>
 
     <!-- Custom fonts for this template -->
     <link th:href="@{/admin/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -36,14 +36,14 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Trang quản lý</div>
+            <div class="sidebar-brand-text mx-3">Admin</div>
         </a>
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/admin}">
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -51,18 +51,18 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Quản lý</span>
             </a>
-            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item active" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item">Quản lý sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
+                    <a class="collapse-item" href="manager-product.html">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item">Chương trình khuyến mãi</a>
-                    <a class="collapse-item">Quản lý liên hệ</a>
+                    <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+                    <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
             </div>
@@ -106,9 +106,6 @@
         </div>
 
     </ul>
-    <!-- Sidebar -->
-
-    <!-- End of Sidebar -->
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -166,32 +163,38 @@
                             </a>
                         </div>
                     </li>
+
                 </ul>
+
             </nav>
             <!-- End of Topbar -->
+
             <!-- Begin Page Content -->
             <div class="container-fluid">
+
                 <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Quản lý người dùng</h1>
-                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                <div class="row justify-content-between" id="div-info-1">
+                    <div class="col-xl-8 col-md-8">
+                        <p class="mb-0 text-gray-800">Tài khoản : nguyen@gmail.com</p>
+                    </div>
                 </div>
 
                 <!-- DataTales Example -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4" id="div-info-3">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Tổng số tài khoản : 100</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm yêu thích</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="wishList" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th style="width: 10%;">id</th>
-                                        <th style="width: 30%;">email</th>
-                                        <th style="width: 30%;">Ngày tạo</th>
-                                        <th style="width: 15%;">trạng thái</th>
-                                        <th style="width: 15%; text-align: center;"></th>
+                                        <th>Ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Giảm giá</th>
+                                        <th>Giá bán</th>
+                                        <th style="width: 5%;">Ratting</th>
+                                        <th style="width: 5%;">reviews</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -200,6 +203,15 @@
                         </div>
                     </div>
                 </div>
+
+
+                <a th:href="@{'/admin/manager_users/user/' + ${userId}}" class="btn btn-light btn-icon-split">
+                    <span class="icon text-gray-600">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                    <span class="text">Quay lại</span>
+                </a>
+
             </div>
             <!-- /.container-fluid -->
 
@@ -245,36 +257,31 @@
 <script th:src="@{/admin/js/demo/datatables-demo.js}"></script>
 
 <script th:inline="javascript">
-    
+
     /*<![CDATA[*/
     $(document).ready(function () {
-        getAllAccount();
+        let userId = /*[[${userId}]]*/;
+        getReviewsHistory(userId);
     });
 
-    function getAllAccount() {
+    function getReviewsHistory(userId) {
         $.ajax({
-            url: "/api/admin/account/all",
+            url: "/api/admin/account/" + userId + "/wishlist",
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $("#content > div > div.card.shadow.mb-4 > div.card-header.py-3 > h6").text("Tổng số tài khoản : " + data.length);
-                $("#dataTable").dataTable( {
-                    destroy: true,
-                    data,
-                    columns: [
-                        { data: 'id' },
-                        { data: 'email' },
-                        { data: 'createdDate' },
-                        { data: "blocked",
-                            "render": function (data, type, row) {
-                                return (data === true) ? "Đang sử dụng" : "Block";
-                            }
-                        },
-                        { data: "id", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_users/user/" + data + "'><button id='manageBtn' type='button' class='btn btn-success btn-xs'>Xem chi tiết</button></a>";
-                            }
-                        }
-                    ]
+                $.each(data["wishLists"], function (index, product) {
+                    let row = "<tr>\n" +
+                        "           <td><a href='#'><img src='/images/products/" + product["id"] + "' style='width: 80px; height: 80px;'></a></td>\n" +
+                        "           <td><p>" + product["productName"] + "</p>" +
+                        "               <p>Hãng sản xuất : " + product["supplierName"] + "</p>" +
+                        "           </td>\n" +
+                        "           <td>" + product["discount"] + "</td>\n" +
+                        "           <td>" + product["finalPrice"] + "</td>\n" +
+                        "           <td>" + product["rating"] + "</td>\n" +
+                        "           <td>" + product["numberOfReviews"] + "</td>\n" +
+                        "        </tr>";
+                    $("#wishList").append(row);
                 });
             },
             error: function () {

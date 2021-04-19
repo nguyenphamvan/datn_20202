@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.controller;
+package com.nguyenpham.oganicshop.controller.user;
 
 import com.nguyenpham.oganicshop.entity.Review;
 import com.nguyenpham.oganicshop.service.CategoryService;

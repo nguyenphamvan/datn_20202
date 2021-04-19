@@ -51,11 +51,10 @@ public class SalesControllerApi {
     }
 
     @GetMapping("/order/view/{orderId}")
-    public ResponseEntity<?> getSingleOrderById(@PathVariable("orderId") long orderId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
-        User user = myUserDetail.getUser();
+    public ResponseEntity<?> getSingleOrderById(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
-        response.put("order", orderService.getOrderById(user.getId(), orderId));
+        response.put("order", orderService.getOrderById(orderId));
         return ResponseEntity.ok(response);
     }
 
@@ -68,11 +67,10 @@ public class SalesControllerApi {
     }
 
     @GetMapping("/order/tracking/{orderId}")
-    public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
-        User user = myUserDetail.getUser();
+    public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
         response.put("categories", categoryService.getListCategory());
-        response.put("order", orderService.getOrderById(user.getId(), orderId));
+        response.put("order", orderService.getOrderById(orderId));
         return ResponseEntity.ok(response);
     }
 

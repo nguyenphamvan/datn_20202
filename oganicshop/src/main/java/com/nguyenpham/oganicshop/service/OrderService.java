@@ -12,10 +12,11 @@ import java.util.Set;
 
 public interface OrderService {
 
+    List<OrderDtoResponse> getAll();
     Order save(Order order);
     OrderDetail editReviewed(OrderDetailDto orderDetailDto);
     int getTotalOrderPage(Long userId, int pageSize);
-    OrderDtoResponse getOrderById(long userId, long orderId);
+    Order getOrderById(long orderId);
     List<OrderDtoResponse> getAllOrderByUserId(long userId);
     List<OrderDetailDto> getListOrderItem(long orderId);
     List<OrderDtoResponse> getListOrderHistory(long userId, int pageNum, int pageSize);

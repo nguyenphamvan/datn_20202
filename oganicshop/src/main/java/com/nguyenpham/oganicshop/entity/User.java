@@ -39,6 +39,7 @@ public class User {
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
     private boolean enabled;
+    private boolean blocked;
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
@@ -70,6 +71,7 @@ public class User {
         userDto.setGender(this.getGender());
         userDto.setCreatedDate(this.getCreatedAt());
         userDto.setEnabled(this.isEnabled());
+        userDto.setBlocked(this.isBlocked());
         return userDto;
     }
 

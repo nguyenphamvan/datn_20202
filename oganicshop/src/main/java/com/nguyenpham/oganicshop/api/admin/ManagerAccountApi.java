@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/account")
 public class ManagerAccountApi {
 
@@ -33,8 +34,8 @@ public class ManagerAccountApi {
 
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllAccount(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
+        Map<String, Object> response = new HashMap<>();
         User user = myUserDetail.getUser();
         try {
             return ResponseEntity.ok(userService.findAll(user.getId()));
@@ -44,13 +45,11 @@ public class ManagerAccountApi {
     }
 
     @GetMapping("/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getInfoAccountDetail(@PathVariable("userId") long userId) {
         return ResponseEntity.ok(userService.getInfoDetailAccount(userId));
     }
 
     @GetMapping("{userId}/wishlist")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getMyWishlist(@PathVariable("userId") long userId) {
         User user = userService.findUserById(userId);
         Map<String, Object> response = new HashMap<>();
@@ -60,7 +59,6 @@ public class ManagerAccountApi {
     }
 
     @GetMapping("/{userId}/reviews")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAccountReviews(@PathVariable("userId") long userId) {
         User user = userService.findUserById(userId);
         Map<String, Object> response = new HashMap<>();
@@ -69,8 +67,7 @@ public class ManagerAccountApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("{userId}/order/history")
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("{userId}/orderHistory")
     public ResponseEntity<?> getUserOrdersHistory(@PathVariable("userId") long userId) {
         Map<String, Object> response = new HashMap<>();
         UserDto user = userService.findUserById(userId).convertUserToUserDto();
@@ -79,16 +76,17 @@ public class ManagerAccountApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/user/{userId}/order/view/{orderId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getOrderDetailHistory(@PathVariable("orderId") long orderId, @PathVariable("userId") long userId) {
-        UserDto user = userService.findUserById(userId).convertUserToUserDto();
-        Map<String, Object> response = new HashMap<>();
-        response.put("user", user);
-        OrderDtoResponse orderDtoResponse = orderService.getOrderById(user.getId(), orderId);
-        orderDtoResponse.setMessage(null);
-        response.put("order", orderDtoResponse);
-        return ResponseEntity.ok(response);
+    @PutMapping("{userId}/block")
+    public ResponseEntity<?> blockAccount(@PathVariable("userId") long userId) {
+        userService.doBlockAccount(userId, false);
+        return ResponseEntity.ok(true);
     }
+
+    @PutMapping("{userId}/unBlock")
+    public ResponseEntity<?> unBlockAccount(@PathVariable("userId") long userId) {
+        userService.doBlockAccount(userId, true);
+        return ResponseEntity.ok(true);
+    }
+
 
 }

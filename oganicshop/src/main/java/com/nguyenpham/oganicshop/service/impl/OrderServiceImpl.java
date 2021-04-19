@@ -39,6 +39,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDtoResponse> getAll() {
+        return orderRepository.findAll().stream().map(o -> o.convertToDtoNotDetail()).collect(Collectors.toList());
+    }
+
+    @Override
     public Order save(Order order) {
         try {
             Order savedOrder = orderRepository.save(order);
@@ -73,12 +78,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDtoResponse getOrderById(long userId, long orderId) {
-        Order order = orderRepository.findById(orderId).get();
-        if (order.getUser().getId() == userId) {
-            return order.convertOrderToOrderDto();
-        }
-        return null;
+    public Order getOrderById(long orderId) {
+        return orderRepository.findById(orderId).get();
     }
 
     @Override

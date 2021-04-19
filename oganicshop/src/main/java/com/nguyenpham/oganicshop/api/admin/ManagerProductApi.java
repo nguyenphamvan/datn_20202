@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/product")
 public class ManagerProductApi {
 
@@ -21,19 +22,16 @@ public class ManagerProductApi {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ADMIN')")
     public List<ProductResponseDto> getAllProduct() {
         return productService.getAllProduct();
     }
 
     @GetMapping("/{productId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponseDto getProductDetail(@PathVariable("productId") long productId) {
         return productService.getProductById(productId).convertToDto();
     }
 
     @PostMapping("/insert")
-    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponseDto insertProduct(@RequestBody ProductRequestDto productRequestDto) {
         return productService.insertProduct(productRequestDto);
     }
