@@ -1,9 +1,8 @@
 package com.nguyenpham.oganicshop.service.impl;
 
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
-import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
-import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
-import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.converter.ProductConverter;
+import com.nguyenpham.oganicshop.converter.UserConverter;
+import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.ShippingAddress;
@@ -35,14 +34,16 @@ import java.util.stream.Stream;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+    private UserConverter userConverter;
     private UserRepository userRepository;
     private ProductRepository productRepository;
     private ShippingAddressRepository shippingAddressRepository;
     private JavaMailSender mailSender;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository,
+    public UserServiceImpl(UserConverter userConverter, UserRepository userRepository, ProductRepository productRepository,
                            ShippingAddressRepository shippingAddressRepository, JavaMailSender mailSender) {
+        this.userConverter = userConverter;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.shippingAddressRepository = shippingAddressRepository;
@@ -50,8 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findAll(long currentUserId) {
-        return userRepository.findAllByIdIsNot(currentUserId).stream().map(u -> u.convertUserToUserDto()).collect(Collectors.toList());
+    public List<UserResponseDto> findAll(long currentUserId) {
+        return userRepository.findAllByIdIsNot(currentUserId).stream().map(u -> userConverter.entityToDto(u)).collect(Collectors.toList());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
         if (user.getReviews().size() > 0) {
             numbersOfReview = user.getReviews().stream().count();
         }
-        objectMap.put("account", user.convertUserToUserDto());
+        objectMap.put("account", userConverter.entityToDto(user));
         objectMap.put("shippingAddress", user.getShippingAddresses().stream().map(a -> a.convertToDto()).collect(Collectors.toList()));
         objectMap.put("numbersOfOrder", numbersOfOrder);
         objectMap.put("maxOrderPrice", maxOrderPrice);
@@ -212,14 +213,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getInfoAccount() {
+    public UserResponseDto getInfoAccount() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        return user.convertUserToUserDto();
+        return userConverter.entityToDto(user);
     }
 
     @Override
     @Transactional
-    public UserDto updateInfoAccount(UserDto userRequest) {
+    public UserResponseDto updateInfoAccount(UserRequestDto userRequest) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         userDb.setFullName(userRequest.getFullName());
@@ -231,12 +232,12 @@ public class UserServiceImpl implements UserService {
             userDb.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         }
         User userUpdated = userRepository.save(userDb);
-        return userUpdated.convertUserToUserDto();
+        return userConverter.entityToDto(userUpdated);
     }
 
     @Override
     @Transactional
-    public ShippingAddressDto addShippingAddress(ShippingAddressDto request) {
+    public AddressRequestDto addShippingAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         ShippingAddress shippingAddress = new ShippingAddress();
@@ -250,7 +251,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ShippingAddressDto updateShippingAddress(ShippingAddressDto request){
+    public AddressRequestDto updateShippingAddress(AddressRequestDto request){
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         ShippingAddress shippingAddress = shippingAddressRepository.findById(request.getId()).get();
@@ -262,10 +263,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ShippingAddressDto> getShippingAddress() {
+    public List<AddressRequestDto> getShippingAddress() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         List<ShippingAddress> listShippingAddress = shippingAddressRepository.findAllByUserId(user.getId());
-        List<ShippingAddressDto> resShippingAddress = listShippingAddress.stream().map(ad -> ad.convertToDto()).collect(Collectors.toList());
+        List<AddressRequestDto> resShippingAddress = listShippingAddress.stream().map(ad -> ad.convertToDto()).collect(Collectors.toList());
         Collections.sort(resShippingAddress);
         return resShippingAddress;
     }
@@ -284,9 +285,10 @@ public class UserServiceImpl implements UserService {
     public Set<ProductResponseDto> getWishlists(User user) {
         Set<Long> idWishlistProductsSet = getSetIdProductWishlist(user);
         Set<ProductResponseDto> wishlistProducts = new HashSet<>();
+        ProductConverter converter = new ProductConverter();
         for (Long productId : idWishlistProductsSet) {
             Product product = productRepository.findById(productId).get();
-            wishlistProducts.add(product.convertToDto());
+            wishlistProducts.add(converter.entityToDto(product));
         }
 
         return wishlistProducts;
@@ -334,7 +336,7 @@ public class UserServiceImpl implements UserService {
         return idWishlistProductsSet;
     }
 
-    public void saveAddress(ShippingAddress shippingAddress, ShippingAddressDto request, User user){
+    public void saveAddress(ShippingAddress shippingAddress, AddressRequestDto request, User user){
         shippingAddress.setContactReceiver(request.getContactReceiver());
         shippingAddress.setContactAddress(request.getContactAddress());
         shippingAddress.setContactPhone(request.getContactPhone());

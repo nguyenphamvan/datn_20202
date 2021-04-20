@@ -180,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
             subCart += item.getValue().calculateTotalItem();
         }
         OrderDtoResponse orderResponse = new OrderDtoResponse();
-        orderResponse.setShippingAddress(new ShippingAddressDto(addressDefault.getContactReceiver(), addressDefault.getContactPhone(), addressDefault.getContactAddress(), addressDefault.isAddrDefault()));
+        orderResponse.setShippingAddress(new AddressRequestDto(addressDefault.getContactReceiver(), addressDefault.getContactPhone(), addressDefault.getContactAddress(), addressDefault.isAddrDefault()));
         orderResponse.setSubTotal(subCart);
         orderResponse.setDiscount(0);
         orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD); // mặc định ban đầu phí giao hàng là giao hàng tiêu chuẩn

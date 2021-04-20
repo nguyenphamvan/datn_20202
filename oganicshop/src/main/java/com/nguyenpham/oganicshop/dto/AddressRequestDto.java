@@ -1,14 +1,13 @@
 package com.nguyenpham.oganicshop.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ShippingAddressDto implements Comparable<ShippingAddressDto>{
+public class AddressRequestDto implements Comparable<AddressRequestDto>{
 
     private Long id;
     private String contactReceiver;
@@ -16,20 +15,20 @@ public class ShippingAddressDto implements Comparable<ShippingAddressDto>{
     private String contactAddress;
     private boolean isDefault;
 
-    public ShippingAddressDto(String contactReceiver, String contactPhone, String contactAddress) {
+    public AddressRequestDto(String contactReceiver, String contactPhone, String contactAddress) {
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
         this.contactAddress = contactAddress;
     }
 
-    public ShippingAddressDto(String contactReceiver, String contactPhone, String contactAddress, boolean isDefault) {
+    public AddressRequestDto(String contactReceiver, String contactPhone, String contactAddress, boolean isDefault) {
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
         this.contactAddress = contactAddress;
         this.isDefault = isDefault;
     }
 
-    public ShippingAddressDto(Long id, String contactReceiver, String contactPhone, String contactAddress, boolean addrDefault) {
+    public AddressRequestDto(Long id, String contactReceiver, String contactPhone, String contactAddress, boolean addrDefault) {
         this.id = id;
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
@@ -38,7 +37,7 @@ public class ShippingAddressDto implements Comparable<ShippingAddressDto>{
     }
 
     @Override
-    public int compareTo(ShippingAddressDto o) {
+    public int compareTo(AddressRequestDto o) {
         return o.getId().compareTo(this.getId());
     }
 }

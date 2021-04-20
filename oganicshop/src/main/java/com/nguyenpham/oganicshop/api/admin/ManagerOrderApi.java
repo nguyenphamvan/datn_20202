@@ -1,10 +1,10 @@
 package com.nguyenpham.oganicshop.api.admin;
 
+import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.dto.UserResponseDto;
 import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.service.OrderService;
-import com.nguyenpham.oganicshop.service.ReviewService;
 import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +24,12 @@ import java.util.Map;
 public class ManagerOrderApi {
 
     private UserService userService;
+    private UserConverter userConverter;
     private OrderService orderService;
 
     @Autowired
-    public ManagerOrderApi(UserService userService, OrderService orderService) {
+    public ManagerOrderApi(UserConverter userConverter, UserService userService, OrderService orderService) {
+        this.userConverter = userConverter;
         this.userService = userService;
         this.orderService = orderService;
     }
@@ -36,7 +38,7 @@ public class ManagerOrderApi {
     public ResponseEntity<?> getOrderDetailHistory(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
         Order order = orderService.getOrderById(orderId);
-        UserDto user = order.getUser().convertUserToUserDto();
+        UserResponseDto user = userConverter.entityToDto(order.getUser());
         response.put("user", user);
         OrderDtoResponse orderDtoResponse = order.convertOrderToOrderDto();
         orderDtoResponse.setMessage(null);

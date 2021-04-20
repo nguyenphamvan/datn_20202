@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OrderDtoRequest {
     private Long id;
-    private ShippingAddressDto shippingAddress;
+    private AddressRequestDto shippingAddress;
     private String summaryProductName;
     private int subTotal;
     private int shipFee;

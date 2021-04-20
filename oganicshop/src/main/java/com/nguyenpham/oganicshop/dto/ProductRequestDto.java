@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductRequestDto {
 
+    private long id;
     private String name;
     private String url;
     private String image;
@@ -24,21 +25,4 @@ public class ProductRequestDto {
     private int amount;
     private long categoryId;
     private long supplierId;
-
-    public Product dtoToEntity() {
-        Product product = new Product();
-        product.setName(this.getName());
-        product.setUrl(this.getUrl());
-        product.setImage(this.getImage());
-        product.setSize(this.getSize());
-        product.setColor(this.getColor());
-        product.setBaseDescription(this.getBaseDescription());
-        product.setDetailDescription(this.getDetailDescription());
-        product.setPrice(this.getPrice());
-        product.setDiscount(this.getDiscount());
-        product.setFinalPrice(this.getFinalPrice());
-        product.setAmount(this.getAmount());
-
-        return product;
-    }
 }

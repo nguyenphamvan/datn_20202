@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.api.admin;
 
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.converter.UserConverter;
+import com.nguyenpham.oganicshop.dto.UserResponseDto;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.OrderService;
@@ -21,12 +21,14 @@ import java.util.Map;
 @RequestMapping("/api/admin/account")
 public class ManagerAccountApi {
 
+    private UserConverter userConverter;
     private UserService userService;
     private OrderService orderService;
     private ReviewService reviewService;
 
     @Autowired
-    public ManagerAccountApi(UserService userService, OrderService orderService, ReviewService reviewService) {
+    public ManagerAccountApi(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
+        this.userConverter = userConverter;
         this.userService = userService;
         this.orderService = orderService;
         this.reviewService = reviewService;
@@ -53,7 +55,7 @@ public class ManagerAccountApi {
     public ResponseEntity<?> getMyWishlist(@PathVariable("userId") long userId) {
         User user = userService.findUserById(userId);
         Map<String, Object> response = new HashMap<>();
-        response.put("user", user.convertUserToUserDto());
+        response.put("user", userConverter.entityToDto(user));
         response.put("wishLists", userService.getWishlists(user));
         return ResponseEntity.ok(response);
     }
@@ -62,7 +64,7 @@ public class ManagerAccountApi {
     public ResponseEntity<?> getAccountReviews(@PathVariable("userId") long userId) {
         User user = userService.findUserById(userId);
         Map<String, Object> response = new HashMap<>();
-        response.put("user", user.convertUserToUserDto());
+        response.put("user", userConverter.entityToDto(user));
         response.put("reviews", reviewService.getListReviews(user));
         return ResponseEntity.ok(response);
     }
@@ -70,7 +72,7 @@ public class ManagerAccountApi {
     @GetMapping("{userId}/orderHistory")
     public ResponseEntity<?> getUserOrdersHistory(@PathVariable("userId") long userId) {
         Map<String, Object> response = new HashMap<>();
-        UserDto user = userService.findUserById(userId).convertUserToUserDto();
+        UserResponseDto user = userConverter.entityToDto(userService.findUserById(userId));
         response.put("user", user);
         response.put("ordersHistory", orderService.getAllOrderByUserId(userId));
         return ResponseEntity.ok(response);

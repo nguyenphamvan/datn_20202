@@ -1,6 +1,7 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.entity.Category;
@@ -108,7 +109,8 @@ public class ProductControllerApi {
 
         }
 
-        List<ProductResponseDto> products = page.getContent().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
+        ProductConverter productConverter = new ProductConverter();
+        List<ProductResponseDto> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
 
         result.put("products", products);
         result.put("page", pageNum);

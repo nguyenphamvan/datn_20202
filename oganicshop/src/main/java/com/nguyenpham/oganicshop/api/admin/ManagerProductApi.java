@@ -1,12 +1,15 @@
 package com.nguyenpham.oganicshop.api.admin;
 
+import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.ProductRequestDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
+import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -28,7 +31,8 @@ public class ManagerProductApi {
 
     @GetMapping("/view/{productId}")
     public ProductResponseDto getProductDetail(@PathVariable("productId") long productId) {
-        return productService.getProductById(productId).convertToDto();
+        ProductConverter converter = new ProductConverter();
+        return converter.entityToDto(productService.getProductById(productId));
     }
 
     @PostMapping("/add")
@@ -38,7 +42,7 @@ public class ManagerProductApi {
 
     @PutMapping("/edit")
     public ProductResponseDto editProduct(@RequestBody ProductRequestDto productRequestDto) {
-        return productService.insertProduct(productRequestDto);
+        return productService.editProduct(productRequestDto);
     }
 
     @PutMapping("/stopBusiness/{productId}")

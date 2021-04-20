@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.entity;
 
+import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.CartItemDto;
 import lombok.*;
 
@@ -17,7 +18,7 @@ public class CartItem {
 
     public CartItemDto convertDto() {
         CartItemDto cartItem = new CartItemDto();
-        cartItem.setProduct(this.getProduct().convertToDtoNotIncludeReviews());
+        cartItem.setProduct(new ProductConverter().entityToDtoNotReviews(product));
         cartItem.setQuantity(this.getQuantity());
         cartItem.setDiscount(this.getDiscount());
         cartItem.setTotalItem(this.calculateTotalItem());

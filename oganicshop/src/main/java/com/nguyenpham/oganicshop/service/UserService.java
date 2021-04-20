@@ -1,9 +1,6 @@
 package com.nguyenpham.oganicshop.service;
 
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
-import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
-import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
-import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 
@@ -14,7 +11,7 @@ import java.util.Set;
 
 public interface UserService {
 
-    List<UserDto> findAll(long currentUserId);
+    List<UserResponseDto> findAll(long currentUserId);
     Object getInfoDetailAccount(long userId);
     User findUserById (Long id);
     User findUserByEmail (String email);
@@ -23,11 +20,11 @@ public interface UserService {
     void updatePassword(User user, String newPassword);
     boolean register (RegisterAccountRequest accountRequest);
     boolean checkOldPassword(String rawOldPassword);
-    UserDto getInfoAccount();
-    UserDto updateInfoAccount (UserDto userRequest);
-    List<ShippingAddressDto> getShippingAddress();
-    ShippingAddressDto addShippingAddress(ShippingAddressDto request);
-    ShippingAddressDto updateShippingAddress (ShippingAddressDto request);
+    UserResponseDto getInfoAccount();
+    UserResponseDto updateInfoAccount (UserRequestDto userRequest);
+    List<AddressRequestDto> getShippingAddress();
+    AddressRequestDto addShippingAddress(AddressRequestDto request);
+    AddressRequestDto updateShippingAddress (AddressRequestDto request);
     boolean deleteShippingAddress(long addressId);
     Set<ProductResponseDto> getWishlists(User user);
     boolean addProductToWishlist(long productId);

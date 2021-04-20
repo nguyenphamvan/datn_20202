@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.ProductRequestDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.entity.Category;
@@ -38,33 +39,52 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponseDto insertProduct(ProductRequestDto productRequestDto) {
-        Product product = productRequestDto.dtoToEntity();
+        Product product = new ProductConverter().dtoToEntity(productRequestDto);
         Category category = categoryRepository.findById(productRequestDto.getCategoryId()).get();
         Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
         product.setCategory(category);
         product.setSupplier(supplier);
-        try {
-            return productRepository.save(product).convertToDtoNotIncludeReviews();
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
+        ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
+        if (productResponse != null) {
+            return productResponse;
         }
-    }
-
-    @Override
-    public ProductResponseDto editProduct(ProductRequestDto productRequestDto) {
         return null;
     }
 
     @Override
+    @Transactional
+    public ProductResponseDto editProduct(ProductRequestDto productRequestDto) {
+        Product product = productRepository.findById(productRequestDto.getId()).get();
+        product.setName(productRequestDto.getName());
+        product.setUrl(productRequestDto.getName().replace(" ", "-"));
+        product.setBaseDescription(productRequestDto.getBaseDescription());
+        product.setDetailDescription(productRequestDto.getDetailDescription());
+        product.setPrice(productRequestDto.getPrice());
+        product.setDiscount(productRequestDto.getDiscount());
+        product.setFinalPrice(productRequestDto.getFinalPrice());
+        product.setAmount(productRequestDto.getAmount());
+        Category category = categoryRepository.findById(productRequestDto.getCategoryId()).get();
+        Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
+        product.setCategory(category);
+        product.setSupplier(supplier);
+        ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
+        if (productResponse != null) {
+            return productResponse;
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional
     public boolean stopBusinessProduct(long productId) {
         Product product = productRepository.findById(productId).get();
         product.setStopBusiness(true);
         try {
             productRepository.save(product);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
 
@@ -72,7 +92,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponseDto> getAllProduct() {
-        return productRepository.findAll().stream().map(product -> product.convertToDtoNotIncludeReviews()).collect(Collectors.toList());
+        ProductConverter productConverter = new ProductConverter();
+        return productRepository.findAll().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
     }
 
     @Override
@@ -112,7 +133,8 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findByUrl(productUrl).orElse(null);
         Set<Review> reviews = product.getReviews().stream().filter(rv -> rv.getRootComment() == null).collect(Collectors.toSet());
         product.setReviews(reviews);
-        return product.convertToDto();
+        ProductConverter converter = new ProductConverter();
+        return converter.entityToDto(product);
     }
 
     @Override

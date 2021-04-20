@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
+import com.nguyenpham.oganicshop.dto.AddressRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,8 +28,8 @@ public class ShippingAddress {
     @JsonIgnore
     private User user;
 
-    public ShippingAddressDto convertToDto() {
-        return new ShippingAddressDto(
+    public AddressRequestDto convertToDto() {
+        return new AddressRequestDto(
                 this.getId() ,
                 this.getContactReceiver(),
                 this.getContactPhone(),

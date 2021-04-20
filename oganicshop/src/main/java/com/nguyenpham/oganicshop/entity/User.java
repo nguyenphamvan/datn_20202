@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.dto.UserResponseDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -58,21 +58,5 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<ShippingAddress> shippingAddresses;
-
-    // should user moderMapper
-    public UserDto convertUserToUserDto() {
-        UserDto userDto = new UserDto();
-        userDto.setRole(this.getRole().replace("ROLE_", ""));
-        userDto.setId(this.getId());
-        userDto.setEmail(this.getEmail());
-        userDto.setFullName(this.getFullName());
-        userDto.setPhone(this.getPhone());
-        userDto.setBirthday(this.getBirthday());
-        userDto.setGender(this.getGender());
-        userDto.setCreatedDate(this.getCreatedAt());
-        userDto.setEnabled(this.isEnabled());
-        userDto.setBlocked(this.isBlocked());
-        return userDto;
-    }
 
 }

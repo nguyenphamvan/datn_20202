@@ -1,4 +1,11 @@
 package com.nguyenpham.oganicshop.converter;
 
-public class GeneralConverter {
+public interface GeneralConverter<E, Dreq, Dres> {
+
+    Dres entityToDto(E e);
+
+    E dtoToEntity(Dreq d);
+
+
+
 }

@@ -1,24 +1,17 @@
 package com.nguyenpham.oganicshop.api;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.dto.ShippingAddressDto;
-import com.nguyenpham.oganicshop.dto.UserDto;
+import com.nguyenpham.oganicshop.dto.AddressRequestDto;
+import com.nguyenpham.oganicshop.dto.UserRequestDto;
 import com.nguyenpham.oganicshop.entity.User;
-import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.ReviewService;
 import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +44,7 @@ public class AccountControllerApi {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateInfoAccount(@RequestBody UserDto userRequest) {
+    public ResponseEntity<?> updateInfoAccount(@RequestBody UserRequestDto userRequest) {
         return ResponseEntity.ok(userService.updateInfoAccount(userRequest));
     }
 
@@ -64,12 +57,12 @@ public class AccountControllerApi {
     }
 
     @PostMapping("/address/create")
-    public ResponseEntity<?> addShippingAddress(@RequestBody ShippingAddressDto request) {
+    public ResponseEntity<?> addShippingAddress(@RequestBody AddressRequestDto request) {
         return ResponseEntity.ok(userService.addShippingAddress(request));
     }
 
     @PutMapping("/address/update")
-    public ResponseEntity<?> updateShippingAddress(@RequestBody ShippingAddressDto request) {
+    public ResponseEntity<?> updateShippingAddress(@RequestBody AddressRequestDto request) {
         return ResponseEntity.ok(userService.updateShippingAddress(request));
     }
 
