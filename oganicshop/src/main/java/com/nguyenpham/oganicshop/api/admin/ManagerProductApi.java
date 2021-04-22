@@ -3,6 +3,7 @@ package com.nguyenpham.oganicshop.api.admin;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.ProductRequestDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
+import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +16,12 @@ import java.util.List;
 @RequestMapping("/api/admin/product")
 public class ManagerProductApi {
 
+    private OrderService orderService;
     private ProductService productService;
 
     @Autowired
-    public ManagerProductApi(ProductService productService) {
+    public ManagerProductApi(OrderService orderService, ProductService productService) {
+        this.orderService = orderService;
         this.productService = productService;
     }
 
@@ -30,7 +33,10 @@ public class ManagerProductApi {
     @GetMapping("/view/{productId}")
     public ProductResponseDto getProductDetail(@PathVariable("productId") long productId) {
         ProductConverter converter = new ProductConverter();
-        return converter.entityToDto(productService.getProductById(productId));
+        ProductResponseDto response = converter.entityToDto(productService.getProductById(productId));
+        response.setReviews(null);
+        response.setAmountSold(orderService.countNumberOfProductInOrder(productId));
+        return response;
     }
 
     @PostMapping("/add")

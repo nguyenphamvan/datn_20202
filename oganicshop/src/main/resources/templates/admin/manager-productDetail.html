@@ -225,44 +225,31 @@
                             </div>
                         </div>
                         <div class="col-md-7">
-                            <div class="d-flex justify-content-between" style="margin: 20px 0px 20px 0px;">
-                                <h5>Fantasy T-shirt</h5>
-                                <div style="display: flex;">
-                                    <a th:href="@{/admin/manager_products/importTheQuantity}" class="btn btn-info" style="margin-left: 10px;">Nhập thêm</a>
-                                    <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger" style="margin-left: 10px;">Ngừng bán</button>
-                                    <a th:href="@{/admin/manager_products/updateProduct}" class="btn btn-primary" style="margin-left: 10px;">Cập nhật</a>
+                            <div>
+                                <div style="display: flex; margin: 20px 0px 20px 0px;">
+                                    <a th:href="@{'/admin/manager_products/import/' + ${productId}}" class="btn btn-info" style="margin-right: 10px;">Nhập thêm</a>
+                                    <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger" style="margin-right: 10px;">Ngừng bán</button>
+                                    <a th:href="@{'/admin/manager_products/updateProduct/' + ${productId}}" class="btn btn-primary" style="margin-right: 10px;">Cập nhật</a>
                                 </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h5 id="productName"><b></b></h5>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12" style="display: flex;">
-                                    <ul class="rating" style="display: flex; list-style-type: none; padding: 0;">
-                                        <li>
-                                            <i class="fas fa-star fa-sm text-primary"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star fa-sm text-primary"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star fa-sm text-primary"></i>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-star fa-sm text-primary"></i>
-                                        </li>
-                                        <li>
-                                            <i class="far fa-star fa-sm text-primary"></i>
-                                        </li>
+                                    <ul id="rating" class="rating" style="display: flex; list-style-type: none; padding: 0;">
                                     </ul>
-                                    <span style="margin-left: 20px;">(15 lượt nhận xét)</span>
+                                    <span id="numbers-of-review" style="margin-left: 20px;"></span>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="mb-2 text-muted text-uppercase small"><strong>Danh mục : </strong><span>Laptop</span></p>
+                                    <p class="mb-2 text-muted text-uppercase small"><strong>Danh mục : </strong><span id="categoryName"></span></p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p class="mb-2 text-muted text-uppercase small"><strong>Nhà cung cấp : </strong><span>Dell</span></p>
+                                    <p class="mb-2 text-muted text-uppercase small"><strong>Nhà cung cấp : </strong><span id="supplierName"></span></p>
                                 </div>
                             </div>
                             <hr>
@@ -270,18 +257,18 @@
                                 <div class="col-md-6">
                                     <table class="table table-sm table-borderless mb-0">
                                         <tbody>
-                                        <tr>
-                                            <th class="pl-0" scope="row"><strong>Giá gốc</strong></th>
-                                            <td>1000</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="pl-0" scope="row"><strong>Giảm giá</strong></th>
-                                            <td>100</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="pl-0" scope="row"><strong>Giá bán</strong></th>
-                                            <td>900</td>
-                                        </tr>
+                                            <tr>
+                                                <td class="pl-0" scope="row"><strong>Giá gốc</strong></td>
+                                                <td id="price"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pl-0" scope="row" ><strong>Giảm giá</strong></td>
+                                                <td id="discount"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pl-0" scope="row"><strong>Giá bán</strong></td>
+                                                <td id="finalPrice"></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -290,11 +277,15 @@
                                         <tbody>
                                             <tr>
                                                 <td class="pl-0" scope="row"><strong>Tồn kho</strong></td>
-                                                <td>10</td>
+                                                <td id="amount"></td>
                                             </tr>
                                             <tr>
                                                 <td class="pl-0" scope="row"><strong>Đã bán</strong></td>
-                                                <td>10</td>
+                                                <td id="amountSold"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pl-0" scope="row"><strong>Trạng thái</strong></td>
+                                                <td id="status"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -303,24 +294,18 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label><strong>Mô tả ngắn</strong></label>
-                                    <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
-                                        error voluptas repellat rerum quidem</p>
+                                    <label for="baseDescription"><strong>Mô tả ngắn</strong></label>
+                                    <p class="pt-1" id="baseDescription"></p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label for="detail-description"><strong>Mô tả chi tiết</strong></label>
-                                    <textarea class="form-control" rows="8" id="detail-description" name="text" readonly="readonly">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit
-                                    error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio,
-                                    officia quis dolore quos sapiente tempore alias.
-                                    </textarea>
+                                    <label for="detailDescription"><strong>Mô tả chi tiết</strong></label>
+                                    <textarea class="form-control" rows="8" id="detailDescription" name="text" readonly="readonly"></textarea>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                 </section>
                 <!--Section: Block Content-->
 
@@ -380,6 +365,10 @@
     /*<![CDATA[*/
     $(document).ready(function () {
 
+        let productId = /*[[${productId}]]*/;
+
+        getInfoProduct(productId);
+
         $("#stop-business").on("click", function () {
             let productId = $(this).attr("product-id");
             $.ajax({
@@ -398,6 +387,45 @@
 
         });
     });
+
+    function getInfoProduct(productId) {
+        $.ajax({
+            url: "/api/admin/product/view/" + productId,
+            type: "GET",
+            contentType: "application/json",
+            success: function (data) {
+                //productName
+                $("#productName > b").text(data["productName"]);
+                // rating
+                if (parseInt(data["rating"]) > 0) {
+                    for (let i = 0; i < parseInt(data["rating"]); i++) {
+                        console.log(i);
+                        $("#rating").append("<li><i class=\"fas fa-star fa-sm text-primary\"></i></li>");
+                    }
+                }
+                if ((5 - parseInt(data["rating"])) > 0) {
+                    console.log((5 - parseInt(data["rating"])));
+                    for (let i = 0; i < (5 - parseInt(data["rating"])); i++) {
+                        $("#rating").append("<li><i class=\"far fa-star fa-sm text-primary\"></i></li>");
+                    }
+                }
+                $("#numbers-of-review").text(data['numberOfReviews'] + " lượt nhận xét"); // number of reviews
+                $("#categoryName").text(data["categoryName"]); // category
+                $("#supplierName").text(data["supplierName"]); // supplier
+                $("#price").text(data["price"]); // price
+                $("#discount").text(data["discount"]); // discount
+                $("#finalPrice").text(data["finalPrice"]) // finalPrice
+                $("#amount").text(data["amount"]); // amount
+                $("#amountSold").text(data["amountSold"]); // amountSold
+                $("#status").text(data["status"]); // status product
+                $("#baseDescription").text(data["baseDescription"]);
+                $("#detailDescription").val(data["detailDescription"]);
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
 
     /*]]>*/
 </script>

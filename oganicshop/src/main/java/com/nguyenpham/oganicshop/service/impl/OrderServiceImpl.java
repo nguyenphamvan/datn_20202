@@ -191,5 +191,10 @@ public class OrderServiceImpl implements OrderService {
         return orderResponse;
     }
 
+    @Override
+    public int countNumberOfProductInOrder(long productId) {
+        return orderDetailRepository.countByProductId(productId);
+    }
+
 
 }

@@ -10,4 +10,6 @@ import java.util.Set;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
     @Query("SELECT od FROM OrderDetail od JOIN FETCH od.order o WHERE o.user.id =:userId AND od.reviewed = false")
     Set<OrderDetail> findAllByReviewedIsFalse(@Param("userId") long userId);
+
+    int countByProductId(long productId);
 }

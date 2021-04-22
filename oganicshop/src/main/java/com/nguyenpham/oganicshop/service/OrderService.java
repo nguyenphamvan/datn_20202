@@ -24,5 +24,6 @@ public interface OrderService {
     int applyCoupon(HashMap<Long, CartItem> cart, Discount discount);
     void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto);
     boolean cancelOrder(long userId, long orderId);
-    public OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart);
+    OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart);
+    int countNumberOfProductInOrder(long productId);
 }

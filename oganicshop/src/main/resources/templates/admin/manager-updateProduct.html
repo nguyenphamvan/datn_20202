@@ -180,53 +180,38 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-md-4">
+                            <div class="row" id="select-category-supplier">
+                                <div class="col-md-4">
                                     <label for="category">Danh mục cha</label>
-                                    <select class="form-control mb-2 mr-sm-2" id="category">
-                                        <option>Laptop</option>
-                                        <option>Điện thoại thông minh</option>
-                                        <option>Đồng hồ nam</option>
-                                        <option>Đồng hồ nữ</option>
+                                    <select class="form-control" id="category" name="parentCategoryId">
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="col-md-3">
                                     <label for="sub-category">Danh mục con</label>
-                                    <select class="form-control mb-2 mr-sm-2" id="sub-category">
-                                        <option>Laptop</option>
-                                        <option>Điện thoại thông minh</option>
-                                        <option>Đồng hồ nam</option>
-                                        <option>Đồng hồ nữ</option>
+                                    <select class="form-control" id="sub-category" name="categoryId">
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="col-md-3">
                                     <label for="supplier">Nhà sản xuất:</label>
-                                    <select class="form-control mb-2 mr-sm-2" id="supplier">
-                                        <option>Dell</option>
-                                        <option>Asus</option>
-                                        <option>Acer</option>
-                                        <option>Đồng hồ nữ</option>
+                                    <select class="form-control" id="supplier" name="supplierId">
                                     </select>
+                                </div>
+                                <div class="col-md-2 justify-content-end" style="position: relative;">
+                                    <button type="button" style="position: absolute; bottom: 0;" class="btn btn-primary shadow-sm" id="btn-add-category-supplier">Thêm mới</button>
                                 </div>
                             </div>
-
+                            <br/>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="pwd">Giá gốc (VNĐ)</label>
-                                        <input type="number" class="form-control" placeholder="Nhập giá gốc" id="pwd">
+                                        <label for="price">Giá bán (VNĐ)</label>
+                                        <input type="number" class="form-control" placeholder="Nhập giá gốc" id="price" name="price">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="pwd">Giảm giá (VNĐ)</label>
-                                        <input type="number" class="form-control" placeholder="giảm giá" id="pwd">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="pwd">Giá bán (VNĐ)</label>
-                                        <input type="number" class="form-control" placeholder="1000" id="pwd" readonly="readonly">
+                                        <label for="discount">Giảm giá (VNĐ)</label>
+                                        <input type="number" class="form-control" placeholder="giảm giá" id="discount" name="discount">
                                     </div>
                                 </div>
                             </div>
@@ -234,10 +219,10 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                        <label for="pwd">Thêm ảnh chính:</label>
+                                        <label for="imageUpload">Thêm ảnh chính:</label>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="customFile" accept="image/*" onchange="loadFile(event)">
-                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                            <input type="file" name="images" class="custom-file-input" id="imageUpload" accept="image/*" onchange="loadFile(event)">
+                                            <label class="custom-file-label" for="imageUpload">Choose file</label>
                                         </div>
                                     </div>
                                 </div>
@@ -246,36 +231,36 @@
                                 </div>
                             </div>
 
-                            <label for="pwd">Thêm ảnh phụ</label>
+                            <label>Thêm ảnh phụ</label>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="pwd">ảnh 1</label>
+                                    <label for="imageUpload1">ảnh 1</label>
                                     <div class="form-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="customFile" accept="image/*" onchange="loadFile(event)">
-                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                            <input type="file" name="images" class="custom-file-input" id="imageUpload1" accept="image/*" onchange="loadFile1(event)">
+                                            <label class="custom-file-label" for="imageUpload1">Choose file</label>
                                         </div>
-                                        <img style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
+                                        <img id="output1" style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="pwd">ảnh 2</label>
+                                    <label for="imageUpload2">ảnh 2</label>
                                     <div class="form-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="customFile" accept="image/*" onchange="loadFile(event)">
-                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                            <input type="file" name="images" class="custom-file-input" id="imageUpload2" accept="image/*" onchange="loadFile2(event)">
+                                            <label class="custom-file-label" for="imageUpload2">Choose file</label>
                                         </div>
-                                        <img style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
+                                        <img id="output2" style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="pwd">ảnh 3</label>
+                                    <label for="imageUpload3">ảnh 3</label>
                                     <div class="form-group">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="customFile" accept="image/*" onchange="loadFile(event)">
-                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                            <input type="file" name="images" class="custom-file-input" id="imageUpload3" accept="image/*" onchange="loadFile3(event)">
+                                            <label class="custom-file-label" for="imageUpload3">Choose file</label>
                                         </div>
-                                        <img style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
+                                        <img id="output3" style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
                                     </div>
                                 </div>
                             </div>
@@ -283,24 +268,24 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="short-desc">Mô tả ngắn:</label>
-                                        <input type="text" class="form-control" id="short-desc">
+                                        <label for="baseDescription">Mô tả ngắn:</label>
+                                        <input type="text" class="form-control" id="baseDescription" name="baseDescription">
                                     </div>
                                 </div>
-                            
+
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="detail-desc">Mô tả chi tiết:</label>
-                                        <textarea rows="8" class="form-control" id="detail-desc"></textarea>
+                                        <label for="detailDescription">Mô tả chi tiết:</label>
+                                        <textarea rows="8" class="form-control" id="detailDescription" name="detailDescription"></textarea>
                                     </div>
                                 </div>
                             </div>
 
                             
-                            <button type="submit" class="btn btn-info">Cập nhật</button>
+                            <button type="submit" id="btn-update-product" class="btn btn-info">Cập nhật</button>
                             <input class="btn btn-primary" type="reset" value="Reset">
                             
                         </form>
@@ -358,16 +343,187 @@
 <!-- Page level custom scripts -->
 <script th:src="@{/admin/js/demo/datatables-demo.js}"></script>
 
-  <script>
-    var loadFile = function(event) {
-      var output = document.getElementById('output');
-      output.src = URL.createObjectURL(event.target.files[0]);
-      output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
-      }
-      output.style.display = "block";
-    };
-  </script>
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        let productId = /*[[${productId}]]*/;
+        getListCategoryAndSupplier();
+        getInfoProduct(productId);
+
+        $("#btn-update-product").on("click", function (e) {
+            e.preventDefault();
+            let data = new FormData($("#addNewProduct")[0]);
+            $.ajax({
+                url: "/api/admin/product/edit",
+                data: data,
+                type: "POST",
+                enctype: 'multipart/form-data',
+                // prevent jQuery from automatically transforming the data into a query string
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 1000000,
+                success: function (result) {
+                    console.log(result);
+                    $("#btn-add-product").prop("disabled", false);
+                    $('#addNewProduct')[0].reset();
+                    $('#message').find("div.modal-body").text("Thêm sản phẩm thành công!")
+                    $('#message').modal('show');
+                    $('#message').on('hidden.bs.modal', function () {
+                        window.location.replace("/admin/manager_products");
+                    });
+                },
+                error: function () {
+                    alert("có lỗi xảy ra");
+                }
+            });
+        });
+
+        $("#category").change(function () {
+            let parentCategoryId = $("#category option:selected").val();
+            let categories = JSON.parse(localStorage.getItem("categories"));
+            $.each(categories, function (index, item) {
+                console.log(item);
+                if (parseInt(parentCategoryId) === parseInt(item["id"])) {
+                    console.log(item["subCategory"]);
+                    $('#sub-category').empty();
+                    if (item.hasOwnProperty("subCategory")) {
+                        $.each(item["subCategory"], function (index, subItem) {
+                            $('#sub-category').append(new Option(subItem["categoryName"], subItem["id"]));
+                        });
+                    } else {
+                        $('#sub-category').append(new Option(item["categoryName"], item["id"]));
+                    }
+                    $('#sub-category > option:first-child').prop('selected', true);
+                    return;
+                }
+            });
+
+        });
+        var loadFile = function (event) {
+            let output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+            output.style.display = "block";
+        };
+
+        var loadFile1 = function (event) {
+            let output1 = document.getElementById('output1');
+            output1.src = URL.createObjectURL(event.target.files[0]);
+            output1.onload = function () {
+                URL.revokeObjectURL(output1.src) // free memory
+            }
+            output1.style.display = "block";
+        };
+
+        var loadFile2 = function (event) {
+            let output2 = document.getElementById('output2');
+            output2.src = URL.createObjectURL(event.target.files[0]);
+            output2.onload = function () {
+                URL.revokeObjectURL(output2.src) // free memory
+            }
+            output2.style.display = "block";
+        };
+
+        var loadFile3 = function (event) {
+            let output3 = document.getElementById('output3');
+            output3.src = URL.createObjectURL(event.target.files[0]);
+            output3.onload = function () {
+                URL.revokeObjectURL(output3.src) // free memory
+            }
+            output3.style.display = "block";
+        };
+
+        $("#btn-add-category-supplier").on("click", function () {
+            $("#add-category-supplier").show();
+            $("#select-category-supplier").hide();
+        });
+
+        function getListCategoryAndSupplier() {
+            $.ajax({
+                url: "/api/categories-suppliers",
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    // Put the object into storage
+                    let categories = data["categories"];
+                    console.log(categories);
+                    let suppliers = data["suppliers"];
+                    localStorage.setItem('categories', JSON.stringify(categories));
+
+                    // show category
+                    $('#category').empty();
+                    $("#sub-category").empty();
+                    $.each(categories, function (index, item) {
+                        $('#category').append(new Option(item["categoryName"], item["id"]));
+                        $('#add-category2').append(new Option(item["categoryName"], item["id"]));
+                    });
+                    $('#category > option:first-child').prop('selected', true);
+                    $.each(categories[0]["subCategory"], function (index, item) {
+                        $("#sub-category").append(new Option(item["categoryName"], item["id"]));
+                    });
+                    $('#sub-category > option:first-child').prop('selected', true);
+
+                    // suppliers
+                    $.each(suppliers, function (index, item) {
+                        $('#supplier').append(new Option(item["name"], item["id"]));
+                    });
+                    $('#supplier > option:first-child').prop('selected', true);
+
+                },
+                error: function () {
+                    alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+                }
+            });
+        }
+
+        function removeAccents(str) {
+            return str.normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd').replace(/Đ/g, 'D');
+        }
+
+        function getInfoProduct(productId) {
+            $.ajax({
+                url: "/api/admin/product/view/" + productId,
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    console.log(data);
+                    //productName
+                    $("#productName").val(data["productName"]);
+                    $("#category > option").each(function() {
+                        if ($(this).text() === data["categoryName"]) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+                    $("#sub-category > option").each(function() {
+                        if ($(this).text() === data["categoryName"]) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+
+                    $("#supplier > option").each(function() {
+                        if ($(this).text() === data["supplierName"]) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+                    $("#price").val(data["price"]); // price
+                    $("#discount").val(data["discount"]); // discount
+                    $("#baseDescription").val(data["baseDescription"]);
+                    $("#detailDescription").val(data["detailDescription"]);
+                },
+                error: function () {
+                    alert("có lỗi xảy ra");
+                }
+            });
+        }
+    })
+    /*]]>*/
+</script>
 
 </body>
 

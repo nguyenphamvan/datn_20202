@@ -34,9 +34,9 @@ public class ManagerProductController {
         return "admin/manager-updateProduct";
     }
 
-    @GetMapping("/importTheQuantity/{productId}")
+    @GetMapping("/import{productId}")
     public String viewManagerImportQuantity(@PathVariable("productId") long productId, Model model) {
         model.addAttribute("productId", productId);
-        return "admin/manager-addProduct";
+        return "admin/manager-importAmountProduct";
     }
 }
