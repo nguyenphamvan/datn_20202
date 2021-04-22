@@ -4,7 +4,10 @@ import com.nguyenpham.oganicshop.dto.ProductRequestDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import com.nguyenpham.oganicshop.entity.Product;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +27,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponseDto.setPrice(product.getPrice());
         productResponseDto.setDiscount(product.getDiscount());
         productResponseDto.setFinalPrice(product.getFinalPrice());
-        productResponseDto.setNumberOfReviews(product.getReviews().size());
+
         productResponseDto.setRating(product.getRating());
         productResponseDto.setAmount(product.getAmount());
         if (product.isStopBusiness()) {
@@ -37,8 +40,15 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
             productResponseDto.setStatus("Còn hàng, đang kinh doanh");
         }
 
-        List<ResponseReviewDto> reviews = product.getReviews().stream().map(rv -> rv.convertReviewToReviewDto()).collect(Collectors.toList());;
-        productResponseDto.setReviews(reviews);
+        if (product.getReviews() != null) {
+            List<ResponseReviewDto> reviews = product.getReviews().stream().map(rv -> rv.convertReviewToReviewDto()).collect(Collectors.toList());
+            productResponseDto.setReviews(reviews);
+            productResponseDto.setNumberOfReviews(product.getReviews().size());
+        } else {
+            productResponseDto.setReviews(null);
+            productResponseDto.setNumberOfReviews(0);
+        }
+
         return productResponseDto;
     }
 
@@ -54,15 +64,24 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         product.setId(request.getId());
         product.setName(request.getName());
         product.setUrl(request.getName().replace(" ", "-"));
-        product.setImage(request.getImage());
+        ArrayList<String> images = new ArrayList<>();
+        for (MultipartFile image : request.getImages()) {
+            if (image.isEmpty()) {
+                continue;
+            }
+            images.add(org.springframework.util.StringUtils.cleanPath(image.getOriginalFilename()));
+        }
+        product.setImage(StringUtils.join(images, "-"));
         product.setSize(request.getSize());
         product.setColor(request.getColor());
         product.setBaseDescription(request.getBaseDescription());
         product.setDetailDescription(request.getDetailDescription());
         product.setPrice(request.getPrice());
         product.setDiscount(request.getDiscount());
-        product.setFinalPrice(request.getFinalPrice());
+        product.setFinalPrice(request.getPrice() - request.getDiscount());
         product.setAmount(request.getAmount());
+        product.setRating(0);
+        product.setReviews(null);
 
         return product;
     }

@@ -22,4 +22,21 @@ public class ManagerProductController {
         model.addAttribute("productId", productId);
         return "admin/manager-productDetail";
     }
+
+    @GetMapping("/addProduct")
+    public String viewManagerProductDetail(Model model) {
+        return "admin/manager-addProduct";
+    }
+
+    @GetMapping("/updateProduct/{productId}")
+    public String viewManagerUpdateProduct(@PathVariable("productId") long productId, Model model) {
+        model.addAttribute("productId", productId);
+        return "admin/manager-updateProduct";
+    }
+
+    @GetMapping("/importTheQuantity/{productId}")
+    public String viewManagerImportQuantity(@PathVariable("productId") long productId, Model model) {
+        model.addAttribute("productId", productId);
+        return "admin/manager-addProduct";
+    }
 }

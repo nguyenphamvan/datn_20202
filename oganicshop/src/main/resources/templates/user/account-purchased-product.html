@@ -154,14 +154,13 @@
                 success: function (result) {
                     $("#myModal").modal('hide');
                     getListProductIsNotReviewed();
-                    alert(result);
                     window.location.replace("/");
                 },
                 error: function () {
                     alert("có lỗi xảy ra");
                 }
             });
-        })
+        });
 
         $(document).on('click', '.my-reviews__button', function (e) {
             e.preventDefault();

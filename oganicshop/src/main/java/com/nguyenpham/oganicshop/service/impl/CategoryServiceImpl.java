@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,16 +38,27 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public CategoryDto getByCategoryId(long categoryId) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
+        if (category.isPresent()) {
+            return category.get().convertToCategoryDto();
+        }
+        return null;
+    }
+
+    @Override
     public Category getByCategoryUrl(String categoryUrl) {
         return categoryRepository.findByCategoryUrl(categoryUrl).orElse(null);
     }
 
     @Override
     public Category addCategory(CategoryDto categoryRequest) {
-        Category parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElse(null);
         Category newCategory = new Category(categoryRequest.getCategoryUrl(), categoryRequest.getCategoryName());
-        if(parentCategory != null) {
-            newCategory.setParent(parentCategory);
+        if (categoryRequest.getParentId() != null) {
+            Category parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElse(null);
+            if(parentCategory != null) {
+                newCategory.setParent(parentCategory);
+            }
         }
         return categoryRepository.save(newCategory);
     }

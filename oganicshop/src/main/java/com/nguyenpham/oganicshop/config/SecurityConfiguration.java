@@ -57,14 +57,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic().and()
-                .formLogin()
-                    .permitAll()
-                    .loginPage("/login")
-                    .usernameParameter("email")
-                    .passwordParameter("password")
-                .and()
-                .logout().permitAll()
-                .logoutSuccessUrl("/logout_success").and()
+//                .formLogin()
+//                    .permitAll()
+//                    .loginPage("/login")
+//                    .usernameParameter("email")
+//                    .passwordParameter("password")
+//                .and()
+//                .logout().permitAll()
+//                .logoutSuccessUrl("/logout_success").and()
                 .exceptionHandling().accessDeniedPage("/403");
     }
 }

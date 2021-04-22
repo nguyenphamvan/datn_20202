@@ -16,6 +16,11 @@ public class SupplierServiceImpl implements SupplierService {
     private SupplierRepository supplierRepository;
 
     @Override
+    public List<Supplier> getAll() {
+        return supplierRepository.findAll();
+    }
+
+    @Override
     public Supplier findSupplierByName(String supplierName) {
         return supplierRepository.findSupplierByName(supplierName);
     }
@@ -23,5 +28,10 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public List<Supplier> findSuppliersByCategory(String categoryUrl) {
         return supplierRepository.findAllByCategoryUrl(categoryUrl);
+    }
+
+    @Override
+    public Supplier insertSupplier(Supplier supplier) {
+        return supplierRepository.save(supplier);
     }
 }

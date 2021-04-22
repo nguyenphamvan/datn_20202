@@ -17,9 +17,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,7 +49,8 @@ public class ProductServiceImpl implements ProductService {
         Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
         product.setCategory(category);
         product.setSupplier(supplier);
-        ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
+        product = productRepository.save(product);
+        ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(product);
         if (productResponse != null) {
             return productResponse;
         }
@@ -69,6 +73,14 @@ public class ProductServiceImpl implements ProductService {
         Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
         product.setCategory(category);
         product.setSupplier(supplier);
+        ArrayList<String> images = new ArrayList<>();
+        for (MultipartFile image : productRequestDto.getImages()) {
+            if (image.isEmpty()) {
+                continue;
+            }
+            images.add(StringUtils.cleanPath(image.getOriginalFilename()));
+        }
+        product.setImage(org.apache.commons.lang3.StringUtils.join(images, "-"));
         ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
         if (productResponse != null) {
             return productResponse;

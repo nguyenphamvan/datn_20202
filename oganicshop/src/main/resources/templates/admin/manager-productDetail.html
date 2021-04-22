@@ -226,8 +226,12 @@
                         </div>
                         <div class="col-md-7">
                             <div class="d-flex justify-content-between" style="margin: 20px 0px 20px 0px;">
-                                <h5 style="display: flex; justify-content: center; align-items: center;">Fantasy T-shirt</h5>
-                                <button class="btn btn-primary">Cập nhật</button>
+                                <h5>Fantasy T-shirt</h5>
+                                <div style="display: flex;">
+                                    <a th:href="@{/admin/manager_products/importTheQuantity}" class="btn btn-info" style="margin-left: 10px;">Nhập thêm</a>
+                                    <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger" style="margin-left: 10px;">Ngừng bán</button>
+                                    <a th:href="@{/admin/manager_products/updateProduct}" class="btn btn-primary" style="margin-left: 10px;">Cập nhật</a>
+                                </div>
                             </div>
 
                             <div class="row">
@@ -375,6 +379,24 @@
 
     /*<![CDATA[*/
     $(document).ready(function () {
+
+        $("#stop-business").on("click", function () {
+            let productId = $(this).attr("product-id");
+            $.ajax({
+                url: "/api/admin/product/stopBusiness/" + productId,
+                type: "PUT",
+                contentType: "application/json",
+                success: function (data) {
+                    if (data === true) {
+                        window.location = "/admin/manager_products";
+                    }
+                },
+                error: function () {
+                    alert("có lỗi xảy ra");
+                }
+            });
+
+        });
     });
 
     /*]]>*/

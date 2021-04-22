@@ -5,6 +5,7 @@ import com.nguyenpham.oganicshop.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -14,7 +15,7 @@ public class ProductRequestDto {
     private long id;
     private String name;
     private String url;
-    private String image;
+    private MultipartFile[] images;
     private String size;
     private String color;
     private String baseDescription;
@@ -24,5 +25,6 @@ public class ProductRequestDto {
     private int finalPrice;
     private int amount;
     private long categoryId;
+    private long parentCategoryId;
     private long supplierId;
 }
