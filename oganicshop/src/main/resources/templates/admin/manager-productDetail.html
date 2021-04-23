@@ -227,7 +227,7 @@
                         <div class="col-md-7">
                             <div>
                                 <div style="display: flex; margin: 20px 0px 20px 0px;">
-                                    <a th:href="@{'/admin/manager_products/import/' + ${productId}}" class="btn btn-info" style="margin-right: 10px;">Nhập thêm</a>
+                                    <a id="btn-import-product" th:href="@{'/admin/manager_products/import/' + ${productId}}" class="btn btn-info" style="margin-right: 10px;">Nhập thêm</a>
                                     <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger" style="margin-right: 10px;">Ngừng bán</button>
                                     <a th:href="@{'/admin/manager_products/updateProduct/' + ${productId}}" class="btn btn-primary" style="margin-right: 10px;">Cập nhật</a>
                                 </div>
@@ -289,6 +289,22 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="import-products" class="row" style="display: none;">
+                                <div class="col-md-12">
+                                    <form>
+                                        <div class="form-group row">
+                                            <label for="inputPassword" class="col-sm-4 col-form-label">Số lượng nhập thêm</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="inputPassword" placeholder="Password">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button id="sub-import-product" class="btn btn-info">Thêm</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <hr>
@@ -368,6 +384,10 @@
         let productId = /*[[${productId}]]*/;
 
         getInfoProduct(productId);
+
+        $("#btn-import-product").on("click", function () {
+            $("#import-products").show();
+        });
 
         $("#stop-business").on("click", function () {
             let productId = $(this).attr("product-id");
