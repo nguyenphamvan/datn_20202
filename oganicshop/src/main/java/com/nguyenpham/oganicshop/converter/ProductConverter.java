@@ -71,7 +71,9 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
             }
             images.add(org.springframework.util.StringUtils.cleanPath(image.getOriginalFilename()));
         }
-        product.setImage(StringUtils.join(images, "-"));
+        if (images.size() > 0) {
+            product.setImage(StringUtils.join(images, "-"));
+        }
         product.setSize(request.getSize());
         product.setColor(request.getColor());
         product.setBaseDescription(request.getBaseDescription());

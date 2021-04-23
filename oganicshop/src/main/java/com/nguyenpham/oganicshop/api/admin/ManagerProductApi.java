@@ -45,7 +45,7 @@ public class ManagerProductApi {
     }
 
     @PutMapping("/edit")
-    public ProductResponseDto editProduct(@RequestBody ProductRequestDto productRequestDto) {
+    public ProductResponseDto editProduct(@ModelAttribute ProductRequestDto productRequestDto) {
         return productService.editProduct(productRequestDto);
     }
 
