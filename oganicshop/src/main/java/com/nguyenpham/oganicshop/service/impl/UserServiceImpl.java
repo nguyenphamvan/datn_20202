@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public long countNumberAccount() {
+        return userRepository.count();
+    }
+
+    @Override
     public List<UserResponseDto> findAll(long currentUserId) {
         return userRepository.findAllByIdIsNot(currentUserId).stream().map(u -> userConverter.entityToDto(u)).collect(Collectors.toList());
     }
@@ -134,7 +139,7 @@ public class UserServiceImpl implements UserService {
         try {
             userRepository.save(user);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
@@ -206,7 +211,7 @@ public class UserServiceImpl implements UserService {
     public boolean checkOldPassword(String rawOldPassword) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        if (bCryptPasswordEncoder.matches(rawOldPassword, user.getPassword())){
+        if (bCryptPasswordEncoder.matches(rawOldPassword, user.getPassword())) {
             return true;
         }
         return false;
@@ -251,7 +256,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public AddressRequestDto updateShippingAddress(AddressRequestDto request){
+    public AddressRequestDto updateShippingAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         ShippingAddress shippingAddress = shippingAddressRepository.findById(request.getId()).get();
@@ -336,7 +341,7 @@ public class UserServiceImpl implements UserService {
         return idWishlistProductsSet;
     }
 
-    public void saveAddress(ShippingAddress shippingAddress, AddressRequestDto request, User user){
+    public void saveAddress(ShippingAddress shippingAddress, AddressRequestDto request, User user) {
         shippingAddress.setContactReceiver(request.getContactReceiver());
         shippingAddress.setContactAddress(request.getContactAddress());
         shippingAddress.setContactPhone(request.getContactPhone());

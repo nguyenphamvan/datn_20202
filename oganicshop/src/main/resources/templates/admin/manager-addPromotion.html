@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 
@@ -9,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Quản lý sản phẩm</title>
+    <title>Thêm sản phẩm mới</title>
 
     <!-- Custom fonts for this template -->
     <link th:href="@{/admin/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -54,17 +55,16 @@
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item active">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Quản lý</span>
             </a>
-            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item active" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
+                    <a class="collapse-item active" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
@@ -75,15 +75,14 @@
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-               aria-expanded="true" aria-controls="collapseThree">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Báo cáo</span>
             </a>
             <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="utilities-color.html">Báo cáo doanh thu</a>
-                    <a class="collapse-item" href="utilities-border.html">Báo cáo nhập hàng</a>
+                    <a class="collapse-item" href="#">Báo cáo doanh thu</a>
+                    <a class="collapse-item" href="#">Báo cáo nhập hàng</a>
                 </div>
             </div>
         </li>
@@ -92,16 +91,14 @@
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
-               aria-expanded="true" aria-controls="collapseFour">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Tài khoản</span>
             </a>
             <div id="collapseFour" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="utilities-color.html"><i class="fas fa-fw fa-wrench"></i> Cập nhật
-                        thông tin</a>
-                    <a class="collapse-item" href="utilities-border.html">Thoát</a>
+                    <a class="collapse-item" href="#"><i class="fas fa-fw fa-wrench"></i> Cập nhật thông tin</a>
+                    <a class="collapse-item" href="#">Thoát</a>
                 </div>
             </div>
         </li>
@@ -119,10 +116,8 @@
 
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
@@ -131,8 +126,7 @@
                 <!-- Topbar Search -->
                 <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                               aria-label="Search" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button">
                                 <i class="fas fa-search fa-sm"></i>
@@ -145,14 +139,12 @@
                 <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
                         <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="userDropdown">
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
@@ -172,49 +164,87 @@
                             </a>
                         </div>
                     </li>
-
                 </ul>
-
             </nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form id="update-promotion">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="title">Tiêu đề:</label>
+                                        <input type="text" class="form-control" placeholder="Nhập tiêu đề" id="title" name="title">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="code">Code:</label>
+                                        <input type="text" class="form-control" placeholder="Nhập mã Code" id="code" name="code">
+                                    </div>
+                                </div>
+                            </div>
 
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <a th:href="@{/admin/manager_products/addProduct}"
-                       class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"></i>Thêm mới</a>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="discountPercent">Giảm theo phần trăm</label>
+                                        <input type="text" class="form-control" placeholder="Nhập phần trăm" id="discountPercent" name="discountPercent">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="discountPrice">Giảm theo số tiền</label>
+                                        <input type="text" class="form-control" placeholder="Nhập số tiền" id="discountPrice" name="discountPrice">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="minOrderValue">Đơn hàng tối thiểu</label>
+                                        <input type="number" class="form-control" placeholder="Nhập giá trị đơn hàng tối thiểu" id="minOrderValue" name="minOrderValue">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="maxDiscountValue">Giảm giá tối đa</label>
+                                        <input type="number" class="form-control" placeholder="Nhập số tiền giảm giá tối đa" id="maxDiscountValue" name="maxDiscountValue">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="startDate">Ngày bắt đầu</label>
+                                        <input type="date" class="form-control" id="startDate" name="startDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="endDate">Ngày kết thúc</label>
+                                        <input type="date" class="form-control" id="endDate" name="endDate">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-info">Cập nhật</button>
+                            <button type="submit" class="btn btn-info">Xóa</button>
+                        </form>
+                    </div>
                 </div>
 
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                <tr>
-                                    <th style="width: 5%;">Mã</th>
-                                    <th style="width: 10%;">Ảnh</th>
-                                    <th style="width: 28%;">Tên sản phẩm</th>
-                                    <th style="width: 15%;">Nhà cung cấp</th>
-                                    <th style="width: 15%;">Danh mục</th>
-                                    <th style="width: 15%;">Tình trạng</th>
-                                    <th style="width: 12%;"></th>
-                                </tr>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <a th:href="@{/admin/manager_promotions}" class="btn btn-light btn-icon-split">
+                    <span class="icon text-gray-600">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                    <span class="text">Quay lại</span>
+                </a>
 
             </div>
             <!-- /.container-fluid -->
@@ -243,7 +273,6 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-
 <!-- Bootstrap core JavaScript-->
 <script th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/admin/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -261,60 +290,6 @@
 <!-- Page level custom scripts -->
 <script th:src="@{/admin/js/demo/datatables-demo.js}"></script>
 
-<script th:inline="javascript">
-
-    /*<![CDATA[*/
-    $(document).ready(function () {
-        getAllProduct();
-    });
-
-    function getAllProduct() {
-        $.ajax({
-            url: "/api/admin/product/all",
-            type: "GET",
-            contentType: "application/json",
-            success: function (data) {
-                $("#content > div > div.card.shadow.mb-4 > div.card-header.py-3 > h6").text("Tổng số sản phẩm : " + data.length);
-                $("#dataTable").dataTable({
-                    destroy: true,
-                    data,
-                    columns: [
-                        {data: 'id'},
-                        {
-                            data: "mainImage", "render": function (image, type, row) {
-                                return "<a href='#'><img src='" + image + "' style='width: 80px; height: 80px;'></a>";
-                            }
-                        },
-                        {data: 'productName'},
-                        {data: 'supplierName'},
-                        {data: 'categoryName'},
-                        {
-                            data: "status", "render": function (data, type, row) {
-                                if ((data === "Ngừng bán") || (data === "Đã hết hàng")) {
-                                    return "<p class='text-danger'>" + data + "</p>";
-                                } else if (data === "Sắp hết hàng") {
-                                    return "<p class='text-warning'>" + data + "</p>";
-                                } else {
-                                    return "<p class='text-primary'>" + data + "</p>";
-                                }
-                            }
-                        },
-                        {
-                            data: "id", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_products/product/" + data + "'><button id='manageBtn' type='button' class='btn btn-success btn-xs'>Chi tiết</button></a>";
-                            }
-                        }
-                    ]
-                });
-            },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
-            }
-        });
-    }
-
-    /*]]>*/
-</script>
 
 </body>
 

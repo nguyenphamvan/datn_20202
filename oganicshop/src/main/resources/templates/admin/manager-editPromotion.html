@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
 
@@ -9,11 +10,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Lịch sử đơn hàng</title>
+    <title>Cập nhật thông tin khuyến mãi</title>
 
     <!-- Custom fonts for this template -->
     <link th:href="@{/admin/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link th:href="@{/admin/css/sb-admin-2.min.css}" rel="stylesheet">
@@ -52,17 +54,17 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Quản lý</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item active" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
                     <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
+                    <a class="collapse-item active" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
@@ -79,8 +81,8 @@
             </a>
             <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="utilities-color.html">Báo cáo doanh thu</a>
-                    <a class="collapse-item" href="utilities-border.html">Báo cáo nhập hàng</a>
+                    <a class="collapse-item" href="#">Báo cáo doanh thu</a>
+                    <a class="collapse-item" href="#">Báo cáo nhập hàng</a>
                 </div>
             </div>
         </li>
@@ -95,8 +97,8 @@
             </a>
             <div id="collapseFour" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="utilities-color.html"><i class="fas fa-fw fa-wrench"></i> Cập nhật thông tin</a>
-                    <a class="collapse-item" href="utilities-border.html">Thoát</a>
+                    <a class="collapse-item" href="#"><i class="fas fa-fw fa-wrench"></i> Cập nhật thông tin</a>
+                    <a class="collapse-item" href="#">Thoát</a>
                 </div>
             </div>
         </li>
@@ -114,10 +116,8 @@
 
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
@@ -164,49 +164,81 @@
                             </a>
                         </div>
                     </li>
-
                 </ul>
-
             </nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form id="update-promotion">
+                            <div class="row">
+                                <input type="hidden" class="form-control" id="promotionId" name="id">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="title">Tiêu đề:</label>
+                                        <input type="text" class="form-control" placeholder="Nhập tiêu đề" id="title" name="title">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="code">Code:</label>
+                                        <input type="text" class="form-control" placeholder="Nhập mã Code" id="code" name="code">
+                                    </div>
+                                </div>
+                            </div>
 
-                <!-- Page Heading -->
-                <div class="row justify-content-between" id="div-info-1">
-                    <div class="col-xl-8 col-md-8">
-                        <p class="mb-0 text-gray-800">Tài khoản : nguyen@gmail.com</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="discountPercent">Giảm theo phần trăm</label>
+                                        <input type="text" class="form-control" placeholder="Nhập phần trăm" id="discountPercent" name="discountPercent">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="discountPrice">Giảm theo số tiền</label>
+                                        <input type="text" class="form-control" placeholder="Nhập số tiền" id="discountPrice" name="discountPrice">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="minOrderValue">Đơn hàng tối thiểu</label>
+                                        <input type="number" class="form-control" placeholder="Nhập giá trị đơn hàng tối thiểu" id="minOrderValue" name="minOrderValue">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="maxDiscountValue">Giảm giá tối đa</label>
+                                        <input type="number" class="form-control" placeholder="Nhập số tiền giảm giá tối đa" id="maxDiscountValue" name="maxDiscountValue">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="display: none;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="startDate">Ngày bắt đầu</label>
+                                        <input type="date" class="form-control" id="startDate" name="startDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="endDate">Ngày kết thúc</label>
+                                        <input type="date" class="form-control" id="endDate" name="endDate">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-info">Cập nhật</button>
+                        </form>
                     </div>
                 </div>
 
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4" id="div-info-3">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Danh sách sản phẩm yêu thích</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="wishList" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Ảnh</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Giảm giá</th>
-                                        <th>Giá bán</th>
-                                        <th style="width: 5%;">Ratting</th>
-                                        <th style="width: 5%;">reviews</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
-                <a th:href="@{'/admin/manager_users/user/' + ${userId}}" class="btn btn-light btn-icon-split">
+                <a th:href="@{/admin/manager_promotions}" class="btn btn-light btn-icon-split">
                     <span class="icon text-gray-600">
                         <i class="fas fa-arrow-left"></i>
                     </span>
@@ -235,6 +267,21 @@
 </div>
 <!-- End of Page Wrapper -->
 
+<div class="modal fade" id="message">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="text-align: center;">
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -258,40 +305,78 @@
 <script th:src="@{/admin/js/demo/datatables-demo.js}"></script>
 
 <script th:inline="javascript">
-
     /*<![CDATA[*/
     $(document).ready(function () {
-        let userId = /*[[${userId}]]*/;
-        getReviewsHistory(userId);
+
+        let promotionId = /*[[${promotionId}]]*/;
+        getInfoPromotion(promotionId);
+        $("#update-promotion > button:nth-child(5)").on("click", function (e) {
+            e.preventDefault();
+            let data = new FormData($("#update-promotion")[0]);
+            editPromotion(promotionId, data);
+
+        });
     });
 
-    function getReviewsHistory(userId) {
+    function getInfoPromotion(promotionId) {
         $.ajax({
-            url: "/api/admin/account/" + userId + "/wishlist",
+            url: "/api/admin/promotion/" + promotionId,
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                $.each(data["wishLists"], function (index, product) {
-                    let row = "<tr>\n" +
-                        "           <td><a href='#'><img src='/images/products/" + product["id"] + "' style='width: 80px; height: 80px;'></a></td>\n" +
-                        "           <td><p>" + product["productName"] + "</p>" +
-                        "               <p>Hãng sản xuất : " + product["supplierName"] + "</p>" +
-                        "           </td>\n" +
-                        "           <td>" + product["promotion"] + "</td>\n" +
-                        "           <td>" + product["finalPrice"] + "</td>\n" +
-                        "           <td>" + product["rating"] + "</td>\n" +
-                        "           <td>" + product["numberOfReviews"] + "</td>\n" +
-                        "        </tr>";
-                    $("#wishList").append(row);
-                });
+                $("#promotionId").val(data["id"]);
+                $("#title").val(data["title"]);
+                $("#code").val(data["code"]);
+                $("#discountPercent").val(data["discountPercent"]);
+                $("#discountPrice").val(data["discountPrice"]);
+                $("#minOrderValue").val(data["minOrderValue"]);
+                $("#maxDiscountValue").val(data["maxDiscountValue"]);
+                if (!data.hasOwnProperty("startDate") && !data.hasOwnProperty("endDate")) {
+                    $("#update-promotion").find("#startDate").closest("div.row").remove();
+                } else {
+                    $("#startDate").val(data["startDate"]);
+                    $("#endDate").val(data["endDate"]);
+                    $("#update-promotion").find("#startDate").closest("div.row").show();
+                }
             },
             error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+                alert("có lỗi xảy ra, không lấy được danh sách Coupon");
+            }
+        });
+    }
+
+    function editPromotion(promotionId, data) {
+        $.ajax({
+            url: "/api/admin/promotion/edit/" + promotionId,
+            data: data,
+            type: "PUT",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 1000000,
+            success: function (result) {
+                if (result["status"] === true) {
+                    $('#message').find("div.modal-body").text("Cập nhật Thông tin khuyễn mãi thành công!!")
+                    $('#message').modal('show');
+                    $('#message').on('hidden.bs.modal', function () {
+                        window.location.replace("/admin/manager_promotions");
+                    });
+                } else {
+                    $('#message').find("div.modal-body").text("Đã có lỗi xảy ra, vui lòng kiểm tra lại")
+                    $('#message').modal('show');
+                }
+                $("#update-promotion > button:nth-child(5)").prop("disabled", false);
+                $('#update-promotion')[0].reset();
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
             }
         });
     }
     /*]]>*/
 </script>
+
 
 </body>
 

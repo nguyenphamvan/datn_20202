@@ -16,9 +16,8 @@ public class ProductResponseDto {
     private Long id;
     private String productName;
     private String productUrl;
-    private String image;
-    private String size;
-    private String color;
+    private String mainImage;
+    private String[] images;
     private String baseDescription;
     private String detailDescription;
     private int price;

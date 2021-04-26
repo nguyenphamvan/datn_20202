@@ -11,6 +11,7 @@ import java.util.Set;
 
 public interface UserService {
 
+    long countNumberAccount();
     List<UserResponseDto> findAll(long currentUserId);
     Object getInfoDetailAccount(long userId);
     User findUserById (Long id);

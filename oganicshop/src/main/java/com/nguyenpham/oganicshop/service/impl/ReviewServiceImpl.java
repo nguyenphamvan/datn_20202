@@ -35,7 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ResponseReviewDto> getReviewsOfProduct(long productId) {
         List<Review> listReviews = reviewRepository.findAllByProductIdAndRootCommentIsNull(productId);
-        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());;
+        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());
         return listReviewDto;
     }
 
@@ -67,7 +67,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ResponseReviewDto> getListReviews(User user) {
         List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
-        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());;
+        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());
+        ;
         return listReviewDto;
     }
 
@@ -76,7 +77,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.findById(reviewId).get();
         if (action.equals("like")) {
             review.setNumbersOfLike(review.getNumbersOfLike() + 1);
-        } else if (action.equals("cancel")){
+        } else if (action.equals("cancel")) {
             review.setNumbersOfLike(review.getNumbersOfLike() - 1);
         }
         return reviewRepository.save(review).getNumbersOfLike();

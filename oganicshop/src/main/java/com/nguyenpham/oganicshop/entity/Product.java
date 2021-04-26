@@ -32,8 +32,6 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String url;
     private String image;
-    private String size;
-    private String color;
     private String baseDescription;
     private String detailDescription;
     @Column(nullable = false)

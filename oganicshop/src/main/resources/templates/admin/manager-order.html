@@ -63,7 +63,7 @@
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
                     <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item active" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
@@ -127,19 +127,6 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-                <!-- Topbar Search -->
-                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                               aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - User Information -->
@@ -191,9 +178,9 @@
                                 <tr>
                                     <th style="width: 5%;">Mã</th>
                                     <th style="width: 35%;">Mặt hàng</th>
-                                    <th style="width: 15%;">Ngày đặt hàng</th>
+                                    <th style="width: 20%;">Ngày đặt hàng</th>
                                     <th style="width: 10%;">Giá trị</th>
-                                    <th style="width: 25%;">Trạng thái</th>
+                                    <th style="width: 20%;">Trạng thái</th>
                                     <th style="width: 10%;"></th>
                                 </tr>
                                 </thead>
@@ -277,10 +264,22 @@
                         {data: 'summaryProductName'},
                         {data: 'orderDate'},
                         {data: 'total'},
-                        {data: 'status'},
+                        {
+                            data: "status", "render": function (data, type, row) {
+                                if ((data === "Đã hủy") || (data === "Giao hàng không thành công")) {
+                                    return "<p class='text-danger'>" + data + "</p>";
+                                } else if (data === "Giao hàng thành công") {
+                                    return "<p class='text-success'>" + data + "</p>";
+                                } else if (data === "Đang xử lý") {
+                                    return "<p class='text-warning'>" + data + "</p>";
+                                } else {
+                                    return "<p>" + data + "</p>";
+                                }
+                            }
+                        },
                         {
                             data: "id", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_orders/order/" + data + "'><button id='manageBtn' type='button' class='btn btn-success btn-xs'>Chi tiết</button></a>";
+                                return "<a href='/admin/manager_orders/" + data + "'><button id='manageBtn' type='button' class='btn btn-success btn-xs'>Chi tiết</button></a>";
                             }
                         }
                     ]

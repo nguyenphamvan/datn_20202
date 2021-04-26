@@ -90,6 +90,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public int importProduct(long productId, int amount) {
+        Product product = productRepository.findById(productId).get();
+        product.setAmount(product.getAmount() + amount);
+        return productRepository.save(product).getAmount();
+    }
+
+    @Override
     @Transactional
     public boolean stopBusinessProduct(long productId) {
         Product product = productRepository.findById(productId).get();
@@ -101,6 +108,11 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
 
+    }
+
+    @Override
+    public long countNumberProduct() {
+        return productRepository.count();
     }
 
     @Override

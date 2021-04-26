@@ -63,7 +63,7 @@
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
                     <a class="collapse-item active" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
@@ -179,8 +179,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="discount">Giảm giá (VNĐ)</label>
-                                <input type="number" class="form-control" placeholder="giảm giá" id="discount" name="discount">
+                                <label for="promotion">Giảm giá (VNĐ)</label>
+                                <input type="number" class="form-control" placeholder="giảm giá" id="promotion" name="promotion">
                             </div>
                         </div>
                     </div>

@@ -23,7 +23,16 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponseDto.setDetailDescription(product.getDetailDescription());
         productResponseDto.setCategoryName(product.getCategory().getCategoryName());
         productResponseDto.setSupplierName(product.getSupplier().getName());
-        productResponseDto.setImage(product.getImage());
+
+        //image
+        if (product.getImage() != null) {
+            String[] imagesDb = product.getImage().split(",");
+            productResponseDto.setMainImage("/images/products/" + product.getId() + "/" + imagesDb[0]);
+            productResponseDto.setImages(imagesDb);
+        } else {
+            productResponseDto.setMainImage("/images/products/" + product.getId() + "/default.jpg");
+            productResponseDto.setImages(null);
+        }
         productResponseDto.setPrice(product.getPrice());
         productResponseDto.setDiscount(product.getDiscount());
         productResponseDto.setFinalPrice(product.getFinalPrice());
@@ -31,13 +40,13 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponseDto.setRating(product.getRating());
         productResponseDto.setAmount(product.getAmount());
         if (product.isStopBusiness()) {
-            productResponseDto.setStatus("Ngừng kinh doanh");
+            productResponseDto.setStatus("Ngừng bán");
         } else if ((product.getAmount() > 0 ) && (product.getAmount() < 10)) {
             productResponseDto.setStatus("Sắp hết hàng");
         } else if (product.getAmount() == 0 ) {
             productResponseDto.setStatus("Đã hết hàng");
         } else {
-            productResponseDto.setStatus("Còn hàng, đang kinh doanh");
+            productResponseDto.setStatus("Đang bán");
         }
 
         if (product.getReviews() != null) {
@@ -72,10 +81,8 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
             images.add(org.springframework.util.StringUtils.cleanPath(image.getOriginalFilename()));
         }
         if (images.size() > 0) {
-            product.setImage(StringUtils.join(images, "-"));
+            product.setImage(StringUtils.join(images, ","));
         }
-        product.setSize(request.getSize());
-        product.setColor(request.getColor());
         product.setBaseDescription(request.getBaseDescription());
         product.setDetailDescription(request.getDetailDescription());
         product.setPrice(request.getPrice());

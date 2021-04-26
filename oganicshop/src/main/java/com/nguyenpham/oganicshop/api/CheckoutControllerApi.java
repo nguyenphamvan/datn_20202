@@ -5,7 +5,7 @@ import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.entity.Discount;
+import com.nguyenpham.oganicshop.entity.Promotion;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.*;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -27,15 +26,15 @@ public class CheckoutControllerApi {
     private UserService userService;
     private CartService cartService;
     private OrderService orderService;
-    private CouponService couponService;
+    private PromotionService promotionService;
     private CategoryService categoryService;
 
     @Autowired
-    public CheckoutControllerApi(CartService cartService, OrderService orderService, CategoryService categoryService, CouponService couponService) {
+    public CheckoutControllerApi(CartService cartService, OrderService orderService, CategoryService categoryService, PromotionService promotionService) {
         this.cartService = cartService;
         this.orderService = orderService;
         this.categoryService = categoryService;
-        this.couponService = couponService;
+        this.promotionService = promotionService;
     }
 
     @GetMapping("/getInfo")
@@ -76,9 +75,9 @@ public class CheckoutControllerApi {
         User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
-            Discount discount = couponService.findCoupon(couponCode);
-            if (discount != null) {
-                int discountValue = orderService.applyCoupon(cart, discount);
+            Promotion promotion = promotionService.findCoupon(couponCode);
+            if (promotion != null) {
+                int discountValue = orderService.applyCoupon(cart, promotion);
                 // ? nếu chọn hình thức giao hàng rồi mới áp dụng mã giảm giá thì ntn
                 OrderDtoResponse orderResponse = orderService.getInfoCheckout(cart);
                 orderResponse.setDiscount(discountValue);
@@ -96,16 +95,16 @@ public class CheckoutControllerApi {
         User user = myUserDetail.getUser();
         User userDb = userService.findUserByEmail(user.getEmail());
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        List<Discount> myDiscounts = new ArrayList<>();
+        List<Promotion> myPromotions = new ArrayList<>();
         if (userDb.getOrders().size() == 0) {
-            Discount discountFirstOrder = couponService.findCoupon("FIRSTORDER50");
-            myDiscounts.add(discountFirstOrder);
+            Promotion promotionFirstOrder = promotionService.findCoupon("FIRSTORDER50");
+            myPromotions.add(promotionFirstOrder);
         }
 
         // select các dis count theo hạn còn áp dụng và số lượt sử dụng
-        List<Discount> loadDiscountList = couponService.getAllDiscountForOrder(cartService.totalSubCart(cart));
-        loadDiscountList.remove(couponService.findCoupon("FIRSTORDER50"));
-        myDiscounts.addAll(loadDiscountList);
-        return ResponseEntity.ok(new HashSet<>(myDiscounts));
+        List<Promotion> loadPromotionList = promotionService.getAllCouponForOrder(cartService.totalSubCart(cart));
+        loadPromotionList.remove(promotionService.findCoupon("FIRSTORDER50"));
+        myPromotions.addAll(loadPromotionList);
+        return ResponseEntity.ok(new HashSet<>(myPromotions));
     }
 }

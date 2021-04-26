@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.api.admin;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.UserResponseDto;
@@ -9,10 +10,7 @@ import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +32,12 @@ public class ManagerOrderApi {
         this.orderService = orderService;
     }
 
+    @GetMapping("all")
+    public ResponseEntity<?> getAllOrder() {
+        List<OrderDtoResponse> order = orderService.getAll();
+        return ResponseEntity.ok(order);
+    }
+
     @GetMapping("{orderId}")
     public ResponseEntity<?> getOrderDetailHistory(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
@@ -46,9 +50,10 @@ public class ManagerOrderApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("all")
-    public ResponseEntity<?> getAllOrder() {
-        List<OrderDtoResponse> order = orderService.getAll();
-        return ResponseEntity.ok(order);
+    @PutMapping("/updateStatus/{orderId}")
+    public boolean updateStatus(@PathVariable("orderId") long orderId, @RequestBody ObjectNode objectNode) {
+        int statusId = objectNode.get("status").asInt();
+        String message = objectNode.get("message").asText();
+        return orderService.updatedOrderStatus(orderId, statusId, message);
     }
 }

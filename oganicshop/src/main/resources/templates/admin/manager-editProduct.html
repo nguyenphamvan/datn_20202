@@ -53,7 +53,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Quản lý</span>
@@ -61,9 +61,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                        <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
+                        <a class="collapse-item active" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                         <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                        <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+                        <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                         <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                         <a class="collapse-item">Banner</a>
                     </div>
