@@ -141,7 +141,7 @@
                                 <ul>
                                     <li>Tổng các mặt hàng<span id="sub-total" th:utext="${session.subCart}"></span></li>
                                     <li>(+) Phí vận chuyển<span id="ship-fee">0</span></li>
-                                    <li>(-) Giảm giá<span id="discount">0</span></li>
+                                    <li>(-) Giảm giá<span id="promotion">0</span></li>
                                     <li class="last">Tổng thanh toán
                                         <span id="total-cart" th:utext="${session.subCart}"></span>
                                     </li>
@@ -317,7 +317,7 @@
             <div class="modal-body">
                 <div class="row no-gutters">
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="display: none;">
-                        <div class="discount-item" style="margin: 20px 50px 20px 20px; border: 1px dashed red; padding: 10px 15px; min-height: 172px; position: relative;">
+                        <div class="promotion-item" style="margin: 20px 50px 20px 20px; border: 1px dashed red; padding: 10px 15px; min-height: 172px; position: relative;">
                             <p class="title" style="margin: 0px 0px 10px; font-weight: 500;">
                                 <span></span>
                             </p>
@@ -374,9 +374,9 @@
                 $("span#ship-fee").text("100");
             }
             let subTotal = $("span#sub-total").text();
-            let discount = $("span#discount").text();
+            let promotion = $("span#promotion").text();
             let shipFee = $("span#ship-fee").text();
-            $("span#total-cart").text(parseInt(subTotal) + parseInt(shipFee) - parseInt(discount));
+            $("span#total-cart").text(parseInt(subTotal) + parseInt(shipFee) - parseInt(promotion));
         });
 
         $(document).on("click", "#addressModal > div > div > div.modal-body > div > div > div > p.action", function () {
@@ -390,7 +390,7 @@
         });
 
         $(document).on("click", "#discountModal > div > div > div.modal-body > div > div > div > p.action", function () {
-            let couponCode = $(this).closest("div.discount-item").find("p.code > span:nth-child(2)").text();
+            let couponCode = $(this).closest("div.promotion-item").find("p.code > span:nth-child(2)").text();
             $("#payment > div > div:nth-child(2) > div > div:nth-child(2) > div.coupon > input").val(couponCode);
             $('#discountModal').modal('hide');
         });
@@ -410,7 +410,7 @@
                 $(".order-details ul").append(
                     "<li>Tổng các mặt hàng<span id=\"sub-total\">" + order["subTotal"] + "</span></li>\n" +
                     "<li>(+) Phí vận chuyển<span id=\"ship-fee\">" + order["shipFee"] + "</span></li>\n" +
-                    "<li>(-) Giảm giá<span id=\"discount\">" + order["discount"] + "</span></li>\n" +
+                    "<li>(-) Giảm giá<span id=\"promotion\">" + order["promotion"] + "</span></li>\n" +
                     "<li class=\"last\">Tổng thanh toán\n" +
                     "    <span id=\"total-cart\">" + order["total"] + "</span>\n" +
                     "</li>"
@@ -454,7 +454,7 @@
                 $(".contact-address .address .street").text(order["shippingAddress"]["contactAddress"]);
                 $(".contact-address .address .phone").text("Điện thoại : " + order["shippingAddress"]["contactPhone"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(order["subTotal"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(order["discount"]);
+                $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(order["promotion"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(order["shipFee"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(order["total"]);
                 $("input[name='deliveryMethod']").each(function () {
@@ -483,7 +483,7 @@
             },
             "note": $("form[id='payment']").find("textarea").val(),
             "subTotal": $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(),
-            "discount": $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text(),
+            "promotion": $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(),
             "shipFee": $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(),
             "total": $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(),
             "paymentMethod": $("input[name='paymentMethod']:checked").val(),

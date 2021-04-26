@@ -16,8 +16,6 @@ public class ProductRequestDto {
     private String name;
     private String url;
     private MultipartFile[] images;
-    private String size;
-    private String color;
     private String baseDescription;
     private String detailDescription;
     private int price;

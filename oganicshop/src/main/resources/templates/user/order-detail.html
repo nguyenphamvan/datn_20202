@@ -109,7 +109,7 @@
                                 </td>
                                 <td class="price"></td>
                                 <td class="quantity"></td>
-                                <td class="discount-amount"></td>
+                                <td class="promotion-amount"></td>
                                 <td class="raw-total"></td>
                             </tr>
                         </tbody>
@@ -355,7 +355,7 @@
 
                     genreListOrderDetail(order["listOrderDetail"]);
                     $("table tfoot tr:first-child td:nth-child(2)").text(order["subTotal"] + " ₫");
-                    $("table tfoot tr:nth-child(2) td:nth-child(2)").text("-" + order["discount"] + " ₫");
+                    $("table tfoot tr:nth-child(2) td:nth-child(2)").text("-" + order["promotion"] + " ₫");
                     $("table tfoot tr:nth-child(3) td:nth-child(2)").text(order["shipFee"] + " ₫");
                     $("table tfoot tr:nth-child(4) td:nth-child(2) span.sum").text(order["total"] + " ₫");
                 } else {
@@ -379,7 +379,7 @@
             rowClone.find("td:nth-child(1) > div > div > div.product-review > a").attr("href", "/products/" + orderDetail["productUrl"] + ".html");
             rowClone.find("td.price").text(orderDetail["price"] + " ₫");
             rowClone.find("td.quantity").text(orderDetail["quantity"]);
-            rowClone.find("td.discount-amount").text(orderDetail["discount"] + " ₫");
+            rowClone.find("td.promotion-amount").text(orderDetail["promotion"] + " ₫");
             rowClone.find("td.raw-total").text(orderDetail["rawTotal"] + " ₫");
             rowClone.insertAfter(firstRow);
         });

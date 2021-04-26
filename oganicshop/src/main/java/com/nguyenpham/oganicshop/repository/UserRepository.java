@@ -9,11 +9,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-
     List<User> findAllByIdIsNot(long currentUserId);
     User findByEmail(String email);
     User findByVerificationCode(String code);
-    public User findByResetPasswordToken(String token);
+    User findByResetPasswordToken(String token);
     @Modifying
     @Query("UPDATE User u SET u.enabled=:enabled where u.id=:id")
     void setActive(@Param("enabled") boolean enabled, @Param("id") Long id);

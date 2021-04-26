@@ -12,13 +12,12 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "order_logging")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class OrderLogging {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String status;
+    private int status;
     @UpdateTimestamp
     private Timestamp updateTime;
     @ManyToOne
@@ -26,4 +25,11 @@ public class OrderLogging {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Order order;
+
+    public OrderLogging() {
+    }
+
+    public OrderLogging(int status) {
+        this.status = status;
+    }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ProductService {
 
+    long countNumberProduct();
     List<ProductResponseDto> getAllProduct();
     Page<Product> getProductsByCategory(String categoryUrl, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
     Page<Product> getProductsBySupplier(String Supplier, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
@@ -20,5 +21,6 @@ public interface ProductService {
     Product getProductById(Long productId);
     ProductResponseDto insertProduct(ProductRequestDto productRequestDto);
     ProductResponseDto editProduct(ProductRequestDto productRequestDto);
+    int importProduct(long productId, int amount);
     boolean stopBusinessProduct(long productId);
 }

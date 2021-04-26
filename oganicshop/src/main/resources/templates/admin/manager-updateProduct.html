@@ -54,7 +54,7 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
@@ -63,9 +63,9 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
+                    <a class="collapse-item active" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
@@ -178,13 +178,13 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-9">
-                        <form action="/action_page.php">
+                        <form id="formUpdateProduct" enctype="multipart/form-data">
+                            <input type="hidden" class="form-control" id="productId" name="id">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="productName">Tên sản phẩm:</label>
-                                        <input type="text" class="form-control" placeholder="Enter email"
-                                               id="productName">
+                                        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="productName" name="name">
                                     </div>
                                 </div>
                             </div>
@@ -221,9 +221,15 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+<<<<<<< HEAD
                                         <label for="discount">Giảm giá (VNĐ)</label>
                                         <input type="number" class="form-control" placeholder="giảm giá" id="discount"
                                                name="discount">
+=======
+                                        <label for="promotion">Giảm giá (VNĐ)</label>
+                                        <input type="number" class="form-control" placeholder="giảm giá" id="promotion"
+                                               name="promotion">
+>>>>>>> cff9ba633929e89dde6046fcaafec9097bfe9ce3
                                     </div>
                                 </div>
                             </div>
@@ -234,13 +240,13 @@
                                         <label for="imageUpload">Thêm ảnh chính:</label>
                                         <div class="custom-file">
                                             <input type="file" name="images" class="custom-file-input" id="imageUpload"
-                                                   accept="image/*" onchange="loadFile(event)">
+                                                   accept="image/*" onchange="loadMainImage(event)">
                                             <label class="custom-file-label" for="imageUpload">Choose file</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <img id="output" style="width: 100%; height: 150px;"/>
+                                    <img id="output0" style="width: 100%; height: 150px;"/>
                                 </div>
                             </div>
 
@@ -251,7 +257,7 @@
                                     <div class="form-group">
                                         <div class="custom-file">
                                             <input type="file" name="images" class="custom-file-input" id="imageUpload1"
-                                                   accept="image/*" onchange="loadFile1(event)">
+                                                   accept="image/*" onchange="loadImage1(event)">
                                             <label class="custom-file-label" for="imageUpload1">Choose file</label>
                                         </div>
                                         <img id="output1"
@@ -263,7 +269,7 @@
                                     <div class="form-group">
                                         <div class="custom-file">
                                             <input type="file" name="images" class="custom-file-input" id="imageUpload2"
-                                                   accept="image/*" onchange="loadFile2(event)">
+                                                   accept="image/*" onchange="loadImage2(event)">
                                             <label class="custom-file-label" for="imageUpload2">Choose file</label>
                                         </div>
                                         <img id="output2"
@@ -275,7 +281,7 @@
                                     <div class="form-group">
                                         <div class="custom-file">
                                             <input type="file" name="images" class="custom-file-input" id="imageUpload3"
-                                                   accept="image/*" onchange="loadFile3(event)">
+                                                   accept="image/*" onchange="loadImage3(event)">
                                             <label class="custom-file-label" for="imageUpload3">Choose file</label>
                                         </div>
                                         <img id="output3"
@@ -304,8 +310,11 @@
                                     </div>
                                 </div>
                             </div>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> cff9ba633929e89dde6046fcaafec9097bfe9ce3
                             <button type="submit" id="btn-update-product" class="btn btn-info">Cập nhật</button>
                             <input class="btn btn-primary" type="reset" value="Reset">
 
@@ -342,6 +351,21 @@
 </div>
 <!-- End of Page Wrapper -->
 
+<div class="modal fade" id="message">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="text-align: center;">
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -374,11 +398,11 @@
 
         $("#btn-update-product").on("click", function (e) {
             e.preventDefault();
-            let data = new FormData($("#addNewProduct")[0]);
+            let data = new FormData($("#formUpdateProduct")[0]);
             $.ajax({
                 url: "/api/admin/product/edit",
                 data: data,
-                type: "POST",
+                type: "PUT",
                 enctype: 'multipart/form-data',
                 // prevent jQuery from automatically transforming the data into a query string
                 processData: false,
@@ -386,10 +410,9 @@
                 cache: false,
                 timeout: 1000000,
                 success: function (result) {
-                    console.log(result);
-                    $("#btn-add-product").prop("disabled", false);
-                    $('#addNewProduct')[0].reset();
-                    $('#message').find("div.modal-body").text("Thêm sản phẩm thành công!")
+                    $("#btn-update-product").prop("disabled", false);
+                    $('#formUpdateProduct')[0].reset();
+                    $('#message').find("div.modal-body").text("Cập nhật sản phẩm thành công!!")
                     $('#message').modal('show');
                     $('#message').on('hidden.bs.modal', function () {
                         window.location.replace("/admin/manager_products");
@@ -405,9 +428,7 @@
             let parentCategoryId = $("#category option:selected").val();
             let categories = JSON.parse(localStorage.getItem("categories"));
             $.each(categories, function (index, item) {
-                console.log(item);
                 if (parseInt(parentCategoryId) === parseInt(item["id"])) {
-                    console.log(item["subCategory"]);
                     $('#sub-category').empty();
                     if (item.hasOwnProperty("subCategory")) {
                         $.each(item["subCategory"], function (index, subItem) {
@@ -422,41 +443,6 @@
             });
 
         });
-        var loadFile = function (event) {
-            let output = document.getElementById('output');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function () {
-                URL.revokeObjectURL(output.src) // free memory
-            }
-            output.style.display = "block";
-        };
-
-        var loadFile1 = function (event) {
-            let output1 = document.getElementById('output1');
-            output1.src = URL.createObjectURL(event.target.files[0]);
-            output1.onload = function () {
-                URL.revokeObjectURL(output1.src) // free memory
-            }
-            output1.style.display = "block";
-        };
-
-        var loadFile2 = function (event) {
-            let output2 = document.getElementById('output2');
-            output2.src = URL.createObjectURL(event.target.files[0]);
-            output2.onload = function () {
-                URL.revokeObjectURL(output2.src) // free memory
-            }
-            output2.style.display = "block";
-        };
-
-        var loadFile3 = function (event) {
-            let output3 = document.getElementById('output3');
-            output3.src = URL.createObjectURL(event.target.files[0]);
-            output3.onload = function () {
-                URL.revokeObjectURL(output3.src) // free memory
-            }
-            output3.style.display = "block";
-        };
 
         $("#btn-add-category-supplier").on("click", function () {
             $("#add-category-supplier").show();
@@ -471,7 +457,6 @@
                 success: function (data) {
                     // Put the object into storage
                     let categories = data["categories"];
-                    console.log(categories);
                     let suppliers = data["suppliers"];
                     localStorage.setItem('categories', JSON.stringify(categories));
 
@@ -513,8 +498,8 @@
                 type: "GET",
                 contentType: "application/json",
                 success: function (data) {
-                    console.log(data);
                     //productName
+                    $("#productId").val(data["id"]);
                     $("#productName").val(data["productName"]);
                     $("#category > option").each(function () {
                         if ($(this).text() === data["categoryName"]) {
@@ -533,16 +518,68 @@
                         }
                     });
                     $("#price").val(data["price"]); // price
-                    $("#discount").val(data["discount"]); // discount
+                    $("#promotion").val(data["promotion"]); // promotion
                     $("#baseDescription").val(data["baseDescription"]);
                     $("#detailDescription").val(data["detailDescription"]);
+
+                    if (data.hasOwnProperty("image")) {
+                        let arrImages = data["image"].split(",");
+                        console.log(arrImages);
+                        for (let i = 0; i <= arrImages.length; i++) {
+                            if (i == 0) {
+                                $("#output0").attr("src", "/images/products/" + productId + "/" + arrImages[i]);
+                            } else if (i==1) {
+                                $("#output1").attr("src", "/images/products/" + productId + "/" + arrImages[i]);
+                            } else if (i == 2) {
+                                $("#output2").attr("src", "/images/products/" + productId + "/" + arrImages[i]);
+                            } else if ( i == 3) {
+                                $("#output3").attr("src", "/images/products/" + productId + "/" + arrImages[i]);
+                            }
+                        }
+                    }
                 },
                 error: function () {
                     alert("có lỗi xảy ra");
                 }
             });
         }
-    })
+    });
+
+    let loadMainImage = function (event) {
+        let output = document.getElementById('output0');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+        output.style.display = "block";
+    };
+
+    let loadImage1 = function (event) {
+        let output1 = document.getElementById('output1');
+        output1.src = URL.createObjectURL(event.target.files[0]);
+        output1.onload = function () {
+            URL.revokeObjectURL(output1.src) // free memory
+        }
+        output1.style.display = "block";
+    };
+
+    let loadImage2 = function (event) {
+        let output2 = document.getElementById('output2');
+        output2.src = URL.createObjectURL(event.target.files[0]);
+        output2.onload = function () {
+            URL.revokeObjectURL(output2.src) // free memory
+        }
+        output2.style.display = "block";
+    };
+
+    let loadImage3 = function (event) {
+        let output3 = document.getElementById('output3');
+        output3.src = URL.createObjectURL(event.target.files[0]);
+        output3.onload = function () {
+            URL.revokeObjectURL(output3.src) // free memory
+        }
+        output3.style.display = "block";
+    };
     /*]]>*/
 </script>
 

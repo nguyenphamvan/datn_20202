@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.entity;
 
+import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
@@ -33,7 +34,7 @@ public class Order {
     private int shipFee;
     private int discount;
     private int total;
-    private String status;
+    private int status;
     private String deliveryMethod;
     private String paymentMethod;
     private String message;
@@ -77,7 +78,7 @@ public class Order {
         orderDto.setShipFee(this.getShipFee());
         orderDto.setDiscount(this.getDiscount());
         orderDto.setTotal(this.getTotal());
-        orderDto.setStatus(this.getStatus());
+        orderDto.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
         orderDto.setMessage(this.getMessage());
         orderDto.setPaymentMethod(this.getPaymentMethod());
         orderDto.setNote(this.getNote());
@@ -103,7 +104,7 @@ public class Order {
         orderDto.setShipFee(this.getShipFee());
         orderDto.setDiscount(this.getDiscount());
         orderDto.setTotal(this.getTotal());
-        orderDto.setStatus(this.getStatus());
+        orderDto.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
         orderDto.setOrderDate(DateTimeUtil.dateTimeFormat(this.getOrderDate()));
         orderDto.setDeliveryDate(DateTimeUtil.dateTimeFormat((this.getDeliveryDate())));
         StringBuilder summaryProductName = new StringBuilder("");
@@ -117,10 +118,10 @@ public class Order {
     public OrderLoggingDto convertOrderLoggingToOrderLoggingDto() {
         OrderLoggingDto orderLoggingDto = new OrderLoggingDto();
         orderLoggingDto.setOrderId(this.getId());
-        orderLoggingDto.setLatestStatus(this.getStatus());
+        orderLoggingDto.setLatestStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
         orderLoggingDto.setLastUpdatedTime(DateTimeUtil.dateTimeFormat(this.getDeliveryDate()));
         Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = new TreeSet<>();
-        this.getOrderLoggings().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(ol.getStatus(), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
+        this.getOrderLoggings().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(ol.getStatus()), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
 
         orderLoggingDto.setLoggingStatus(loggingStatus);
         return orderLoggingDto;

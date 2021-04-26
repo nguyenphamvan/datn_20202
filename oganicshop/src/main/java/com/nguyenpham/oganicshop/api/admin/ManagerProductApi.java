@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.api.admin;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.ProductRequestDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
@@ -45,12 +48,22 @@ public class ManagerProductApi {
     }
 
     @PutMapping("/edit")
-    public ProductResponseDto editProduct(@RequestBody ProductRequestDto productRequestDto) {
+    public ProductResponseDto editProduct(@ModelAttribute ProductRequestDto productRequestDto) {
         return productService.editProduct(productRequestDto);
     }
 
     @PutMapping("/stopBusiness/{productId}")
     public boolean stopBusiness(@PathVariable("productId") long productId) {
         return productService.stopBusinessProduct(productId);
+    }
+
+    @PutMapping("/import/{productId}")
+    public Object importAmountProduct(@PathVariable("productId") long productId, @RequestBody ObjectNode objectNode) {
+        int amount = objectNode.get("amount").asInt();
+        int amountAvailable = productService.importProduct(productId, amount);
+        Map<String, Object> response = new HashMap<>();
+        response.put("amountAfterImport", amountAvailable);
+        response.put("message", "Bạn vừa nhập thêm " + amount + ", số lượng hiện tại là : " + amountAvailable);
+        return response;
     }
 }

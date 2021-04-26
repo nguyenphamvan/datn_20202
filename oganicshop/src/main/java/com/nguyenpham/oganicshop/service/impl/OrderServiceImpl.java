@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +33,11 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.shippingAddressRepository = shippingAddressRepository;
+    }
+
+    @Override
+    public long countNumberOrder() {
+        return orderRepository.count();
     }
 
     @Override
@@ -83,6 +85,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public boolean updatedOrderStatus(long orderId, int statusId, String message) {
+        Order order = orderRepository.findById(orderId).get();
+        OrderLogging orderLogging = new OrderLogging(statusId);
+        orderLogging.setOrder(order);
+        order.setStatus(statusId);
+        order.setMessage(DateTimeUtil.dateTimeFormat(new Date()) + " - " + message);
+        order.addLogOrder(orderLogging);
+
+        try {
+            orderRepository.save(order);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
     public List<OrderDetailDto> getListOrderItem(long orderId) {
         List<OrderDetailDto> orderDetailDtos = orderRepository.findById(orderId).get().getOrderDetails().stream()
                 .map(od -> od.convertOrderDetailToOrderDetailDto())
@@ -110,20 +130,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int applyCoupon(HashMap<Long, CartItem> cart, Discount discount) {
+    public int applyCoupon(HashMap<Long, CartItem> cart, Promotion promotion) {
         int total = 0;
         for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
             total += item.getValue().calculateTotalItem();
         }
         int discountValue = 0;
-        if (discount.getDiscountPercent() > 0 && discount.getDiscountPrice() == 0) {
-            discountValue = (int) (total * discount.getDiscountPercent());
-        } else if (discount.getDiscountPercent() == 0 && discount.getDiscountPrice() > 0) {
-            discountValue = discount.getDiscountPrice();
+        if (promotion.getDiscountPercent() > 0 && promotion.getDiscountPrice() == 0) {
+            discountValue = (int) (total * promotion.getDiscountPercent());
+        } else if (promotion.getDiscountPercent() == 0 && promotion.getDiscountPrice() > 0) {
+            discountValue = promotion.getDiscountPrice();
         }
 
-        if (total > discount.getMinOrderValue()) {
-            discountValue = discountValue > discount.getMaxDiscountValue() ?  discount.getMaxDiscountValue() : discountValue;
+        if (total > promotion.getMinOrderValue()) {
+            discountValue = discountValue > promotion.getMaxDiscountValue() ?  promotion.getMaxDiscountValue() : discountValue;
         }
         return discountValue;
     }
@@ -136,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
         order.setContactAddress(orderDto.getShippingAddress().getContactAddress());
         order.setContactPhone(orderDto.getShippingAddress().getContactPhone());
         order.setNote(orderDto.getNote());
-        order.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(1));
+        order.setStatus(0);
         order.setPaymentMethod(orderDto.getPaymentMethod());
         order.setDeliveryMethod(orderDto.getDeliveryMethod());
         order.setMessage(DateTimeUtil.dateTimeFormat(new Timestamp(System.currentTimeMillis())) + " - " + Constant.MAP_ORDER_TRACKING_STATUS.get(1));
@@ -160,8 +180,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean cancelOrder(long userId, long orderId) {
         Order order = orderRepository.findById(orderId).get();
-        if (order.getUser().getId() == userId && order.getStatus().equals("Đang xử lý")) {
-            order.setStatus("Đã Hủy");
+        if (order.getUser().getId() == userId && order.getStatus() == 0) {
+            order.setStatus(4);
             try {
                 orderRepository.save(order);
                 return true;

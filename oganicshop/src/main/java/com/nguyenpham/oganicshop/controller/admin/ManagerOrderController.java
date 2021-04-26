@@ -18,7 +18,7 @@ public class ManagerOrderController {
         return "admin/manager-order";
     }
 
-    @GetMapping("/order/{orderId}")
+    @GetMapping("/{orderId}")
     public String viewManagerOrderDetail(@PathVariable("orderId") long orderId,
                                          @RequestParam(value = "userOrderHistory", required = false, defaultValue = "false") boolean userOrderHistory,
                                          Model model) {

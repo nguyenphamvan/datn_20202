@@ -54,7 +54,7 @@
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fas fa-fw fa-cog"></i>
@@ -63,9 +63,9 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
+                    <a class="collapse-item active" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
@@ -234,7 +234,7 @@
                         <div class="col-md-7">
                             <div>
                                 <div style="display: flex; margin: 20px 0px 20px 0px;">
-                                    <a th:href="@{'/admin/manager_products/import/' + ${productId}}"
+                                    <a id="btn-import-product"
                                        class="btn btn-info" style="margin-right: 10px;">Nhập thêm</a>
                                     <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger"
                                             style="margin-right: 10px;">Ngừng bán
@@ -277,7 +277,7 @@
                                         </tr>
                                         <tr>
                                             <td class="pl-0" scope="row"><strong>Giảm giá</strong></td>
-                                            <td id="discount"></td>
+                                            <td id="promotion"></td>
                                         </tr>
                                         <tr>
                                             <td class="pl-0" scope="row"><strong>Giá bán</strong></td>
@@ -303,6 +303,24 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="import-products" class="row" style="display: none;">
+                                <div class="col-md-12">
+                                    <form>
+                                        <div class="form-group row">
+                                            <label for="import-amount" class="col-sm-4 col-form-label">Số lượng nhập
+                                                thêm</label>
+                                            <div class="col-sm-4">
+                                                <input type="number" class="form-control" id="import-amount" name="amount"
+                                                       placeholder="Số lượng nhập thêm">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button id="sub-import-product" class="btn btn-info">Thêm</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             <hr>
@@ -384,6 +402,10 @@
 
         getInfoProduct(productId);
 
+        $("#btn-import-product").on("click", function () {
+            $("#import-products").show();
+        });
+
         $("#stop-business").on("click", function () {
             let productId = $(this).attr("product-id");
             $.ajax({
@@ -401,6 +423,12 @@
             });
 
         });
+
+        $("#sub-import-product").on("click", function (e) {
+            e.preventDefault();
+            let amount = $("#import-amount").val();
+            importProduct(productId, amount);
+        });
     });
 
     function getInfoProduct(productId) {
@@ -409,17 +437,19 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
+                //image
+                $("#content > div > section > div > div.col-md-5 > div > div > div:nth-child(1) > figure > a > img")
+                    .attr("src", data["mainImage"]);
+
                 //productName
                 $("#productName > b").text(data["productName"]);
                 // rating
                 if (parseInt(data["rating"]) > 0) {
                     for (let i = 0; i < parseInt(data["rating"]); i++) {
-                        console.log(i);
                         $("#rating").append("<li><i class=\"fas fa-star fa-sm text-primary\"></i></li>");
                     }
                 }
                 if ((5 - parseInt(data["rating"])) > 0) {
-                    console.log((5 - parseInt(data["rating"])));
                     for (let i = 0; i < (5 - parseInt(data["rating"])); i++) {
                         $("#rating").append("<li><i class=\"far fa-star fa-sm text-primary\"></i></li>");
                     }
@@ -428,13 +458,30 @@
                 $("#categoryName").text(data["categoryName"]); // category
                 $("#supplierName").text(data["supplierName"]); // supplier
                 $("#price").text(data["price"]); // price
-                $("#discount").text(data["discount"]); // discount
+                $("#promotion").text(data["promotion"]); // promotion
                 $("#finalPrice").text(data["finalPrice"]) // finalPrice
                 $("#amount").text(data["amount"]); // amount
                 $("#amountSold").text(data["amountSold"]); // amountSold
                 $("#status").text(data["status"]); // status product
                 $("#baseDescription").text(data["baseDescription"]);
                 $("#detailDescription").val(data["detailDescription"]);
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+
+    function importProduct(productId, amount) {
+        $.ajax({
+            url: "/api/admin/product/import/" + productId,
+            data: JSON.stringify({"amount" : amount}),
+            type: "PUT",
+            contentType: "application/json",
+            success: function (data) {
+                $("#amount").text(data["amountAfterImport"]);
+                $("#import-products").empty().hide();
+                $("#import-products").before("<div class=\"alert alert-success\" role=\"alert\">\n" + data["message"] + "</div>");
             },
             error: function () {
                 alert("có lỗi xảy ra");

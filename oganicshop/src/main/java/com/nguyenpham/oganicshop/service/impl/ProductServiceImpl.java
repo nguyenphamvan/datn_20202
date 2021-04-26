@@ -67,8 +67,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDetailDescription(productRequestDto.getDetailDescription());
         product.setPrice(productRequestDto.getPrice());
         product.setDiscount(productRequestDto.getDiscount());
-        product.setFinalPrice(productRequestDto.getFinalPrice());
-        product.setAmount(productRequestDto.getAmount());
+        product.setFinalPrice(productRequestDto.getPrice() - productRequestDto.getDiscount());
         Category category = categoryRepository.findById(productRequestDto.getCategoryId()).get();
         Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
         product.setCategory(category);
@@ -80,12 +79,21 @@ public class ProductServiceImpl implements ProductService {
             }
             images.add(StringUtils.cleanPath(image.getOriginalFilename()));
         }
-        product.setImage(org.apache.commons.lang3.StringUtils.join(images, "-"));
+        if (images.size() > 0) {
+            product.setImage(org.apache.commons.lang3.StringUtils.join(images, "-"));
+        }
         ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
         if (productResponse != null) {
             return productResponse;
         }
         return null;
+    }
+
+    @Override
+    public int importProduct(long productId, int amount) {
+        Product product = productRepository.findById(productId).get();
+        product.setAmount(product.getAmount() + amount);
+        return productRepository.save(product).getAmount();
     }
 
     @Override
@@ -100,6 +108,11 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
 
+    }
+
+    @Override
+    public long countNumberProduct() {
+        return productRepository.count();
     }
 
     @Override

@@ -101,13 +101,13 @@ LOCK TABLES `category_blog` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `discount`
+-- Table structure for table `promotion`
 --
 
-DROP TABLE IF EXISTS `discount`;
+DROP TABLE IF EXISTS `promotion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `discount` (
+CREATE TABLE `promotion` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `code` varchar(45) NOT NULL,
@@ -123,12 +123,12 @@ CREATE TABLE `discount` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `discount`
+-- Dumping data for table `promotion`
 --
 
-LOCK TABLES `discount` WRITE;
-/*!40000 ALTER TABLE `discount` DISABLE KEYS */;
-/*!40000 ALTER TABLE `discount` ENABLE KEYS */;
+LOCK TABLES `promotion` WRITE;
+/*!40000 ALTER TABLE `promotion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `promotion` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -142,7 +142,7 @@ CREATE TABLE `order_detail` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `quantity` int DEFAULT NULL,
   `price` int DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `promotion` int DEFAULT NULL,
   `total_price` int DEFAULT NULL,
   `reviewed` tinyint DEFAULT NULL,
   `product_id` bigint NOT NULL,
@@ -209,7 +209,7 @@ CREATE TABLE `orders` (
   `payment_method` varchar(45) DEFAULT NULL,
   `sub_total` int NOT NULL,
   `ship_fee` int NOT NULL,
-  `discount` int NOT NULL,
+  `promotion` int NOT NULL,
   `total` int NOT NULL,
   `message` text,
   `status` varchar(50) DEFAULT NULL,
@@ -251,7 +251,7 @@ CREATE TABLE `product` (
   `base_description` text,
   `detail_description` text,
   `price` int DEFAULT NULL,
-  `discount` int DEFAULT NULL,
+  `promotion` int DEFAULT NULL,
   `final_price` int DEFAULT NULL,
   `rating` double DEFAULT NULL,
   `number_of_reviews` int DEFAULT NULL,

@@ -65,7 +65,7 @@
                     <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
                     <a class="collapse-item active" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" href="manager-promotion.html">Chương trình khuyến mãi</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
                     <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
                     <a class="collapse-item">Banner</a>
                 </div>
@@ -188,9 +188,9 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="discount">Giảm giá (VNĐ)</label>
-                                <input type="number" class="form-control" placeholder="giảm giá" id="discount"
-                                       name="discount">
+                                <label for="promotion">Giảm giá (VNĐ)</label>
+                                <input type="number" class="form-control" placeholder="giảm giá" id="promotion"
+                                       name="promotion">
                             </div>
                         </div>
                     </div>
@@ -344,7 +344,6 @@
             cache: false,
             timeout: 1000000,
             success: function (result) {
-                console.log(result);
                 $("#btn-add-product").prop("disabled", false);
                 $('#addNewProduct')[0].reset();
                 $('#message').find("div.modal-body").text("Thêm sản phẩm thành công!")
@@ -363,9 +362,7 @@
         let parentCategoryId = $("#category option:selected").val();
         let categories = JSON.parse(localStorage.getItem("categories"));
         $.each(categories, function (index, item) {
-            console.log(item);
             if (parseInt(parentCategoryId) === parseInt(item["id"])) {
-                console.log(item["subCategory"]);
                 $('#sub-category').empty();
                 if (item.hasOwnProperty("subCategory")) {
                     $.each(item["subCategory"], function (index, subItem) {
@@ -393,7 +390,6 @@
             }),
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
                 getListCategoryAndSupplier();
             },
             error: function () {
@@ -408,7 +404,6 @@
     $("#btn-add-sub-category").on("click", function () {
         let parentId = $("#category option:selected").val();
         let categoryName = $("#add-sub-category").val();
-        console.log(categoryName);
         $.ajax({
             url: "/api/categories/insert",
             type: "POST",
@@ -440,8 +435,8 @@
             }),
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
                 getListCategoryAndSupplier();
+                window.location = "/admin/manager_products";
             },
             error: function () {
                 alert("có lỗi xảy ra");
@@ -452,7 +447,7 @@
 
     });
 
-    var loadFile = function (event) {
+    let loadFile = function (event) {
         let output = document.getElementById('output');
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function () {
@@ -461,7 +456,7 @@
         output.style.display = "block";
     };
 
-    var loadFile1 = function (event) {
+    let loadFile1 = function (event) {
         let output1 = document.getElementById('output1');
         output1.src = URL.createObjectURL(event.target.files[0]);
         output1.onload = function () {
@@ -470,7 +465,7 @@
         output1.style.display = "block";
     };
 
-    var loadFile2 = function (event) {
+    let loadFile2 = function (event) {
         let output2 = document.getElementById('output2');
         output2.src = URL.createObjectURL(event.target.files[0]);
         output2.onload = function () {
@@ -479,7 +474,7 @@
         output2.style.display = "block";
     };
 
-    var loadFile3 = function (event) {
+    let loadFile3 = function (event) {
         let output3 = document.getElementById('output3');
         output3.src = URL.createObjectURL(event.target.files[0]);
         output3.onload = function () {
@@ -501,7 +496,6 @@
             success: function (data) {
                 // Put the object into storage
                 let categories = data["categories"];
-                console.log(categories);
                 let suppliers = data["suppliers"];
                 localStorage.setItem('categories', JSON.stringify(categories));
 
