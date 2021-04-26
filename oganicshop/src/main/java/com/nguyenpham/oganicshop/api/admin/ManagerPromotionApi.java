@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Cache;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +32,21 @@ public class ManagerPromotionApi {
     @GetMapping("/{couponId}")
     PromotionDto GetPromotionById(@PathVariable("couponId") long couponId) {
         return promotionService.findCouponById(couponId);
+    }
+
+    @PostMapping("/add")
+    Object insertPromotionById(@ModelAttribute PromotionDto promotion) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            response.put("data", promotionService.addNewCoupon(promotion));
+            response.put("statusCode", HttpStatus.OK);
+            response.put("status", true);
+        } catch (Exception e) {
+            response.put("data", null);
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.put("status", false);
+        }
+        return response;
     }
 
     @PutMapping("/edit/{couponId}")

@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Thêm sản phẩm mới</title>
+    <title>Thêm chương trình khuyến mại</title>
 
     <!-- Custom fonts for this template -->
     <link th:href="@{/admin/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
@@ -169,21 +169,22 @@
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <form id="update-promotion">
+                        <h5 class="h3 mb-0 text-gray-800">Thêm chương trình khuyễn mãi mới</h5>
+                        <form id="add-promotion" style="margin-top: 50px;">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="title">Tiêu đề:</label>
-                                        <input type="text" class="form-control" placeholder="Nhập tiêu đề" id="title" name="title">
+                                        <input type="text" class="form-control" placeholder="Nhập tiêu đề" id="title" name="title" required="required">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="code">Code:</label>
-                                        <input type="text" class="form-control" placeholder="Nhập mã Code" id="code" name="code">
+                                        <input type="text" class="form-control" placeholder="Nhập mã Code" id="code" name="code" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -207,13 +208,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="minOrderValue">Đơn hàng tối thiểu</label>
-                                        <input type="number" class="form-control" placeholder="Nhập giá trị đơn hàng tối thiểu" id="minOrderValue" name="minOrderValue">
+                                        <input type="number" class="form-control" placeholder="Nhập giá trị đơn hàng tối thiểu" id="minOrderValue" name="minOrderValue" required="required">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="maxDiscountValue">Giảm giá tối đa</label>
-                                        <input type="number" class="form-control" placeholder="Nhập số tiền giảm giá tối đa" id="maxDiscountValue" name="maxDiscountValue">
+                                        <input type="number" class="form-control" placeholder="Nhập số tiền giảm giá tối đa" id="maxDiscountValue" name="maxDiscountValue" required="required">
                                     </div>
                                 </div>
                             </div>
@@ -222,19 +223,19 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="startDate">Ngày bắt đầu</label>
-                                        <input type="date" class="form-control" id="startDate" name="startDate">
+                                        <input type="date" class="form-control" id="startDate" name="startDate" required="required">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="endDate">Ngày kết thúc</label>
-                                        <input type="date" class="form-control" id="endDate" name="endDate">
+                                        <input type="date" class="form-control" id="endDate" name="endDate" required="required">
                                     </div>
                                 </div>
                             </div>
 
                             <button type="submit" class="btn btn-info">Cập nhật</button>
-                            <button type="submit" class="btn btn-info">Xóa</button>
+                            <button type="reset" class="btn btn-info">Reset</button>
                         </form>
                     </div>
                 </div>
@@ -268,6 +269,21 @@
 </div>
 <!-- End of Page Wrapper -->
 
+<div class="modal fade" id="message">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="text-align: center;">
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -289,6 +305,50 @@
 
 <!-- Page level custom scripts -->
 <script th:src="@{/admin/js/demo/datatables-demo.js}"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        $("#add-promotion > button:nth-child(5)").on("click", function (e) {
+            e.preventDefault();
+            let data = new FormData($("#add-promotion")[0]);
+            console.log(data);
+            addPromotion(data);
+        });
+    });
+
+    function addPromotion(data) {
+        $.ajax({
+            url: "/api/admin/promotion/add",
+            data: data,
+            type: "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 1000000,
+            success: function (result) {
+                console.log(result);
+                if (result["status"] === true) {
+                    $('#message').find("div.modal-body").text("Cập nhật Thông tin khuyễn mãi thành công!!")
+                    $('#message').modal('show');
+                    $('#message').on('hidden.bs.modal', function () {
+                        window.location.replace("/admin/manager_promotions");
+                    });
+                } else {
+                    $('#message').find("div.modal-body").text("Đã có lỗi xảy ra, vui lòng kiểm tra lại")
+                    $('#message').modal('show');
+                }
+                $("#update-promotion > button:nth-child(5)").prop("disabled", false);
+                $('#update-promotion')[0].reset();
+            },
+            error: function () {
+                alert("có lỗi xảy ra");
+            }
+        });
+    }
+    /*]]>*/
+</script>
 
 
 </body>

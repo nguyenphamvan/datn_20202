@@ -23,7 +23,17 @@ public class PromotionConverter implements GeneralConverter<Promotion, Promotion
 
     @Override
     public Promotion dtoToEntity(PromotionDto promotionDto) {
-        return null;
+        Promotion promotion = new Promotion();
+        promotion.setTitle(promotionDto.getTitle());
+        promotion.setCode(promotionDto.getCode());
+        promotion.setDiscountPercent(promotionDto.getDiscountPercent());
+        promotion.setDiscountPrice(promotionDto.getDiscountPrice());
+        promotion.setMaxDiscountValue(promotionDto.getMaxDiscountValue());
+        promotion.setMinOrderValue(promotionDto.getMinOrderValue());
+        promotion.setEndDate(promotionDto.getEndDate());
+        promotion.setStartDate(promotionDto.getStartDate());
+        promotion.setNumberOfUses(promotionDto.getNumberOfUses());
+        return promotion;
     }
 
     public Promotion dtoToEntity(Promotion promotion, PromotionDto promotionDto) {

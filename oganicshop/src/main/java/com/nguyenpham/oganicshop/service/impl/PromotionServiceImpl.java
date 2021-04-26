@@ -51,8 +51,10 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public Promotion addNewCoupon(PromotionDto newDiscount) {
-        return null;
+    public PromotionDto addNewCoupon(PromotionDto newDiscount) {
+        PromotionConverter converter = new PromotionConverter();
+        Promotion promotion = converter.dtoToEntity(newDiscount);
+        return converter.entityToDto(promotionRepository.save(promotion));
     }
 
     @Override

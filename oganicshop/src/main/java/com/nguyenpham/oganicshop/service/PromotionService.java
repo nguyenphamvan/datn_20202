@@ -12,7 +12,7 @@ public interface PromotionService {
     Promotion findCoupon(String couponCode);
     List<Promotion> getAllCouponForOrder(int orderValue);
     List<PromotionDto> getAllCoupon();
-    Promotion addNewCoupon(PromotionDto newPromotion);
+    PromotionDto addNewCoupon(PromotionDto newPromotion);
     PromotionDto editCoupon(PromotionDto PromotionRequest);
     void deleteCoupon(long promotionId);
 }
