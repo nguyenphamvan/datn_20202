@@ -1,6 +1,8 @@
 package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.constant.Constant;
+import com.nguyenpham.oganicshop.converter.OrderConverter;
+import com.nguyenpham.oganicshop.converter.OrderDetailConverter;
 import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
@@ -42,7 +44,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDtoResponse> getAll() {
-        return orderRepository.findAll().stream().map(o -> o.convertToDtoNotDetail()).collect(Collectors.toList());
+        OrderConverter orderConverter = new OrderConverter();
+        return orderRepository.findAll().stream()
+                .map(o -> {
+                    OrderDtoResponse response = orderConverter.entityToDto(o);
+                    response.setListOrderDetail(null);
+                    return response;
+                }).collect(Collectors.toList());
     }
 
     @Override
@@ -76,7 +84,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDtoResponse> getAllOrderByUserId(long userId) {
-        return orderRepository.findAllByUserId(userId).stream().map(od -> od.convertToDtoNotDetail()).collect(Collectors.toList());
+        OrderConverter converter = new OrderConverter();
+        return orderRepository.findAllByUserId(userId).stream()
+                .map(od -> {
+                    OrderDtoResponse response = converter.entityToDto(od);
+                    response.setListOrderDetail(null);
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -104,28 +119,31 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDetailDto> getListOrderItem(long orderId) {
+        OrderDetailConverter odConverter = new OrderDetailConverter();
         List<OrderDetailDto> orderDetailDtos = orderRepository.findById(orderId).get().getOrderDetails().stream()
-                .map(od -> od.convertOrderDetailToOrderDetailDto())
+                .map(od -> odConverter.entityToDto(od))
                 .collect(Collectors.toList());
         return orderDetailDtos;
     }
 
     @Override
     public List<OrderDtoResponse> getListOrderHistory(long userId, int pageNum, int pageSize) {
+        OrderConverter converter = new OrderConverter();
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id").ascending());
         Page<Order> page = orderRepository.findOrdersByUserId(userId, pageable);
         List<Order> ordersHistory = page.getContent();
         List<OrderDtoResponse> ordersDtoHistory = new ArrayList<>();
         ordersHistory.forEach(order -> {
-            ordersDtoHistory.add(order.convertOrderToOrderDto());
+            ordersDtoHistory.add(converter.entityToDto(order));
         });
         return ordersDtoHistory;
     }
 
     @Override
     public Set<OrderDetailDto> getListProductNotReviewed(long userId) {
+        OrderDetailConverter odConverter = new OrderDetailConverter();
         return orderDetailRepository.findAllByReviewedIsFalse(userId).stream()
-                .map(od -> od.convertOrderDetailToOrderDetailDto())
+                .map(od -> odConverter.entityToDto(od))
                 .collect(Collectors.toSet());
     }
 
@@ -194,7 +212,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart) {
-        ShippingAddress addressDefault = shippingAddressRepository.findByAddrDefaultIsTrue();
+        Address addressDefault = shippingAddressRepository.findByAddrDefaultIsTrue();
         int subCart = 0;
         for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
             subCart += item.getValue().calculateTotalItem();

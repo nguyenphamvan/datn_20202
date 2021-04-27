@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "user")
 @ToString(exclude = "user")
-public class ShippingAddress {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,15 +27,5 @@ public class ShippingAddress {
     @JoinColumn(name = "users_id")
     @JsonIgnore
     private User user;
-
-    public AddressRequestDto convertToDto() {
-        return new AddressRequestDto(
-                this.getId() ,
-                this.getContactReceiver(),
-                this.getContactPhone(),
-                this.getContactAddress(),
-                this.isAddrDefault()
-        );
-    }
 
 }

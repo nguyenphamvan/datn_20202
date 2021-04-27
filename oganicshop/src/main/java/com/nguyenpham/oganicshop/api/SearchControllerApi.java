@@ -1,6 +1,7 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.converter.CategoryConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
@@ -48,13 +49,14 @@ public class SearchControllerApi {
             pageSize = object.get("pageSize").asInt();
         }
 
+        CategoryConverter converter = new CategoryConverter();
         Map<String, Object> result = new HashMap<>();
         Page<Product> page = productService.searchProductByKeyword(search, pageNum, pageSize, filed, sort);
         Set<Supplier> setSuppliers = new HashSet<>();
         Set<CategoryDto> setCategorySearch = new HashSet<>();
         for (Product p : page.getContent()) {
             setSuppliers.add(p.getSupplier());
-            setCategorySearch.add(p.getCategory().convertToCategoryDto());
+            setCategorySearch.add(converter.entityToDto(p.getCategory()));
         }
         ProductConverter productConverter = new ProductConverter();
         List<ProductResponseDto> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.converter.ReviewConverter;
 import com.nguyenpham.oganicshop.dto.MyReviewDto;
 import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
@@ -35,7 +36,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ResponseReviewDto> getReviewsOfProduct(long productId) {
         List<Review> listReviews = reviewRepository.findAllByProductIdAndRootCommentIsNull(productId);
-        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());
+        ReviewConverter converter = new ReviewConverter();
+        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(rv ->converter.entityToDto(rv)).collect(Collectors.toList());
         return listReviewDto;
     }
 
@@ -61,14 +63,15 @@ public class ReviewServiceImpl implements ReviewService {
             }
         }
         review.setUser(user);
-        return reviewRepository.save(review).convertReviewToReviewDto();
+        review = reviewRepository.save(review);
+        return new ReviewConverter().entityToDto(review);
     }
 
     @Override
     public List<ResponseReviewDto> getListReviews(User user) {
         List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
-        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(review -> review.convertReviewToReviewDto()).collect(Collectors.toList());
-        ;
+        ReviewConverter converter = new ReviewConverter();
+        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
         return listReviewDto;
     }
 

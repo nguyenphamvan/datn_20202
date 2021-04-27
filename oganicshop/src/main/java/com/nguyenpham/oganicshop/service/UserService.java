@@ -23,9 +23,9 @@ public interface UserService {
     boolean checkOldPassword(String rawOldPassword);
     UserResponseDto getInfoAccount();
     UserResponseDto updateInfoAccount (UserRequestDto userRequest);
-    List<AddressRequestDto> getShippingAddress();
-    AddressRequestDto addShippingAddress(AddressRequestDto request);
-    AddressRequestDto updateShippingAddress (AddressRequestDto request);
+    List<AddressResponseDto> getShippingAddress();
+    AddressResponseDto addShippingAddress(AddressRequestDto request);
+    AddressResponseDto updateShippingAddress (AddressRequestDto request);
     boolean deleteShippingAddress(long addressId);
     Set<ProductResponseDto> getWishlists(User user);
     boolean addProductToWishlist(long productId);

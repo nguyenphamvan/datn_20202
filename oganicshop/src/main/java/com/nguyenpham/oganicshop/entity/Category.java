@@ -50,23 +50,5 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public CategoryDto convertToCategoryDto() {
-        CategoryDto category = new CategoryDto();
-        category.setId(this.getId());
-        category.setCategoryName(this.getCategoryName());
-        category.setCategoryUrl(this.getCategoryUrl());
-        if (this.getSubCategories() != null) {
-            for(Category c : this.getSubCategories()) {
-                CategoryDto subCategory = new CategoryDto();
-                subCategory.setId(c.getId());
-                subCategory.setCategoryName(c.getCategoryName());
-                subCategory.setCategoryUrl(c.getCategoryUrl());
-                subCategory.setParentId(c.getParent().getId());
-                category.addSubCategory(subCategory);
-            }
-        }
-        return category;
-    }
-
 
 }

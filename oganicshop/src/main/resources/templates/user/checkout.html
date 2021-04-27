@@ -450,9 +450,9 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
                 let order = data["order"]
-                $(".contact-address .address .name").text(order["shippingAddress"]["contactReceiver"]);
-                $(".contact-address .address .street").text(order["shippingAddress"]["contactAddress"]);
-                $(".contact-address .address .phone").text("Điện thoại : " + order["shippingAddress"]["contactPhone"]);
+                $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
+                $(".contact-address .address .street").text(order["address"]["contactAddress"]);
+                $(".contact-address .address .phone").text("Điện thoại : " + order["address"]["contactPhone"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(order["subTotal"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(order["promotion"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(order["shipFee"]);
@@ -476,7 +476,7 @@
 
     function payment() {
         let data = {
-            "shippingAddress": {
+            "address": {
                 "contactReceiver": $(".contact-address .address .name").text(),
                 "contactPhone": $(".contact-address .address .phone").text().replace("Điện thoại : "),
                 "contactAddress": $(".contact-address .address .street").text()

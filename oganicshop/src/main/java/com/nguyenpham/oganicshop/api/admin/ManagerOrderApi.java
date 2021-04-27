@@ -1,6 +1,7 @@
 package com.nguyenpham.oganicshop.api.admin;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.converter.OrderConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.UserResponseDto;
@@ -44,7 +45,7 @@ public class ManagerOrderApi {
         Order order = orderService.getOrderById(orderId);
         UserResponseDto user = userConverter.entityToDto(order.getUser());
         response.put("user", user);
-        OrderDtoResponse orderDtoResponse = order.convertOrderToOrderDto();
+        OrderDtoResponse orderDtoResponse = new OrderConverter().entityToDto(order);
         orderDtoResponse.setMessage(null);
         response.put("order", orderDtoResponse);
         return ResponseEntity.ok(response);

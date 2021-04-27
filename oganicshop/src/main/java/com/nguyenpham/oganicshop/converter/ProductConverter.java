@@ -50,7 +50,8 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         }
 
         if (product.getReviews() != null) {
-            List<ResponseReviewDto> reviews = product.getReviews().stream().map(rv -> rv.convertReviewToReviewDto()).collect(Collectors.toList());
+            ReviewConverter converter = new ReviewConverter();
+            List<ResponseReviewDto> reviews = product.getReviews().stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
             productResponseDto.setReviews(reviews);
             productResponseDto.setNumberOfReviews(product.getReviews().size());
         } else {

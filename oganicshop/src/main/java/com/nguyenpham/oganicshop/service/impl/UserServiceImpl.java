@@ -1,11 +1,12 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.converter.AddressConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.*;
+import com.nguyenpham.oganicshop.entity.Address;
 import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.ShippingAddress;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
@@ -81,7 +82,9 @@ public class UserServiceImpl implements UserService {
             numbersOfReview = user.getReviews().stream().count();
         }
         objectMap.put("account", userConverter.entityToDto(user));
-        objectMap.put("shippingAddress", user.getShippingAddresses().stream().map(a -> a.convertToDto()).collect(Collectors.toList()));
+
+        AddressConverter converter = new AddressConverter();
+        objectMap.put("shippingAddress", user.getAddresses().stream().map(a -> converter.entityToDto(a)).collect(Collectors.toList()));
         objectMap.put("numbersOfOrder", numbersOfOrder);
         objectMap.put("maxOrderPrice", maxOrderPrice);
         objectMap.put("numbersOfReview", numbersOfReview);
@@ -242,36 +245,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public AddressRequestDto addShippingAddress(AddressRequestDto request) {
+    public AddressResponseDto addShippingAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
-        ShippingAddress shippingAddress = new ShippingAddress();
-        saveAddress(shippingAddress, request, userDb);
+        Address address = new Address();
+        address = saveAddress(address, request, userDb);
         if (request.isDefault()) {
-            shippingAddressRepository.setAddressDefault(shippingAddress.getId());
+            shippingAddressRepository.setAddressDefault(address.getId());
         }
-        request.setId(shippingAddress.getId());
-        return request;
+        return new AddressConverter().entityToDto(address);
     }
 
     @Override
     @Transactional
-    public AddressRequestDto updateShippingAddress(AddressRequestDto request) {
+    public AddressResponseDto updateShippingAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
-        ShippingAddress shippingAddress = shippingAddressRepository.findById(request.getId()).get();
-        saveAddress(shippingAddress, request, userDb);
+        Address address = shippingAddressRepository.findById(request.getId()).get();
+        address = saveAddress(address, request, userDb);
         if (request.isDefault()) {
             shippingAddressRepository.setAddressDefault(request.getId());
         }
-        return request;
+        return new AddressConverter().entityToDto(address);
     }
 
     @Override
-    public List<AddressRequestDto> getShippingAddress() {
+    public List<AddressResponseDto> getShippingAddress() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        List<ShippingAddress> listShippingAddress = shippingAddressRepository.findAllByUserId(user.getId());
-        List<AddressRequestDto> resShippingAddress = listShippingAddress.stream().map(ad -> ad.convertToDto()).collect(Collectors.toList());
+        List<Address> listAddresses = shippingAddressRepository.findAllByUserId(user.getId());
+        AddressConverter converter = new AddressConverter();
+        List<AddressResponseDto> resShippingAddress = listAddresses.stream().map(ad -> converter.entityToDto(ad)).collect(Collectors.toList());
         Collections.sort(resShippingAddress);
         return resShippingAddress;
     }
@@ -341,12 +344,12 @@ public class UserServiceImpl implements UserService {
         return idWishlistProductsSet;
     }
 
-    public void saveAddress(ShippingAddress shippingAddress, AddressRequestDto request, User user) {
-        shippingAddress.setContactReceiver(request.getContactReceiver());
-        shippingAddress.setContactAddress(request.getContactAddress());
-        shippingAddress.setContactPhone(request.getContactPhone());
-        shippingAddress.setAddrDefault(request.isDefault());
-        shippingAddress.setUser(user);
-        shippingAddressRepository.save(shippingAddress);
+    public Address saveAddress(Address address, AddressRequestDto request, User user) {
+        address.setContactReceiver(request.getContactReceiver());
+        address.setContactAddress(request.getContactAddress());
+        address.setContactPhone(request.getContactPhone());
+        address.setAddrDefault(request.isDefault());
+        address.setUser(user);
+        return shippingAddressRepository.save(address);
     }
 }

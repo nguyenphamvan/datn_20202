@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.ProductRequestDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
@@ -11,6 +12,7 @@ import com.nguyenpham.oganicshop.repository.CategoryRepository;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.SupplierRepository;
 import com.nguyenpham.oganicshop.service.ProductService;
+import com.nguyenpham.oganicshop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +46,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto insertProduct(ProductRequestDto productRequestDto) {
+    public ProductResponseDto insertProduct(ProductRequestDto productRequestDto) throws IOException {
         Product product = new ProductConverter().dtoToEntity(productRequestDto);
         Category category = categoryRepository.findById(productRequestDto.getCategoryId()).get();
         Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
         product.setCategory(category);
         product.setSupplier(supplier);
         product = productRepository.save(product);
+        for (MultipartFile image : productRequestDto.getImages()) {
+            if (image.isEmpty()) {
+                continue;
+            }
+            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+            String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
+            FileUploadUtil.saveFile(uploadDir, fileName, image);
+        }
         ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(product);
         if (productResponse != null) {
             return productResponse;
@@ -59,7 +70,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto editProduct(ProductRequestDto productRequestDto) {
+    public ProductResponseDto editProduct(ProductRequestDto productRequestDto) throws IOException {
+        ProductResponseDto productResponse = null;
         Product product = productRepository.findById(productRequestDto.getId()).get();
         product.setName(productRequestDto.getName());
         product.setUrl(productRequestDto.getName().replace(" ", "-"));
@@ -81,12 +93,17 @@ public class ProductServiceImpl implements ProductService {
         }
         if (images.size() > 0) {
             product.setImage(org.apache.commons.lang3.StringUtils.join(images, "-"));
+            for (MultipartFile image : productRequestDto.getImages()) {
+                if (image.isEmpty()) {
+                    continue;
+                }
+                String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+                String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
+                FileUploadUtil.saveFile(uploadDir, fileName, image);
+            }
         }
-        ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
-        if (productResponse != null) {
-            return productResponse;
-        }
-        return null;
+        productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
+        return productResponse;
     }
 
     @Override
@@ -107,7 +124,6 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             return false;
         }
-
     }
 
     @Override

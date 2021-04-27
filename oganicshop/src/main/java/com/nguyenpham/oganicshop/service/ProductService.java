@@ -5,6 +5,7 @@ import com.nguyenpham.oganicshop.dto.ProductResponseDto;
 import com.nguyenpham.oganicshop.entity.Product;
 import org.springframework.data.domain.Page;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
@@ -19,8 +20,8 @@ public interface ProductService {
     boolean isProvideEnoughQuantity(String productUrl, int quantity);
     ProductResponseDto getProduct(String productUrl);
     Product getProductById(Long productId);
-    ProductResponseDto insertProduct(ProductRequestDto productRequestDto);
-    ProductResponseDto editProduct(ProductRequestDto productRequestDto);
+    ProductResponseDto insertProduct(ProductRequestDto productRequestDto) throws IOException;
+    ProductResponseDto editProduct(ProductRequestDto productRequestDto) throws IOException;
     int importProduct(long productId, int amount);
     boolean stopBusinessProduct(long productId);
 }

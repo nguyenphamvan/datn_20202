@@ -13,8 +13,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude= {"order", "product"})
-@ToString(exclude= {"order", "product"})
+@EqualsAndHashCode(exclude = {"order", "product"})
+@ToString(exclude = {"order", "product"})
 public class OrderDetail {
 
     @Id
@@ -35,21 +35,4 @@ public class OrderDetail {
     @JoinColumn(name = "orderId")
     @JsonIgnore
     private Order order;
-
-    public OrderDetailDto convertOrderDetailToOrderDetailDto() {
-        OrderDetailDto orderDetailDto = new OrderDetailDto();
-        orderDetailDto.setId(this.getId());
-        orderDetailDto.setProductId(this.getProduct().getId());
-        orderDetailDto.setProductName(this.getProduct().getName());
-        orderDetailDto.setProductUrl(this.getProduct().getUrl());
-        orderDetailDto.setImage(this.getProduct().getImage());
-        orderDetailDto.setQuantity(this.getQuantity());
-        orderDetailDto.setDiscount(this.getDiscount());
-        orderDetailDto.setRawTotal(this.getTotalPrice());
-        orderDetailDto.setPrice(this.getPrice());
-        orderDetailDto.setSupplierName(this.getProduct().getSupplier().getName());
-        orderDetailDto.setReviewed(this.isReviewed());
-        return orderDetailDto;
-    }
-
 }

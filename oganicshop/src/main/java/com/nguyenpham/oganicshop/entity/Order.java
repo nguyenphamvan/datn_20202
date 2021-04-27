@@ -69,52 +69,6 @@ public class Order {
         this.orderLoggings.add(logOrder);
     }
 
-    // should order moder mapper
-    public OrderDtoResponse convertOrderToOrderDto() {
-        OrderDtoResponse orderDto = new OrderDtoResponse();
-        orderDto.setId(this.getId());
-        orderDto.setShippingAddress(new AddressRequestDto(this.contactReceiver, this.contactPhone, this.contactAddress));
-        orderDto.setSubTotal(this.getSubTotal());
-        orderDto.setShipFee(this.getShipFee());
-        orderDto.setDiscount(this.getDiscount());
-        orderDto.setTotal(this.getTotal());
-        orderDto.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
-        orderDto.setMessage(this.getMessage());
-        orderDto.setPaymentMethod(this.getPaymentMethod());
-        orderDto.setNote(this.getNote());
-        orderDto.setOrderDate(DateTimeUtil.dateTimeFormat(this.getOrderDate()));
-        orderDto.setDeliveryDate(DateTimeUtil.dateTimeFormat((this.getDeliveryDate())));
-        List<OrderDetailDto> orderDetailDtoList = new ArrayList<>();
-        StringBuilder summaryProductName = new StringBuilder("");
-        this.getOrderDetails().forEach(orderDetail -> {
-            summaryProductName.append(orderDetail.getProduct().getName());
-            orderDetailDtoList.add(orderDetail.convertOrderDetailToOrderDetailDto());
-        });
-        orderDto.setOrderLogging(this.convertOrderLoggingToOrderLoggingDto());
-        orderDto.setSummaryProductName(summaryProductName.toString());
-        orderDto.setListOrderDetail(orderDetailDtoList);
-        return orderDto;
-    }
-
-    // should order moder mapper
-    public OrderDtoResponse convertToDtoNotDetail() {
-        OrderDtoResponse orderDto = new OrderDtoResponse();
-        orderDto.setId(this.getId());
-        orderDto.setSubTotal(this.getSubTotal());
-        orderDto.setShipFee(this.getShipFee());
-        orderDto.setDiscount(this.getDiscount());
-        orderDto.setTotal(this.getTotal());
-        orderDto.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
-        orderDto.setOrderDate(DateTimeUtil.dateTimeFormat(this.getOrderDate()));
-        orderDto.setDeliveryDate(DateTimeUtil.dateTimeFormat((this.getDeliveryDate())));
-        StringBuilder summaryProductName = new StringBuilder("");
-        this.getOrderDetails().forEach(orderDetail -> {
-            summaryProductName.append(orderDetail.getProduct().getName());
-        });
-        orderDto.setSummaryProductName(summaryProductName.toString());
-        return orderDto;
-    }
-
     public OrderLoggingDto convertOrderLoggingToOrderLoggingDto() {
         OrderLoggingDto orderLoggingDto = new OrderLoggingDto();
         orderLoggingDto.setOrderId(this.getId());

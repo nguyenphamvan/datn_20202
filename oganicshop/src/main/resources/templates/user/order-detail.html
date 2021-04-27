@@ -337,9 +337,9 @@
                     $(".styles__StyledAccountOrderDetail .created-date").text("Ngày đặt hàng: " + order["orderDate"]);
                     $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .date").text(order["message"].split(" - ")[0]);
                     $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .comment").text(order["message"].split(" - ")[1]);
-                    $(".styles__StyledSection.order-info-1 > div.content > p.name").text(order["shippingAddress"]["contactReceiver"]);
-                    $(".styles__StyledSection.order-info-1 .content p.address span:last-child").text(order["shippingAddress"]["contactAddress"]);
-                    $(".styles__StyledSection.order-info-1 .content p.phone span:last-child").text(order["shippingAddress"]["contactPhone"]);
+                    $(".styles__StyledSection.order-info-1 > div.content > p.name").text(order["address"]["contactReceiver"]);
+                    $(".styles__StyledSection.order-info-1 .content p.address span:last-child").text(order["address"]["contactAddress"]);
+                    $(".styles__StyledSection.order-info-1 .content p.phone span:last-child").text(order["address"]["contactPhone"]);
                     $(".styles__StyledSection.order-info-2 .content p:first-child").text("Giao hàng vào ngày : " + order["deliveryDate"]);
                     if (parseInt(order["shipFee"]) === 0) {
                         $(".styles__StyledSection.order-info-2 .content p:last-child").text("Miễn phí vận chuyển");

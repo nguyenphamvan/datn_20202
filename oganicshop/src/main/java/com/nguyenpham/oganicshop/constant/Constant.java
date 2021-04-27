@@ -11,6 +11,7 @@ public class Constant {
     public static final String PAYMENT_METHOD_DEFAULT = "cod";
     public static final String PAYMENT_METHOD_STANDARD = "standard";
     public static final String MESSAGE_ORDER_SUCCESS = "Đặt hàng thành công, đơn hàng đang được xử lý!";
+    public static final String DIR_UPLOAD_IMAGE_PRODUCT = "static/images/products/";
 
     public static final Map<Integer,String> MAP_ORDER_TRACKING_STATUS;
     static{

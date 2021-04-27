@@ -510,7 +510,7 @@
 
                     if (data["maxOrderPrice"]) {
                         $("#max-order-price").text(data["maxOrderPrice"]);
-                        $("#max-order-price").next().find("a").attr("href", "/" + userId + "/maxOrderPrice");
+                        $("#max-order-price").next().find("a").attr("href", "/admin/manager_users/user/" + userId + "/maxOrderHistory");
                     } else {
                         $("#max-order-price").text("0");
                         $("#max-order-price").next().hide();

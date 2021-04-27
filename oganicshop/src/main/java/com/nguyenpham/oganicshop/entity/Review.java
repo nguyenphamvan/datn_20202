@@ -21,8 +21,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer"})
-@EqualsAndHashCode(exclude={"rootComment", "subReviews", "product", "user", "replyReviewSet"})
-@ToString(exclude={"rootComment", "subReviews", "product", "user", "replyReviewSet"})
+@EqualsAndHashCode(exclude = {"rootComment", "subReviews", "product", "user", "replyReviewSet"})
+@ToString(exclude = {"rootComment", "subReviews", "product", "user", "replyReviewSet"})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,50 +57,4 @@ public class Review {
     @JoinColumn(name = "users_id")
     private User user;
 
-    public ResponseReviewDto convertReviewToReviewDto() {
-        ResponseReviewDto response = new ResponseReviewDto();
-        response.setId(this.id);
-        response.setComment(this.comment);
-        response.setTitle(this.title);
-        response.setRating(this.getRating());
-        response.setImg(this.getImg());
-        response.setReviewerName(this.user.getFullName());
-        response.setUserId(this.user.getId());
-        response.setProductId(this.product.getId());
-        response.setCreatedAt(this.createdAt);
-        response.setNumbersOfLike(this.getNumbersOfLike());
-        if (this.subReviews != null) {
-            for (Review subReview : subReviews) {
-                ResponseReviewDto subReviewDto = new ResponseReviewDto();
-                subReviewDto.setId(subReview.getId());
-                subReviewDto.setUserId(subReview.getUser().getId());
-                subReviewDto.setReviewerName(subReview.getUser().getFullName());
-                subReviewDto.setIdRootReview(subReview.getRootComment().getId());
-                subReviewDto.setComment(subReview.getComment());
-                subReviewDto.setTitle(subReview.getTitle());
-                subReviewDto.setCreatedAt(subReview.getCreatedAt());
-                subReviewDto.setNumbersOfLike(subReview.getNumbersOfLike());
-                response.addSubReview(subReviewDto);
-            }
-        }
-        return response;
-    }
-
-    public MyReviewDto convertReviewToMyReviewDto() {
-        MyReviewDto response = new MyReviewDto();
-        response.setId(this.getId());
-        response.setComment(this.getComment());
-        response.setTitle(this.getTitle());
-        response.setRating(this.getRating());
-        response.setImg(this.getImg());
-        response.setReviewerName(this.getUser().getFullName());
-        response.setUserId(this.getUser().getId());
-        response.setProductUrl(this.getProduct().getUrl());
-        response.setProductImg(this.getProduct().getImage());
-        response.setProductName(this.getProduct().getName());
-        response.setCreatedAt(this.getCreatedAt());
-        response.setUpdatedAt(this.getUpdatedAt());
-
-        return response;
-    }
 }

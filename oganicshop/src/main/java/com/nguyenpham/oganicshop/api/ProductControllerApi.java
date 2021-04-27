@@ -1,6 +1,7 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.converter.CategoryConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.dto.ProductResponseDto;
@@ -82,6 +83,7 @@ public class ProductControllerApi {
             maxPrice = object.get("maxPrice").asInt();
         }
 
+        CategoryConverter converter = new CategoryConverter();
         Map<String, Object> result = new HashMap<>();
         if (categoryUrl.equals("") && !supplierName.equals("")) {
             Supplier supplier = supplierService.findSupplierByName(supplierName);
@@ -90,14 +92,14 @@ public class ProductControllerApi {
             for (Product p : page.getContent()) {
                 setCategory.add(p.getCategory());
             }
-            result.put("categories", setCategory.stream().map(category -> category.convertToCategoryDto()).collect(Collectors.toSet()));
+            result.put("categories", setCategory.stream().map(category -> converter.entityToDto(category)).collect(Collectors.toSet()));
             result.put("suppliers", Arrays.asList(supplier));
         } else if (!categoryUrl.equals("") && supplierName.equals("")) {
             Category category = categoryService.getByCategoryUrl(categoryUrl);
             page = productService.getProductsByCategory(categoryUrl, minPrice, maxPrice, pageNum, pageSize, filed, sort);
             List<Supplier> suppliers = supplierService.findSuppliersByCategory(categoryUrl);
             result.put("suppliers", suppliers);
-            result.put("categories", Arrays.asList(category.convertToCategoryDto()));
+            result.put("categories", Arrays.asList(new CategoryConverter().entityToDto(category)));
 
         } else {
             page = productService.getProductsByCategoryAndSupplier(categoryUrl, supplierName, minPrice, maxPrice, pageNum, pageSize, filed, sort);
@@ -105,7 +107,7 @@ public class ProductControllerApi {
             Category category = categoryService.getByCategoryUrl(categoryUrl);
 
             result.put("suppliers", Arrays.asList(supplier));
-            result.put("categories", Arrays.asList(category.convertToCategoryDto()));
+            result.put("categories", Arrays.asList(new CategoryConverter().entityToDto(category)));
 
         }
 

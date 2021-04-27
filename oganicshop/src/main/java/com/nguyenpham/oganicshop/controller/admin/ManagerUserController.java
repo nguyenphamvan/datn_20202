@@ -24,9 +24,15 @@ public class ManagerUserController {
     }
 
     @GetMapping("/user/{userId}/orderHistory")
-    public String viewOrderHistory(@PathVariable("userId") long userId, Model model) {
+    public String viewMaxOrderHistory(@PathVariable("userId") long userId, Model model) {
         model.addAttribute("userId", userId);
         return "admin/manager-orderHistory";
+    }
+
+    @GetMapping("/user/{userId}/maxOrderHistory")
+    public String viewOrderHistory(@PathVariable("userId") long userId, Model model) {
+        model.addAttribute("userId", userId);
+        return "admin/manager-maxOrderHistory";
     }
 
     @GetMapping("/user/{userId}/reviews")

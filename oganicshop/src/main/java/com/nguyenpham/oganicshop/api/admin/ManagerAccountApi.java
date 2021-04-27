@@ -1,6 +1,8 @@
 package com.nguyenpham.oganicshop.api.admin;
 
+import com.nguyenpham.oganicshop.converter.OrderConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
+import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.UserResponseDto;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -13,8 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
@@ -66,6 +70,17 @@ public class ManagerAccountApi {
         Map<String, Object> response = new HashMap<>();
         response.put("user", userConverter.entityToDto(user));
         response.put("reviews", reviewService.getListReviews(user));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{userId}/maxOrderHistory")
+    public ResponseEntity<?> getUserMaxOrdersHistory(@PathVariable("userId") long userId) {
+        Map<String, Object> response = new HashMap<>();
+        UserResponseDto user = userConverter.entityToDto(userService.findUserById(userId));
+        response.put("user", user);
+        OrderDtoResponse maxOrderHistory = orderService.getAllOrderByUserId(userId).stream().max(Comparator.comparing(OrderDtoResponse::getTotal)).orElseThrow(NoSuchElementException::new);
+        maxOrderHistory = new OrderConverter().entityToDto(orderService.getOrderById(maxOrderHistory.getId()));
+        response.put("maxOrderHistory", maxOrderHistory);
         return ResponseEntity.ok(response);
     }
 

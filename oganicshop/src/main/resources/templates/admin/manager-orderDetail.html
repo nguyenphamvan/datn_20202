@@ -415,7 +415,7 @@
             contentType: "application/json",
             success: function (data) {
                 let order = data["order"];
-                let contact = order["shippingAddress"];
+                let contact = order["address"];
                 let listOrderDetail = order["listOrderDetail"];
                 let loggingStatus = order["orderLogging"]["loggingStatus"];
                 $("#div-info-1").find("div:first-child > p:first-child > span:first-child").text("Mã đơn hàng #" + order["id"]);

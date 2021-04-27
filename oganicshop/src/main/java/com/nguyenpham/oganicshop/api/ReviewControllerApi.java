@@ -57,7 +57,7 @@ public class ReviewControllerApi {
             reviewService.save(requestReviewDto);
             MultipartFile file = requestReviewDto.getImage();
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            String uploadDir = "C:/Users/nguye/Desktop/datn_20202/oganicshop/src/main/resources/static/images/image-product-review/" + requestReviewDto.getProductId();
+            String uploadDir = "static/images/image-product-review/" + requestReviewDto.getProductId();
             FileUploadUtil.saveFile(uploadDir, fileName, file);
             return ResponseEntity.ok("file " + file.getOriginalFilename() + " đã được upload thành công");
         } catch (IOException e) {
