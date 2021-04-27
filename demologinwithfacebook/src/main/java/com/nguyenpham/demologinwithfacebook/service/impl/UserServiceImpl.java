@@ -37,10 +37,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName, Provider provider) {
-        User user = new User();
+    public User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName) {
+        User user = userRepository.findByEmail(email);
         user.setFullname(fullName);
-        user.setProvider(provider);
         return userRepository.save(user);
     }
 }

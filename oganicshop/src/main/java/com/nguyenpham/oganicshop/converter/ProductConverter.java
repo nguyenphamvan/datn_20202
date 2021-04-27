@@ -30,7 +30,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
             productResponseDto.setMainImage("/images/products/" + product.getId() + "/" + imagesDb[0]);
             productResponseDto.setImages(imagesDb);
         } else {
-            productResponseDto.setMainImage("/images/products/" + product.getId() + "/default.jpg");
+            productResponseDto.setMainImage("/images/products/default.png");
             productResponseDto.setImages(null);
         }
         productResponseDto.setPrice(product.getPrice());

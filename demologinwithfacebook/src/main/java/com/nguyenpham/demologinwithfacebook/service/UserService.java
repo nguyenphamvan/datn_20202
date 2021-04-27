@@ -10,5 +10,5 @@ public interface UserService {
     List<User> findAll();
     User findUserByEmail(String email);
     User registerNewUserAfterOAuthLoginSuccess(String email, String fullName, Provider provider);
-    User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName, Provider local);
+    User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName);
 }

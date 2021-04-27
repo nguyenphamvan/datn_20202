@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service;
 
+import com.nguyenpham.oganicshop.constant.Provider;
 import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
@@ -34,5 +35,8 @@ public interface UserService {
     void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException;
     boolean verify(String verificationCode);
     void doBlockAccount(long userId, boolean isBlock);
+
+    User registerNewUserAfterOAuthLoginSuccess(String email, String fullName, Provider provider);
+    User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName);
 
 }

@@ -1,6 +1,9 @@
 package com.nguyenpham.oganicshop.config;
 
 import com.nguyenpham.oganicshop.security.UserDetailServiceImpl;
+import com.nguyenpham.oganicshop.security.oauth2.CustomOAuth2UserService;
+import com.nguyenpham.oganicshop.security.oauth2.Oauth2LoginSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,6 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CustomOAuth2UserService oauth2UserService;
+    @Autowired
+    private Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -46,6 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.authorizeRequests().
+                antMatchers("/oauth2/**").permitAll().
                 antMatchers("/signup", "/api/registerAccount", "/api/verifyAccount").permitAll()
                 // Các yêu cầu phải login với vai trò user hoặc admin
                 // Nếu chưa login, nó sẽ redirect tới trang /login.
@@ -57,14 +66,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic().and()
-//                .formLogin()
-//                    .permitAll()
-//                    .loginPage("/login")
-//                    .usernameParameter("email")
-//                    .passwordParameter("password")
-//                .and()
-//                .logout().permitAll()
-//                .logoutSuccessUrl("/logout_success").and()
-                .exceptionHandling().accessDeniedPage("/403");
+                .formLogin()
+                    .permitAll()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                .and()
+                .logout().permitAll()
+                .logoutSuccessUrl("/logout_success").and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(oauth2UserService)
+                .and().successHandler(oauth2LoginSuccessHandler);
+//                .exceptionHandling().accessDeniedPage("/403");
     }
 }

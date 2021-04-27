@@ -1,8 +1,8 @@
-package com.nguyenpham.demologinwithfacebook.security.oauth2;
+package com.nguyenpham.oganicshop.security.oauth2;
 
-import com.nguyenpham.demologinwithfacebook.constant.Provider;
-import com.nguyenpham.demologinwithfacebook.entity.User;
-import com.nguyenpham.demologinwithfacebook.service.UserService;
+import com.nguyenpham.oganicshop.constant.Provider;
+import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;

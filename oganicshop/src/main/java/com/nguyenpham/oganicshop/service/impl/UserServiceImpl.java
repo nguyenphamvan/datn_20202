@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.constant.Provider;
 import com.nguyenpham.oganicshop.converter.AddressConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
@@ -208,6 +209,19 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).get();
         user.setBlocked(isBlock);
         userRepository.save(user);
+    }
+
+    @Override
+    public User registerNewUserAfterOAuthLoginSuccess(String email, String fullName, Provider provider) {
+        User user = new User();
+        user.setEmail(email);
+        user.setEnabled(true);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName) {
+        return null;
     }
 
     @Override
