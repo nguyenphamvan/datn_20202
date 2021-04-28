@@ -21,7 +21,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponseDto.setProductName(product.getName());
         productResponseDto.setProductUrl(product.getUrl());
         productResponseDto.setBaseDescription(product.getBaseDescription());
-        productResponseDto.setDetailDescription(product.getDetailDescription());
+        productResponseDto.setDetailDescription(product.getDetailDescription().trim());
         productResponseDto.setCategoryName(product.getCategory().getCategoryName());
         productResponseDto.setSupplierName(product.getSupplier().getName());
 
@@ -87,7 +87,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
             product.setImage(StringUtils.join(images, ","));
         }
         product.setBaseDescription(request.getBaseDescription());
-        product.setDetailDescription(request.getDetailDescription());
+        product.setDetailDescription(request.getDetailDescription().trim());
         product.setPrice(request.getPrice());
         product.setDiscount(request.getDiscount());
         product.setFinalPrice(request.getPrice() - request.getDiscount());

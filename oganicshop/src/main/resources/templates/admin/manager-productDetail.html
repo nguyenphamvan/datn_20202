@@ -101,7 +101,7 @@
             <div id="collapseFour" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="#"><i class="fas fa-fw fa-wrench"></i> Cập nhật thông tin</a>
-                    <a class="collapse-item" href="#">Thoát</a>
+                    <a class="collapse-item" th:href="@{/logout}">Thoát</a>
                 </div>
             </div>
         </li>
@@ -184,66 +184,55 @@
                 <!--Section: Block Content-->
                 <section class="mb-5">
                     <div class="row">
-                        <div class="col-md-5">
-                            <div class="mdb-lightbox">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <figure>
-                                            <a href="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
-                                               data-size="710x823">
-                                                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
-                                                     class="img-fluid z-depth-1">
-                                            </a>
-                                        </figure>
+                        <div class="col-lg-5">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-bottom: 30px;">
+                                    <div class="card">
+                                        <a data-size="710x823">
+                                            <img style="width: 100%;" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                                 class="img-fluid z-depth-1">
+                                        </a>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <div class="view overlay rounded z-depth-1 gallery-item">
-                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg"
-                                                         class="img-fluid">
-                                                    <div class="mask rgba-white-slight"></div>
-                                                </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="card-deck">
+                                        <div class="card">
+                                            <div class="view overlay rounded z-depth-1 gallery-item">
+                                                <img style="width: 100%;" class="img-fluid">
                                             </div>
-                                            <div class="col-3">
-                                                <div class="view overlay rounded z-depth-1 gallery-item">
-                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg"
-                                                         class="img-fluid">
-                                                    <div class="mask rgba-white-slight"></div>
-                                                </div>
+                                        </div>
+                                        <div class="card ">
+                                            <div class="view overlay rounded z-depth-1 gallery-item">
+                                                <img style="width: 100%;" class="img-fluid">
                                             </div>
-                                            <div class="col-3">
-                                                <div class="view overlay rounded z-depth-1 gallery-item">
-                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg"
-                                                         class="img-fluid">
-                                                    <div class="mask rgba-white-slight"></div>
-                                                </div>
+                                        </div>
+                                        <div class="card ">
+                                            <div class="view overlay rounded z-depth-1 gallery-item">
+                                                <img style="width: 100%;" class="img-fluid">
                                             </div>
-                                            <div class="col-3">
-                                                <div class="view overlay rounded z-depth-1 gallery-item">
-                                                    <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
-                                                         class="img-fluid">
-                                                    <div class="mask rgba-white-slight"></div>
-                                                </div>
+                                        </div>
+                                        <div class="card ">
+                                            <div class="view overlay rounded z-depth-1 gallery-item">
+                                                <img style="width: 100%;" class="img-fluid">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-7">
-                            <div>
+                        <div class="col-lg-7">
+                            <div class="row">
                                 <div style="display: flex; margin: 20px 0px 20px 0px;">
                                     <a id="btn-import-product"
-                                       class="btn btn-info" style="margin-right: 10px;">Nhập thêm</a>
-                                    <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger"
-                                            style="margin-right: 10px;">Ngừng bán
+                                       class="btn btn-info btn-sm shadow-sm" style="margin-right: 10px;">Nhập thêm</a>
+                                    <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger btn-sm shadow-sm" style="margin-right: 10px;">
+                                        Ngừng bán
                                     </button>
                                     <a th:href="@{'/admin/manager_products/updateProduct/' + ${productId}}"
-                                       class="btn btn-primary" style="margin-right: 10px;">Cập nhật</a>
+                                       class="btn btn-primary btn-sm shadow-sm" style="margin-right: 10px;">Cập nhật</a>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-between">
+                            <div class="row d-flex justify-content-between">
                                 <h5 id="productName"><b></b></h5>
                             </div>
 
@@ -313,7 +302,8 @@
                                             <label for="import-amount" class="col-sm-4 col-form-label">Số lượng nhập
                                                 thêm</label>
                                             <div class="col-sm-4">
-                                                <input type="number" class="form-control" id="import-amount" name="amount"
+                                                <input type="number" class="form-control" id="import-amount"
+                                                       name="amount"
                                                        placeholder="Số lượng nhập thêm">
                                             </div>
                                             <div class="col-sm-4">
@@ -326,15 +316,7 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label for="baseDescription"><strong>Mô tả ngắn</strong></label>
-                                    <p class="pt-1" id="baseDescription"></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label for="detailDescription"><strong>Mô tả chi tiết</strong></label>
-                                    <textarea class="form-control" rows="8" id="detailDescription" name="text"
-                                              readonly="readonly"></textarea>
+                                    <div id="detailDescription"></div>
                                 </div>
                             </div>
                         </div>
@@ -438,8 +420,31 @@
             contentType: "application/json",
             success: function (data) {
                 //image
-                $("#content > div > section > div > div.col-md-5 > div > div > div:nth-child(1) > figure > a > img")
-                    .attr("src", data["mainImage"]);
+                let mainImage = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(1) > div > a > img");
+                let subImage1= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(1) > div > img");
+                let subImage2= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(2) > div > img");
+                let subImage3= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(3) > div > img");
+                let subImage4= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(4) > div > img");
+
+                if (data.hasOwnProperty("mainImage")) {
+                    mainImage.closest("a").attr("href", data["mainImage"]);
+                    mainImage.attr("src", data["mainImage"]);
+                }
+
+                if (data.hasOwnProperty("images")) {
+                    $.each(data["images"], function (index, img) {
+                        console.log(index + " : " + img);
+                        if (index === 0) {
+                            subImage1.attr("src", img);
+                        } else if (index === 1) {
+                            subImage2.attr("src", img);
+                        } else if (index === 2) {
+                            subImage3.attr("src", img);
+                        } else if (index === 3) {
+                            subImage4.attr("src", img);
+                        }
+                    });
+                }
 
                 //productName
                 $("#productName > b").text(data["productName"]);
@@ -462,9 +467,18 @@
                 $("#finalPrice").text(data["finalPrice"]) // finalPrice
                 $("#amount").text(data["amount"]); // amount
                 $("#amountSold").text(data["amountSold"]); // amountSold
-                $("#status").text(data["status"]); // status product
+                // status product
+                if (data["status"] === "Sắp hết hàng") {
+                    $("#status").addClass("text-warning").text(data["status"]);
+                } else if (data["status"] === "Ngừng bán") {
+                    $("#status").addClass("text-danger").text(data["status"]);
+                } else {
+                    $("#status").addClass("text-primary").text(data["status"]);
+                }
+
                 $("#baseDescription").text(data["baseDescription"]);
-                $("#detailDescription").val(data["detailDescription"]);
+                console.log(data["detailDescription"]);
+                $("#detailDescription").html(data["detailDescription"]);
             },
             error: function () {
                 alert("có lỗi xảy ra");
@@ -475,7 +489,7 @@
     function importProduct(productId, amount) {
         $.ajax({
             url: "/api/admin/product/import/" + productId,
-            data: JSON.stringify({"amount" : amount}),
+            data: JSON.stringify({"amount": amount}),
             type: "PUT",
             contentType: "application/json",
             success: function (data) {

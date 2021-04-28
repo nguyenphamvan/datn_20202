@@ -22,6 +22,7 @@
 
     <!-- Custom styles for this page -->
     <link th:href="@{/admin/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+    <!-- Custom styles for this page -->
 
 </head>
 
@@ -265,7 +266,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="detailDescription">Mô tả chi tiết:</label>
-                                <textarea rows="8" class="form-control" id="detailDescription"
+                                <textarea rows="10" class="ckeditor form-control" id="detailDescription"
                                           name="detailDescription"></textarea>
                             </div>
                         </div>
@@ -308,6 +309,9 @@
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
+
+<!-- ckeditor-->
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
 
 <!-- Bootstrap core JavaScript-->
 <script th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>

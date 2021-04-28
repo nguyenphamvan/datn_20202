@@ -14,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
@@ -25,6 +28,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    private CustomOAuth2UserService oauth2UserService;
 //    @Autowired
 //    private Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
+
+    @Bean
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        return new DefaultHttpFirewall();
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {

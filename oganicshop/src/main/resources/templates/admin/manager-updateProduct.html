@@ -239,7 +239,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <img id="output0" style="width: 100%; height: 150px;"/>
+                                    <img id="output0" style="width: 100%; height: 200px;"/>
                                 </div>
                             </div>
 
@@ -295,8 +295,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="detailDescription">Mô tả chi tiết:</label>
-                                        <textarea rows="8" class="form-control" id="detailDescription"
-                                                  name="detailDescription"></textarea>
+                                        <textarea rows="10" class="form-control" id="detailDescription"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -356,6 +355,9 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
+<!-- ckeditor-->
+<script th:src="@{/ckeditor/ckeditor.js}"></script>
+
 <!-- Bootstrap core JavaScript-->
 <script th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/admin/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
@@ -384,6 +386,8 @@
         $("#btn-update-product").on("click", function (e) {
             e.preventDefault();
             let data = new FormData($("#formUpdateProduct")[0]);
+            data.append("detailDescription", CKEDITOR.instances['detailDescription'].getData());
+            // console.log(CKEDITOR.instances['detailDescription'].getData());
             $.ajax({
                 url: "/api/admin/product/edit",
                 data: data,
@@ -397,7 +401,7 @@
                 success: function (result) {
                     $("#btn-update-product").prop("disabled", false);
                     $('#formUpdateProduct')[0].reset();
-                    $('#message').find("div.modal-body").text("Cập nhật sản phẩm thành công!!")
+                    $('#message').find("div.modal-body").text("Cập nhật sản phẩm thành công!!");
                     $('#message').modal('show');
                     $('#message').on('hidden.bs.modal', function () {
                         window.location.replace("/admin/manager_products");
@@ -502,21 +506,22 @@
                             $(this).prop('selected', true);
                         }
                     });
-                    $("#price").val(data["price"]); // price
-                    $("#promotion").val(data["promotion"]); // promotion
+                    $("#price").val(data["price"]);
+                    $("#promotion").val(data["promotion"]);
                     $("#baseDescription").val(data["baseDescription"]);
-                    $("#detailDescription").val(data["detailDescription"]);
+                    CKEDITOR.replace('detailDescription');
+                    CKEDITOR.instances['detailDescription'].setData( "<p>" + data["detailDescription"] + "</p>" );
+                    // $("#detailDescription").val(data["detailDescription"]);
                     $("#output0").attr("src", data["mainImage"]);
                     if (data.hasOwnProperty("images")) {
                         let arrImages = data["images"];
-                        console.log(arrImages);
                         for (let i = 0; i <= arrImages.length; i++) {
                             if (i==1) {
-                                $("#output1").attr("src", "/images/products/" + productId + "/" + arrImages[i]);
+                                $("#output1").attr("src", arrImages[i]);
                             } else if (i == 2) {
-                                $("#output2").attr("src", "/images/products/" + productId + "/" + arrImages[i]);
+                                $("#output2").attr("src", arrImages[i]);
                             } else if ( i == 3) {
-                                $("#output3").attr("src", "/images/products/" + productId + "/" + arrImages[i]);
+                                $("#output3").attr("src", arrImages[i]);
                             }
                         }
                     }

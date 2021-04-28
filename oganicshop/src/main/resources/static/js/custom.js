@@ -19,7 +19,7 @@ $(document).ready(function () {
                     if (result === false) {
                         $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                     } else {
-                        alert("sản phẩm đã được thêm vào giỏ hàng");
+                        $('#message').find("div.modal-body").text("sản phẩm đã được thêm vào giỏ hàng!!");
                     }
                 }
             })
@@ -187,7 +187,6 @@ $(document).ready(function () {
     $("div.add-to-cart > a.btn.min").on("click", function (e) {
          e.preventDefault();
          let url = $(this).attr("href");
-         alert(url);
         addProductFromWishlist(url);
     });
     /* function end product to wishlist */
@@ -323,7 +322,7 @@ function addProductFromWishlist(url) {
         dataType: 'json',
         success: function (result) {
             if (result === true) {
-                alert("Đã thêm vào danh sách yêu thích");
+                $('#message').find("div.modal-body").text("Đã thêm vào danh sách yêu thích!!");
             }
         },
         error: function (err) {
