@@ -571,6 +571,7 @@
             let itemClone = firstItem.clone();
             itemClone.show();
             if (item.hasOwnProperty("mainImage")) {
+                itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"] + ".html");
                 itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
                 itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
             }

@@ -550,10 +550,15 @@
         $.each(products, function (index, item) {
             let itemClone = firstItem.clone();
             itemClone.show();
+            if (item.hasOwnProperty("mainImage")) {
+                itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"] + ".html");
+                itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
+                itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
+            }
             itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
             itemClone.find("div.product-action-2 > a").attr("href", "/products/" + item["productUrl"] + ".html");
-            itemClone.find("div.product-content > div > span:nth-child(1)").text(item["finalPrice"]);
-            itemClone.find("div.product-content > div > span.old").text(item["price"]);
+            itemClone.find("div.product-content > div > span:nth-child(1)").text(item["finalPrice"] + " VNĐ");
+            itemClone.find("div.product-content > div > span.old").text(item["price"] + " VNĐ");
             $("#list-product").append(itemClone);
         });
         firstItem.hide();

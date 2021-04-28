@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +27,9 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
 
         //image
         if (product.getImage() != null) {
-            String[] imagesDb = product.getImage().split(",");
-            productResponseDto.setMainImage("/images/products/" + product.getId() + "/" + imagesDb[0]);
+            List<String> imagesDb = Arrays.asList(product.getImage().split(","))
+                    .stream().map(img -> "/images/products/" + product.getId() + "/" + img).collect(Collectors.toList());
+            productResponseDto.setMainImage(imagesDb.get(0));
             productResponseDto.setImages(imagesDb);
         } else {
             productResponseDto.setMainImage("/images/products/default.png");

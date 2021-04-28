@@ -21,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomOAuth2UserService oauth2UserService;
-    @Autowired
-    private Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
+//    @Autowired
+//    private CustomOAuth2UserService oauth2UserService;
+//    @Autowired
+//    private Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -66,19 +66,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic().and()
-                .formLogin()
-                    .permitAll()
-                    .loginPage("/login")
-                    .usernameParameter("email")
-                    .passwordParameter("password")
-                .and()
+//                .formLogin()
+//                    .permitAll()
+//                    .loginPage("/login")
+//                    .usernameParameter("email")
+//                    .passwordParameter("password")
+//                .and()
                 .logout().permitAll()
                 .logoutSuccessUrl("/logout_success").and()
-                .oauth2Login()
-                .loginPage("/login")
-                .userInfoEndpoint()
-                .userService(oauth2UserService)
-                .and().successHandler(oauth2LoginSuccessHandler);
-//                .exceptionHandling().accessDeniedPage("/403");
+//                .oauth2Login()
+//                .loginPage("/login")
+//                .userInfoEndpoint()
+//                .userService(oauth2UserService)
+//                .and().successHandler(oauth2LoginSuccessHandler);
+                .exceptionHandling().accessDeniedPage("/403");
     }
 }

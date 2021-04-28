@@ -17,7 +17,7 @@ public class ProductResponseDto {
     private String productName;
     private String productUrl;
     private String mainImage;
-    private String[] images;
+    private List<String> images;
     private String baseDescription;
     private String detailDescription;
     private int price;
