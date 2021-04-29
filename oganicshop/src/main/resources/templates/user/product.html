@@ -438,8 +438,8 @@
                         $("#reply-items-list-" + idReview).siblings(".view-reply-less").find('span').text(parseInt(numberOfReview) + 1);
                         $(html).delay(500).prependTo("#reply-items-list-" + idReview).hide().slideDown().fadeIn();
                     },
-                    error: function () {
-                        alert("có lỗi xảy ra");
+                    error: function (xhr) {
+                        alert(xhr.responseText);
                     }
                 });
             } else {
@@ -503,7 +503,6 @@
                 thisLikeButton.css("background-color", "#5ACAE9");
             }
 
-            console.log(actionLike);
             $.ajax({
                 url: "/api/review/likeComment",
                 data: JSON.stringify({
@@ -516,8 +515,8 @@
                 success: function (result) {
                     thisLikeButton.find("span > span").text("(" + result + ")");
                 },
-                error: function () {
-                    alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+                error: function (xhr) {
+                    alert(xhr.responseText);
                 }
             });
         });
@@ -538,13 +537,13 @@
                         $("div.quickview-slider-active-1").append(html);
                     });
                     $('.quickview-slider-active-1').owlCarousel({
-                        items: 1,
                         autoplay: true,
                         autoplayTimeout: 5000,
                         smartSpeed: 400,
                         autoplayHoverPause: true,
                         nav: true,
                         loop: true,
+                        items: 1,
                         merge: true,
                         dots: false,
                         navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
@@ -664,8 +663,8 @@
                     $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
                 },
-                error: function () {
-                    alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+                error: function (xhr) {
+                    alert(xhr.responseText);
                 }
             });
         }

@@ -156,8 +156,8 @@
                     getListProductIsNotReviewed();
                     window.location.replace("/");
                 },
-                error: function () {
-                    alert("có lỗi xảy ra");
+                error: function (xhr) {
+                    alert(xhr.responseText);
                 }
             });
         });
@@ -247,8 +247,8 @@
                         .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")
                 }
             },
-            error: function () {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -279,8 +279,8 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }

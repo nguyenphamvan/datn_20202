@@ -234,7 +234,7 @@
                     }
                 },
                 error: function (xhr) {
-                    alert("có lỗi xảy ra");
+                    alert(xhr.responseText);
                 }
             });
         }
@@ -280,8 +280,8 @@
                     $radios.filter('[value=female]').prop('checked', true);
                 }
             },
-            error: function () {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -307,8 +307,8 @@
                     $radios.filter('[value=female]').prop('checked', true);
                 }
             },
-            error: function () {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -339,8 +339,8 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }

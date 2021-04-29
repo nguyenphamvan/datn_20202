@@ -20,6 +20,7 @@ $(document).ready(function () {
                         $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                     } else {
                         $('#message').find("div.modal-body").text("sản phẩm đã được thêm vào giỏ hàng!!");
+                        $('#message').modal('show');
                     }
                 }
             })
@@ -98,6 +99,65 @@ $(document).ready(function () {
     });
     /* end function minus item in cart */
 
+    // /* function quick view product */
+    // $(document).on("click", "div.product-img > div > div.product-action > a", function (e) {
+    //     e.preventDefault();
+    //     $.ajax({
+    //         url: $(this).attr('href'),
+    //         type: "GET",
+    //         dataType: 'json',
+    //         success: function (data) {
+    //             let product = data["product"];
+    //
+    //             // set image
+    //             $("div.quickview-slider-active-modal").empty();
+    //             $.each(product["images"], function (index, item) {
+    //                 let html = "<div class=\"single-slider\">\n" +
+    //                     "           <img src='" + item + "'>\n" +
+    //                     "        </div>";
+    //                 $("div.quickview-slider-active-modal").append(html);
+    //             });
+    //             $('div.quickview-slider-active-modal').owlCarousel({
+    //                 items: 1,
+    //                 autoplay: true,
+    //                 autoplayTimeout: 5000,
+    //                 smartSpeed: 400,
+    //                 autoplayHoverPause: true,
+    //                 nav: true,
+    //                 loop: true,
+    //                 merge: true,
+    //                 dots: false,
+    //                 navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>']
+    //             })
+    //
+    //             $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
+    //             $('.quickview-content h2').text(product["productName"]);
+    //             $('.quickview-ratting').empty();
+    //             for (let i = 0; i < product["rating"]; i++) {
+    //                 $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
+    //             }
+    //             for (let i = 0; i < 5 - product["rating"]; i++) {
+    //                 $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
+    //             }
+    //             $('#num-customer-review').text(product["numberOfReviews"]);
+    //             $('.quickview-content h3').text(product["finalPrice"] + " đ").css("color", "red");
+    //             $('.quickview-peragraph').html(product["detailDescription"]);
+    //             $('#add-cart').attr('productUrl', product["productUrl"]);
+    //             $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
+    //             $('.add-to-cart').attr('productUrl', product["productUrl"]);
+    //             if (product["amount"] > 0) {
+    //                 $('#in-stock').css('display', 'block');
+    //                 $('#out-stock').css('display', 'none');
+    //             } else {
+    //                 $('#in-stock').css('display', 'none');
+    //                 $('#out-stock').css('display', 'block');
+    //             }
+    //             $('#productModal').modal('show');
+    //         }
+    //     });
+    // });
+    // /* end function quick view product */
+
     /* function remove item cart using jquery ajax */
     $(document).on('click', 'td.action a', function () {
         let url = "/api/cart/remove/" + $(this).first().attr('id');
@@ -139,43 +199,7 @@ $(document).ready(function () {
     })
     /* end function remove item cart */
 
-    /* function quick view product */
-    $(".product-action a[title='Quick View']").on("click", function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: $(this).attr('href'),
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                let product = data["product"];
-                // alert(JSON.stringify(product));
-                $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
-                $('.quickview-content h2').text(product["productName"]);
-                $('.quickview-ratting').empty();
-                for (let i = 0; i < product["rating"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
-                }
-                for (let i = 0; i < 5 - product["rating"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
-                }
-                $('#num-customer-review').text(product["numberOfReviews"]);
-                $('.quickview-content h3').text(product["finalPrice"]);
-                $('.quickview-peragraph p').text(product["baseDescription"]);
-                $('#add-cart').attr('productUrl', product["productUrl"]);
-                $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
-                $('.add-to-cart').attr('productUrl', product["productUrl"]);
-                if (product["amount"] > 0) {
-                    $('#in-stock').css('display', 'block');
-                    $('#out-stock').css('display', 'none');
-                } else {
-                    $('#in-stock').css('display', 'none');
-                    $('#out-stock').css('display', 'block');
-                }
-                $('#productModal').modal('show');
-            }
-        })
-    });
-    /* end function quick view product */
+
 
     /* function add product to wishlist */
     $(".product-action a[title='Wishlist']").on("click", function (e) {
@@ -323,6 +347,7 @@ function addProductFromWishlist(url) {
         success: function (result) {
             if (result === true) {
                 $('#message').find("div.modal-body").text("Đã thêm vào danh sách yêu thích!!");
+                $('#message').modal('show');
             }
         },
         error: function (err) {

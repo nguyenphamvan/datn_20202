@@ -344,8 +344,8 @@
                 $("div.styles__StyledAccountAddressEdit").hide();
                 $("div.styles__StyledAccountAddressCreate").hide();
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được thông tin giao hàng");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -370,8 +370,8 @@
                 $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item").nextAll().remove();
                 getTheShippingAddress();
             },
-            error: function () {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -384,8 +384,8 @@
             success: function (data) {
                 thisItem.closest("div.item").remove();
             },
-            error: function () {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -416,8 +416,8 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }

@@ -195,7 +195,7 @@
                         <div class="shop-top">
                             <div class="shop-shorter">
                                 <div class="single-shorter">
-                                    <label>Hiển thị :</label>
+                                    <label>Hiển thị </label>
                                     <select id="page-size">
                                         <option value="6">06</option>
                                         <option value="9">09</option>
@@ -204,7 +204,7 @@
                                     </select>
                                 </div>
                                 <div class="single-shorter">
-                                    <label>Sắp xếp theo :</label>
+                                    <label>Sắp xếp </label>
                                     <select id="sort-by">
                                         <option value="name-asc">Name (A - Z)</option>
                                         <option value="name-desc">Name (Z - A)</option>
@@ -212,6 +212,17 @@
                                         <option value="finalPrice-desc">Price (High &gt; Low)</option>
                                     </select>
                                 </div>
+
+                                <div class="single-shorter">
+                                    <div style="display: flex">
+                                        <label>Giá từ </label>
+                                        <input type="text" name="min-price" style="width: 80px;"/>
+                                        <label> Đến </label>
+                                        <input type="text" name="max-price" style="width: 80px;"/>
+                                        <button>Lọc</button>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <!--/ End Shop Top -->
@@ -273,19 +284,8 @@
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                         <!-- Product Slider -->
                         <div class="product-gallery">
-                            <div class="quickview-slider-active">
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
+                            <div class="quickview-slider-active-modal">
+
                             </div>
                         </div>
                         <!-- End Product slider -->
@@ -305,11 +305,10 @@
                                                             style="background-color: #bd2130"></i> out of stock</span>
                                 </div>
                             </div>
+
                             <h3></h3>
-                            <div class="quickview-peragraph">
-                                <p></p>
-                            </div>
-                            <div class="quantity">
+
+                            <div class="quantity" style="margin-bottom: 30px;">
                                 <!-- Input Order -->
                                 <div class="input-group">
                                     <div class="button minus">
@@ -329,9 +328,13 @@
                                 </div>
                                 <!--/ End Input Order -->
                             </div>
+
                             <div class="add-to-cart">
                                 <a id="add-cart" class="btn">Thêm vào giỏ hàng</a>
                                 <a th:if="${#request.userPrincipal}" class="btn min"><i class="ti-heart"></i></a>
+                            </div>
+
+                            <div class="quickview-peragraph card">
                             </div>
                         </div>
                     </div>
@@ -359,7 +362,6 @@
             "sortBy" : $("#sort-by option:selected").val().split("-")[0],
             "pageSize": $("#page-size option:selected").val()
         }
-        console.log(data);
         getListProductByCategory(data);
 
         $(document).on("click", ".quickview-content .quantity .button.minus", function () {
@@ -456,6 +458,14 @@
             }
             getListProductByCategory(data);
         });
+
+        /* function quick view product */
+        $(document).on("click", "div.product-img > div > div.product-action > a", function (e) {
+            e.preventDefault();
+            loadInfoProductForModal($(this).attr('href'));
+        });
+        /* end function quick view product */
+
     });
 
     function getListCategory() {
@@ -484,8 +494,8 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -498,7 +508,6 @@
             dataType : "json",
             contentType: "application/json",
             success: function (result) {
-                console.log(result["products"]);
                 $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
                 if (result["categories"][0].hasOwnProperty("subCategory")) {
                     $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
@@ -535,7 +544,7 @@
 
                 $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
                     .empty();
-                let html = "<li page='1'><a>First</a></li>\n";
+                let html = "<li page='1'><a>Trang đầu</a></li>\n";
                 if (result["page"] > 1) {
                     html += "<li page=" + (parseInt(result["page"]) - 1 ) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
                 } else {
@@ -553,13 +562,13 @@
                 } else {
                     html += "<li page=" + parseInt(result["page"]) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
                 }
-                html += "<li page=" + parseInt(result["totalPages"]) + "><a>Last</a></li>";
+                html += "<li page=" + parseInt(result["totalPages"]) + "><a>Trang cuối</a></li>";
                 $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
                     .append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách sản phẩm");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
 
@@ -576,12 +585,69 @@
                 itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
             }
             itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+            itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/products/" + item["productUrl"]);
             itemClone.find("div.product-action-2 > a").attr("href", "/products/" + item["productUrl"] + ".html");
             itemClone.find("div.product-content > div > span:nth-child(1)").text(item["finalPrice"] + " VNĐ");
             itemClone.find("div.product-content > div > span.old").text(item["price"] + " VNĐ");
             $("#list-product").append(itemClone);
         });
         firstItem.hide();
+    }
+
+    function loadInfoProductForModal(url) {
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: 'json',
+            success: function (data) {
+                let product = data["product"];
+                alert("xem nhanh");
+                // set image
+                $("div.quickview-slider-active-modal").empty();
+                $.each(product["images"], function (index, item) {
+                    let html = "<div class=\"single-slider\">\n" +
+                        "           <img src='" + item + "'>\n" +
+                        "        </div>";
+                    $("div.quickview-slider-active-modal").append(html);
+                });
+                $('div.quickview-slider-active-modal').owlCarousel({
+                    autoplay: true,
+                    autoplayTimeout: 5000,
+                    smartSpeed: 400,
+                    autoplayHoverPause: true,
+                    nav: true,
+                    loop: true,
+                    items: 1,
+                    merge: true,
+                    dots: false,
+                    navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>']
+                })
+
+                $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
+                $('.quickview-content h2').text(product["productName"]);
+                $('.quickview-ratting').empty();
+                for (let i = 0; i < product["rating"]; i++) {
+                    $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
+                }
+                for (let i = 0; i < 5 - product["rating"]; i++) {
+                    $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
+                }
+                $('#num-customer-review').text(product["numberOfReviews"]);
+                $('.quickview-content h3').text(product["finalPrice"] + " đ").css("color", "red");
+                $('.quickview-peragraph').html(product["detailDescription"]);
+                $('#add-cart').attr('productUrl', product["productUrl"]);
+                $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
+                $('.add-to-cart').attr('productUrl', product["productUrl"]);
+                if (product["amount"] > 0) {
+                    $('#in-stock').css('display', 'block');
+                    $('#out-stock').css('display', 'none');
+                } else {
+                    $('#in-stock').css('display', 'none');
+                    $('#out-stock').css('display', 'block');
+                }
+                $('#productModal').modal('show');
+            }
+        });
     }
 
     /*]]>*/

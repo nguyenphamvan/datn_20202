@@ -241,8 +241,8 @@
                     alert(result);
                     window.location.replace("/");
                 },
-                error: function () {
-                    alert("có lỗi xảy ra");
+                error: function (xhr) {
+                    alert(xhr.responseText);
                 }
             });
         })
@@ -318,7 +318,6 @@
                     if (result === true) {
                         window.location.href = "/sales/order/history";
                     }
-
                 }
             });
         });
@@ -363,8 +362,8 @@
                     $(".styles__StyledAccountOrderDetail").append("<div style='margin: auto;'>Không tìm thấy đơn hàng</div>")
                 }
             },
-            error: function() {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -412,13 +411,11 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
-
-
     /*]]>*/
 </script>
 </body>

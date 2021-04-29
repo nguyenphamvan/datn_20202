@@ -212,13 +212,13 @@
         <div class="group-action-button" style="padding-top: 30px;">
             <!-- Button Widget -->
             <div class="single-widget get-button" style="padding: 0px;">
-                <div class="content" style="display: flex;">
-                    <div class="button" style="margin-right: 10px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="button">
                         <button id="payment-order" type="submit">
                             <a class="btn">Tiến hành đặt hàng</a>
                         </button>
                     </div>
-                    <div class="button" style="margin-right: 10px;">
+                    <div class="button">
                         <button type="submit">
                             <a th:href="@{/cart.html}" class="btn">Xem lại giỏ hàng</a>
                         </button>
@@ -534,8 +534,8 @@
                 });
                 firstDivAddr.hide();
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách địa chỉ giao hàng");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -557,8 +557,8 @@
                 });
                 firstItem.hide();
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách mã giảm giá cho bạn");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -589,8 +589,8 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }

@@ -92,8 +92,8 @@
                             window.location.href = "/403";
                         }
                     },
-                    error: function () {
-                        alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+                    error: function (xhr) {
+                        alert(xhr.responseText);
                     }
                 });
             }

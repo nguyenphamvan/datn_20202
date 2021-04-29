@@ -345,8 +345,8 @@
                     $("body > div.shopping-cart.section > div.container").append(html);
                 }
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách sản phẩm trong giỏ hàng");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -377,8 +377,8 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }

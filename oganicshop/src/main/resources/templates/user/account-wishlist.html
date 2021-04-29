@@ -141,8 +141,8 @@
 
                 }
             },
-            error: function () {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -173,8 +173,8 @@
                 $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
@@ -191,8 +191,8 @@
                     buttonDelete.closest("li.item").remove();
                 }
             },
-            error: function (err) {
-                alert("có lỗi xảy ra");
+            error: function (xhr) {
+                alert(xhr.responseText);
             }
         });
     }
