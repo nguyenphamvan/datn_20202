@@ -20,8 +20,8 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "orderDetails")
-@ToString(exclude = "orderDetails")
+@EqualsAndHashCode(exclude = {"orderDetails", "user", "orderLoggings"})
+@ToString(exclude = {"orderDetails", "user", "orderLoggings"})
 public class Order {
 
     @Id

@@ -147,7 +147,7 @@
                                         <span>Tạm tính</span>
                                         <span class="total-amount">$134.00</span>
                                     </div>
-                                    <a th:href="@{/templates/checkout.html}" class="btn animate">Thanh Toán</a>
+                                    <a th:href="@{/checkout.html}" class="btn animate">Thanh Toán</a>
                                 </div>
                                 <div id="cart-empty-header">
                                     <p>Chưa có sản phẩm trong giỏ hàng</p>
@@ -175,34 +175,11 @@
                                             <li class="active"><a th:href="@{/}">Trang chủ</a></li>
                                             <li><a>Danh mục<i class="ti-angle-down"></i></a>
                                                 <ul class="dropdown">
-<!--                                                    <li th:each="category : ${listCategory}">-->
-<!--                                                        <th:block th:if="${category.getSubCategories().size() > 0}">-->
-<!--                                                            <a class="parent-category"-->
-<!--                                                               th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"-->
-<!--                                                               th:utext="${category.getCategoryName()}"></a>-->
-<!--                                                            <ul class="list-child-category">-->
-<!--                                                                <li th:each="subCategory : ${category.getSubCategories()}">-->
-<!--                                                                    <a th:href="@{'/collections.html?category=' + ${subCategory.getCategoryUrl()}}"-->
-<!--                                                                       th:utext="${subCategory.getCategoryName()}"></a>-->
-<!--                                                                </li>-->
-<!--                                                            </ul>-->
-<!--                                                        </th:block>-->
-<!--                                                        <th:block th:if="${category.getSubCategories().size() == 0}">-->
-<!--                                                            <a th:href="@{'/collections.html?category=' + ${category.getCategoryUrl()}}"-->
-<!--                                                               th:utext="${category.getCategoryName()}"></a>-->
-<!--                                                        </th:block>-->
-<!--                                                    </li>-->
+
                                                 </ul>
                                             </li>
                                             <li><a href="#">Thông tin khuyễn mãi</a></li>
-                                            <li><a href="#">Blog<i class="ti-angle-down"></i><span
-                                                    class="new">New</span></a>
-                                                <ul class="dropdown">
-                                                    <li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
-                                                </ul>
-                                            </li>
-
-                                            <li><a href="contact.html">Liên hệ</a></li>
+                                            <li><a th:href="@{/contact}">Liên hệ</a></li>
                                         </ul>
                                     </div>
                                 </div>

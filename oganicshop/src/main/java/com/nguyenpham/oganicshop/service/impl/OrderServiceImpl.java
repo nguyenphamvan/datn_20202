@@ -8,6 +8,7 @@ import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
 import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
+import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -161,18 +163,19 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if (total > promotion.getMinOrderValue()) {
-            discountValue = discountValue > promotion.getMaxDiscountValue() ?  promotion.getMaxDiscountValue() : discountValue;
+            discountValue = discountValue > promotion.getMaxDiscountValue() ? promotion.getMaxDiscountValue() : discountValue;
         }
         return discountValue;
     }
 
     @Override
+    @Transactional
     public void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto) {
         Order order = new Order();
         order.setUser(user);
-        order.setContactReceiver(orderDto.getShippingAddress().getContactReceiver());
-        order.setContactAddress(orderDto.getShippingAddress().getContactAddress());
-        order.setContactPhone(orderDto.getShippingAddress().getContactPhone());
+        order.setContactReceiver(orderDto.getAddress().getContactReceiver());
+        order.setContactAddress(orderDto.getAddress().getContactAddress());
+        order.setContactPhone(orderDto.getAddress().getContactPhone());
         order.setNote(orderDto.getNote());
         order.setStatus(0);
         order.setPaymentMethod(orderDto.getPaymentMethod());
@@ -212,13 +215,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart) {
-        Address addressDefault = shippingAddressRepository.findByAddrDefaultIsTrue();
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        Address addressDefault = shippingAddressRepository.findByAddrDefaultIsTrue(user.getId());
         int subCart = 0;
         for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
             subCart += item.getValue().calculateTotalItem();
         }
         OrderDtoResponse orderResponse = new OrderDtoResponse();
-        orderResponse.setShippingAddress(new AddressRequestDto(addressDefault.getContactReceiver(), addressDefault.getContactPhone(), addressDefault.getContactAddress(), addressDefault.isAddrDefault()));
+        if (addressDefault != null) {
+            orderResponse.setAddress(new AddressRequestDto(addressDefault.getContactReceiver(), addressDefault.getContactPhone(),
+                    addressDefault.getContactAddress(), addressDefault.isAddrDefault()));
+        } else {
+            orderResponse.setAddress(null);
+        }
         orderResponse.setSubTotal(subCart);
         orderResponse.setDiscount(0);
         orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD); // mặc định ban đầu phí giao hàng là giao hàng tiêu chuẩn

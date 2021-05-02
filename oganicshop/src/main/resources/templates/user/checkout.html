@@ -115,7 +115,7 @@
                             <div class="contact-address" style="margin: 25px 30px;">
                                 <div class="title" style="border-bottom: 1px solid rgb(201, 201, 201); display: flex;justify-content: space-between; line-height: 31px; padding-bottom: 10px;">
                                     <span>Địa chỉ nhận hàng</span>
-                                    <a class="link" data-toggle="modal" data-target="#addressModal" style="display: inline-block;text-decoration: none;font-size: 13px;color: rgb(13, 92, 182);">Thay đổi</a>
+                                    <a class="link" data-toggle="modal" data-target="#addressModal" style="color: rgb(13, 92, 182);">Thay đổi</a>
                                 </div>
                                 <div class="address" style="display: inline-grid; padding-bottom: 10px;">
                                     <span class="name" style="font-size: 15px; font-weight: 700; margin-top: 15px;margin-bottom: 10px;"></span>
@@ -347,7 +347,7 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-
+        getListCategory();
         getInfoPayment();
         getTheShippingAddress();
         getDiscountForOrder();
@@ -405,7 +405,7 @@
             contentType: 'application/json',
             success: function (order) {
                 $(".error-msg").remove();
-                alert("Mã giảm giá đã được áp dụng");
+                // alert("Mã giảm giá đã được áp dụng");
                 $(".order-details ul").empty();
                 $(".order-details ul").append(
                     "<li>Tổng các mặt hàng<span id=\"sub-total\">" + order["subTotal"] + "</span></li>\n" +
@@ -414,7 +414,7 @@
                     "<li class=\"last\">Tổng thanh toán\n" +
                     "    <span id=\"total-cart\">" + order["total"] + "</span>\n" +
                     "</li>"
-                )
+                );
             },
             error: function (xhr) {
                 $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>" + xhr.responseText + "</div>");
@@ -428,31 +428,21 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
+                console.log(data["order"]);
+                let order = data["order"];
+                if (order.hasOwnProperty("address")) {
+                    $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
+                    $(".contact-address .address .street").text(order["address"]["contactAddress"]);
+                    $(".contact-address .address .phone").text("Điện thoại : " + order["address"]["contactPhone"]);
+                } else {
+                    $("#payment > div > div:nth-child(1) > div > div > div > div > a").removeAttr("data-toggle").removeAttr("data-target")
+                        .text("thêm mới").attr("href", "/customer/address");
+                    $("#payment > div > div:nth-child(1) > div > div > div > div.title").after("<p style='text-align: center; color: red; margin-top: 50px;'>Bạn chưa thêm địa chỉ giao hàng</p>");
+                    $("#payment > div > div:nth-child(1) > div > div > div > div.address").remove();
+                    $("#payment > div > div:nth-child(1) > div > div > div > div.form-group.note").remove();
+                    $("#payment-order").closest("div").hide();
+                }
 
-                // show category
-                let categories = data["categories"];
-                let html = "";
-                $.each(categories, function( index, item ) {
-                    html += "<li>\n" +
-                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
-                        "            <ul class=\"list-child-category\">\n";
-                    if (item.hasOwnProperty("subCategory")) {
-                        $.each(item["subCategory"], function( index, subItem ) {
-                            html += "<li>\n" +
-                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
-                                "    </li>\n";
-                        });
-                    }
-                    html += "     </ul>\n" +
-                        "</li>";
-
-                });
-                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
-
-                let order = data["order"]
-                $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
-                $(".contact-address .address .street").text(order["address"]["contactAddress"]);
-                $(".contact-address .address .phone").text("Điện thoại : " + order["address"]["contactPhone"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(order["subTotal"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(order["promotion"]);
                 $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(order["shipFee"]);
@@ -478,7 +468,7 @@
         let data = {
             "address": {
                 "contactReceiver": $(".contact-address .address .name").text(),
-                "contactPhone": $(".contact-address .address .phone").text().replace("Điện thoại : "),
+                "contactPhone": $(".contact-address .address .phone").text().replace("Điện thoại : ", ""),
                 "contactAddress": $(".contact-address .address .street").text()
             },
             "note": $("form[id='payment']").find("textarea").val(),
@@ -496,8 +486,7 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (message) {
-                alert(message);
-                window.location.replace("/");
+                window.location.href = "/";
             },
             error: function (xhr) {
                 alert(xhr.responseText);
@@ -512,27 +501,32 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                let infoShippingAddress = data["shippingAddr"];
-                let firstDivAddr = $("#addressModal > div > div > div.modal-body > div > div:nth-child(1)");
-                $.each(infoShippingAddress, function( index, item ) {
-                    let itemClone = firstDivAddr.clone();
-                    itemClone.show();
-                    itemClone.attr("isDefault", item["default"]);
-                    itemClone.find("p.name > span:nth-child(1)").text(item["contactReceiver"]);
-                    if (item["default"] === true) {
-                        itemClone.find("p.name > span:nth-child(1)").after("<span style=\"margin: 0px 0px 0px 15px; color: rgb(38, 188, 78);\">\n" +
-                            "                                        <svg stroke=\"currentColor\" fill=\"currentColor\" stroke-width=\"0\" viewBox=\"0 0 512 512\" height=\"1em\" width=\"1em\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
-                            "                                            <path d=\"M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200-110.532 0-200-89.451-200-200 0-110.532 89.451-200 200-200m140.204 130.267l-22.536-22.718c-4.667-4.705-12.265-4.736-16.97-.068L215.346 303.697l-59.792-60.277c-4.667-4.705-12.265-4.736-16.97-.069l-22.719 22.536c-4.705 4.667-4.736 12.265-.068 16.971l90.781 91.516c4.667 4.705 12.265 4.736 16.97.068l172.589-171.204c4.704-4.668 4.734-12.266.067-16.971z\"></path>\n" +
-                            "                                        </svg>\n" +
-                            "                                        <span>Địa chỉ mặc định</span>\n" +
-                            "                                    </span>");
-                        itemClone.find("p.action > button.saving-address").css("color", "rgb(38, 188, 78);");
-                    }
-                    itemClone.find("p.address > span:nth-child(2)").text(item["contactAddress"]);
-                    itemClone.find("p.phone > span:nth-child(2)").text(item["contactPhone"]);
-                    itemClone.insertAfter(firstDivAddr);
-                });
-                firstDivAddr.hide();
+                if (data["address"].length > 0) {
+                    let infoAddress = data["address"];
+                    let firstDivAddr = $("#addressModal > div > div > div.modal-body > div > div:nth-child(1)");
+                    $.each(infoAddress, function( index, item ) {
+                        let itemClone = firstDivAddr.clone();
+                        itemClone.show();
+                        itemClone.attr("isDefault", item["default"]);
+                        itemClone.find("p.name > span:nth-child(1)").text(item["contactReceiver"]);
+                        if (item["default"] === true) {
+                            itemClone.find("p.name > span:nth-child(1)")
+                                .after("<span style=\"margin: 0px 0px 0px 15px; color: rgb(38, 188, 78);\">\n" +
+                                "                                        <svg stroke=\"currentColor\" fill=\"currentColor\" stroke-width=\"0\" viewBox=\"0 0 512 512\" height=\"1em\" width=\"1em\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
+                                "                                            <path d=\"M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200-110.532 0-200-89.451-200-200 0-110.532 89.451-200 200-200m140.204 130.267l-22.536-22.718c-4.667-4.705-12.265-4.736-16.97-.068L215.346 303.697l-59.792-60.277c-4.667-4.705-12.265-4.736-16.97-.069l-22.719 22.536c-4.705 4.667-4.736 12.265-.068 16.971l90.781 91.516c4.667 4.705 12.265 4.736 16.97.068l172.589-171.204c4.704-4.668 4.734-12.266.067-16.971z\"></path>\n" +
+                                "                                        </svg>\n" +
+                                "                                        <span>Địa chỉ mặc định</span>\n" +
+                                "                                    </span>");
+                            itemClone.find("p.action > button.saving-address").css("color", "rgb(38, 188, 78);");
+                        }
+                        itemClone.find("p.address > span:nth-child(2)").text(item["contactAddress"]);
+                        itemClone.find("p.phone > span:nth-child(2)").text(item["contactPhone"]);
+                        itemClone.insertAfter(firstDivAddr);
+                    });
+                    itemClone.hide();
+                } else {
+                    $('#addressModal').remove();
+                }
             },
             error: function (xhr) {
                 alert(xhr.responseText);
@@ -546,47 +540,23 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                let firstItem = $("#discountModal > div > div > div.modal-body > div > div:nth-child(1)");
-                $.each(data, function( index, item ) {
-                    let itemClone = firstItem.clone();
-                    itemClone.show();
-                    itemClone.find("p.title > span:nth-child(1)").text(item["title"]);
-                    itemClone.find("p.code > span:nth-child(2)").text(item["code"]);
-                    itemClone.find("p.end-date > span:nth-child(2)").text(item["endDate"]);
-                    itemClone.insertAfter(firstItem);
-                });
-                firstItem.hide();
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
 
-    function getListCategory() {
-        $.ajax({
-            url: "/api/categories",
-            type: "GET",
-            contentType: "application/json",
-            success: function (categories) {
-                // show category
-                let html = "";
-                $.each(categories, function( index, item ) {
-                    html += "<li>\n" +
-                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
-                        "            <ul class=\"list-child-category\">\n";
-                    if (item.hasOwnProperty("subCategory")) {
-                        $.each(item["subCategory"], function( index, subItem ) {
-                            html += "<li>\n" +
-                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
-                                "    </li>\n";
-                        });
-                    }
-                    html += "     </ul>\n" +
-                        "</li>";
+                if (data.length > 0) {
+                    let firstItem = $("#discountModal > div > div > div.modal-body > div > div:nth-child(1)");
+                    $.each(data, function( index, item ) {
+                        let itemClone = firstItem.clone();
+                        itemClone.show();
+                        itemClone.find("p.title > span:nth-child(1)").text(item["title"]);
+                        itemClone.find("p.code > span:nth-child(2)").text(item["code"]);
+                        itemClone.find("p.end-date > span:nth-child(2)").text(item["endDate"]);
+                        itemClone.insertAfter(firstItem);
+                    });
+                    firstItem.hide();
+                } else {
+                    $("#payment > div > div:nth-child(2) > div > div:nth-child(2) > div:nth-child(1) > a").remove();
+                    $("#discountModal").remove();
+                }
 
-                });
-                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
             },
             error: function (xhr) {

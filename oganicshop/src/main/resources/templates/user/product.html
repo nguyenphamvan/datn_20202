@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
     <!-- Meta Tag -->
     <meta charset="utf-8">
@@ -9,6 +9,10 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous"/>
 
     <style>
 
@@ -81,7 +85,13 @@
                             </div>
                         </div>
 
-                        <h3></h3>
+                        <div style="margin: 10px 0px 10px 0px;">
+                            <span id="final-price" style="font-size: 25px; color: red;"></span>
+                            <span id="price"
+                                  style="text-decoration: line-through; opacity: .6; margin-left: 10px; font-size: 20px;"></span>
+                        </div>
+
+
                         <div class="quantity" style="margin-bottom: 30px;">
                             <!-- Input Order -->
                             <div class="input-group">
@@ -362,18 +372,17 @@
 </div>
 <!-- End Most Popular Area -->
 
-<div class="modal fade" id="message">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body" style="text-align: center;">
-            </div>
+<div id="id01" class="w3-modal">
+    <div style="width: 400px; border-radius: 15px !important;" class="w3-modal-content w3-animate-top w3-card-4">
+        <header style="background-color: white!important; border-radius: 10px; height: 150px;"
+                class="w3-container w3-teal">
+        <span onclick="document.getElementById('id01').style.display='none'" style="border-top-right-radius: 10px; color: black !important;font-size: 18px; height: 32px;width: 51px;background: none !important;"
+              class="w3-button w3-display-topright">&times;</span>
+            <h2 style="font-size: 20px; color: green; margin-top: 32px; text-align: center;"></h2>
+            <i style="color: green ; font-size: 40px; display: block; margin: auto; width: fit-content; margin-top: 20px;" class="far fa-check-circle"></i>
+        </header>
 
-        </div>
+
     </div>
 </div>
 
@@ -537,13 +546,13 @@
                         $("div.quickview-slider-active-1").append(html);
                     });
                     $('.quickview-slider-active-1').owlCarousel({
+                        items: 1,
                         autoplay: true,
                         autoplayTimeout: 5000,
                         smartSpeed: 400,
                         autoplayHoverPause: true,
                         nav: true,
                         loop: true,
-                        items: 1,
                         merge: true,
                         dots: false,
                         navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
@@ -553,7 +562,8 @@
                         .text(product["productName"]);
                     $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
                     $("div.modal-body > div > div:nth-child(2) > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
-                    $("div.modal-body > div > div:nth-child(2) > div > h3").text(product["finalPrice"] + "đ").css("color", "red");
+                    $("div.modal-body > div > div:nth-child(2) > div > div > span#final-price").text(product["finalPrice"] + "đ");
+                    $("div.modal-body > div > div:nth-child(2) > div > div > span#price").text(product["price"] + "đ");
                     $("div.modal-body > div > div:nth-child(2) > div > div.quickview-peragraph > p").html(product["detailDescription"]);
                     $("#add-cart").attr("productUrl", product["productUrl"]);
                     $("div.modal-body > div > div:nth-child(2) > div > div.quantity > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
@@ -630,38 +640,6 @@
                         rowClone.insertAfter(firstUl);
                     });
                     firstUl.hide();
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        }
-
-        function getListCategory() {
-            $.ajax({
-                url: "/api/categories",
-                type: "GET",
-                contentType: "application/json",
-                success: function (categories) {
-                    // show category
-                    let html = "";
-                    $.each(categories, function (index, item) {
-                        html += "<li>\n" +
-                            "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
-                            "            <ul class=\"list-child-category\">\n";
-                        if (item.hasOwnProperty("subCategory")) {
-                            $.each(item["subCategory"], function (index, subItem) {
-                                html += "<li>\n" +
-                                    "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
-                                    "    </li>\n";
-                            });
-                        }
-                        html += "     </ul>\n" +
-                            "</li>";
-
-                    });
-                    $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
-
                 },
                 error: function (xhr) {
                     alert(xhr.responseText);

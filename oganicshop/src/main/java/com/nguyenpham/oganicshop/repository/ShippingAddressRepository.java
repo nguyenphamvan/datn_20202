@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 public interface ShippingAddressRepository extends JpaRepository<Address, Long> {
-    Address findByAddrDefaultIsTrue();
+    @Query(value = "SELECT * FROM shipping_address AS sp WHERE sp.addr_default = 1 AND users_id = :usersId", nativeQuery = true)
+    Address findByAddrDefaultIsTrue(@Param("usersId") long usersId);
     List<Address> findAllByUserId(long userId);
     @Modifying
     @Query(value = "update shipping_address as sp set sp.addr_default = 0 where id != :addressId", nativeQuery = true)

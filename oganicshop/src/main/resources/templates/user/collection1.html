@@ -109,23 +109,7 @@
                         </ul>
                     </div>
                     <!--/ End Single Widget -->
-                    <!-- Shop By Price -->
-                    <div class="single-widget range">
-                        <h3 class="title">Lọc theo giá</h3>
-                        <div class="price-filter">
-                            <div class="price-filter-inner">
-                                <div class="price_slider_amount">
-                                    <span>Range:</span><br>
-                                    <div class="label-input" style="display: flex;">
-                                        <input type="text" name="min-price" value="0"style="border: ridge; width: 40%;"/>đ -
-                                        <input type="text" name="max-price" value="1000" style="border: ridge; width: 40%;"/>đ
-                                    </div>
-                                    <button>Lọc</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--/ End Shop By Price -->
+
                     <!-- Single Widget -->
                     <div class="single-widget recent-post">
                         <h3 class="title">Sản phẩm nổi bật</h3>
@@ -189,40 +173,36 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-8 col-12">
-                <div class="row">
+                <div class="row" style="background-color: #F6F7FB;">
                     <div class="col-12">
                         <!-- Shop Top -->
-                        <div class="shop-top">
-                            <div class="shop-shorter">
-                                <div class="single-shorter">
-                                    <label>Hiển thị </label>
-                                    <select id="page-size">
-                                        <option value="6">06</option>
-                                        <option value="9">09</option>
-                                        <option value="15">15</option>
-                                        <option value="25">25</option>
-                                    </select>
-                                </div>
-                                <div class="single-shorter">
-                                    <label>Sắp xếp </label>
-                                    <select id="sort-by">
-                                        <option value="name-asc">Name (A - Z)</option>
-                                        <option value="name-desc">Name (Z - A)</option>
-                                        <option value="finalPrice-asc">Price (Low &gt; High)</option>
-                                        <option value="finalPrice-desc">Price (High &gt; Low)</option>
-                                    </select>
-                                </div>
+                        <div style="padding: 10px; display: flex; align-items: center; justify-content: space-between; height: 80px;">
+                            <div style="display: flex;">
+                                <label style="margin-right: 5px;">Hiển thị </label>
+                                <select id="page-size">
+                                    <option value="6">06</option>
+                                    <option value="9">09</option>
+                                    <option value="15">15</option>
+                                    <option value="25">25</option>
+                                </select>
+                            </div>
 
-                                <div class="single-shorter">
-                                    <div style="display: flex">
-                                        <label>Giá từ </label>
-                                        <input type="text" name="min-price" style="width: 80px;"/>
-                                        <label> Đến </label>
-                                        <input type="text" name="max-price" style="width: 80px;"/>
-                                        <button>Lọc</button>
-                                    </div>
-                                </div>
+                            <div style="align-items: center; display: flex;">
+                                <label style="margin-right: 5px;">Sắp xếp</label>
+                                <select id="sort-by">
+                                    <option value="name-asc">Name (A - Z)</option>
+                                    <option value="name-desc">Name (Z - A)</option>
+                                    <option value="finalPrice-asc">Price (Low &gt; High)</option>
+                                    <option value="finalPrice-desc">Price (High &gt; Low)</option>
+                                </select>
+                            </div>
 
+                            <div style="margin-left: -70px;">
+                                <label style="margin-right: 5px;">Giá từ </label>
+                                <input type="text" name="min-price" value="0" style="width: 80px;"/>
+                                <label style="margin-right: 5px;"> Đến </label>
+                                <input type="text" name="max-price" value="1000" style="width: 80px;"/>
+                                <button id="filter-range-price" style="height: 30px; width: 60px; text-align: center;">Lọc</button>
                             </div>
                         </div>
                         <!--/ End Shop Top -->
@@ -445,8 +425,7 @@
             getListProductByCategory(data);
         });
 
-        $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.range > div > div > div > button")
-        .on("click", function () {
+        $("#filter-range-price").on("click", function () {
             let data = {
                 "category" : /*[[${category}]]*/,
                 "supplier" : /*[[${supplier}]]*/,
@@ -458,47 +437,7 @@
             }
             getListProductByCategory(data);
         });
-
-        /* function quick view product */
-        $(document).on("click", "div.product-img > div > div.product-action > a", function (e) {
-            e.preventDefault();
-            loadInfoProductForModal($(this).attr('href'));
-        });
-        /* end function quick view product */
-
     });
-
-    function getListCategory() {
-        $.ajax({
-            url: "/api/categories",
-            type: "GET",
-            contentType: "application/json",
-            success: function (categories) {
-                // show category
-                let html = "";
-                $.each(categories, function( index, item ) {
-                    html += "<li>\n" +
-                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
-                        "            <ul class=\"list-child-category\">\n";
-                    if (item.hasOwnProperty("subCategory")) {
-                        $.each(item["subCategory"], function( index, subItem ) {
-                            html += "<li>\n" +
-                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
-                                "    </li>\n";
-                        });
-                    }
-                    html += "     </ul>\n" +
-                        "</li>";
-
-                });
-                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
-
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
 
     function getListProductByCategory(data) {
         $.ajax({
@@ -592,62 +531,6 @@
             $("#list-product").append(itemClone);
         });
         firstItem.hide();
-    }
-
-    function loadInfoProductForModal(url) {
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                let product = data["product"];
-                alert("xem nhanh");
-                // set image
-                $("div.quickview-slider-active-modal").empty();
-                $.each(product["images"], function (index, item) {
-                    let html = "<div class=\"single-slider\">\n" +
-                        "           <img src='" + item + "'>\n" +
-                        "        </div>";
-                    $("div.quickview-slider-active-modal").append(html);
-                });
-                $('div.quickview-slider-active-modal').owlCarousel({
-                    autoplay: true,
-                    autoplayTimeout: 5000,
-                    smartSpeed: 400,
-                    autoplayHoverPause: true,
-                    nav: true,
-                    loop: true,
-                    items: 1,
-                    merge: true,
-                    dots: false,
-                    navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>']
-                })
-
-                $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
-                $('.quickview-content h2').text(product["productName"]);
-                $('.quickview-ratting').empty();
-                for (let i = 0; i < product["rating"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
-                }
-                for (let i = 0; i < 5 - product["rating"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
-                }
-                $('#num-customer-review').text(product["numberOfReviews"]);
-                $('.quickview-content h3').text(product["finalPrice"] + " đ").css("color", "red");
-                $('.quickview-peragraph').html(product["detailDescription"]);
-                $('#add-cart').attr('productUrl', product["productUrl"]);
-                $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
-                $('.add-to-cart').attr('productUrl', product["productUrl"]);
-                if (product["amount"] > 0) {
-                    $('#in-stock').css('display', 'block');
-                    $('#out-stock').css('display', 'none');
-                } else {
-                    $('#in-stock').css('display', 'none');
-                    $('#out-stock').css('display', 'block');
-                }
-                $('#productModal').modal('show');
-            }
-        });
     }
 
     /*]]>*/

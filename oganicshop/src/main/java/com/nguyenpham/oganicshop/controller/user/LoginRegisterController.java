@@ -14,16 +14,6 @@ public class LoginRegisterController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "user/signin";
-    }
-
-    @GetMapping("/signup")
-    public String viewRegisterPage() {
-        return "user/signup";
-    }
-
     @GetMapping("/logout_success")
     public String logoutSuccessfulPage() {
         return "redirect:/";
@@ -42,5 +32,15 @@ public class LoginRegisterController {
             return "user/message";
         }
         return "user/reset_password_form";
+    }
+
+    @GetMapping("/verifyAccount")
+    public String verifyAccount(@Param("code") String code) {
+        boolean verified = userService.verify(code);
+        if (verified) {
+            return "redirect:/login";
+        } else {
+            return "redirect:/403";
+        }
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class OrderDtoResponse {
 
     private Long id;
-    private AddressRequestDto shippingAddress;
+    private AddressRequestDto address;
     private String summaryProductName;
     private int subTotal;
     private int shipFee;

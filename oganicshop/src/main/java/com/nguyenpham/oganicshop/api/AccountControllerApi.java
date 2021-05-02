@@ -51,8 +51,7 @@ public class AccountControllerApi {
     @GetMapping("/address")
     public ResponseEntity<?> getInfoShippingAddress() {
         Map<String, Object> response = new HashMap<>();
-        response.put("categories", categoryService.getListCategory());
-        response.put("shippingAddr", userService.getShippingAddress());
+        response.put("address", userService.getShippingAddress());
         return ResponseEntity.ok(response);
     }
 

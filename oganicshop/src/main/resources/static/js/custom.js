@@ -19,8 +19,10 @@ $(document).ready(function () {
                     if (result === false) {
                         $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                     } else {
-                        $('#message').find("div.modal-body").text("sản phẩm đã được thêm vào giỏ hàng!!");
-                        $('#message').modal('show');
+                        // $('#message').find("div.modal-body").text("sản phẩm đã được thêm vào giỏ hàng!!");
+                        // $('#message').modal('show');
+                        $("#id01 > div > header > h2").text("Sản phảm đã được thêm vào giỏ hàng");
+                        $("#id01").css("display", "block");
                     }
                 }
             })
@@ -99,64 +101,64 @@ $(document).ready(function () {
     });
     /* end function minus item in cart */
 
-    // /* function quick view product */
-    // $(document).on("click", "div.product-img > div > div.product-action > a", function (e) {
-    //     e.preventDefault();
-    //     $.ajax({
-    //         url: $(this).attr('href'),
-    //         type: "GET",
-    //         dataType: 'json',
-    //         success: function (data) {
-    //             let product = data["product"];
-    //
-    //             // set image
-    //             $("div.quickview-slider-active-modal").empty();
-    //             $.each(product["images"], function (index, item) {
-    //                 let html = "<div class=\"single-slider\">\n" +
-    //                     "           <img src='" + item + "'>\n" +
-    //                     "        </div>";
-    //                 $("div.quickview-slider-active-modal").append(html);
-    //             });
-    //             $('div.quickview-slider-active-modal').owlCarousel({
-    //                 items: 1,
-    //                 autoplay: true,
-    //                 autoplayTimeout: 5000,
-    //                 smartSpeed: 400,
-    //                 autoplayHoverPause: true,
-    //                 nav: true,
-    //                 loop: true,
-    //                 merge: true,
-    //                 dots: false,
-    //                 navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>']
-    //             })
-    //
-    //             $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
-    //             $('.quickview-content h2').text(product["productName"]);
-    //             $('.quickview-ratting').empty();
-    //             for (let i = 0; i < product["rating"]; i++) {
-    //                 $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
-    //             }
-    //             for (let i = 0; i < 5 - product["rating"]; i++) {
-    //                 $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
-    //             }
-    //             $('#num-customer-review').text(product["numberOfReviews"]);
-    //             $('.quickview-content h3').text(product["finalPrice"] + " đ").css("color", "red");
-    //             $('.quickview-peragraph').html(product["detailDescription"]);
-    //             $('#add-cart').attr('productUrl', product["productUrl"]);
-    //             $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
-    //             $('.add-to-cart').attr('productUrl', product["productUrl"]);
-    //             if (product["amount"] > 0) {
-    //                 $('#in-stock').css('display', 'block');
-    //                 $('#out-stock').css('display', 'none');
-    //             } else {
-    //                 $('#in-stock').css('display', 'none');
-    //                 $('#out-stock').css('display', 'block');
-    //             }
-    //             $('#productModal').modal('show');
-    //         }
-    //     });
-    // });
-    // /* end function quick view product */
+    /* function quick view product */
+    $(document).on("click", "div.product-img > div > div.product-action > a", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('href'),
+            type: "GET",
+            dataType: 'json',
+            success: function (data) {
+                let product = data["product"];
+
+                // set image
+                $("div.quickview-slider-active-modal").empty();
+                $.each(product["images"], function (index, item) {
+                    let html = "<div class=\"single-slider\">\n" +
+                        "           <img src='" + item + "'>\n" +
+                        "        </div>";
+                    $("div.quickview-slider-active-modal").append(html);
+                });
+                $('div.quickview-slider-active-modal').owlCarousel({
+                    items: 1,
+                    autoplay: true,
+                    autoplayTimeout: 5000,
+                    smartSpeed: 400,
+                    autoplayHoverPause: true,
+                    nav: true,
+                    loop: true,
+                    merge: true,
+                    dots: false,
+                    navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>']
+                })
+
+                $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
+                $('.quickview-content h2').text(product["productName"]);
+                $('.quickview-ratting').empty();
+                for (let i = 0; i < product["rating"]; i++) {
+                    $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
+                }
+                for (let i = 0; i < 5 - product["rating"]; i++) {
+                    $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
+                }
+                $('#num-customer-review').text(product["numberOfReviews"]);
+                $('.quickview-content h3').text(product["finalPrice"] + " đ").css("color", "red");
+                $('.quickview-peragraph').html(product["detailDescription"]);
+                $('#add-cart').attr('productUrl', product["productUrl"]);
+                $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
+                $('.add-to-cart').attr('productUrl', product["productUrl"]);
+                if (product["amount"] > 0) {
+                    $('#in-stock').css('display', 'block');
+                    $('#out-stock').css('display', 'none');
+                } else {
+                    $('#in-stock').css('display', 'none');
+                    $('#out-stock').css('display', 'block');
+                }
+                $('#productModal').modal('show');
+            }
+        });
+    });
+    /* end function quick view product */
 
     /* function remove item cart using jquery ajax */
     $(document).on('click', 'td.action a', function () {
@@ -352,6 +354,38 @@ function addProductFromWishlist(url) {
         },
         error: function (err) {
             alert("có lỗi xảy ra");
+        }
+    });
+}
+
+function getListCategory() {
+    $.ajax({
+        url: "/api/categories",
+        type: "GET",
+        contentType: "application/json",
+        success: function (categories) {
+            // show category
+            let html = "";
+            $.each(categories, function( index, item ) {
+                html += "<li>\n" +
+                    "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                    "            <ul class=\"list-child-category\">\n";
+                if (item.hasOwnProperty("subCategory")) {
+                    $.each(item["subCategory"], function( index, subItem ) {
+                        html += "<li>\n" +
+                            "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                            "    </li>\n";
+                    });
+                }
+                html += "     </ul>\n" +
+                    "</li>";
+
+            });
+            $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
+
+        },
+        error: function (xhr) {
+            alert(xhr.responseText);
         }
     });
 }

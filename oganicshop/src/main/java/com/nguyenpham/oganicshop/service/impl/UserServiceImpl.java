@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         String subject = "Vui lòng xác minh đăng ký của bạn";
         String senderName = "Admin Web shop";
         String mailContent = "<p>Cảm ơn  <b>" + user.getFullName() + "</b>,</p>";
-        String verifyURL = siteURL + "/api/verifyAccount?code=" + user.getVerificationCode();
+        String verifyURL = siteURL + "/verifyAccount?code=" + user.getVerificationCode();
 
         mailContent += "<p>Vui lòng nhấp vào liên kết bên dưới để xác minh đăng ký của bạn :</p>";
         mailContent += "<a href=\"" + verifyURL + "\">Xác nhận</a>";

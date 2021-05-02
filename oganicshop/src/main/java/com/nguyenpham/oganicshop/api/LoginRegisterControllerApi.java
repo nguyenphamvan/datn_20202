@@ -37,10 +37,4 @@ public class LoginRegisterControllerApi {
         }
         return false;
     }
-
-    @GetMapping("/api/verifyAccount")
-    public String verifyAccount(@Param("code") String code) {
-        boolean verified = userService.verify(code);
-        return verified ? "Verification Succeeded!" : "Verification Failed";
-    }
 }

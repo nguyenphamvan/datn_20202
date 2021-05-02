@@ -41,7 +41,6 @@ public class CheckoutControllerApi {
     public ResponseEntity<?> getInfoPayment(HttpSession session) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         Map<String, Object> response = new HashMap<>();
-        response.put("categories", categoryService.getListCategory());
         response.put("order", orderService.getInfoCheckout(cart));
         if (cart != null) {
             response.put("order", orderService.getInfoCheckout(cart));

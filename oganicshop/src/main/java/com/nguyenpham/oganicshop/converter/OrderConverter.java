@@ -17,7 +17,7 @@ public class OrderConverter implements GeneralConverter<Order, OrderDtoRequest, 
         OrderDetailConverter odConverter = new OrderDetailConverter();
         OrderDtoResponse orderDto = new OrderDtoResponse();
         orderDto.setId(order.getId());
-        orderDto.setShippingAddress(new AddressRequestDto(order.getContactReceiver(), order.getContactPhone(), order.getContactAddress()));
+        orderDto.setAddress(new AddressRequestDto(order.getContactReceiver(), order.getContactPhone(), order.getContactAddress()));
         orderDto.setSubTotal(order.getSubTotal());
         orderDto.setShipFee(order.getShipFee());
         orderDto.setDiscount(order.getDiscount());
