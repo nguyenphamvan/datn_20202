@@ -38,7 +38,6 @@ public class AccountControllerApi {
     @GetMapping("/info")
     public ResponseEntity<?> getInfoAccount() {
         Map<String, Object> response = new HashMap<>();
-        response.put("categories", categoryService.getListCategory());
         response.put("infoAccount", userService.getInfoAccount());
         return ResponseEntity.ok(response);
     }
@@ -50,9 +49,7 @@ public class AccountControllerApi {
 
     @GetMapping("/address")
     public ResponseEntity<?> getInfoShippingAddress() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("address", userService.getShippingAddress());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(userService.getShippingAddress());
     }
 
     @PostMapping("/address/create")
@@ -70,13 +67,10 @@ public class AccountControllerApi {
         return ResponseEntity.ok(userService.deleteShippingAddress(addressId));
     }
 
-
-
     @GetMapping("/wishlist")
     public ResponseEntity<?> getMyWishlist() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
-        response.put("categories", categoryService.getListCategory());
         response.put("wishLists", userService.getWishlists(user));
         return ResponseEntity.ok(response);
     }

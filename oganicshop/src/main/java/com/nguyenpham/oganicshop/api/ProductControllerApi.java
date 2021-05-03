@@ -40,10 +40,7 @@ public class ProductControllerApi {
     public ResponseEntity<?> getListProductByCategoryUrl(@PathVariable("productUrl") String productUrl) {
         Map<String, Object> response = new HashMap<>();
         ProductResponseDto product = productService.getProduct(productUrl);
-        List<CategoryDto> categories = categoryService.getListCategory();
-        Collections.sort(categories);
         response.put("product", product);
-        response.put("categories", categories);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,8 +23,7 @@ public class OrderLogging {
     private Timestamp updateTime;
     @ManyToOne
     @JoinColumn(name = "orders_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+    @JsonIgnore
     private Order order;
 
     public OrderLogging() {

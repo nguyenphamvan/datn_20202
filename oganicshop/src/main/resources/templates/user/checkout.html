@@ -200,7 +200,10 @@
                             <div class="content">
                                 <div class="checkbox">
                                     <span style="display: block; margin-bottom: 15px;"><input type="radio" name="paymentMethod" value="cod"> Thanh toán khi nhận hàng</span>
-                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="paymentMethod" value="paypal"> PayPal</span>
+                                    <span style="display: block; margin-bottom: 15px;">
+                                        <input type="radio" name="paymentMethod" value="paypal"> PayPal
+                                        <img th:src="@{/images/paypal.png}" style="width: 60px; height: 40px;">
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -428,7 +431,6 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                console.log(data["order"]);
                 let order = data["order"];
                 if (order.hasOwnProperty("address")) {
                     $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
@@ -479,19 +481,21 @@
             "paymentMethod": $("input[name='paymentMethod']:checked").val(),
             "deliveryMethod": $("input[name='deliveryMethod']:checked").val()
         }
+        // thah toán xong return về trang thông báo thanh toán đơn hàng thành công
         $.ajax({
             url: "/api/checkout/payment",
             type: "POST",
             data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (message) {
-                window.location.href = "/";
+            contentType: 'application/json; charset=utf-8',
+            success: function (url) {
+                window.location = url;
             },
             error: function (xhr) {
+                alert("thất bại")
                 alert(xhr.responseText);
             }
         });
+
     }
 
     function getTheShippingAddress() {
@@ -521,9 +525,10 @@
                         }
                         itemClone.find("p.address > span:nth-child(2)").text(item["contactAddress"]);
                         itemClone.find("p.phone > span:nth-child(2)").text(item["contactPhone"]);
+                        itemClone.css("display", "block");
                         itemClone.insertAfter(firstDivAddr);
                     });
-                    itemClone.hide();
+                    firstDivAddr.hide();
                 } else {
                     $('#addressModal').remove();
                 }

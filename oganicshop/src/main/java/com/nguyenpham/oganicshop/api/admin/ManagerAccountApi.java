@@ -79,7 +79,7 @@ public class ManagerAccountApi {
         UserResponseDto user = userConverter.entityToDto(userService.findUserById(userId));
         response.put("user", user);
         OrderDtoResponse maxOrderHistory = orderService.getAllOrderByUserId(userId).stream().max(Comparator.comparing(OrderDtoResponse::getTotal)).orElseThrow(NoSuchElementException::new);
-        maxOrderHistory = new OrderConverter().entityToDto(orderService.getOrderById(maxOrderHistory.getId()));
+        maxOrderHistory = orderService.getOrderById(maxOrderHistory.getId());
         response.put("maxOrderHistory", maxOrderHistory);
         return ResponseEntity.ok(response);
     }

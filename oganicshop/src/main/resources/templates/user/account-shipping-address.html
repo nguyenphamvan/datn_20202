@@ -322,10 +322,9 @@
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
-            success: function (data) {
-                let infoShippingAddress = data["shippingAddr"];
+            success: function (address) {
                 let firstDivAddr = $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item");
-                $.each(infoShippingAddress, function( index, item ) {
+                $.each(address, function( index, item ) {
                     let itemClone = firstDivAddr.clone();
                     itemClone.show();
                     itemClone.attr("isDefault", item["default"]);

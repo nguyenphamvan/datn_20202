@@ -21,7 +21,7 @@
                 <div class="bread-inner">
                     <ul class="bread-list">
                         <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li class="active">Thông tin tài khoản</li>
+                        <li class="active"><a th:href="@{/sales/order/history}">Lịch sử mua hàng</a></li>
                     </ul>
                 </div>
             </div>
@@ -116,14 +116,12 @@
                 "pageNum": pageNum,
                 "pageSize": pageSize
             },
-            dataType: 'json',
             contentType: "application/json",
-            success: function (data) {
-                let orders = data["orders"];
+            success: function (orders) {
                 if (orders.length > 0) {
                     $.each(orders, function (index, value) {
                         let node = "<tr>\n" +
-                            "           <td><a href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
+                            "           <td><a style='color: rgb(0, 127, 240)' href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
                             "           <td>" + value["orderDate"] + "</td>\n" +
                             "           <td>" + value["summaryProductName"] + "</td>\n" +
                             "           <td>" + value["total"] + " ₫</td>\n" +

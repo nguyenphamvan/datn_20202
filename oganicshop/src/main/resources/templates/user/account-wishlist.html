@@ -66,10 +66,10 @@
                                     </div>
                                 </div>
                                 <div class="footer_favourite">
-                                    <div class="price"></div>
+                                    <div class="final-price"></div>
                                     <div class="wrap">
-                                        <div class="list-price"></div> |
-                                        <div class="promotion"></div>
+                                        <div class="price"></div> |
+                                        <div class="discount"></div>
                                     </div>
                                 </div>
                             </li>
@@ -113,7 +113,7 @@
                             let itemClone = firstItem.clone();
                             itemClone.find(".btn-delete").attr("product-id", item["id"]);
                             itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"] + ".html");
-                            itemClone.find(".thumbnail a img.image").attr("src", "/images/products/" + item["id"] + "/" + item["image"]);
+                            itemClone.find(".thumbnail a img.image").attr("src", item["mainImage"]);
                             itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
                             itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
                             itemClone.find("div.my-reviews__name").text(item["productUrl"]);
@@ -124,14 +124,14 @@
                                 itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
                             }
                             itemClone.find(".ratting-wrap span").text("(" + item["numberOfReviews"] + " customer review)")
-                            itemClone.find(".footer_favourite .price").text(item["finalPrice"] + " ₫");
-                            if (parseInt(item["promotion"]) > 0) {
-                                itemClone.find(".footer_favourite .wrap .list-price").text(item["price"] + " ₫");
-                                itemClone.find(".footer_favourite .wrap .promotion").text(item["promotion"] + " ₫");
+                            itemClone.find(".footer_favourite .final-price").text(item["finalPrice"] + " ₫");
+                            if (parseInt(item["discount"]) > 0) {
+                                itemClone.find(".footer_favourite .wrap .price").text(item["price"] + " ₫");
+                                itemClone.find(".footer_favourite .wrap .discount").text(item["discount"] + " ₫");
                             }
                             itemClone.insertAfter(".styles__StyledAccountWishList ul.list li:first-child");
                         });
-                        firstItem.hide();
+                        firstItem.remove();
                     } else {
                         $(".styles__StyledAccountWishList").empty()
                             .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")

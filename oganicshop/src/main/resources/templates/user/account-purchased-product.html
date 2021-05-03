@@ -21,7 +21,7 @@
                 <div class="bread-inner">
                     <ul class="bread-list">
                         <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li class="active">Thông tin tài khoản</li>
+                        <li class="active"><a th:href="@{/nhan-xet-san-pham-ban-da-mua}">Nhận xét sản phẩm đã mua</a></li>
                     </ul>
                 </div>
             </div>
@@ -52,6 +52,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- viết nhận xét sản phẩm tại đây-->
             <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-label="Viết nhận xét"
                  style="inset: 50% auto auto 50%; transform: translate(-50%, -50%);">
                 <div class="style__StyledWriteReview write-review">
@@ -237,7 +239,7 @@
                         let itemClone = firstItem.clone();
                         itemClone.attr("href", "/products/" + item["productUrl"] + ".html");
                         itemClone.find("div.my-reviews__info").attr("product-id", item["productId"]).attr("orderDetail-id", item["id"]);
-                        itemClone.find("img").attr("src", "/images/products/" + item["image"]).attr("alt", item["productName"]);
+                        itemClone.find("div.my-reviews__info > img").attr("src", item["image"]).attr("alt", item["productName"]);
                         itemClone.find("div.my-reviews__name").text(item["productUrl"]);
                         itemClone.insertAfter(".my-reviews__inner a:first-child");
                     });

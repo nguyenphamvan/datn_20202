@@ -99,7 +99,7 @@
                     let firstItem = $(".styles__StyledReviewList div.list .item:first-child");
                     $.each(listMyReview, function (index, item) {
                         let itemClone = firstItem.clone();
-                        itemClone.find(".thumb div img.image").attr("src", "/images/products/" + item["id"] + "/" + item["image"]);
+                        itemClone.find("div.thumb > div > img").attr("src", item["productImg"]);
                         itemClone.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
                         itemClone.find(".info div.date").text(item["createdAt"]);
                         if (item["title"] !== null) {

@@ -3,9 +3,8 @@ package com.nguyenpham.oganicshop.api;
 import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.service.UserService;
-import com.nguyenpham.oganicshop.util.Utitity;
+import com.nguyenpham.oganicshop.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -30,7 +29,7 @@ public class LoginRegisterControllerApi {
         if (userService.register(accountRequest)) {
             User saveUser = userService.findUserByEmail(accountRequest.getEmail());
             if (saveUser != null) {
-                String siteURL = Utitity.getSiteURL(request);
+                String siteURL = Utils.getSiteURL(request);
                 userService.sendVerificationEmail(saveUser, siteURL);
                 return true;
             }

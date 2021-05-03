@@ -76,6 +76,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<MyReviewDto> getMyReviews(User user) {
+        List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
+        ReviewConverter converter = new ReviewConverter();
+        List<MyReviewDto> listReviewDto = listReviews.stream().map(rv -> converter.entityToMyReview(rv)).collect(Collectors.toList());
+        return listReviewDto;
+    }
+
+    @Override
     public int likeComment(long reviewId, String action) {
         Review review = reviewRepository.findById(reviewId).get();
         if (action.equals("like")) {

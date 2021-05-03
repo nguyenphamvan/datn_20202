@@ -17,7 +17,7 @@ public interface OrderService {
     Order save(Order order);
     OrderDetail editReviewed(OrderDetailDto orderDetailDto);
     int getTotalOrderPage(Long userId, int pageSize);
-    Order getOrderById(long orderId);
+    OrderDtoResponse getOrderById(long orderId);
     boolean updatedOrderStatus(long orderId, int statusId, String note);
     List<OrderDtoResponse> getAllOrderByUserId(long userId);
     List<OrderDetailDto> getListOrderItem(long orderId);

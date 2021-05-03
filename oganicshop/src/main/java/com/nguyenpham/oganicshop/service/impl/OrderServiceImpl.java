@@ -97,8 +97,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderById(long orderId) {
-        return orderRepository.findById(orderId).get();
+    public OrderDtoResponse getOrderById(long orderId) {
+        Order order = orderRepository.findById(orderId).get();
+        return new OrderConverter().entityToDto(order);
     }
 
     @Override
@@ -144,9 +145,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Set<OrderDetailDto> getListProductNotReviewed(long userId) {
         OrderDetailConverter odConverter = new OrderDetailConverter();
-        return orderDetailRepository.findAllByReviewedIsFalse(userId).stream()
+        Set<OrderDetailDto> listOrderDetail = orderDetailRepository.findAllByReviewedIsFalse(userId).stream()
                 .map(od -> odConverter.entityToDto(od))
                 .collect(Collectors.toSet());
+        return listOrderDetail;
     }
 
     @Override
@@ -202,7 +204,11 @@ public class OrderServiceImpl implements OrderService {
     public boolean cancelOrder(long userId, long orderId) {
         Order order = orderRepository.findById(orderId).get();
         if (order.getUser().getId() == userId && order.getStatus() == 0) {
-            order.setStatus(4);
+            order.setStatus(3);
+            OrderLogging orderLogging = new OrderLogging(3);
+            orderLogging.setOrder(order);
+            order.setMessage(DateTimeUtil.dateTimeFormat(new Date()) + " - Bạn đã hủy đơn hàng");
+            order.addLogOrder(orderLogging);
             try {
                 orderRepository.save(order);
                 return true;

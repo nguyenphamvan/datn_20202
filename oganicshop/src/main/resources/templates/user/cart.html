@@ -51,19 +51,19 @@
                     <table class="table shopping-summery">
                         <thead>
                         <tr class="main-hading">
-                            <th class="text-center"></th>
-                            <th class="text-center">TÊN</th>
-                            <th class="text-center">ĐƠN GIÁ</th>
-                            <th class="text-center">SỐ LƯỢNG</th>
-                            <th class="text-center">TỔNG</th>
-                            <th class="text-center"><i class="ti-trash remove-icon"></i></th>
+                            <th class="text-center" style="width: 15%;"></th>
+                            <th class="text-center" style="width: 35%;">TÊN</th>
+                            <th class="text-center" style="width: 10%;">ĐƠN GIÁ</th>
+                            <th class="text-center" style="width: 25%;">SỐ LƯỢNG</th>
+                            <th class="text-center" style="width: 10%;">TỔNG</th>
+                            <th class="text-center" style="width: 5%;"><i class="ti-trash remove-icon"></i></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td class="image" data-title="No">
                                 <a>
-                                    <img src="https://via.placeholder.com/100x100" alt="Image">
+                                    <img alt="Image">
                                 </a>
                             </td>
                             <td class="product-des" data-title="Description">
@@ -95,7 +95,7 @@
                         </tbody>
                         <tfoot>
                             <td colspan="3"></td>
-                            <td style="text-align: right;">Tạm tính</td>
+                            <td style="text-align: right; color: black; font-size: 18px;">Tạm tính</td>
                             <td id="sub-cart"></td>
                             <td></td>
                         </tfoot>
@@ -197,7 +197,7 @@
             type: "GET",
             contentType: "application/json",
             success: function (items) {
-
+                console.log(items);
                 if (items.length > 0) {
                     let totalCart = 0;
                     let firstTr = $("body > div.shopping-cart.section > div > div:nth-child(1) > div > table > tbody > tr:first-child");
@@ -206,20 +206,26 @@
                         let trClone = firstTr.clone();
                         trClone.attr("data-url", item["product"]["productUrl"]);
                         trClone.find("td.image > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html");
+                        trClone.find("td.image > a > img").attr("src", item["product"]["mainImage"]);
                         trClone.find("td.product-des > p.product-name > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html")
                             .text(item["product"]["productName"]);
-                        trClone.find("td.price > span").text(item["product"]["finalPrice"]);
+                        trClone.find("td.price > span").text(item["product"]["finalPrice"] + " đ");
                         trClone.find("td.qty > div > input").val(item["quantity"]);
-                        trClone.find("td.total-amount > span").text(item["totalItem"]);
+                        trClone.find("td.total-amount > span").text(item["totalItem"] + " đ");
                         trClone.find("td.action > a").attr("id", item["product"]["productUrl"]);
                         trClone.insertAfter(firstTr);
                     });
-                    firstTr.hide();
-                    $("#sub-cart").text(totalCart);
+                    firstTr.remove();
+                    $("#sub-cart").text(totalCart + " đ");
                 } else {
                     let html = "<div class=\"row\">\n" +
                         "                <div class=\"cart-empty\" style=\"text-align: center; margin: auto;\">\n" +
                         "                    Không có sản phẩm nào trong giỏ hàng\n" +
+                        "                    <div class=\"center\" style='margin-top: 20px;'>\n" +
+                        "                         <div class=\"button5\">\n" +
+                        "                               <a href=\"/\" style='color: white;' class=\"btn\">Tiếp tục mua sắm</a>\n" +
+                        "                          </div>\n" +
+                        "                    </div>\n" +
                         "                </div>\n" +
                         "            </div>";
                     $("body > div.shopping-cart.section > div.container").empty();

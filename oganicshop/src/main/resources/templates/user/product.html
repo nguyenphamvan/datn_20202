@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Meta Tag -->
     <meta charset="utf-8">
@@ -9,8 +8,8 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    <link rel="stylesheet" th:href="@{https://www.w3schools.com/w3css/4/w3.css}">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css}"
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
           crossorigin="anonymous"/>
 
@@ -77,11 +76,12 @@
                         <div class="quickview-ratting-review">
                             <div class="quickview-ratting-wrap">
                                 <div class="quickview-ratting">
+
                                 </div>
                                 <span></span>
                             </div>
                             <div class="quickview-stock">
-                                <span><i class="fa fa-check-circle-o"></i> còn hàng</span>
+                                <span><i class="far fa-check-circle"></i> còn hàng</span>
                             </div>
                         </div>
 
@@ -166,8 +166,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-9">
-                                                    <div class="review-item-detail"
-                                                         style="display: flex; flex-direction: column;">
+                                                    <div class="review-item-detail" style="display: flex; flex-direction: column;">
                                                         <div class="review-des">
                                                             <div style="display: flex; float: right;">
                                                                 Đánh giá :
@@ -536,6 +535,7 @@
                 type: "GET",
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data);
                     let product = data["product"];
 
                     // set image
@@ -575,14 +575,14 @@
                     }
                     // ratting
                     if (parseInt(product["rating"]) > 0) {
-                        for (let i = 0; i < parseInt(data["rating"]); i++) {
-                            $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > div")
+                        for (let i = 0; i < parseInt(product["rating"]); i++) {
+                            $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > div.quickview-ratting")
                                 .append("<i class=\"yellow fa fa-star\"></i>");
                         }
                     }
                     if ((5 - parseInt(product["rating"])) > 0) {
-                        for (let i = 0; i < (5 - parseInt(data["rating"])); i++) {
-                            $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > div")
+                        for (let i = 0; i < (5 - parseInt(product["rating"])); i++) {
+                            $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > div.quickview-ratting")
                                 .append("<i class=\"fa fa-star\"></i>");
                         }
                     }

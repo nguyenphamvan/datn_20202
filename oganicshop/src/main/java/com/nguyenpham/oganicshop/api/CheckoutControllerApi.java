@@ -1,6 +1,8 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.config.PaypalPaymentIntent;
+import com.nguyenpham.oganicshop.config.PaypalPaymentMethod;
 import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
@@ -9,12 +11,20 @@ import com.nguyenpham.oganicshop.entity.Promotion;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.*;
+import com.nguyenpham.oganicshop.service.impl.PaypalService;
+import com.nguyenpham.oganicshop.util.Utils;
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -22,18 +32,21 @@ import java.util.*;
 @RequestMapping("/api/checkout")
 public class CheckoutControllerApi {
 
-    @Autowired
+    private Logger log = LoggerFactory.getLogger(CheckoutControllerApi.class);
+
+    private PaypalService paypalService;
     private UserService userService;
     private CartService cartService;
     private OrderService orderService;
     private PromotionService promotionService;
-    private CategoryService categoryService;
 
     @Autowired
-    public CheckoutControllerApi(CartService cartService, OrderService orderService, CategoryService categoryService, PromotionService promotionService) {
+    public CheckoutControllerApi(PaypalService paypalService, CartService cartService, OrderService orderService,
+                                 UserService userService, PromotionService promotionService) {
+        this.paypalService = paypalService;
         this.cartService = cartService;
         this.orderService = orderService;
-        this.categoryService = categoryService;
+        this.userService = userService;
         this.promotionService = promotionService;
     }
 
@@ -50,22 +63,48 @@ public class CheckoutControllerApi {
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<?> payOrder(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderDtoRequest orderDto) {
+    public ResponseEntity<?> payOrder(HttpSession session, HttpServletRequest request,
+                           @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderDtoRequest orderDto) {
         User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        if (cart != null) { // should convert order to orderDto use ordermapper
-            session.removeAttribute(Constant.CART_SESSION_NAME);
+        if (cart != null) {
+
             try {
-                orderService.paymentOrder(user, cart, orderDto);
-                return new ResponseEntity<Object>("Thanh toán thành công", HttpStatus.CREATED);
+                if (orderDto.getPaymentMethod().equals("cod")) {
+                    orderService.paymentOrder(user, cart, orderDto);
+                    session.removeAttribute(Constant.CART_SESSION_NAME);
+                    return new ResponseEntity<Object>("/payment_success", HttpStatus.OK); // return home page
+                } else if (orderDto.getPaymentMethod().equals("paypal")){
+                    String cancelUrl = Utils.getBaseURL(request) + "/" + Constant.URL_PAYPAL_CANCEL;
+                    String successUrl = Utils.getBaseURL(request) + "/" + Constant.URL_PAYPAL_SUCCESS;
+                    String urlRedirect = null;
+                    Payment payment = paypalService.createPayment(
+                            (double) orderDto.getTotal(),
+                            "USD",
+                            PaypalPaymentMethod.paypal,
+                            PaypalPaymentIntent.sale,
+                            "payment description",
+                            cancelUrl,
+                            successUrl);
+
+                    for (Links links : payment.getLinks()) {
+                        if (links.getRel().equals("approval_url")) {
+                            urlRedirect = links.getHref();
+                        }
+                    }
+                    session.setAttribute("order", orderDto);
+                    return new ResponseEntity<Object>(urlRedirect, HttpStatus.OK);
+                }
+
+            } catch (PayPalRESTException e) {
+                log.error(e.getMessage());
+                return new ResponseEntity<Object>("Hệ thống gặp lỗi, vui lòng liên hệ số điện thoại ...", HttpStatus.INTERNAL_SERVER_ERROR);
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<Object>("Hệ thống gặp lỗi, vui lòng liên hệ số điện thoại ...", HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
-        } else {
-            return new ResponseEntity<Object>("Chưa có mặt hàng nào được chọn", HttpStatus.OK);
         }
+        return new ResponseEntity<Object>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/apply-couponCode")

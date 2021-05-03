@@ -42,8 +42,7 @@ public class ReviewControllerApi {
     public ResponseEntity<?> getListReview() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
-        response.put("categories", categoryService.getListCategory());
-        response.put("reviews", reviewService.getListReviews(user));
+        response.put("reviews", reviewService.getMyReviews(user));
         return ResponseEntity.ok(response);
     }
 
