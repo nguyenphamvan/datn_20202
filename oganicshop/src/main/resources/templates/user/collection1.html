@@ -412,7 +412,7 @@
 
         });
 
-        $(document).on("click", "section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul > li", function () {
+        $(document).on("click", ".shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul > li", function () {
             let sort = $("#sort-by option:selected").val().split("-");
             let data = {
                 "category" : /*[[${category}]]*/,
