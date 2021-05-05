@@ -58,12 +58,17 @@ public class ManagerProductApi {
         return productService.stopBusinessProduct(productId);
     }
 
+    @PutMapping("/openBusiness/{productId}")
+    public boolean openBusiness(@PathVariable("productId") long productId) {
+        return productService.openBusinessProduct(productId);
+    }
+
     @PutMapping("/import/{productId}")
     public Object importAmountProduct(@PathVariable("productId") long productId, @RequestBody ObjectNode objectNode) {
         int amount = objectNode.get("amount").asInt();
         int amountAvailable = productService.importProduct(productId, amount);
         Map<String, Object> response = new HashMap<>();
-        response.put("amountAfterImport", amountAvailable);
+        response.put("product", new ProductConverter().entityToDtoNotReviews(productService.getProductById(productId)));
         response.put("message", "Bạn vừa nhập thêm " + amount + ", số lượng hiện tại là : " + amountAvailable);
         return response;
     }

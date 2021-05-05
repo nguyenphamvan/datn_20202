@@ -127,6 +127,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public boolean openBusinessProduct(long productId) {
+        Product product = productRepository.findById(productId).get();
+        product.setStopBusiness(false);
+        try {
+            productRepository.save(product);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public long countNumberProduct() {
         return productRepository.count();
     }

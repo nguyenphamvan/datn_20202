@@ -24,4 +24,5 @@ public interface ProductService {
     ProductResponseDto editProduct(ProductRequestDto productRequestDto) throws IOException;
     int importProduct(long productId, int amount);
     boolean stopBusinessProduct(long productId);
+    boolean openBusinessProduct(long productId);
 }

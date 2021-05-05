@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 
 <head>
 
@@ -172,7 +172,8 @@
                                 <div class="col-md-12" style="margin-bottom: 30px;">
                                     <div class="card">
                                         <a data-size="710x823">
-                                            <img style="width: 100%;" src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
+                                            <img style="width: 100%;"
+                                                 src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg"
                                                  class="img-fluid z-depth-1">
                                         </a>
                                     </div>
@@ -208,7 +209,8 @@
                                 <div style="display: flex; margin: 20px 0px 20px 0px;">
                                     <a id="btn-import-product"
                                        class="btn btn-info btn-sm shadow-sm" style="margin-right: 10px;">Nhập thêm</a>
-                                    <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger btn-sm shadow-sm" style="margin-right: 10px;">
+                                    <button id="stop-business" th:attr="product-id=${productId}"
+                                            class="btn btn-danger btn-sm shadow-sm" style="margin-right: 10px;">
                                         Ngừng bán
                                     </button>
                                     <a th:href="@{'/admin/manager_products/updateProduct/' + ${productId}}"
@@ -367,11 +369,11 @@
 
         getInfoProduct(productId);
 
-        $("#btn-import-product").on("click", function () {
+        $(document).on("click", "#btn-import-product", function () {
             $("#import-products").show();
         });
 
-        $("#stop-business").on("click", function () {
+        $(document).on("click", "#stop-business", function () {
             let productId = $(this).attr("product-id");
             $.ajax({
                 url: "/api/admin/product/stopBusiness/" + productId,
@@ -379,17 +381,41 @@
                 contentType: "application/json",
                 success: function (data) {
                     if (data === true) {
-                        window.location = "/admin/manager_products";
+                        alert("sản phẩm đã ngừng bán");
+                        $("#stop-business").removeClass("btn-danger").addClass("btn-success")
+                            .attr("id", "open-business").text("Mở bán");
+                        $("#status").removeClass().empty();
+                        $("#status").addClass("text-danger").text("Ngừng bán");
                     }
                 },
                 error: function () {
                     alert("có lỗi xảy ra");
                 }
             });
-
         });
 
-        $("#sub-import-product").on("click", function (e) {
+        $(document).on("click", "#open-business", function () {
+            let productId = $(this).attr("product-id");
+            $.ajax({
+                url: "/api/admin/product/openBusiness/" + productId,
+                type: "PUT",
+                contentType: "application/json",
+                success: function (data) {
+                    if (data === true) {
+                        alert("sản phẩm đã mở bán bán");
+                        $("#open-business").removeClass("btn-success").addClass("btn-danger")
+                            .attr("id", "stop-business").text("Ngừng bán");
+                        $("#status").removeClass().empty();
+                        $("#status").addClass("text-primary").text("Đang bán");
+                    }
+                },
+                error: function () {
+                    alert("có lỗi xảy ra");
+                }
+            });
+        });
+
+        $(document).on("click", "#sub-import-product", function (e) {
             e.preventDefault();
             let amount = $("#import-amount").val();
             importProduct(productId, amount);
@@ -402,12 +428,13 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
+                console.log(data);
                 //image
                 let mainImage = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(1) > div > a > img");
-                let subImage1= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(1) > div > img");
-                let subImage2= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(2) > div > img");
-                let subImage3= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(3) > div > img");
-                let subImage4= $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(4) > div > img");
+                let subImage1 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(1) > div > img");
+                let subImage2 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(2) > div > img");
+                let subImage3 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(3) > div > img");
+                let subImage4 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(4) > div > img");
 
                 if (data.hasOwnProperty("mainImage")) {
                     mainImage.closest("a").attr("href", data["mainImage"]);
@@ -416,7 +443,6 @@
 
                 if (data.hasOwnProperty("images")) {
                     $.each(data["images"], function (index, img) {
-                        console.log(index + " : " + img);
                         if (index === 0) {
                             subImage1.attr("src", img);
                         } else if (index === 1) {
@@ -454,13 +480,13 @@
                 if (data["status"] === "Sắp hết hàng") {
                     $("#status").addClass("text-warning").text(data["status"]);
                 } else if (data["status"] === "Ngừng bán") {
+                    $("#stop-business").removeClass("btn-danger").addClass("btn-success")
+                        .attr("id", "open-business").text("Mở bán");
                     $("#status").addClass("text-danger").text(data["status"]);
                 } else {
                     $("#status").addClass("text-primary").text(data["status"]);
                 }
-
                 $("#baseDescription").text(data["baseDescription"]);
-                console.log(data["detailDescription"]);
                 $("#detailDescription").html(data["detailDescription"]);
             },
             error: function () {
@@ -476,7 +502,16 @@
             type: "PUT",
             contentType: "application/json",
             success: function (data) {
-                $("#amount").text(data["amountAfterImport"]);
+                $("#amount").text(data["product"]["amount"]);
+                // status product
+                $("#status").removeClass().empty();
+                if (data["product"]["status"] === "Sắp hết hàng") {
+                    $("#status").addClass("text-warning").text(data["product"]["status"]);
+                } else if (data["product"]["status"] === "Ngừng bán") {
+                    $("#status").addClass("text-danger").text(data["product"]["status"]);
+                } else {
+                    $("#status").addClass("text-primary").text(data["product"]["status"]);
+                }
                 $("#import-products").empty().hide();
                 $("#import-products").before("<div class=\"alert alert-success\" role=\"alert\">\n" + data["message"] + "</div>");
             },
