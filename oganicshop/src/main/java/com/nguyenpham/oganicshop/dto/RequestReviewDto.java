@@ -23,7 +23,4 @@ public class RequestReviewDto {
     private String title;
     private String comment;
     private int rating;
-    private MultipartFile image;
-    private Date createdAt;
-    private Date updatedAt;
 }

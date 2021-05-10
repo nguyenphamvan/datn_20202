@@ -1,6 +1,5 @@
 package com.nguyenpham.oganicshop.api.admin;
 
-import com.nguyenpham.oganicshop.converter.OrderConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.UserResponseDto;
@@ -93,15 +92,20 @@ public class ManagerAccountApi {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("{userId}/updateRole")
+    public ResponseEntity<?> updateRole(@PathVariable("userId") long userId, @RequestParam("role") String role) {
+        return ResponseEntity.ok(userService.updateRoleAccount(userId, role));
+    }
+
     @PutMapping("{userId}/block")
     public ResponseEntity<?> blockAccount(@PathVariable("userId") long userId) {
-        userService.doBlockAccount(userId, false);
+        userService.doBlockAccount(userId, true);
         return ResponseEntity.ok(true);
     }
 
     @PutMapping("{userId}/unBlock")
     public ResponseEntity<?> unBlockAccount(@PathVariable("userId") long userId) {
-        userService.doBlockAccount(userId, true);
+        userService.doBlockAccount(userId, false);
         return ResponseEntity.ok(true);
     }
 

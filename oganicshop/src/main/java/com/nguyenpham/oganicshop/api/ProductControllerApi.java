@@ -37,15 +37,15 @@ public class ProductControllerApi {
     }
 
     @GetMapping("/{productUrl}")
-    public ResponseEntity<?> getListProductByCategoryUrl(@PathVariable("productUrl") String productUrl) {
+    public ResponseEntity<?> getProduct(@PathVariable("productUrl") String productUrl) {
         Map<String, Object> response = new HashMap<>();
-        ProductResponseDto product = productService.getProduct(productUrl);
+        ProductResponseDto product = productService.getProductByUrl(productUrl);
         response.put("product", product);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
     @PostMapping("/collections")
-    public Object getListProductByCategoryUrl(@RequestBody ObjectNode object) {
+    public Object getProductsByCategoryUrl(@RequestBody ObjectNode object) {
         Page<Product> page = null;
         String categoryUrl = "";
         String supplierName = "";
@@ -130,10 +130,5 @@ public class ProductControllerApi {
     @GetMapping("/check-provide-enough-quantity")
     public boolean isProvideEnoughQuantity(@RequestParam("productUrl") String productUrl, @RequestParam("quantity") int quantity) {
         return productService.isProvideEnoughQuantity(productUrl, quantity);
-    }
-
-    @GetMapping("/api/{productUrl}")
-    public ResponseEntity<?> getProductDetail(@PathVariable("productUrl") String productUrl) {
-        return null;
     }
 }

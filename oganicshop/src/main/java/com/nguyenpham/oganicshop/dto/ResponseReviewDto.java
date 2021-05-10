@@ -26,7 +26,6 @@ public class ResponseReviewDto {
     private String reviewerName;
     private String title;
     private String comment;
-    private String img;
     private int rating;
     private int numbersOfLike;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

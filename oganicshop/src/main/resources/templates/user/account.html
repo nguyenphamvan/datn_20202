@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
     <meta charset="UTF-8">
     <title>Tài khoản của tôi</title>
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
+    <link rel="stylesheet" th:href="@{/css/style-alert.css}"/>
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
 </head>
 <body class="js">
 <!-- Header -->
@@ -40,15 +42,7 @@
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner" id="customer_edit" style="display: none;">
-                <div type="success" class="Alert__StyledAlert" style="display: none;">
-                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512"
-                         color="#26BC4E" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
-                         style="color: rgb(38, 188, 78);">
-                        <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"></path>
-                    </svg>
-                    <span>Thông tin tài khoản của bạn đã được cập nhật.</span>
-                </div>
-                <h3 class="styles__StyledHeading">Thông tin tài khoản</h3><br/>
+                <div class="heading">Thông tin tài khoản</div><br/>
                 <div class="inner div-form">
                     <form id="user_info">
                         <div class="div-form-control">
@@ -64,16 +58,28 @@
                             <label class="input-label">Email</label>
                             <input class="form-control" type="email" name="email" disabled="">
                         </div>
+                        <!--                        <div class="div-form-control">-->
+                        <!--                            <label class="input-label">Giới tính</label>-->
+                        <!--                            <div style="margin-right: 50px;">-->
+                        <!--                                <input type="radio" name="gender" value="male" checked="">-->
+                        <!--                                <span style="margin-left: 10px;">Nam</span>-->
+                        <!--                            </div>-->
+                        <!--                            <div style="margin-right: 50px;">-->
+                        <!--                                <input type="radio" name="gender" value="female">-->
+                        <!--                                <span style="margin-left: 10px;">Nữ</span>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                         <div class="div-form-control">
                             <label class="input-label">Giới tính</label>
-                            <div style="margin-right: 50px;">
-                                <input type="radio" name="gender" value="male" checked="">
-                                <span style="margin-left: 10px;">Nam</span>
-                            </div>
-                            <div style="margin-right: 50px;">
+                            <label class="Radio__StyledRadio">
+                                <input type="radio" name="gender" value="male" checked>
+                                <span class="radio-fake"></span>
+                                <span class="label">Nam</span>
+                            </label>
+                            <label class="Radio__StyledRadio">
                                 <input type="radio" name="gender" value="female">
-                                <span style="margin-left: 10px;">Nữ</span>
-                            </div>
+                                <span class="radio-fake"></span><span class="label">Nữ</span>
+                            </label>
                         </div>
                         <div class="div-form-control">
                             <label class="input-label">Ngày sinh<span>(không bắt buộc)</span></label>
@@ -81,9 +87,9 @@
                         </div>
                         <div class="div-form-control">
                             <label class="input-label">&nbsp;</label>
-                            <label>
+                            <label class="Checkbox__StyledCheckbox" style="display: flex">
                                 <input name="edit_password" type="checkbox">
-                                <span class="checkbox-fake">Thay đổi mật khẩu</span>
+                                <span class="label">Thay đổi mật khẩu</span>
                             </label>
                         </div>
                         <div id="input_group_password" style="display: none;">
@@ -125,11 +131,22 @@
 <th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
 
+<!-- The Modal -->
+<div id="myModal" class="myModal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/check-success-icon.png">
+        <p></p>
+    </div>
+</div>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
         getListCategory();
+        actionForModal();
 
         $(".Account__StyledSideBar").siblings().css('display', 'none');
         let pageURL = $(location).attr("href");
@@ -247,37 +264,18 @@
             type: "GET",
             dataType: 'json',
             success: function (data) {
-
-                // show category
-                let categories = data["categories"];
-                let html = "";
-                $.each(categories, function( index, item ) {
-                    html += "<li>\n" +
-                        "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
-                        "            <ul class=\"list-child-category\">\n";
-                    if (item.hasOwnProperty("subCategory")) {
-                        $.each(item["subCategory"], function( index, subItem ) {
-                            html += "<li>\n" +
-                                "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
-                                "    </li>\n";
-                        });
+                if (data["status"] === true) {
+                    let info = data["userInfo"];
+                    $("input[name='fullName']").val(info["fullName"]);
+                    $("input[name='phoneNumber']").val(info["phone"]);
+                    $("input[name='email']").val(info["email"]);
+                    $("input[name='birthday']").val(info["birthday"]);
+                    let $radios = $('input:radio[name=gender]');
+                    if (info["gender"] === "male") {
+                        $radios.filter('[value=male]').prop('checked', true);
+                    } else {
+                        $radios.filter('[value=female]').prop('checked', true);
                     }
-                    html += "     </ul>\n" +
-                        "</li>";
-
-                });
-                $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
-
-                let info = data["infoAccount"];
-                $("input[name='fullName']").val(info["fullName"]);
-                $("input[name='phoneNumber']").val(info["phone"]);
-                $("input[name='email']").val(info["email"]);
-                $("input[name='birthday']").val(info["birthday"]);
-                let $radios = $('input:radio[name=gender]');
-                if (info["gender"] === "male") {
-                    $radios.filter('[value=male]').prop('checked', true);
-                } else {
-                    $radios.filter('[value=female]').prop('checked', true);
                 }
             },
             error: function (xhr) {
@@ -294,17 +292,23 @@
             dataType: 'json',
             contentType: "application/json",
             cache: false,
-            success: function (user) {
-                $("div.Alert__StyledAlert").css('display', 'block');
-                $("input[name='fullName']").val(user["fullName"]);
-                $("input[name='phoneNumber']").val(user["phone"]);
-                $("input[name='email']").val(user["email"]);
-                $("input[name='birthday']").val(user["birthday"]);
-                let $radios = $('input:radio[name=gender]');
-                if (user["gender"] === "male") {
-                    $radios.filter('[value=male]').prop('checked', true);
-                } else {
-                    $radios.filter('[value=female]').prop('checked', true);
+            success: function (data) {
+                if (data["status"] === true) {
+                    $("#myModal").fadeIn();
+                    $("#myModal > div.modal-content > p").text("Cập nhật thông tin thành công!");
+                    $("#myModal").delay(3000).fadeOut();
+
+                    // user info
+                    $("input[name='fullName']").val(data["userInfo"]["fullName"]);
+                    $("input[name='phoneNumber']").val(data["userInfo"]["phone"]);
+                    $("input[name='email']").val(data["userInfo"]["email"]);
+                    $("input[name='birthday']").val(data["userInfo"]["birthday"]);
+                    let $radios = $('input:radio[name=gender]');
+                    if (data["userInfo"]["gender"] === "male") {
+                        $radios.filter('[value=male]').prop('checked', true);
+                    } else {
+                        $radios.filter('[value=female]').prop('checked', true);
+                    }
                 }
             },
             error: function (xhr) {
@@ -312,6 +316,7 @@
             }
         });
     }
+
     /*]]>*/
 </script>
 </body>

@@ -172,9 +172,9 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th style="width: 10%;">id</th>
-                                    <th style="width: 30%;">email</th>
-                                    <th style="width: 30%;">Ngày tạo</th>
+                                    <th style="width: 5%;">id</th>
+                                    <th style="width: 40%;">email</th>
+                                    <th style="width: 25%;">Ngày tạo</th>
                                     <th style="width: 15%;">trạng thái</th>
                                     <th style="width: 15%; text-align: center;"></th>
                                 </tr>
@@ -252,12 +252,12 @@
                         {
                             data: "blocked",
                             "render": function (data, type, row) {
-                                return (data === true) ? "Đang sử dụng" : "Block";
+                                return (data === true) ? "<p class='text-danger'>Đã Khóa</p>" : "<p class='text-success'>Đang sử dụng</p>";
                             }
                         },
                         {
                             data: "id", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_users/user/" + data + "'><button id='manageBtn' type='button' class='btn btn-success btn-xs'>Xem chi tiết</button></a>";
+                                return "<a href='/admin/manager_users/user/" + data + "'><button id='manageBtn' type='button' class='d-none d-sm-inline-block btn btn-success btn-sm shadow-sm'>Xem chi tiết</button></a>";
                             }
                         }
                     ]

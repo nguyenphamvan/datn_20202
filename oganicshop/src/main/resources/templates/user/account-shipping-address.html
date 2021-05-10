@@ -7,6 +7,8 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
+    <link rel="stylesheet" th:href="@{/css/style-alert.css}" />
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
 </head>
 <body class="js">
 <!-- Header -->
@@ -209,6 +211,14 @@
 <!-- Start Footer Area -->
 <th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
+<div id="myModal" class="myModal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img>
+        <p></p>
+    </div>
+</div>
 
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -216,6 +226,7 @@
     $(document).ready(function () {
         getListCategory();
         getTheShippingAddress();
+        actionForModal();
 
         $(".action > a.edit").on('click', function () {
             $("div.styles__StyledAccountAddressEdit").show();
@@ -310,7 +321,6 @@
         });
 
         $(document).on("click", "div.action > button.delete", function () {
-            $(this).closest("div.item").remove();
             let addressId = $(this).closest("div.item").attr("id-shippingaddr");
             deleteShippingAddress($(this), addressId);
         });
@@ -359,6 +369,7 @@
             url = "/api/account/address/update";
             type = "PUT";
         }
+
         $.ajax({
             url: url,
             type: type,
@@ -366,8 +377,15 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (data) {
-                $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item").nextAll().remove();
-                getTheShippingAddress();
+                console.log(data)
+                if (data === true) {
+                    $("#myModal").fadeIn();
+                    $("#myModal > div.modal-content > img").attr("src", "/images/check-success-icon.png");
+                    $("#myModal > div.modal-content > p").text("Lưu địa chỉ thành công!");
+                    $("#myModal").delay(3000).fadeOut();
+                    $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item").nextAll().remove();
+                    getTheShippingAddress();
+                }
             },
             error: function (xhr) {
                 alert(xhr.responseText);
@@ -376,17 +394,33 @@
     }
 
     function deleteShippingAddress(thisItem, addressId) {
-        $.ajax({
-            url: "/api/account/address/delete/" + addressId,
-            type: "DELETE",
-            contentType: "application/json",
-            success: function (data) {
-                thisItem.closest("div.item").remove();
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
+        cuteAlert({
+            type: "question",
+            title: "Xác nhận hành động",
+            message: "Bạn chắc chắn muốn xóa địa chỉ này",
+            confirmText: "Xóa",
+            cancelText: "Hủy"
         });
+        $("button.confirm-button.question-bg.question-btn").on("click", function () {
+            $.ajax({
+                url: "/api/account/address/delete/" + addressId,
+                type: "DELETE",
+                contentType: "application/json",
+                success: function (data) {
+                    if (data === true) {
+                        $("#myModal").fadeIn();
+                        $("#myModal > div.modal-content > img").attr("src", "/images/not-enough.png");
+                        $("#myModal > div.modal-content > p").text("Xóa thành công!");
+                        $("#myModal").delay(3000).fadeOut();
+                        thisItem.closest("div.item").remove();
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+
     }
     /*]]>*/
 </script>

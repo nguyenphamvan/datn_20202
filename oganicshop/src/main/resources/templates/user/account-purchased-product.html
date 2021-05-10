@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
     <meta charset="UTF-8">
     <title>Sản phẩm đã mua</title>
@@ -21,7 +21,8 @@
                 <div class="bread-inner">
                     <ul class="bread-list">
                         <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li class="active"><a th:href="@{/nhan-xet-san-pham-ban-da-mua}">Nhận xét sản phẩm đã mua</a></li>
+                        <li class="active"><a th:href="@{/nhan-xet-san-pham-ban-da-mua}">Nhận xét sản phẩm đã mua</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -46,7 +47,7 @@
                                 <img>
                                 <div class="my-reviews__name"></div>
                             </div>
-                            <button class="my-reviews__button" data-toggle="modal" data-target="#myModal">Viết nhận xét
+                            <button class="my-reviews__button" data-toggle="modal" data-target="#reviewModal">Viết nhận xét
                             </button>
                         </a>
                     </div>
@@ -54,8 +55,8 @@
             </div>
 
             <!-- viết nhận xét sản phẩm tại đây-->
-            <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-label="Viết nhận xét"
-                 style="inset: 50% auto auto 50%; transform: translate(-50%, -50%);">
+            <div class="modal" id="reviewModal" tabindex="-1" role="dialog" aria-label="Viết nhận xét"
+                 style="inset: 50% auto auto 50%; transform: translate(-50%, -50%); height: 450px;">
                 <div class="style__StyledWriteReview write-review">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <form class="write-review__inner" enctype="multipart/form-data">
@@ -103,13 +104,6 @@
                         </div>
                         <textarea rows="8" class="write-review__input"></textarea>
                         <div class="write-review__buttons">
-                            <input class="write-review__file" type="file" multiple="">
-                            <button type="button" class="write-review__button write-review__button--image"
-                                    style="border: 1px solid rgb(13, 92, 182); color: rgb(13, 92, 182);">
-                                <img src="https://salt.tikicdn.com/ts/upload/ad/f9/bf/79e0539a981e363ba6ac5bfeef3c70da.png"><span>Thêm ảnh</span>
-                                <input type="file" name="upload" class="upload__file--button"
-                                       accept="image/png, image/jpeg">
-                            </button>
                             <button id="btn-post-review" type="button"
                                     class="write-review__button write-review__button--submit" style="background-color: rgb(253, 216, 53);
 								color: rgb(36, 36, 36);">
@@ -128,6 +122,16 @@
 <th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
 
+<!-- The Modal -->
+<div id="myModal" class="myModal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/check-success-icon.png">
+        <p></p>
+    </div>
+</div>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     // A $( document ).ready() block.
@@ -136,27 +140,26 @@
         getListProductIsNotReviewed();
 
         $("#btn-post-review").on("click", function () {
-            let data = new FormData();
-            data.append("title", $(".write-review__heading").text());
-            data.append("comment", $("textarea.write-review__input").val());
-            data.append("rating", $("input[name='rating-value']").val());
-            data.append("productId", $("input[name='product-id']").val());
-            data.append("orderDetailId", $("input[name='orderDetail-id']").val());
-            data.append('image', $("input[name='upload']")[0].files[0]);
+            let data = {
+                "title": $(".write-review__heading").text(),
+                "comment": $("textarea.write-review__input").val(),
+                "rating": $("input[name='rating-value']").val(),
+                "productId": $("input[name='product-id']").val(),
+                "orderDetailId": $("input[name='orderDetail-id']").val()
+            };
             $.ajax({
                 url: "/api/review/post",
-                data: data,
+                data: JSON.stringify(data),
                 type: "POST",
-                enctype: 'multipart/form-data',
-                // prevent jQuery from automatically transforming the data into a query string
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 1000000,
+                contentType: "application/json",
                 success: function (result) {
-                    $("#myModal").modal('hide');
+                    $("#reviewModal").find(".write-review").empty();
+                    setTimeout(function () {
+                        $("#reviewModal").find(".write-review").append("<div class='center'>" + result + "</div>");
+                    }, 2000);
+                    setTimeout("$('#reviewModal').modal('hide');", 3000);
                     getListProductIsNotReviewed();
-                    window.location.replace("/");
+                    // window.location.replace("/");
                 },
                 error: function (xhr) {
                     alert(xhr.responseText);
@@ -233,6 +236,7 @@
             dataType: 'json',
             success: function (data) {
                 let listItem = data["products"]
+                $(".my-reviews__inner a:first-child").show().nextAll().remove();
                 if (listItem.length > 0) {
                     let firstItem = $(".my-reviews__inner a:first-child");
                     $.each(listItem, function (index, item) {
@@ -246,7 +250,16 @@
                     firstItem.hide();
                 } else {
                     $(".style__StyledMyReviews").empty()
-                        .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")
+                        .append("<div class=\"col-12\">\n" +
+                            "                <div style=\"text-align: center; margin: auto; margin-top: 50px;\">\n" +
+                            "                    <p style=\"font-size: 20px; color: green;\">Không có sản phẩm nào chưa nhận xét!</p>\n" +
+                            "                    <div class=\"center\" style=\"margin-top: 20px;\">\n" +
+                            "                        <div class=\"button5\">\n" +
+                            "                            <a href='/' style=\"color: white;\" class=\"btn\">Tiếp tục mua sắm</a>\n" +
+                            "                        </div>\n" +
+                            "                    </div>\n" +
+                            "                </div>\n" +
+                            "     </div>");
                 }
             },
             error: function (xhr) {
@@ -254,6 +267,7 @@
             }
         });
     }
+
     /*]]>*/
 </script>
 </body>

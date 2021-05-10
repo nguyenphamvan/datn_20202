@@ -57,7 +57,6 @@
 }
 
 
-
 .product-detail .owl-nav {
     margin: 0;
     position: absolute;
@@ -184,6 +183,65 @@ body {
     outline: none;
 }
 
+.div-form-control label.Radio__StyledRadio {
+    display: flex;
+    margin-right: 15px;
+}
+
+.div-form-control label.Radio__StyledRadio input[type="radio"] {
+    flex: 1 1 0%;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    visibility: hidden;
+    clip: rect(0px, 0px, 0px, 0px);
+    opacity: 0;
+}
+
+.div-form-control label.Radio__StyledRadio .radio-fake {
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgb(147, 150, 157);
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 10px 12px 10px 0px;
+    position: relative;
+     z-index: 1;
+     color: rgb(120, 120, 120);
+    flex-shrink: 0;
+}
+
+.div-form-control label.Radio__StyledRadio input[type="radio"]:checked + .radio-fake {
+    border-color: rgb(13, 92, 182);
+}
+
+.div-form-control label.Radio__StyledRadio input[type="radio"]:checked + .radio-fake::before {
+    transform: scale(1);
+}
+
+.div-form-control label.Radio__StyledRadio .radio-fake::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    background-color: rgb(13, 92, 182);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease 0s;
+}
+
+.div-form-control label.Radio__StyledRadio .label {
+    font-size: 13px;
+    line-height: 20px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+
 .bHKvLE {
     display: flex;
 }
@@ -238,9 +296,6 @@ textarea {
 }
 
 
-
-
-
 .heading {
     font-size: 19px;
     line-height: 21px;
@@ -252,8 +307,14 @@ textarea {
     background-color: rgb(255, 255, 255);
     border-radius: 4px;
     padding: 1px;
-    min-height: 400px;
-    padding: 30px 20px;
+    /*padding: 30px 20px;*/
+}
+
+.div-form {
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    padding: 1px;
+    padding: 20px 30px;
 }
 
 .styles__StyledAccountListOrder table {
@@ -339,10 +400,6 @@ textarea {
 }
 
 
-
-
-
-
 .fGUCWl:first-child {
     border-top: 0px;
 }
@@ -383,12 +440,6 @@ textarea {
     font-size: 13px;
     line-height: 1.5;
 }
-
-
-
-
-
-
 
 
 .styles__StyledAccountAddress .new svg {
@@ -435,7 +486,7 @@ textarea {
     margin: 0px 0px 5px;
 }
 
-.styles__StyledAccountAddress .item .name > span:nth-child(2){
+.styles__StyledAccountAddress .item .name > span:nth-child(2) {
     font-size: 12px;
     margin: 0px 0px 0px 15px;
     display: inline-block;
@@ -576,6 +627,7 @@ img {
 .styles__StyledAccountWishList .item .body {
     flex: 1 1 0%;
 }
+
 .styles__StyledAccountWishList .item .name {
     font-size: 14px;
     margin: 0px 0px 15px;
@@ -592,11 +644,13 @@ img {
     z-index: 1;
     white-space: nowrap;
 }
+
 .styles__StyledAccountWishList .rating__base {
     color: rgb(222, 221, 220);
     display: inline-block;
     vertical-align: middle;
 }
+
 .styles__StyledAccountWishList .rating__progress {
     color: rgb(255, 195, 36);
     position: absolute;
@@ -605,6 +659,7 @@ img {
     top: 0px;
     overflow: hidden;
 }
+
 .styles__StyledAccountWishList .review-count {
     font-size: 12px;
     color: rgb(102, 102, 102);
@@ -612,33 +667,39 @@ img {
     vertical-align: middle;
     margin: 0px 0px 0px 4px;
 }
+
 .styles__StyledAccountWishList .item .description {
     font-size: 13px;
     line-height: 20px;
     color: rgb(102, 102, 102);
 }
+
 .styles__StyledAccountWishList .footer_favourite {
     width: 190px;
     min-width: 230px;
     margin-left: 25px;
     text-align: right;
 }
+
 .styles__StyledAccountWishList .footer_favourite .price {
     font-size: 16px;
     line-height: 24px;
     font-weight: 500;
     margin: 0px 0px 8px;
 }
+
 .styles__StyledAccountWishList .footer_favourite .wrap {
     display: flex;
     -webkit-box-pack: end;
     justify-content: flex-end;
     font-size: 13px;
 }
+
 .styles__StyledAccountWishList .footer_favourite .list-price {
     color: rgb(102, 102, 102);
     text-decoration: line-through;
 }
+
 .styles__StyledAccountWishList .footer_favourite .discount {
     padding-left: 20px;
     position: relative;
@@ -646,27 +707,23 @@ img {
 }
 
 
-
-
-.styles__StyledReviewList .item {
-    display: flex;
-    padding: 20px;
-    border-top: 1px solid rgb(248, 248, 248);
-}
 .styles__StyledReviewList .thumb {
     width: 100px;
     min-width: 100px;
     padding: 15px;
 }
+
 .Picture__StyledPicture {
     position: relative;
     z-index: 1;
     display: block;
     padding-top: 100%;
 }
+
 .Picture__StyledPicture.loaded .image {
     display: inline-block;
 }
+
 .Picture__StyledPicture .image {
     position: absolute;
     left: 0px;
@@ -677,26 +734,32 @@ img {
     display: none;
     vertical-align: middle;
 }
+
 img {
     border-style: none;
     max-width: 100%;
 }
+
 .styles__StyledReviewList .info {
     padding-left: 20px;
 }
+
 .styles__StyledReviewList .name {
     font-size: 13px;
     margin: 0px 0px 15px;
     display: inline-block;
 }
+
 .styles__StyledReviewList .date {
     font-size: 12px;
     margin: 0px 0px 5px;
     color: rgb(120, 120, 120);
 }
+
 .styles__StyledReviewList .title {
     font-size: 15px;
 }
+
 .styles__StyledReviewList .rating {
     display: inline-block;
     vertical-align: middle;
@@ -705,6 +768,7 @@ img {
     white-space: nowrap;
     margin: 0px 10px;
 }
+
 .styles__StyledReviewList .rating__progress {
     color: rgb(255, 195, 36);
     position: absolute;
@@ -713,9 +777,11 @@ img {
     top: 0px;
     overflow: hidden;
 }
+
 .styles__StyledReviewList .text-success {
     color: rgb(38, 188, 78);
 }
+
 .styles__StyledReviewList .content {
     margin: 5px 0px 0px;
     font-size: 13px;
@@ -723,13 +789,10 @@ img {
 }
 
 
-
-
-
 .styles__StyledReviewList .item {
     display: flex;
     padding: 20px;
-    border-top: 1px solid rgb(248, 248, 248);
+    border-top: 1px solid rgb(204 193 193);
 }
 
 .styles__StyledReviewList .thumb {
@@ -802,7 +865,6 @@ img {
 }
 
 
-
 .Alert__StyledAlert {
     padding: 7px;
     font-size: 13px;
@@ -817,13 +879,13 @@ img {
 }
 
 
-
 .my-reviews__heading {
     color: rgb(36, 36, 36);
     margin: 0px 0px 15px;
     font-size: 19px;
     font-weight: 300;
 }
+
 .my-reviews__inner {
     background-color: rgb(255, 255, 255);
     display: flex;
@@ -837,9 +899,11 @@ img {
     display: flex;
     flex-direction: column;
 }
+
 .my-reviews__info {
     flex: 1 1 0%;
 }
+
 .my-reviews__name {
     margin: 15px 0px 0px;
     color: rgb(36, 36, 36);
@@ -1224,6 +1288,7 @@ img {
     border-bottom: 1px solid rgb(218, 218, 218);
     font-weight: bolder;
 }
+
 .cBkDRy .left {
     margin-right: 20px;
 }
@@ -1235,6 +1300,7 @@ img {
     border-bottom: 1px solid rgb(218, 218, 218);
     font-weight: normal;
 }
+
 .dPnPGf .left {
     margin-right: 20px;
 }
@@ -1245,6 +1311,7 @@ img {
     color: rgb(32, 32, 32);
     font-weight: normal;
 }
+
 .jDvHok .left {
     margin-right: 20px;
 }
@@ -1252,6 +1319,7 @@ img {
 .styles__StyledOrderItems {
     margin-top: 20px;
 }
+
 .styles__StyledOrderItems .title {
     font-weight: 400;
     margin-top: 0px;
@@ -1269,6 +1337,7 @@ img {
     -webkit-box-pack: justify;
     justify-content: space-between;
 }
+
 .styles__StyledOrderItems .items .item {
     display: flex;
     font-weight: 300;
@@ -1291,7 +1360,6 @@ img {
     outline: none;
     padding: 8px 0px;
 }
-
 
 
 /* form add review product */
@@ -1457,11 +1525,13 @@ textarea {
 button, input {
     overflow: visible;
 }
-.write-review__button .write-review__button--image{
+
+.write-review__button .write-review__button--image {
     position: relative;
     cursor: pointer;
 }
-.upload__file--button{
+
+.upload__file--button {
     position: absolute;
     opacity: 0;
 }
@@ -1469,7 +1539,6 @@ button, input {
 *, ::before, ::after {
     box-sizing: border-box;
 }
-
 
 
 i.yellow {
@@ -1507,6 +1576,56 @@ i.yellow {
     border: 1px solid rgb(253, 216, 53);
     padding: 6px 12px;
     border-radius: 4px;
+}
+
+
+
+
+
+
+
+
+
+
+
+ul {
+    list-style: none;
+    padding-left: 0px;
+    margin-bottom: 0;
+}
+
+.pagination-nav ul li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+ul li {
+    list-style: none;
+}
+
+.pagination-nav ul li a {
+    background-color: #f7f7f7;
+    color: #808080;
+    display: block;
+    font-size: 14px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    width: 36px;
+}
+
+a, a:focus, a:active, a:link, img {
+    outline: none;
+    text-decoration: none;
+}
+
+.pagination-nav ul li.active a {
+    background: #F7941D none repeat scroll 0 0;
+    color: #fff;
+}
+
+.mt_50 {
+    margin-top: 50px;
 }
 
 

@@ -29,7 +29,6 @@ public class Review {
     private Long id;
     private String title;
     private String comment;
-    private String img;
     private int rating;
     @Column(name = "created_at")
     @CreationTimestamp

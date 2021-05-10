@@ -19,10 +19,9 @@ $(document).ready(function () {
                     if (result === false) {
                         $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                     } else {
-                        // $('#message').find("div.modal-body").text("sản phẩm đã được thêm vào giỏ hàng!!");
-                        // $('#message').modal('show');
-                        $("#id01 > div > header > h2").text("Sản phảm đã được thêm vào giỏ hàng");
-                        $("#id01").css("display", "block");
+                        $("#myModal").css("display", "block");
+                        $("#myModal > div.modal-content > p").text("Sản phảm đã được thêm vào giỏ hàng!!");
+                        $("#myModal").delay(3000).fadeOut();
                     }
                 }
             })
@@ -39,8 +38,8 @@ $(document).ready(function () {
         let unitPrice = buttonMinus.closest('tr').find('td.price span').text();
         let totalAmountItem = (parseInt(quantity) - parseInt(1)) * parseInt(unitPrice);
         let data = {
-            url : buttonMinus.closest('tr').attr('data-url'),
-            changeMethod : "minus"
+            url: buttonMinus.closest('tr').attr('data-url'),
+            changeMethod: "minus"
         }
         if (quantity > 0) {
             $.when(
@@ -53,6 +52,7 @@ $(document).ready(function () {
                     success: function (result) {
                         $(".quickview-content .error-msg").remove();
                         if (result === false) {
+
                             $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                         } else {
                             buttonMinus.parent().siblings('input').val(parseInt(quantity) - parseInt(1));
@@ -68,15 +68,15 @@ $(document).ready(function () {
     });
     /* end function minus item in cart */
 
-    /* function minus item in cart using jquery ajax  */
-    $(document).on('click', '.shopping-cart .qty .button.plus button' , function () {
+    /* function edit item in cart using jquery ajax  */
+    $(document).on('click', '.shopping-cart .qty .button.plus button', function () {
         let buttonPlus = $(this);
         let quantity = buttonPlus.parent().siblings('input').val();
         let unitPrice = buttonPlus.closest('tr').find('td.price span').text();
-        let totalAmountItem = (parseInt(quantity) + parseInt(1))* parseInt(unitPrice);
+        let totalAmountItem = (parseInt(quantity) + parseInt(1)) * parseInt(unitPrice);
         let data = {
-            url : buttonPlus.closest('tr').attr('data-url'),
-            changeMethod : "plus"
+            url: buttonPlus.closest('tr').attr('data-url'),
+            changeMethod: "plus"
         }
         $.when(
             $.ajax({
@@ -87,7 +87,8 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 success: function (result) {
                     if (result === false) {
-                        alert("không đủ số lượng cung cấp");
+                        $("#myModal").css("display", "block");
+                        $("#myModal > div.modal-content > p").text("không đủ số lượng cung cấp!!").css("color", "red");
                     } else {
                         buttonPlus.parent().siblings('input').val(parseInt(quantity) + parseInt(1));
                         buttonPlus.closest('tr').find('td.total-amount span').text(totalAmountItem);
@@ -100,65 +101,6 @@ $(document).ready(function () {
         });
     });
     /* end function minus item in cart */
-
-    /* function quick view product */
-    $(document).on("click", "div.product-img > div > div.product-action > a", function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: $(this).attr('href'),
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                let product = data["product"];
-
-                // set image
-                $("div.quickview-slider-active-modal").empty();
-                $.each(product["images"], function (index, item) {
-                    let html = "<div class=\"single-slider\">\n" +
-                        "           <img src='" + item + "'>\n" +
-                        "        </div>";
-                    $("div.quickview-slider-active-modal").append(html);
-                });
-                $('div.quickview-slider-active-modal').owlCarousel({
-                    items: 1,
-                    autoplay: true,
-                    autoplayTimeout: 5000,
-                    smartSpeed: 400,
-                    autoplayHoverPause: true,
-                    nav: true,
-                    loop: true,
-                    merge: true,
-                    dots: false,
-                    navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>']
-                })
-
-                $("#productModal > div > div > div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
-                $('.quickview-content h2').text(product["productName"]);
-                $('.quickview-ratting').empty();
-                for (let i = 0; i < product["rating"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"yellow fa fa-star\"></i>");
-                }
-                for (let i = 0; i < 5 - product["rating"]; i++) {
-                    $('.quickview-ratting').append("<i class=\"fa fa-star\"></i>");
-                }
-                $('#num-customer-review').text(product["numberOfReviews"]);
-                $('.quickview-content h3').text(product["finalPrice"] + " đ").css("color", "red");
-                $('.quickview-peragraph').html(product["detailDescription"]);
-                $('#add-cart').attr('productUrl', product["productUrl"]);
-                $("div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
-                $('.add-to-cart').attr('productUrl', product["productUrl"]);
-                if (product["amount"] > 0) {
-                    $('#in-stock').css('display', 'block');
-                    $('#out-stock').css('display', 'none');
-                } else {
-                    $('#in-stock').css('display', 'none');
-                    $('#out-stock').css('display', 'block');
-                }
-                $('#productModal').modal('show');
-            }
-        });
-    });
-    /* end function quick view product */
 
     /* function remove item cart using jquery ajax */
     $(document).on('click', 'td.action a', function () {
@@ -193,7 +135,25 @@ $(document).ready(function () {
             url: url,
             type: "DELETE",
             dataType: 'json',
-            success: function (result) {
+            success: function (data) {
+                alert("đã xóa sản phẩm khỏi giỏ hàng");
+                console.log(data);
+                if (data["cart"].length > 0) {
+                    if (data["status"] === true) {
+                        let html = "<div class=\"row\">\n" +
+                            "                <div class=\"cart-empty\" style=\"text-align: center; margin: auto;\">\n" +
+                            "                    Không có sản phẩm nào trong giỏ hàng\n" +
+                            "                    <div class=\"center\" style='margin-top: 20px;'>\n" +
+                            "                         <div class=\"button5\">\n" +
+                            "                               <a href=\"/\" style='color: white;' class=\"btn\">Tiếp tục mua sắm</a>\n" +
+                            "                          </div>\n" +
+                            "                    </div>\n" +
+                            "                </div>\n" +
+                            "            </div>";
+                        $("body > div.shopping-cart.section > div.container").empty();
+                        $("body > div.shopping-cart.section > div.container").append(html);
+                    }
+                }
             }
         }).then(function () {
             loadHeaderCart();
@@ -202,18 +162,15 @@ $(document).ready(function () {
     /* end function remove item cart */
 
 
-
     /* function add product to wishlist */
-    $(".product-action a[title='Wishlist']").on("click", function (e) {
+    $(document).on("click", "div.product-action >  a[title='Wishlist']", function (e) {
         e.preventDefault();
-        let url = $(this).attr("href");
-        addProductFromWishlist(url);
+        addProductFromWishlist($(this).attr("href"));
     });
 
-    $("div.add-to-cart > a.btn.min").on("click", function (e) {
-         e.preventDefault();
-         let url = $(this).attr("href");
-        addProductFromWishlist(url);
+    $(document).on("click", "div.add-to-cart > a.btn.min", function (e) {
+        e.preventDefault();
+        addProductFromWishlist($(this).attr("href"));
     });
     /* function end product to wishlist */
 });
@@ -314,7 +271,7 @@ function getSortAndShow(filterByPrice, categoryUrl, supplierName, keyword) {
     let url;
     if (keyword != null) {
         url = "/search.html?search=" + keyword + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-    } else if (categoryUrl != null && supplierName == null){
+    } else if (categoryUrl != null && supplierName == null) {
         if (filterByPrice === true) {
             url = "/collections.html?category=" + categoryUrl + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
         } else {
@@ -348,8 +305,9 @@ function addProductFromWishlist(url) {
         dataType: 'json',
         success: function (result) {
             if (result === true) {
-                $('#message').find("div.modal-body").text("Đã thêm vào danh sách yêu thích!!");
-                $('#message').modal('show');
+                $("#myModal").css("display", "block");
+                $("#myModal > div.modal-content > p").text("Đã thêm vào danh sách yêu thích!!");
+                $("#myModal").delay(3000).fadeOut();
             }
         },
         error: function (err) {
@@ -366,12 +324,12 @@ function getListCategory() {
         success: function (categories) {
             // show category
             let html = "";
-            $.each(categories, function( index, item ) {
+            $.each(categories, function (index, item) {
                 html += "<li>\n" +
                     "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
                     "            <ul class=\"list-child-category\">\n";
                 if (item.hasOwnProperty("subCategory")) {
-                    $.each(item["subCategory"], function( index, subItem ) {
+                    $.each(item["subCategory"], function (index, subItem) {
                         html += "<li>\n" +
                             "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
                             "    </li>\n";
@@ -379,7 +337,6 @@ function getListCategory() {
                 }
                 html += "     </ul>\n" +
                     "</li>";
-
             });
             $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
@@ -388,4 +345,25 @@ function getListCategory() {
             alert(xhr.responseText);
         }
     });
+}
+
+function actionForModal() {
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the <span> element that closes the modal
+    let span = $(".closeModal")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        $("#myModal").hide();
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $("#myModal").hide();
+        }
+    }
 }

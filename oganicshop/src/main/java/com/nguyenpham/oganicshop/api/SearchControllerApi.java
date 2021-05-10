@@ -26,7 +26,7 @@ public class SearchControllerApi {
     }
 
     @PostMapping("/api/search")
-    public Object getViewSearch(@RequestBody ObjectNode object) {
+    public Object getProductsByKeyword(@RequestBody ObjectNode object) {
 
         String search = "";
         String sort = "asc";
@@ -51,7 +51,7 @@ public class SearchControllerApi {
 
         CategoryConverter converter = new CategoryConverter();
         Map<String, Object> result = new HashMap<>();
-        Page<Product> page = productService.searchProductByKeyword(search, pageNum, pageSize, filed, sort);
+        Page<Product> page = productService.getProductsByKeyword(search, pageNum, pageSize, filed, sort);
         Set<Supplier> setSuppliers = new HashSet<>();
         Set<CategoryDto> setCategorySearch = new HashSet<>();
         for (Product p : page.getContent()) {

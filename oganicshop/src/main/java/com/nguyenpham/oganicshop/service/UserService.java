@@ -25,8 +25,8 @@ public interface UserService {
     UserResponseDto getInfoAccount();
     UserResponseDto updateInfoAccount (UserRequestDto userRequest);
     List<AddressResponseDto> getShippingAddress();
-    AddressResponseDto addShippingAddress(AddressRequestDto request);
-    AddressResponseDto updateShippingAddress (AddressRequestDto request);
+    boolean addShippingAddress(AddressRequestDto request);
+    boolean updateShippingAddress (AddressRequestDto request);
     boolean deleteShippingAddress(long addressId);
     Set<ProductResponseDto> getWishlists(User user);
     boolean addProductToWishlist(long productId);
@@ -35,7 +35,7 @@ public interface UserService {
     void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException;
     boolean verify(String verificationCode);
     void doBlockAccount(long userId, boolean isBlock);
-
+    boolean updateRoleAccount(long userId, String role);
     User registerNewUserAfterOAuthLoginSuccess(String email, String fullName, Provider provider);
     User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName);
 

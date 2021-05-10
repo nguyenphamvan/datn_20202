@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -151,8 +150,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getProductsByCategory(
-            String categoryUrl, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir
-    ) {
+            String categoryUrl,
+            int minPrice,
+            int maxPrice,
+            int pageNum,
+            int pageSize,
+            String sortField,
+            String sortDir )
+    {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
         if (((minPrice > 0) || (maxPrice > 0)) && (minPrice < maxPrice)) {
@@ -182,7 +187,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto getProduct(String productUrl) {
+    public ProductResponseDto getProductByUrl(String productUrl) {
         Product product = productRepository.findByUrl(productUrl).orElse(null);
         Set<Review> reviews = product.getReviews().stream().filter(rv -> rv.getRootComment() == null).collect(Collectors.toSet());
         product.setReviews(reviews);
@@ -196,7 +201,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> searchProductByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir) {
+    public Page<Product> getProductsByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
         return productRepository.findProductsByKeyword(keyword, pageable);

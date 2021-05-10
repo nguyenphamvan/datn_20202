@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -205,10 +207,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void doBlockAccount(long userId, boolean isBlock) {
         User user = userRepository.findById(userId).get();
         user.setBlocked(isBlock);
         userRepository.save(user);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public boolean updateRoleAccount(long userId, String role) {
+        try {
+            User user = userRepository.findById(userId).get();
+            user.setRole(role);
+            userRepository.save(user);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -259,28 +276,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public AddressResponseDto addShippingAddress(AddressRequestDto request) {
+    public boolean addShippingAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
-        Address address = new Address();
-        address = saveAddress(address, request, userDb);
-        if (request.isDefault()) {
-            shippingAddressRepository.setAddressDefault(address.getId());
+        try {
+            Address address = new Address();
+            address = saveAddress(address, request, userDb);
+            if (request.isDefault()) {
+                shippingAddressRepository.setAddressDefault(address.getId());
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new AddressConverter().entityToDto(address);
+        return false;
     }
 
     @Override
     @Transactional
-    public AddressResponseDto updateShippingAddress(AddressRequestDto request) {
+    public boolean updateShippingAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
-        Address address = shippingAddressRepository.findById(request.getId()).get();
-        address = saveAddress(address, request, userDb);
-        if (request.isDefault()) {
-            shippingAddressRepository.setAddressDefault(request.getId());
+        try {
+            Address address = shippingAddressRepository.findById(request.getId()).get();
+            address = saveAddress(address, request, userDb);
+            if (request.isDefault()) {
+                shippingAddressRepository.setAddressDefault(address.getId());
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new AddressConverter().entityToDto(address);
+        return false;
     }
 
     @Override

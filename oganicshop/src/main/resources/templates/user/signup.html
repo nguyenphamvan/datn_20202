@@ -69,42 +69,54 @@
             let email = $("#email").val();
             let password = $("#password").val();
             let rePassword = $("#re_pass").val();
-            if (password !== rePassword) {
-                $("#register-form > div.form-group.form-button").before("<div style='color: red;'>Mật khẩu nhập lại không đúng</div>");
-            } else {
+            if (checkValidateForm(fullName, email, password, rePassword) === true) {
                 $("body > div > section > div > div > div.signup-form").hide();
                 $("body > div > section > div > div > div.spinner-border.text-dark").show();
-                $.ajax({
-                    url: "/api/registerAccount",
-                    type: "POST",
-                    data : JSON.stringify({
-                        "fullName" : fullName,
-                        "email" : email,
-                        "password" : password
-                    }),
-                    dataType : "json",
-                    contentType: "application/json",
-                    success: function (result) {
-                        if (result === true) {
-                            $("body > div > section > div.container").empty();
-                            $("body > div > section > div.container")
-                                .append("<div class='singup-successfully' style='text-align: center; min-height: 400px;'>" +
-                                    "<div style='margin: 0 auto; padding-top: 50px;'>" +
-                                    "   <p>Đăng ký tài khoản thành công, vui lòng kiểm tra email của bàn để kích hoạt tài khoản</p>" +
-                                    "   <a href=\"/login\" class='form-submit' style='text-decoration: none;'>Đăng nhập ngay</a>" +
-                                    "</div>" +
-                                    "</div>");
-                        } else {
-                            window.location.href = "/403";
-                        }
-                    },
-                    error: function (xhr) {
-                        alert(xhr.responseText);
-                    }
-                });
+                register(fullName, email, password);
+            } else {
+                $("#register-form > div.form-group.form-button").before("<div style='color: red;'>Mật khẩu nhập lại không đúng</div>");
             }
         });
     });
+
+    function checkValidateForm(fullName, email, password, rePassword) {
+        let passValidate = true;
+        if (password !== rePassword) {
+            passValidate = false;
+        }
+        return passValidate;
+    }
+
+    function register(fullName, email, password) {
+        $.ajax({
+            url: "/api/registerAccount",
+            type: "POST",
+            data : JSON.stringify({
+                "fullName" : fullName,
+                "email" : email,
+                "password" : password
+            }),
+            dataType : "json",
+            contentType: "application/json",
+            success: function (result) {
+                if (result === true) {
+                    $("body > div > section > div.container").empty();
+                    $("body > div > section > div.container")
+                        .append("<div class='singup-successfully' style='text-align: center; min-height: 400px;'>" +
+                            "<div style='margin: 0 auto; padding-top: 50px;'>" +
+                            "   <p>Đăng ký tài khoản thành công, vui lòng kiểm tra email của bàn để kích hoạt tài khoản</p>" +
+                            "   <a href=\"/login\" class='form-submit' style='text-decoration: none;'>Đăng nhập ngay</a>" +
+                            "</div>" +
+                            "</div>");
+                } else {
+                    window.location.href = "/403";
+                }
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
     /*]]>*/
 </script>
 </body>

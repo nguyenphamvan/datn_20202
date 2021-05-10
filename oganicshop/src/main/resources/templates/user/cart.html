@@ -6,6 +6,7 @@
     <!-- Title Tag  -->
     <title>Giỏ hàng</title>
     <th:block th:include="user/common/header_tag_common"/>
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
 
 </head>
 <body class="js">
@@ -183,12 +184,24 @@
 <th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
 
+
+<!-- The Modal -->
+<div id="myModal" class="myModal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/not-enough.png">
+        <p></p>
+    </div>
+</div>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
         getListCategory();
         getProductsInCart();
+        actionForModal();
     });
 
     function getProductsInCart() {

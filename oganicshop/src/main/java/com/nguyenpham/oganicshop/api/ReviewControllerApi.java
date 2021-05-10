@@ -1,9 +1,12 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.nguyenpham.oganicshop.converter.ReviewConverter;
+import com.nguyenpham.oganicshop.dto.MyReviewDto;
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
+import com.nguyenpham.oganicshop.entity.Review;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CategoryService;
@@ -11,6 +14,7 @@ import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.ReviewService;
 import com.nguyenpham.oganicshop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/review")
@@ -39,27 +45,31 @@ public class ReviewControllerApi {
     }
 
     @GetMapping("/my-review")
-    public ResponseEntity<?> getListReview() {
+    public ResponseEntity<?> getListReview(@RequestParam("currentPage") int currentPage, @RequestParam("pageSize") int pageSize) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
-        response.put("reviews", reviewService.getMyReviews(user));
+        Page<Review> pageReview = reviewService.getMyReviews(user, currentPage, pageSize);
+        ReviewConverter converter = new ReviewConverter();
+        List<MyReviewDto> listMyReview = pageReview.getContent().stream().map(rv -> converter.entityToMyReview(rv))
+                .collect(Collectors.toList());
+        response.put("reviews", listMyReview);
+        response.put("totalPage", pageReview.getTotalPages());
+        response.put("currentPage", pageReview.getNumber() + 1);
+        response.put("pageSize", pageReview.getSize());
+        response.put("numberOfReview", pageReview.getTotalElements());
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> postReview(@ModelAttribute RequestReviewDto requestReviewDto) {
+    public ResponseEntity<?> postReview(@RequestBody RequestReviewDto requestReviewDto) {
         OrderDetailDto orderDetailDto = new OrderDetailDto();
         orderDetailDto.setId(requestReviewDto.getOrderDetailId());
         orderDetailDto.setReviewed(true);
         try {
             orderService.editReviewed(orderDetailDto);
             reviewService.save(requestReviewDto);
-            MultipartFile file = requestReviewDto.getImage();
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            String uploadDir = "static/images/image-product-review/" + requestReviewDto.getProductId();
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
-            return ResponseEntity.ok("file " + file.getOriginalFilename() + " đã được upload thành công");
-        } catch (IOException e) {
+            return ResponseEntity.ok("Cảm ơn bạn đã đánh giá sản phẩm!");
+        } catch (Exception e) {
             return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

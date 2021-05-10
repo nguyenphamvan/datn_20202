@@ -13,6 +13,10 @@ import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +52,6 @@ public class ReviewServiceImpl implements ReviewService {
         review.setTitle(postReview.getTitle());
         review.setComment(postReview.getComment());
         review.setRating(postReview.getRating());
-        if (postReview.getImage() != null) {
-            review.setImg(postReview.getImage().getOriginalFilename()); // lấy hình ảnh, sẽ lưu ý để làm cách khác tưởng minh hơn
-        }
-
         if (postReview.getRootId() != null) {
             Review rootReview = reviewRepository.findById(postReview.getRootId()).orElse(null);
             review.setRootComment(rootReview);
@@ -69,18 +69,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ResponseReviewDto> getListReviews(User user) {
-        List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
+        List<Review> listReviews = reviewRepository.findReviewsByUserId(user.getId());
         ReviewConverter converter = new ReviewConverter();
         List<ResponseReviewDto> listReviewDto = listReviews.stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
         return listReviewDto;
     }
 
     @Override
-    public List<MyReviewDto> getMyReviews(User user) {
-        List<Review> listReviews = reviewRepository.findAllByUserId(user.getId());
-        ReviewConverter converter = new ReviewConverter();
-        List<MyReviewDto> listReviewDto = listReviews.stream().map(rv -> converter.entityToMyReview(rv)).collect(Collectors.toList());
-        return listReviewDto;
+    public Page<Review> getMyReviews(User user, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id"));
+        Page<Review> listReviews = reviewRepository.findAllByUserId(user.getId(), pageable);
+        return listReviews;
     }
 
     @Override

@@ -43,15 +43,14 @@
                     <div class="heading">Nhận xét của tôi (<span></span>)</div>
                     <div class="inner">
                         <div class="list">
-                            <div class="item">
+                            <div class="item" style="display: none;">
                                 <div class="thumb">
                                     <div class="Picture__StyledPicture loaded">
                                         <img class="image">
                                     </div>
                                 </div>
-
                                 <div class="info">
-                                    <a class="name"></a>
+                                    <a class="name" style="font-weight: bold;"></a>
                                     <div class="date"></div>
                                     <div class="wrap">
                                         <span class="title"></span>
@@ -67,6 +66,8 @@
                             </div>
                         </div>
                     </div>
+                    <ul class="Pagination__StyledPagination">
+                    </ul>
                 </div>
             </div>
 
@@ -84,19 +85,27 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
         getListCategory();
-        getListMyReview();
+        getListMyReview(1,5);
+
+        $(document).on('click', 'ul.Pagination__StyledPagination > li', function () {
+            $(".Pagination__StyledPagination").children("li").removeClass("is-active");
+            $(this).addClass("is-active");
+            getListMyReview(parseInt($(this).text()), 5);
+        });
     });
 
-    function getListMyReview() {
+    function getListMyReview(currentPage, pageSize) {
         $.ajax({
-            url: "/api/review/my-review",
+            url: "/api/review/my-review?currentPage=" + currentPage + "&pageSize=" + pageSize,
             type: "GET",
             dataType: 'json',
             success: function (data) {
+                $(".styles__StyledReviewList .heading span").text(data["numberOfReview"]);
+                $(".Pagination__StyledPagination").empty();
                 let listMyReview = data["reviews"];
-                $(".styles__StyledReviewList .heading span").text(listMyReview.length);
                 if (listMyReview.length > 0) {
                     let firstItem = $(".styles__StyledReviewList div.list .item:first-child");
+                    $(".styles__StyledReviewList div.list .item:first-child").nextAll().remove();
                     $.each(listMyReview, function (index, item) {
                         let itemClone = firstItem.clone();
                         itemClone.find("div.thumb > div > img").attr("src", item["productImg"]);
@@ -114,9 +123,18 @@
                             }
                         }
                         itemClone.find(".info .content-review").text(item["comment"]);
+                        itemClone.show();
                         itemClone.insertAfter(".styles__StyledReviewList div.list .item:first-child");
+
                     });
-                    firstItem.hide();
+
+                    for (let i = 0; i < parseInt(data["totalPage"]); ++i) {
+                        if ( (i + 1) === parseInt(data["currentPage"]) ) {
+                            $(".Pagination__StyledPagination").append("<li class='is-active'>" + (i + 1) + "</li>");
+                        } else {
+                            $(".Pagination__StyledPagination").append("<li>" + (i + 1) + "</li>")
+                        }
+                    }
                 } else {
                     $(".styles__StyledReviewList").empty()
                         .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")

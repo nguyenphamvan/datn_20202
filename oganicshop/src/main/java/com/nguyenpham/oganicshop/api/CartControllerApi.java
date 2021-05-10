@@ -87,6 +87,7 @@ public class CartControllerApi {
     @DeleteMapping("/remove/{productUrl}")
     public ResponseEntity<?> removeItemCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        Map<String, Object> response = new HashMap<>();
         if (cart == null) {
             cart = new HashMap<>();
         }
@@ -94,10 +95,13 @@ public class CartControllerApi {
             cart = cartService.removeItemCart(cart, productUrl);
             session.setAttribute(Constant.CART_SESSION_NAME, cart);
             session.setAttribute("subCart", cartService.totalSubCart(cart));
+            response.put("status", true);
+            response.put("cart", cart);
             return new ResponseEntity<Object>(true, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<Object>(false, HttpStatus.OK);
+            response.put("status", true);
+            return new ResponseEntity<Object>(response, HttpStatus.OK);
         }
     }
 

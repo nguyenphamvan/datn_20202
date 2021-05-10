@@ -8,10 +8,7 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <link rel="stylesheet" th:href="@{https://www.w3schools.com/w3css/4/w3.css}">
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css}"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-          crossorigin="anonymous"/>
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
 
     <style>
 
@@ -370,18 +367,13 @@
     </div>
 </div>
 <!-- End Most Popular Area -->
-
-<div id="id01" class="w3-modal">
-    <div style="width: 400px; border-radius: 15px !important;" class="w3-modal-content w3-animate-top w3-card-4">
-        <header style="background-color: white!important; border-radius: 10px; height: 150px;"
-                class="w3-container w3-teal">
-        <span onclick="document.getElementById('id01').style.display='none'" style="border-top-right-radius: 10px; color: black !important;font-size: 18px; height: 32px;width: 51px;background: none !important;"
-              class="w3-button w3-display-topright">&times;</span>
-            <h2 style="font-size: 20px; color: green; margin-top: 32px; text-align: center;"></h2>
-            <i style="color: green ; font-size: 40px; display: block; margin: auto; width: fit-content; margin-top: 20px;" class="far fa-check-circle"></i>
-        </header>
-
-
+<!-- The Modal -->
+<div id="myModal" class="myModal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/check-success-icon.png">
+        <p></p>
     </div>
 </div>
 
@@ -396,7 +388,8 @@
 
         let productUrl = /*[[${productUrl}]]*/;
         getListCategory();
-        loadInfoProduct();
+        displayProduct(productUrl);
+        actionForModal();
 
         $(document).on("click", "div.view-reply-more", function () {
             $(this).hide();
@@ -529,7 +522,7 @@
             });
         });
 
-        function loadInfoProduct() {
+        function displayProduct(productUrl) {
             $.ajax({
                 url: "/api/products/" + productUrl,
                 type: "GET",

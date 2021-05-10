@@ -164,10 +164,10 @@
                 <!-- Page Heading -->
                 <div class="row justify-content-between" id="div-info-1">
                     <div class="col-xl-4 col-md-4">
-                        <p class="mb-0 text-gray-800"><span></span> - <span></span></p>
+                        <p class="mb-0 text-gray-800">Mã đơn hàng  : #<span id="orderId"></span> - <span id="orderStatus"></span></p>
                     </div>
-                    <div class="col-xl-3 col-md-3" style="text-align: end;">
-                        <p>Ngày giao hàng : 2021-11-04</p>
+                    <div class="col-xl-4 col-md-4" style="text-align: end;">
+                        <p>Ngày giao hàng : <span id="deliveryDate"></span></p>
                     </div>
                 </div>
                 <br>
@@ -176,13 +176,13 @@
                     <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-4 col-md-4 mb-4">
                         <div class="card border-left-primary shadow h-100">
-                            <div class="card-header">Địa chỉ người nhận</div>
+                            <div class="card-header font-weight-bold">Địa chỉ người nhận</div>
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div style="text-transform: uppercase;"><b></b></div>
-                                        <div></div>
-                                        <div></div>
+                                        <div style="text-transform: uppercase;"><b id="contactReceiver"></b></div>
+                                        <div id="contactAddress"></div>
+                                        <div id="contactPhone"></div>
                                     </div>
                                 </div>
                             </div>
@@ -192,12 +192,12 @@
                     <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-4 col-md-4 mb-4">
                         <div class="card border-left-success shadow h-100">
-                            <div class="card-header">Loại hình giao hàng</div>
+                            <div class="card-header font-weight-bold">Hình thức giao hàng</div>
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div>Giao hàng nội thành</div>
-                                        <div></div>
+                                        <div id="deliveryMethod">Giao hàng nội thành</div>
+                                        <div id="shipFee"></div>
                                     </div>
                                 </div>
                             </div>
@@ -207,11 +207,11 @@
                     <!-- Pending Requests Card Example -->
                     <div class="col-xl-4 col-md-4 mb-4">
                         <div class="card border-left-warning shadow h-100">
-                            <div class="card-header">Phương thức thanh toán</div>
+                            <div class="card-header font-weight-bold">Phương thức thanh toán</div>
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div></div>
+                                        <div id="paymentMethod"></div>
                                     </div>
                                 </div>
                             </div>
@@ -244,7 +244,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="admin-update-orderStatus">
                     <div class="col-xl-12 col-md-12" sec:authorize="hasRole('ADMIN')">
                         <div class="form-inline">
                             <label for="status" class="mr-sm-2">Trạng thái</label>
@@ -400,40 +400,71 @@
                 let contact = order["address"];
                 let listOrderDetail = order["listOrderDetail"];
                 let loggingStatus = order["orderLogging"]["loggingStatus"];
-                $("#div-info-1").find("div:first-child > p:first-child > span:first-child").text("Mã đơn hàng #" + order["id"]);
-                $("#div-info-1").find("div:first-child > p:first-child > span:nth-child(2)").text(order["status"]);
-                $("#div-info-1").find("div:nth-child(2) > p:nth-child(2)").text("Ngày giao hàng" + order["deliveryDate"]);
+                $("#orderId").text(order["id"]);
 
-                $("#div-info-2 > div:nth-child(1) > div > div.card-body > div > div > div:nth-child(1) > b").text(contact["contactReceiver"]);
-                $("#div-info-2 > div:nth-child(1) > div > div.card-body > div > div > div:nth-child(2)").text("Địa chỉ : " + contact["contactAddress"]);
-                $("#div-info-2 > div:nth-child(1) > div > div.card-body > div > div > div:nth-child(3)").text("SĐT : " + contact["contactPhone"]);
+                // order status
+                if (order["status"] === "Đã hủy") {
+                    $("#orderStatus").text(order["status"]).addClass("text-danger");
+                } else if (order["status"] === "Giao hàng thành công") {
+                    $("#orderStatus").text(order["status"]).addClass("text-success");
+                }
 
-                $("#div-info-2 > div:nth-child(2) > div > div.card-body > div > div > div:nth-child(2)").text("Phí vận chuyển : " + order["shipFee"]);
-                $("#div-info-2 > div:nth-child(3) > div > div.card-body > div > div > div:nth-child(1)").text(order["paymentMethod"]);
+                $("#deliveryDate").text(order["deliveryDate"]);
+
+                $("#contactReceiver").text(contact["contactReceiver"]);
+                $("#contactAddress").text("Địa chỉ : " + contact["contactAddress"]);
+                $("#contactPhone").text("SĐT : " + contact["contactPhone"]);
+
+                if (parseInt(order["shipFee"]) > 0) {
+                    $("#shipFee").text("Phí vận chuyển : " + order["shipFee"]);
+                    $("#deliveryMethod").text("Giao hàng có tính phí");
+                } else {
+                    $("#deliveryMethod").text("Miễn phí giao hàng");
+                }
+
+                $("#paymentMethod").text(order["paymentMethod"])
 
                 $.each(listOrderDetail, function (index, product) {
                     let row = "<tr>\n" +
                         "           <td><img style='width: 80px; height: 80px;' src='/images/products/2/laptop-asus.jpg'></td>\n" +
                         "           <td><a>" + product["productName"] + "</a><p>Hãng sx : " + product["supplierName"] + "</p></td>\n" +
                         "           <td>" + product["price"] + "</td>\n" +
-                        "           <td>" + product["promotion"] + "</td>\n" +
+                        "           <td>" + product["discount"] + "</td>\n" +
                         "           <td>" + product["quantity"] + "</td>\n" +
                         "           <td>" + product["rawTotal"] + "</td>\n" +
                         "       </tr>;"
                     $("#list-order-detail").find("tbody").append(row);
                 });
 
-                if ( (order["status"] === "Giao hàng thành công") || (order["status"] === "Đã hủy")) {
-                    $("#content > div > div:nth-child(5)").hide();
+
+                if (order["status"] == "Đã hủy" || order["status"] === "Giao hàng thành công") {
+                    $("#admin-update-orderStatus").hide();
                 }
                 $.each(loggingStatus, function (index, logging) {
-                    let row = "<tr>\n" +
-                        "           <td>" + logging["status"] + "</td>\n" +
-                        "           <td>" + logging["updatedTime"] + "</td>\n" +
-                        "      </tr>";
+                    let row = "";
+                    if (logging["status"] === "Đã hủy") {
+                        row = "<tr>\n" +
+                            "           <td class='text-danger'>" + logging["status"] + "</td>\n" +
+                            "           <td>" + logging["updatedTime"] + "</td>\n" +
+                            "      </tr>";
+                    } else if (logging["status"] === "Giao hàng thành công") {
+                        row = "<tr>\n" +
+                            "           <td class='text-success'>" + logging["status"] + "</td>\n" +
+                            "           <td>" + logging["updatedTime"] + "</td>\n" +
+                            "      </tr>";
+                    } else if (logging["status"] === "Đang xử lý") {
+                        row = "<tr>\n" +
+                            "           <td class='text-warning'>" + logging["status"] + "</td>\n" +
+                            "           <td>" + logging["updatedTime"] + "</td>\n" +
+                            "      </tr>";
+                    } else {
+                        row = "<tr>\n" +
+                            "           <td>" + logging["status"] + "</td>\n" +
+                            "           <td>" + logging["updatedTime"] + "</td>\n" +
+                            "      </tr>";
+                    }
                     $("#logging-status").find("tbody").append(row);
                 });
-
                 if (userOrderHistory === true) {
                     $("#content > div > a").attr("href", "/admin/manager_users/user/" + data["user"]["id"] + "/orderHistory");
                 } else {

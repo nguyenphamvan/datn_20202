@@ -38,13 +38,23 @@ public class AccountControllerApi {
     @GetMapping("/info")
     public ResponseEntity<?> getInfoAccount() {
         Map<String, Object> response = new HashMap<>();
-        response.put("infoAccount", userService.getInfoAccount());
+        response.put("status", true);
+        response.put("userInfo", userService.getInfoAccount());
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateInfoAccount(@RequestBody UserRequestDto userRequest) {
-        return ResponseEntity.ok(userService.updateInfoAccount(userRequest));
+        Map<String, Object> response = new HashMap<>();
+        try {
+            response.put("status", true);
+            response.put("userInfo", userService.updateInfoAccount(userRequest));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", false);
+        }
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/address")

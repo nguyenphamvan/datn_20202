@@ -407,13 +407,14 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (order) {
+                console.log(order);
                 $(".error-msg").remove();
                 // alert("Mã giảm giá đã được áp dụng");
                 $(".order-details ul").empty();
                 $(".order-details ul").append(
                     "<li>Tổng các mặt hàng<span id=\"sub-total\">" + order["subTotal"] + "</span></li>\n" +
                     "<li>(+) Phí vận chuyển<span id=\"ship-fee\">" + order["shipFee"] + "</span></li>\n" +
-                    "<li>(-) Giảm giá<span id=\"promotion\">" + order["promotion"] + "</span></li>\n" +
+                    "<li>(-) Giảm giá<span id=\"promotion\">" + order["discount"] + "</span></li>\n" +
                     "<li class=\"last\">Tổng thanh toán\n" +
                     "    <span id=\"total-cart\">" + order["total"] + "</span>\n" +
                     "</li>"
@@ -504,11 +505,11 @@
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
-            success: function (data) {
-                if (data["address"].length > 0) {
-                    let infoAddress = data["address"];
+            success: function (address) {
+                console.log(address);
+                if (address.length > 0) {
                     let firstDivAddr = $("#addressModal > div > div > div.modal-body > div > div:nth-child(1)");
-                    $.each(infoAddress, function( index, item ) {
+                    $.each(address, function( index, item ) {
                         let itemClone = firstDivAddr.clone();
                         itemClone.show();
                         itemClone.attr("isDefault", item["default"]);
