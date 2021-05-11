@@ -58,23 +58,23 @@ public class AccountControllerApi {
     }
 
     @GetMapping("/address")
-    public ResponseEntity<?> getInfoShippingAddress() {
-        return ResponseEntity.ok(userService.getShippingAddress());
+    public ResponseEntity<?> getListAddress() {
+        return ResponseEntity.ok(userService.getAddress());
     }
 
     @PostMapping("/address/create")
-    public ResponseEntity<?> addShippingAddress(@RequestBody AddressRequestDto request) {
-        return ResponseEntity.ok(userService.addShippingAddress(request));
+    public ResponseEntity<?> addNewAddress(@RequestBody AddressRequestDto request) {
+        return ResponseEntity.ok(userService.addAddress(request));
     }
 
     @PutMapping("/address/update")
-    public ResponseEntity<?> updateShippingAddress(@RequestBody AddressRequestDto request) {
-        return ResponseEntity.ok(userService.updateShippingAddress(request));
+    public ResponseEntity<?> updateOldAddress(@RequestBody AddressRequestDto request) {
+        return ResponseEntity.ok(userService.updateAddress(request));
     }
 
     @DeleteMapping("/address/delete/{addressId}")
-    public ResponseEntity<?> deleteShippingAddress(@PathVariable("addressId") long addressId) {
-        return ResponseEntity.ok(userService.deleteShippingAddress(addressId));
+    public ResponseEntity<?> deleteAddress(@PathVariable("addressId") long addressId) {
+        return ResponseEntity.ok(userService.deleteAddress(addressId));
     }
 
     @GetMapping("/wishlist")

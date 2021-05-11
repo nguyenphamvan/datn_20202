@@ -275,8 +275,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<AddressResponseDto> getAddress() {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        List<Address> listAddresses = shippingAddressRepository.findAllByUserId(user.getId());
+        AddressConverter converter = new AddressConverter();
+        List<AddressResponseDto> resShippingAddress = listAddresses.stream().map(ad -> converter.entityToDto(ad)).collect(Collectors.toList());
+        Collections.sort(resShippingAddress);
+        return resShippingAddress;
+    }
+
+    @Override
     @Transactional
-    public boolean addShippingAddress(AddressRequestDto request) {
+    public boolean addAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         try {
@@ -294,7 +304,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean updateShippingAddress(AddressRequestDto request) {
+    public boolean updateAddress(AddressRequestDto request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         try {
@@ -311,17 +321,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AddressResponseDto> getShippingAddress() {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        List<Address> listAddresses = shippingAddressRepository.findAllByUserId(user.getId());
-        AddressConverter converter = new AddressConverter();
-        List<AddressResponseDto> resShippingAddress = listAddresses.stream().map(ad -> converter.entityToDto(ad)).collect(Collectors.toList());
-        Collections.sort(resShippingAddress);
-        return resShippingAddress;
-    }
-
-    @Override
-    public boolean deleteShippingAddress(long addressId) {
+    public boolean deleteAddress(long addressId) {
         try {
             shippingAddressRepository.deleteById(addressId);
             return true;

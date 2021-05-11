@@ -1,16 +1,11 @@
 package com.nguyenpham.oganicshop.api;
 
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
-import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
-import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,23 +13,19 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/sales")
-public class SalesControllerApi {
+public class OrderControllerApi {
 
-    private UserService userService;
     private OrderService orderService;
-    private CategoryService categoryService;
 
     @Autowired
-    public SalesControllerApi(UserService userService, OrderService orderService, CategoryService categoryService) {
-        this.userService = userService;
+    public OrderControllerApi(OrderService orderService) {
         this.orderService = orderService;
-        this.categoryService = categoryService;
     }
 
     @GetMapping("/order/history")
     public ResponseEntity<?> getOrdersHistory(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
-        return ResponseEntity.ok(orderService.getListOrderHistory(user.getId(), pageNum, pageSize));
+        return ResponseEntity.ok(orderService.getOrdersHistory(user.getId(), pageNum, pageSize));
     }
 
     @GetMapping("/order/paging")
@@ -44,7 +35,7 @@ public class SalesControllerApi {
     }
 
     @GetMapping("/order/view/{orderId}")
-    public ResponseEntity<?> getSingleOrderById(@PathVariable("orderId") long orderId) {
+    public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") long orderId) {
         return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 

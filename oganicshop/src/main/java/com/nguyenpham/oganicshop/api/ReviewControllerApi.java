@@ -45,7 +45,7 @@ public class ReviewControllerApi {
     }
 
     @GetMapping("/my-review")
-    public ResponseEntity<?> getListReview(@RequestParam("currentPage") int currentPage, @RequestParam("pageSize") int pageSize) {
+    public ResponseEntity<?> getMyReviews(@RequestParam("currentPage") int currentPage, @RequestParam("pageSize") int pageSize) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
         Page<Review> pageReview = reviewService.getMyReviews(user, currentPage, pageSize);

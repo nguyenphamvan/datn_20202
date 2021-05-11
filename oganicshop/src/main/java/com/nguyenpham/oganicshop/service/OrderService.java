@@ -21,7 +21,7 @@ public interface OrderService {
     boolean updatedOrderStatus(long orderId, int statusId, String note);
     List<OrderDtoResponse> getAllOrderByUserId(long userId);
     List<OrderDetailDto> getListOrderItem(long orderId);
-    List<OrderDtoResponse> getListOrderHistory(long userId, int pageNum, int pageSize);
+    List<OrderDtoResponse> getOrdersHistory(long userId, int pageNum, int pageSize);
     Set<OrderDetailDto> getListProductNotReviewed(long userId);
     int applyCoupon(HashMap<Long, CartItem> cart, Promotion promotion);
     void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto);

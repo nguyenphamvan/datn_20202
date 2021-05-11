@@ -24,10 +24,10 @@ public interface UserService {
     boolean checkOldPassword(String rawOldPassword);
     UserResponseDto getInfoAccount();
     UserResponseDto updateInfoAccount (UserRequestDto userRequest);
-    List<AddressResponseDto> getShippingAddress();
-    boolean addShippingAddress(AddressRequestDto request);
-    boolean updateShippingAddress (AddressRequestDto request);
-    boolean deleteShippingAddress(long addressId);
+    List<AddressResponseDto> getAddress();
+    boolean addAddress(AddressRequestDto request);
+    boolean updateAddress (AddressRequestDto request);
+    boolean deleteAddress(long addressId);
     Set<ProductResponseDto> getWishlists(User user);
     boolean addProductToWishlist(long productId);
     boolean removeProductFromWishlist(long productId);
