@@ -60,12 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> findAll(long currentUserId) {
-        return userRepository.findAllByIdIsNot(currentUserId).stream().map(u -> userConverter.entityToDto(u)).collect(Collectors.toList());
+    public List<UserResponseDto> getAllUser() {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        return userRepository.findAllByIdIsNot(user.getId()).stream().map(u -> userConverter.entityToDto(u)).collect(Collectors.toList());
     }
 
     @Override
-    public Object getInfoDetailAccount(long userId) {
+    public Object getInfoDetailUser(long userId) {
         Map<String, Object> objectMap = new HashMap<>();
         User user = userRepository.findById(userId).get();
         long numbersOfOrder = 0;
@@ -216,7 +217,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public boolean updateRoleAccount(long userId, String role) {
+    public boolean updateRoleUser(long userId, String role) {
         try {
             User user = userRepository.findById(userId).get();
             user.setRole(role);

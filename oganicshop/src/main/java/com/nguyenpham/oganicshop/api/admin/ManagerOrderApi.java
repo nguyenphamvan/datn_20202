@@ -40,13 +40,9 @@ public class ManagerOrderApi {
     }
 
     @GetMapping("{orderId}")
-    public ResponseEntity<?> getOrderDetailHistory(@PathVariable("orderId") long orderId) {
+    public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
-//        Order order = orderService.getOrderById(orderId);
         OrderDtoResponse order = orderService.getOrderById(orderId);
-//        UserResponseDto user = userConverter.entityToDto(order.get);
-//        response.put("user", user);
-//        OrderDtoResponse orderDtoResponse = new OrderConverter().entityToDto(order);
         order.setMessage(null);
         response.put("order", order);
         return ResponseEntity.ok(response);

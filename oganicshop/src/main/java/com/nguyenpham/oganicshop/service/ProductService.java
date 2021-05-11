@@ -20,8 +20,8 @@ public interface ProductService {
     boolean isProvideEnoughQuantity(String productUrl, int quantity);
     ProductResponseDto getProductByUrl(String productUrl);
     Product getProductById(Long productId);
-    ProductResponseDto insertProduct(ProductRequestDto productRequestDto) throws IOException;
-    ProductResponseDto editProduct(ProductRequestDto productRequestDto) throws IOException;
+    ProductResponseDto addProduct(ProductRequestDto productRequestDto) throws IOException;
+    ProductResponseDto updateProduct(ProductRequestDto productRequestDto) throws IOException;
     int importProduct(long productId, int amount);
     boolean stopBusinessProduct(long productId);
     boolean openBusinessProduct(long productId);

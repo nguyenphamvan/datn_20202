@@ -13,8 +13,8 @@ import java.util.Set;
 public interface UserService {
 
     long countNumberAccount();
-    List<UserResponseDto> findAll(long currentUserId);
-    Object getInfoDetailAccount(long userId);
+    List<UserResponseDto> getAllUser();
+    Object getInfoDetailUser(long userId);
     User findUserById (Long id);
     User findUserByEmail (String email);
     User getByResetPasswordToken(String token);
@@ -35,7 +35,7 @@ public interface UserService {
     void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException;
     boolean verify(String verificationCode);
     void doBlockAccount(long userId, boolean isBlock);
-    boolean updateRoleAccount(long userId, String role);
+    boolean updateRoleUser(long userId, String role);
     User registerNewUserAfterOAuthLoginSuccess(String email, String fullName, Provider provider);
     User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName);
 

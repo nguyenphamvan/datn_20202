@@ -45,12 +45,12 @@ public class ManagerProductApi {
 
     @PostMapping("/add")
     public ProductResponseDto addProduct(@ModelAttribute ProductRequestDto productRequestDto) throws IOException {
-        return productService.insertProduct(productRequestDto);
+        return productService.addProduct(productRequestDto);
     }
 
     @PutMapping("/edit")
     public ProductResponseDto editProduct(@ModelAttribute ProductRequestDto productRequestDto) throws IOException {
-        return productService.editProduct(productRequestDto);
+        return productService.updateProduct(productRequestDto);
     }
 
     @PutMapping("/stopBusiness/{productId}")

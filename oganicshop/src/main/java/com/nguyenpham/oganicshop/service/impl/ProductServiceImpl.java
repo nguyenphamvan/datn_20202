@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto insertProduct(ProductRequestDto productRequestDto) throws IOException {
+    public ProductResponseDto addProduct(ProductRequestDto productRequestDto) throws IOException {
         Product product = new ProductConverter().dtoToEntity(productRequestDto);
         Category category = categoryRepository.findById(productRequestDto.getCategoryId()).get();
         Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto editProduct(ProductRequestDto productRequestDto) throws IOException {
+    public ProductResponseDto updateProduct(ProductRequestDto productRequestDto) throws IOException {
         ProductResponseDto productResponse = null;
         Product product = productRepository.findById(productRequestDto.getId()).get();
         product.setName(productRequestDto.getName());

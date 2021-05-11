@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/account")
-public class ManagerAccountApi {
+public class ManagerUserApi {
 
     private UserConverter userConverter;
     private UserService userService;
@@ -30,7 +30,7 @@ public class ManagerAccountApi {
     private ReviewService reviewService;
 
     @Autowired
-    public ManagerAccountApi(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
+    public ManagerUserApi(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
         this.userConverter = userConverter;
         this.userService = userService;
         this.orderService = orderService;
@@ -39,19 +39,19 @@ public class ManagerAccountApi {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllAccount(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
+    public ResponseEntity<?> getAllUser(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
         Map<String, Object> response = new HashMap<>();
         User user = myUserDetail.getUser();
         try {
-            return ResponseEntity.ok(userService.findAll(user.getId()));
+            return ResponseEntity.ok(userService.getAllUser());
         } catch (Exception e) {
             throw new Exception("Not found");
         }
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getInfoAccountDetail(@PathVariable("userId") long userId) {
-        return ResponseEntity.ok(userService.getInfoDetailAccount(userId));
+    public ResponseEntity<?> getInfoDetailUser(@PathVariable("userId") long userId) {
+        return ResponseEntity.ok(userService.getInfoDetailUser(userId));
     }
 
     @GetMapping("{userId}/wishlist")
@@ -94,7 +94,7 @@ public class ManagerAccountApi {
 
     @PutMapping("{userId}/updateRole")
     public ResponseEntity<?> updateRole(@PathVariable("userId") long userId, @RequestParam("role") String role) {
-        return ResponseEntity.ok(userService.updateRoleAccount(userId, role));
+        return ResponseEntity.ok(userService.updateRoleUser(userId, role));
     }
 
     @PutMapping("{userId}/block")
