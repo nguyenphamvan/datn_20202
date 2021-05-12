@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/account")
-public class ManagerUserApi {
+public class ManagerAccountApi {
 
     private UserConverter userConverter;
     private UserService userService;
@@ -30,7 +30,7 @@ public class ManagerUserApi {
     private ReviewService reviewService;
 
     @Autowired
-    public ManagerUserApi(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
+    public ManagerAccountApi(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
         this.userConverter = userConverter;
         this.userService = userService;
         this.orderService = orderService;

@@ -8,7 +8,6 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication(scanBasePackages = "com.nguyenpham.oganicshop")
 @EnableCaching
-@RequiredArgsConstructor
 public class OganicshopApplication{
 
     public static void main(String[] args) {

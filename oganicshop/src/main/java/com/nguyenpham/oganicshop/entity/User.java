@@ -15,8 +15,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"orders", "reviews", "addresses"})
-@ToString(exclude = {"orders", "reviews", "addresses"})
+@EqualsAndHashCode(exclude = {"orders", "reviews", "addresses", "ratings"})
+@ToString(exclude = {"orders", "reviews", "addresses", "ratings"})
 public class User {
 
     @Id
@@ -57,5 +57,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Address> addresses;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    Set<Rating> ratings;
 
 }

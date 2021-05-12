@@ -13,12 +13,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/sales")
-public class OrderControllerApi {
+public class SalesControllerApi {
 
     private OrderService orderService;
 
     @Autowired
-    public OrderControllerApi(OrderService orderService) {
+    public SalesControllerApi(OrderService orderService) {
         this.orderService = orderService;
     }
 

@@ -6,12 +6,12 @@ import com.nguyenpham.oganicshop.dto.MyReviewDto;
 import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
+import com.nguyenpham.oganicshop.entity.Product;
+import com.nguyenpham.oganicshop.entity.Rating;
 import com.nguyenpham.oganicshop.entity.Review;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
-import com.nguyenpham.oganicshop.service.CategoryService;
-import com.nguyenpham.oganicshop.service.OrderService;
-import com.nguyenpham.oganicshop.service.ReviewService;
+import com.nguyenpham.oganicshop.service.*;
 import com.nguyenpham.oganicshop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,13 +35,15 @@ public class ReviewControllerApi {
 
     private ReviewService reviewService;
     private OrderService orderService;
-    private CategoryService categoryService;
+    private ProductService productService;
+    private UserService userService;
 
     @Autowired
-    public ReviewControllerApi(ReviewService reviewService, OrderService orderService, CategoryService categoryService) {
+    public ReviewControllerApi(ReviewService reviewService, OrderService orderService, ProductService productService, UserService userService) {
         this.reviewService = reviewService;
         this.orderService = orderService;
-        this.categoryService = categoryService;
+        this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping("/my-review")
@@ -62,10 +64,12 @@ public class ReviewControllerApi {
 
     @PostMapping("/post")
     public ResponseEntity<?> postReview(@RequestBody RequestReviewDto requestReviewDto) {
+        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         OrderDetailDto orderDetailDto = new OrderDetailDto();
         orderDetailDto.setId(requestReviewDto.getOrderDetailId());
         orderDetailDto.setReviewed(true);
         try {
+            userService.rateProduct(requestReviewDto, user.getId());
             orderService.editReviewed(orderDetailDto);
             reviewService.save(requestReviewDto);
             return ResponseEntity.ok("Cảm ơn bạn đã đánh giá sản phẩm!");

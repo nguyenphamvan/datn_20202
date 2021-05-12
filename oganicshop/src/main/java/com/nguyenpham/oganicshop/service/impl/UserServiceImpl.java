@@ -5,10 +5,7 @@ import com.nguyenpham.oganicshop.converter.AddressConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.*;
-import com.nguyenpham.oganicshop.entity.Address;
-import com.nguyenpham.oganicshop.entity.Order;
-import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
@@ -240,6 +237,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName) {
         return null;
+    }
+
+    @Override
+    public void rateProduct(RequestReviewDto reviewDto, long userId) {
+        try {
+            User user = userRepository.findById(userId).get();
+            Product product = productRepository.findById(reviewDto.getProductId()).get();
+            Rating rating = new Rating();
+            rating.setId(new RatingKey(userId, reviewDto.getProductId()));
+            rating.setUser(user);
+            rating.setProduct(product);
+            rating.setRatingScore(reviewDto.getRating());
+            Set<Rating> ratings = new HashSet<>();
+            ratings.add(rating);
+            user.setRatings(ratings);
+            userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

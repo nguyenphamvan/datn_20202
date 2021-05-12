@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude={"category", "supplier"})
-@ToString(exclude = {"category", "supplier"})
+@EqualsAndHashCode(exclude={"category", "supplier", "ratings"})
+@ToString(exclude = {"category", "supplier", "ratings"})
 
 public class Product {
 
@@ -63,5 +63,10 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Review> reviews;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    Set<Rating> ratings;
+
 
 }

@@ -11,10 +11,10 @@ import java.util.List;
 
 @Repository
 public interface ShippingAddressRepository extends JpaRepository<Address, Long> {
-    @Query(value = "SELECT * FROM shipping_address AS sp WHERE sp.addr_default = 1 AND users_id = :usersId", nativeQuery = true)
+    @Query(value = "SELECT * FROM address AS sp WHERE sp.addr_default = 1 AND users_id = :usersId", nativeQuery = true)
     Address findByAddrDefaultIsTrue(@Param("usersId") long usersId);
     List<Address> findAllByUserId(long userId);
     @Modifying
-    @Query(value = "update shipping_address as sp set sp.addr_default = 0 where id != :addressId", nativeQuery = true)
+    @Query(value = "update address as sp set sp.addr_default = 0 where id != :addressId", nativeQuery = true)
     void setAddressDefault(@Param("addressId") Long addressId);
 }
