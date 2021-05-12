@@ -7,6 +7,7 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
 </head>
 <body class="js">
 <!-- Header -->
@@ -60,7 +61,7 @@
                 <div class="style__StyledWriteReview write-review">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <form class="write-review__inner" enctype="multipart/form-data">
-                        <input name="orderDetail-id" type="hidden">
+                        <input name="orderItem-id" type="hidden">
                         <input name="product-id" type="hidden">
                         <div class="write-review__product">
                             <img class="write-review__product-img">
@@ -123,7 +124,7 @@
 <!-- /End Footer Area -->
 
 <!-- The Modal -->
-<div id="myModal" class="myModal">
+<div id="myModal" class="myModal" style="display:none;">
     <!-- Modal content -->
     <div class="modal-content">
         <span class="closeModal">&times;</span>
@@ -138,6 +139,7 @@
     $(document).ready(function () {
         getListCategory();
         getListProductIsNotReviewed();
+        actionForModal();
 
         $("#btn-post-review").on("click", function () {
             let data = {
@@ -145,21 +147,24 @@
                 "comment": $("textarea.write-review__input").val(),
                 "rating": $("input[name='rating-value']").val(),
                 "productId": $("input[name='product-id']").val(),
-                "orderDetailId": $("input[name='orderDetail-id']").val()
+                "orderDetailId": $("input[name='orderItem-id']").val()
             };
+
+            $("#reviewModal").find("input[name='rating-value']").empty();
+            $("#reviewModal").find(".write-review__heading").text("Vui lòng đánh giá");
+            $("#reviewModal").find('path').attr('fill', 'none');
+            $('#reviewModal').modal('hide');
+
             $.ajax({
                 url: "/api/review/post",
                 data: JSON.stringify(data),
                 type: "POST",
                 contentType: "application/json",
                 success: function (result) {
-                    $("#reviewModal").find(".write-review").empty();
-                    setTimeout(function () {
-                        $("#reviewModal").find(".write-review").append("<div class='center'>" + result + "</div>");
-                    }, 2000);
-                    setTimeout("$('#reviewModal').modal('hide');", 3000);
+                    $("#myModal").css("display", "block");
+                    $("#myModal > div.modal-content > p").text(result);
+                    $("#myModal").delay(1000).fadeOut();
                     getListProductIsNotReviewed();
-                    // window.location.replace("/");
                 },
                 error: function (xhr) {
                     alert(xhr.responseText);
@@ -171,7 +176,7 @@
             e.preventDefault();
             $(".write-review__product img").attr("src", $(this).siblings(".my-reviews__info").find("img").attr("src"));
             $(".write-review__product-name").text($(this).siblings(".my-reviews__info").find(".my-reviews__name").text());
-            $("input[name='orderDetail-id']").val($(this).siblings(".my-reviews__info").attr("orderDetail-id"));
+            $("input[name='orderItem-id']").val($(this).siblings(".my-reviews__info").attr("orderItem-id"));
             $("input[name='product-id']").val($(this).siblings(".my-reviews__info").attr("product-id"));
         });
 
@@ -235,6 +240,7 @@
             type: "GET",
             dataType: 'json',
             success: function (data) {
+                console.log(data);
                 let listItem = data["products"]
                 $(".my-reviews__inner a:first-child").show().nextAll().remove();
                 if (listItem.length > 0) {
@@ -242,7 +248,7 @@
                     $.each(listItem, function (index, item) {
                         let itemClone = firstItem.clone();
                         itemClone.attr("href", "/products/" + item["productUrl"] + ".html");
-                        itemClone.find("div.my-reviews__info").attr("product-id", item["productId"]).attr("orderDetail-id", item["id"]);
+                        itemClone.find("div.my-reviews__info").attr("product-id", item["productId"]).attr("orderItem-id", item["id"]);
                         itemClone.find("div.my-reviews__info > img").attr("src", item["image"]).attr("alt", item["productName"]);
                         itemClone.find("div.my-reviews__name").text(item["productUrl"]);
                         itemClone.insertAfter(".my-reviews__inner a:first-child");

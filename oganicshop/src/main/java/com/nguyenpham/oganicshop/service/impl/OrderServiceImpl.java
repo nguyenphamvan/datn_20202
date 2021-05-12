@@ -20,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,10 +66,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDetail editReviewed(OrderDetailDto orderDetailDto) {
-        OrderDetail orderDetailDb = orderDetailRepository.findById(orderDetailDto.getId()).get();
-        orderDetailDb.setReviewed(orderDetailDto.isReviewed());
-        return orderDetailRepository.save(orderDetailDb);
+    public void updateProductReviewed(long userId, long productId) {
+        try {
+            Set<OrderItem> setOrderItemDb = orderDetailRepository.findAllByProductUnReviewedOfUser(userId,productId);
+            setOrderItemDb.forEach(orderDetail -> {
+                orderDetail.setReviewed(true);
+            });
+            orderDetailRepository.saveAll(setOrderItemDb);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -121,12 +126,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDetailDto> getListOrderItem(long orderId) {
+    public List<OrderItemDto> getListOrderItem(long orderId) {
         OrderDetailConverter odConverter = new OrderDetailConverter();
-        List<OrderDetailDto> orderDetailDtos = orderRepository.findById(orderId).get().getOrderDetails().stream()
+        List<OrderItemDto> orderItemDtos = orderRepository.findById(orderId).get().getOrderItems().stream()
                 .map(od -> odConverter.entityToDto(od))
                 .collect(Collectors.toList());
-        return orderDetailDtos;
+        return orderItemDtos;
     }
 
     @Override
@@ -143,9 +148,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Set<OrderDetailDto> getListProductNotReviewed(long userId) {
+    public Set<OrderItemDto> getListProductUnReviewed(long userId) {
         OrderDetailConverter odConverter = new OrderDetailConverter();
-        Set<OrderDetailDto> listOrderDetail = orderDetailRepository.findAllByReviewedIsFalse(userId).stream()
+        Set<Long> productsNotCommentInOrders = new HashSet<>();
+        Set<OrderItemDto> listOrderDetail = orderDetailRepository.findAllByReviewedIsFalse(userId).stream()
+                .filter(od -> productsNotCommentInOrders.add(od.getProduct().getId()))
                 .map(od -> odConverter.entityToDto(od))
                 .collect(Collectors.toSet());
         return listOrderDetail;
@@ -172,32 +179,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto) {
-        Order order = new Order();
-        order.setUser(user);
-        order.setContactReceiver(orderDto.getAddress().getContactReceiver());
-        order.setContactAddress(orderDto.getAddress().getContactAddress());
-        order.setContactPhone(orderDto.getAddress().getContactPhone());
-        order.setNote(orderDto.getNote());
-        order.setStatus(0);
-        order.setPaymentMethod(orderDto.getPaymentMethod());
-        order.setDeliveryMethod(orderDto.getDeliveryMethod());
-        order.setMessage(DateTimeUtil.dateTimeFormat(new Timestamp(System.currentTimeMillis())) + " - " + Constant.MAP_ORDER_TRACKING_STATUS.get(1));
-        order.setSubTotal(orderDto.getSubTotal());
-        order.setShipFee(orderDto.getShipFee());
-        order.setDiscount(orderDto.getDiscount());
-        order.setTotal(order.getSubTotal() + order.getShipFee() - order.getDiscount());
-        for (CartItem item : cart.values()) {
-            OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setQuantity(item.getQuantity());
-            orderDetail.setPrice(item.calculateTotalItem());
-            orderDetail.setDiscount(item.getDiscount());
-            orderDetail.setTotalPrice(item.calculateTotalItem() - item.getDiscount());
-            orderDetail.setProduct(item.getProduct());
-            orderDetail.setOrder(order);
-            order.addOrderDetail(orderDetail);
-        }
-        this.save(order);
+    public Order paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto) {
+        Order order = new OrderConverter().dtoToEntity(user, cart, orderDto);
+        return this.save(order);
     }
 
     @Override

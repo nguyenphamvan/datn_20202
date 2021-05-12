@@ -1,28 +1,28 @@
 package com.nguyenpham.oganicshop.converter;
 
-import com.nguyenpham.oganicshop.dto.OrderDetailDto;
-import com.nguyenpham.oganicshop.entity.OrderDetail;
+import com.nguyenpham.oganicshop.dto.OrderItemDto;
+import com.nguyenpham.oganicshop.entity.OrderItem;
 
-public class OrderDetailConverter implements GeneralConverter<OrderDetail, OrderDetailDto, OrderDetailDto>{
+public class OrderDetailConverter implements GeneralConverter<OrderItem, OrderItemDto, OrderItemDto>{
     @Override
-    public OrderDetailDto entityToDto(OrderDetail orderDetail) {
-        OrderDetailDto orderDetailDto = new OrderDetailDto();
-        orderDetailDto.setId(orderDetail.getId());
-        orderDetailDto.setProductId(orderDetail.getProduct().getId());
-        orderDetailDto.setProductName(orderDetail.getProduct().getName());
-        orderDetailDto.setProductUrl(orderDetail.getProduct().getUrl());
-        orderDetailDto.setImage( "/images/products/" + orderDetail.getProduct().getId() + "/" + orderDetail.getProduct().getImage().split(",")[0]);
-        orderDetailDto.setQuantity(orderDetail.getQuantity());
-        orderDetailDto.setDiscount(orderDetail.getDiscount());
-        orderDetailDto.setRawTotal(orderDetail.getTotalPrice());
-        orderDetailDto.setPrice(orderDetail.getPrice());
-        orderDetailDto.setSupplierName(orderDetail.getProduct().getSupplier().getName());
-        orderDetailDto.setReviewed(orderDetail.isReviewed());
-        return orderDetailDto;
+    public OrderItemDto entityToDto(OrderItem orderItem) {
+        OrderItemDto orderItemDto = new OrderItemDto();
+        orderItemDto.setId(orderItem.getId());
+        orderItemDto.setProductId(orderItem.getProduct().getId());
+        orderItemDto.setProductName(orderItem.getProduct().getName());
+        orderItemDto.setProductUrl(orderItem.getProduct().getUrl());
+        orderItemDto.setImage( "/images/products/" + orderItem.getProduct().getId() + "/" + orderItem.getProduct().getImage().split(",")[0]);
+        orderItemDto.setQuantity(orderItem.getQuantity());
+        orderItemDto.setDiscount(orderItem.getDiscount());
+        orderItemDto.setRawTotal(orderItem.getTotalPrice());
+        orderItemDto.setPrice(orderItem.getPrice());
+        orderItemDto.setSupplierName(orderItem.getProduct().getSupplier().getName());
+        orderItemDto.setReviewed(orderItem.isReviewed());
+        return orderItemDto;
     }
 
     @Override
-    public OrderDetail dtoToEntity(OrderDetailDto d) {
+    public OrderItem dtoToEntity(OrderItemDto d) {
         return null;
     }
 }

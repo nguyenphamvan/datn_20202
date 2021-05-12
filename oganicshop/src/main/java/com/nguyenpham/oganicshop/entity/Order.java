@@ -1,10 +1,7 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.OrderDetailDto;
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
 import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
-import com.nguyenpham.oganicshop.dto.AddressRequestDto;
 import com.nguyenpham.oganicshop.util.DateTimeUtil;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -49,17 +46,17 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<OrderDetail> orderDetails;
+    private Set<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("updateTime ASC")
     private Set<OrderLogging> orderLoggings;
 
-    public void addOrderDetail(OrderDetail orderDetail) {
-        if(this.orderDetails == null) {
-            this.orderDetails = new HashSet<>();
+    public void addOrderDetail(OrderItem orderItem) {
+        if(this.orderItems == null) {
+            this.orderItems = new HashSet<>();
         }
-        this.orderDetails.add(orderDetail);
+        this.orderItems.add(orderItem);
     }
 
     public void addLogOrder(OrderLogging logOrder) {

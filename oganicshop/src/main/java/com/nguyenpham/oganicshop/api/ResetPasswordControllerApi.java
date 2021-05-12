@@ -3,6 +3,7 @@ package com.nguyenpham.oganicshop.api;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
+import com.nguyenpham.oganicshop.service.EmailSender;
 import com.nguyenpham.oganicshop.service.UserService;
 import com.nguyenpham.oganicshop.util.Utils;
 import net.bytebuddy.utility.RandomString;
@@ -19,10 +20,12 @@ import java.io.UnsupportedEncodingException;
 public class ResetPasswordControllerApi {
 
     private UserService userService;
+    private EmailSender emailSender;
 
     @Autowired
-    public ResetPasswordControllerApi(UserService userService) {
+    public ResetPasswordControllerApi(UserService userService, EmailSender emailSender) {
         this.userService = userService;
+        this.emailSender = emailSender;
     }
 
     @PostMapping("/api/forgot_password")
@@ -32,7 +35,7 @@ public class ResetPasswordControllerApi {
         try {
             userService.updateResetPasswordToken(token, email);
             String resetPasswordLink = Utils.getSiteURL(request) + "/reset_password?token=" + token;
-            userService.sendEmail(email, resetPasswordLink);
+            emailSender.sendEmail(email, resetPasswordLink);
             return true;
         } catch (UserNotFoundException ex) {
             return false;

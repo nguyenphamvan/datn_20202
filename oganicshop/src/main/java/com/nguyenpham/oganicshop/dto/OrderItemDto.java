@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OrderDetailDto {
+public class OrderItemDto {
     private Long id;
     private Long productId;
     private String productName;

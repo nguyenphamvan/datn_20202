@@ -156,7 +156,7 @@
             e.preventDefault();
             $(".write-review__product img").attr("src", $(this).closest(".product-item").find("img").attr("src"));
             $(".write-review__product-name").text($(this).closest(".product-item").find(".product-name").text());
-            $("input[name='orderDetail-id']").val($(this).closest(".product-item").attr("orderDetail-id"));
+            $("input[name='orderItem-id']").val($(this).closest(".product-item").attr("orderItem-id"));
             $("input[name='product-id']").val($(this).closest(".product-item").attr("product-id"));
         });
 
@@ -276,16 +276,16 @@
     function genreListOrderDetail(listOrderDetail) {
         console.log(listOrderDetail);
         let firstRow = $("div.Account__StyledAccountLayoutInner > div > table > tbody > tr:first-child");
-        $.each(listOrderDetail, function( index, orderDetail ) {
+        $.each(listOrderDetail, function( index, orderItem ) {
             let rowClone = firstRow.clone();
-            rowClone.find("td:nth-child(1) > div").attr("orderDetail-id", orderDetail["id"]).attr("product-id", orderDetail["productId"]);
-            rowClone.find("td:nth-child(1) > div > img").attr("src", orderDetail["image"]);
-            rowClone.find("td:nth-child(1) > div > div > a.product-name").attr("href", "/products/" + orderDetail["productUrl"] + ".html").text(orderDetail["productName"]);
-            rowClone.find("td:nth-child(1) > div > div > div.product-review > a").attr("href", "/products/" + orderDetail["productUrl"] + ".html");
-            rowClone.find("td.price").text(orderDetail["price"] + " ₫");
-            rowClone.find("td.quantity").text(orderDetail["quantity"]);
-            rowClone.find("td.promotion-amount").text(orderDetail["discount"] + " ₫");
-            rowClone.find("td.raw-total").text(orderDetail["rawTotal"] + " ₫");
+            rowClone.find("td:nth-child(1) > div").attr("orderItem-id", orderItem["id"]).attr("product-id", orderItem["productId"]);
+            rowClone.find("td:nth-child(1) > div > img").attr("src", orderItem["image"]);
+            rowClone.find("td:nth-child(1) > div > div > a.product-name").attr("href", "/products/" + orderItem["productUrl"] + ".html").text(orderItem["productName"]);
+            rowClone.find("td:nth-child(1) > div > div > div.product-review > a").attr("href", "/products/" + orderItem["productUrl"] + ".html");
+            rowClone.find("td.price").text(orderItem["price"] + " ₫");
+            rowClone.find("td.quantity").text(orderItem["quantity"]);
+            rowClone.find("td.promotion-amount").text(orderItem["discount"] + " ₫");
+            rowClone.find("td.raw-total").text(orderItem["rawTotal"] + " ₫");
             rowClone.insertAfter(firstRow);
         });
         firstRow.css("display", "none");

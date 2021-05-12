@@ -204,7 +204,7 @@
             e.preventDefault();
             $(".write-review__product img").attr("src", $(this).siblings(".my-reviews__info").find("img").attr("src"));
             $(".write-review__product-name").text($(this).siblings(".my-reviews__info").find(".my-reviews__name").text());
-            $("input[name='orderDetail-id']").val($(this).siblings(".my-reviews__info").attr("orderDetail-id"));
+            $("input[name='orderItem-id']").val($(this).siblings(".my-reviews__info").attr("orderItem-id"));
             $("input[name='product-id']").val($(this).siblings(".my-reviews__info").attr("product-id"));
         });
 

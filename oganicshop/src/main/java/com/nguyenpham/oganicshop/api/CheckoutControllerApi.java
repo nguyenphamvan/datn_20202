@@ -7,6 +7,7 @@ import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
 import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
+import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.entity.Promotion;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -39,15 +40,17 @@ public class CheckoutControllerApi {
     private CartService cartService;
     private OrderService orderService;
     private PromotionService promotionService;
+    private EmailSender emailSender;
 
     @Autowired
     public CheckoutControllerApi(PaypalService paypalService, CartService cartService, OrderService orderService,
-                                 UserService userService, PromotionService promotionService) {
+                                 UserService userService, PromotionService promotionService, EmailSender emailSender) {
         this.paypalService = paypalService;
         this.cartService = cartService;
         this.orderService = orderService;
         this.userService = userService;
         this.promotionService = promotionService;
+        this.emailSender = emailSender;
     }
 
     @GetMapping("/getInfo")
@@ -71,7 +74,9 @@ public class CheckoutControllerApi {
 
             try {
                 if (orderDto.getPaymentMethod().equals("cod")) {
-                    orderService.paymentOrder(user, cart, orderDto);
+                    Order orderSaved = orderService.paymentOrder(user, cart, orderDto);
+                    // sau bước thanh toán thành công sẽ gửi email thông báo cho người dùng
+                    emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
                     session.removeAttribute(Constant.CART_SESSION_NAME);
                     return new ResponseEntity<Object>("/payment_success", HttpStatus.OK); // return home page
                 } else if (orderDto.getPaymentMethod().equals("paypal")){
@@ -110,7 +115,6 @@ public class CheckoutControllerApi {
     @PostMapping("/apply-couponCode")
     public ResponseEntity<?> applyCoupon(HttpSession session, @RequestBody ObjectNode object, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         String couponCode = object.get("couponCode").asText();
-        User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
             Promotion promotion = promotionService.findCoupon(couponCode);

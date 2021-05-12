@@ -2,6 +2,7 @@ package com.nguyenpham.oganicshop.api;
 
 import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
 import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.service.EmailSender;
 import com.nguyenpham.oganicshop.service.UserService;
 import com.nguyenpham.oganicshop.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ import java.io.UnsupportedEncodingException;
 public class LoginRegisterControllerApi {
 
     private UserService userService;
+    private EmailSender emailSender;
 
     @Autowired
-    public LoginRegisterControllerApi(UserService userService) {
+    public LoginRegisterControllerApi(UserService userService, EmailSender emailSender) {
         this.userService = userService;
+        this.emailSender = emailSender;
     }
 
     @PostMapping("/api/registerAccount")
@@ -30,7 +33,7 @@ public class LoginRegisterControllerApi {
             User saveUser = userService.findUserByEmail(accountRequest.getEmail());
             if (saveUser != null) {
                 String siteURL = Utils.getSiteURL(request);
-                userService.sendVerificationEmail(saveUser, siteURL);
+                emailSender.sendVerificationEmail(saveUser, siteURL);
                 return true;
             }
         }

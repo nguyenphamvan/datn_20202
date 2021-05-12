@@ -32,8 +32,6 @@ public interface UserService {
     Set<ProductResponseDto> getWishlists(User user);
     boolean addProductToWishlist(long productId);
     boolean removeProductFromWishlist(long productId);
-    void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException;
-    void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException;
     boolean verify(String verificationCode);
     void doBlockAccount(long userId, boolean isBlock);
     boolean updateRoleUser(long userId, String role);

@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -60,6 +61,34 @@ public class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    Set<Rating> ratings;
+    private Set<Rating> ratings;
+
+    public void addOrder(Order order) {
+        if (this.orders == null) {
+            this.orders = new HashSet<>();
+        }
+        this.orders.add(order);
+    }
+
+    public void addReview(Review review) {
+        if (this.reviews == null) {
+            this.reviews = new HashSet<>();
+        }
+        this.reviews.add(review);
+    }
+
+    public void addAddress(Address address) {
+        if (this.addresses == null) {
+            this.addresses = new HashSet<>();
+        }
+        this.addresses.add(address);
+    }
+
+    public void addRating(Rating rating) {
+        if (this.ratings == null) {
+            this.ratings = new HashSet<>();
+        }
+        this.ratings.add(rating);
+    }
 
 }

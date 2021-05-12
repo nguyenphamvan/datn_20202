@@ -63,7 +63,7 @@ public class SalesControllerApi {
     public ResponseEntity<?> getListProductNotReviewed(@AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
         Map<String, Object> response = new HashMap<>();
-        response.put("products", orderService.getListProductNotReviewed(user.getId()));
+        response.put("products", orderService.getListProductUnReviewed(user.getId()));
         return ResponseEntity.ok(response);
     }
 }

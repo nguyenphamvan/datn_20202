@@ -28,6 +28,6 @@ public class OrderDtoResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy@HH:mm:ss.SSSZ")
     private String orderDate;
     private String deliveryDate;
-    private List<OrderDetailDto> listOrderDetail;
+    private List<OrderItemDto> listOrderDetail;
     private OrderLoggingDto orderLogging;
 }

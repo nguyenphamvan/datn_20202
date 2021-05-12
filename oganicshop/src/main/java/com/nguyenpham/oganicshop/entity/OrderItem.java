@@ -2,20 +2,19 @@ package com.nguyenpham.oganicshop.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Builder
 @Entity
-@Table(name = "order_detail")
+@Table(name = "order_item")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"order", "product"})
 @ToString(exclude = {"order", "product"})
-public class OrderDetail {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

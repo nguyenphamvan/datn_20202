@@ -3,27 +3,19 @@ package com.nguyenpham.oganicshop.api;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.ReviewConverter;
 import com.nguyenpham.oganicshop.dto.MyReviewDto;
-import com.nguyenpham.oganicshop.dto.OrderDetailDto;
 import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
-import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.Rating;
 import com.nguyenpham.oganicshop.entity.Review;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.*;
-import com.nguyenpham.oganicshop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +27,12 @@ public class ReviewControllerApi {
 
     private ReviewService reviewService;
     private OrderService orderService;
-    private ProductService productService;
     private UserService userService;
 
     @Autowired
-    public ReviewControllerApi(ReviewService reviewService, OrderService orderService, ProductService productService, UserService userService) {
+    public ReviewControllerApi(ReviewService reviewService, OrderService orderService, UserService userService) {
         this.reviewService = reviewService;
         this.orderService = orderService;
-        this.productService = productService;
         this.userService = userService;
     }
 
@@ -65,12 +55,9 @@ public class ReviewControllerApi {
     @PostMapping("/post")
     public ResponseEntity<?> postReview(@RequestBody RequestReviewDto requestReviewDto) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        OrderDetailDto orderDetailDto = new OrderDetailDto();
-        orderDetailDto.setId(requestReviewDto.getOrderDetailId());
-        orderDetailDto.setReviewed(true);
         try {
             userService.rateProduct(requestReviewDto, user.getId());
-            orderService.editReviewed(orderDetailDto);
+            orderService.updateProductReviewed(user.getId(), requestReviewDto.getProductId());
             reviewService.save(requestReviewDto);
             return ResponseEntity.ok("Cảm ơn bạn đã đánh giá sản phẩm!");
         } catch (Exception e) {

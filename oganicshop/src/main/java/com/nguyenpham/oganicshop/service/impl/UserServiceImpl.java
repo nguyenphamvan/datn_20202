@@ -8,6 +8,7 @@ import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
+import com.nguyenpham.oganicshop.repository.RatingRepository;
 import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -39,16 +40,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private ProductRepository productRepository;
     private ShippingAddressRepository shippingAddressRepository;
-    private JavaMailSender mailSender;
+    private RatingRepository ratingRepository;
 
     @Autowired
     public UserServiceImpl(UserConverter userConverter, UserRepository userRepository, ProductRepository productRepository,
-                           ShippingAddressRepository shippingAddressRepository, JavaMailSender mailSender) {
+                           ShippingAddressRepository shippingAddressRepository, RatingRepository ratingRepository) {
         this.userConverter = userConverter;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.shippingAddressRepository = shippingAddressRepository;
-        this.mailSender = mailSender;
+        this.ratingRepository = ratingRepository;
     }
 
     @Override
@@ -119,7 +120,6 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
-
         user.setResetPasswordToken(null);
         userRepository.save(user);
     }
@@ -146,51 +146,6 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    @Override
-    public void sendVerificationEmail(User user, String siteURL) throws UnsupportedEncodingException, MessagingException {
-        String subject = "Vui lòng xác minh đăng ký của bạn";
-        String senderName = "Admin Web shop";
-        String mailContent = "<p>Cảm ơn  <b>" + user.getFullName() + "</b>,</p>";
-        String verifyURL = siteURL + "/verifyAccount?code=" + user.getVerificationCode();
-
-        mailContent += "<p>Vui lòng nhấp vào liên kết bên dưới để xác minh đăng ký của bạn :</p>";
-        mailContent += "<a href=\"" + verifyURL + "\">Xác nhận</a>";
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        helper.setFrom("nguyenphamvan1998@gmail.com", senderName);
-        helper.setTo(user.getEmail());
-        helper.setSubject(subject);
-        helper.setText(mailContent, true);
-
-        mailSender.send(message);
-    }
-
-    @Override
-    public void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        String senderName = "Web shop support";
-        String subject = "Here's the link to reset your password";
-
-        String content = "<p>Chào bạn,</p>"
-                + "<p>Bạn đã yêu cầu đặt lại mật khẩu của mình.</p>"
-                + "<p>Nhấp vào liên kết bên dưới để thay đổi mật khẩu của bạn</p>"
-                + "<p><a href=\"" + link + "\">Thay đổi mật khẩu của tôi</a></p>"
-                + "<br>"
-                + "<p>Bỏ qua email này nếu bạn nhớ mật khẩu của mình, "
-                + "hoặc bạn đã không thực hiện yêu cầu.</p>";
-
-        helper.setFrom("nguyenphamvan1998@gmail.com", senderName);
-        helper.setTo(recipientEmail);
-        helper.setSubject(subject);
-        helper.setText(content, true);
-
-        mailSender.send(message);
     }
 
     @Override
@@ -242,17 +197,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void rateProduct(RequestReviewDto reviewDto, long userId) {
         try {
-            User user = userRepository.findById(userId).get();
-            Product product = productRepository.findById(reviewDto.getProductId()).get();
-            Rating rating = new Rating();
-            rating.setId(new RatingKey(userId, reviewDto.getProductId()));
-            rating.setUser(user);
-            rating.setProduct(product);
-            rating.setRatingScore(reviewDto.getRating());
-            Set<Rating> ratings = new HashSet<>();
-            ratings.add(rating);
-            user.setRatings(ratings);
-            userRepository.save(user);
+            RatingKey key = new RatingKey(userId, reviewDto.getProductId());
+            if (ratingRepository.existsById(key)) {
+                Rating oldRating = ratingRepository.findById(key).get();
+                oldRating.setRatingScore(reviewDto.getRating());
+                ratingRepository.save(oldRating);
+            } else {
+                User user = userRepository.findById(userId).get();
+                Product product = productRepository.findById(reviewDto.getProductId()).get();
+                Rating rating = new Rating();
+                rating.setId(key);
+                rating.setUser(user);
+                rating.setProduct(product);
+                rating.setRatingScore(reviewDto.getRating());
+                ratingRepository.save(rating);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
