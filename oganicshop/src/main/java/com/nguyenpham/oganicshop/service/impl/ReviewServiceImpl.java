@@ -1,7 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.converter.ReviewConverter;
-import com.nguyenpham.oganicshop.dto.MyReviewDto;
 import com.nguyenpham.oganicshop.dto.RequestReviewDto;
 import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import com.nguyenpham.oganicshop.entity.Product;
@@ -9,7 +8,6 @@ import com.nguyenpham.oganicshop.entity.Review;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.ReviewRepository;
-import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

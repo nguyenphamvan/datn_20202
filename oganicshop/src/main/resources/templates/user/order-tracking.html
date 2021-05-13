@@ -79,34 +79,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 <!--/ End Product Style 1  -->
-
-<!-- Start Shop Newsletter  -->
-<section class="shop-newsletter section">
-    <div class="container">
-        <div class="inner-top">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2 col-12">
-                    <!-- Start Newsletter Inner -->
-                    <div class="inner">
-                        <h4>Newsletter</h4>
-                        <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
-                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
-                            <input name="EMAIL" placeholder="Your email address" required="" type="email">
-                            <button class="btn">Subscribe</button>
-                        </form>
-                    </div>
-                    <!-- End Newsletter Inner -->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- End Shop Newsletter -->
 
 <!-- Start Footer Area -->
 <th:block th:include="user/common/footer"/>
@@ -127,17 +103,28 @@
             type: "GET",
             dataType: 'json',
             success: function (order) {
+                console.log(order);
                 let orderLogging = order["order"]["orderLogging"];
                 $(".order-heading h3").text("Theo dõi đơn hàng #" + orderLogging["orderId"]);
                 $(".status-block .status-text b").text(orderLogging["latestStatus"] + "  |  " + orderLogging["lastUpdatedTime"]);
                 $(".cGrxj").text("Cập nhật mới nhất : " + orderLogging["lastUpdatedTime"]);
-                $.each(orderLogging["loggingStatus"], function( index, orderStatus ) {
+
+                if (order.hasOwnProperty("loggingStatus")) {
+                    $.each(orderLogging["loggingStatus"], function( index, orderStatus ) {
+                        let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
+                            "           <span class=\"left\">" + orderStatus["updatedTime"] + "</span>" +
+                            "           <span class=\"right\">" + orderStatus["status"] + "</span>\n" +
+                            "       </div>";
+                        $(html).insertAfter(".cGrxj");
+                    });
+                } else {
                     let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
-                        "           <span class=\"left\">" + orderStatus["updatedTime"] + "</span>" +
-                        "           <span class=\"right\">" + orderStatus["status"] + "</span>\n" +
+                        "           <span class=\"left\">" + orderLogging["lastUpdatedTime"] + "</span>" +
+                        "           <span class=\"right\">" + orderLogging["latestStatus"] + "</span>\n" +
                         "       </div>";
                     $(html).insertAfter(".cGrxj");
-                });
+                }
+
 
                 let listOrderItem = order["order"]["listOrderDetail"];
                 let itemClone = $(".styles__StyledOrderItems .items div:first-child");

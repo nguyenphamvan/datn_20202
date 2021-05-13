@@ -60,29 +60,11 @@
             </a>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
-                    <a class="collapse-item active" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
-                    <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
-                    <a class="collapse-item">Banner</a>
-                </div>
-            </div>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-               aria-expanded="true" aria-controls="collapseThree">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Báo cáo</span>
-            </a>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="utilities-color.html">Báo cáo doanh thu</a>
-                    <a class="collapse-item" href="utilities-border.html">Báo cáo nhập hàng</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_users}"><i class="fas fa-users"></i> Quản lý người dùng</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_products}"><i class="fab fa-product-hunt"></i> Quản lý sản phẩm</a>
+                    <a class="collapse-item active" th:href="@{/admin/manager_orders}"><i class="fas fa-shopping-basket"></i> Quản lý đơn hàng</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_promotions}"><i class="fa fa-gift"></i> Quản lý khuyến mãi</a>
+                    <a class="collapse-item" href="manager-contact"><i class="fas fa-envelope-open-text"></i> Quản lý liên hệ</a>
                 </div>
             </div>
         </li>
@@ -123,20 +105,12 @@
                              aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Settings
-                            </a>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Activity Log
+                                Tài khoản
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                Đăng xuất
                             </a>
                         </div>
                     </li>
@@ -160,10 +134,10 @@
                                 <tr>
                                     <th style="width: 5%;">Mã</th>
                                     <th style="width: 35%;">Mặt hàng</th>
-                                    <th style="width: 20%;">Ngày đặt hàng</th>
+                                    <th style="width: 18%;">Ngày đặt hàng</th>
                                     <th style="width: 10%;">Giá trị</th>
                                     <th style="width: 20%;">Trạng thái</th>
-                                    <th style="width: 10%;"></th>
+                                    <th style="width: 12%;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -261,7 +235,9 @@
                         },
                         {
                             data: "id", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_orders/" + data + "'><button id='manageBtn' type='button' class='d-none d-sm-inline-block btn btn-success btn-sm shadow-sm'>Chi tiết</button></a>";
+                                return "<a href='/admin/manager_orders/" + data + "'>" +
+                                    "<button id='manageBtn' type='button' class='d-none d-sm-inline-block btn btn-success btn-sm shadow-sm'><i class=\"far fa-eye\"></i> Chi tiết</button>" +
+                                    "</a>";
                             }
                         }
                     ]

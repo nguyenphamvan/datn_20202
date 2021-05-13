@@ -61,31 +61,13 @@
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Quản lý</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" th:href="@{/admin/manager_users}">Quản lý người dùng</a>
-                    <a class="collapse-item active" th:href="@{/admin/manager_products}">Quản lý sản phẩm</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_orders}">Quản lý đơn hàng</a>
-                    <a class="collapse-item" th:href="@{/admin/manager_promotions}">Chương trình khuyến mãi</a>
-                    <a class="collapse-item" href="manager-contact">Quản lý liên hệ</a>
-                    <a class="collapse-item">Banner</a>
-                </div>
-            </div>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-               aria-expanded="true" aria-controls="collapseThree">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Báo cáo</span>
-            </a>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">Báo cáo doanh thu</a>
-                    <a class="collapse-item" href="#">Báo cáo nhập hàng</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_users}"><i class="fas fa-users"></i> Quản lý người dùng</a>
+                    <a class="collapse-item active" th:href="@{/admin/manager_products}"><i class="fab fa-product-hunt"></i> Quản lý sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_orders}"><i class="fas fa-shopping-basket"></i> Quản lý đơn hàng</a>
+                    <a class="collapse-item" th:href="@{/admin/manager_promotions}"><i class="fa fa-gift"></i> Quản lý khuyến mãi</a>
+                    <a class="collapse-item" href="manager-contact"><i class="fas fa-envelope-open-text"></i> Quản lý liên hệ</a>
                 </div>
             </div>
         </li>
@@ -117,7 +99,7 @@
                             <label for="add-category">Danh mục</label>
                             <div style="width: 100%; display: flex; justify-content: space-between;">
                                 <input type="text" class="form-control" placeholder="danh mục cha" id="add-category">
-                                <button type="button" id="btn-add-category" class="btn btn-primary">Thêm</button>
+                                <button type="button" id="btn-add-category" class="d-none d-sm-inline-block shadow-sm btn btn-primary">Thêm</button>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -255,8 +237,8 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-info" id="btn-add-product">Thêm</button>
-                    <input class="btn btn-primary" type="reset" value="Reset">
+                    <button type="button" class="d-none d-sm-inline-block shadow-sm btn btn-info" id="btn-add-product">Thêm</button>
+                    <input class="d-none d-sm-inline-block shadow-sm btn btn-primary" type="reset" value="Reset">
                 </form>
             </div>
         </div>
