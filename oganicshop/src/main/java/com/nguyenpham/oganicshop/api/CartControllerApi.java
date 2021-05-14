@@ -39,7 +39,7 @@ public class CartControllerApi {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getListItemCartDto(HttpSession session) {
+    public ResponseEntity<?> getAllItemCart(HttpSession session) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart == null) {
             cart = new HashMap<>();

@@ -18,8 +18,8 @@ public interface UserService {
     Object getInfoDetailUser(long userId);
     User findUserById (Long id);
     User findUserByEmail (String email);
-    User getByResetPasswordToken(String token);
-    void updateResetPasswordToken(String token, String email) throws UserNotFoundException;
+    User getUserByResetToken(String token);
+    void updateResetToken(String token, String email) throws UserNotFoundException;
     void updatePassword(User user, String newPassword);
     boolean register (RegisterAccountRequest accountRequest);
     boolean checkOldPassword(String rawOldPassword);

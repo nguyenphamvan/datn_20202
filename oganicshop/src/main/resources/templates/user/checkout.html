@@ -104,7 +104,7 @@
             100% {
                 transform: rotate(360deg);
             }
-
+        }
 
     </style>
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
@@ -224,12 +224,8 @@
                             <h2>Hình thức giao hàng</h2>
                             <div class="content">
                                 <div class="checkbox">
-                                    <span style="display: block; margin-bottom: 15px;"><input type="radio"
-                                                                                              name="deliveryMethod"
-                                                                                              value="standard"> Giao hàng tiêu chuẩn</span>
-                                    <span style="display: block; margin-bottom: 15px;"><input type="radio"
-                                                                                              name="deliveryMethod"
-                                                                                              value="fast"> Giao hàng trong ngày (nội thành)</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="deliveryMethod" value="standard"> Giao hàng tiêu chuẩn</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="deliveryMethod" value="fast"> Giao hàng trong ngày (nội thành)</span>
                                 </div>
                             </div>
                         </div>
@@ -239,9 +235,7 @@
                             <h2>Hình thức thanh toán</h2>
                             <div class="content">
                                 <div class="checkbox">
-                                    <span style="display: block; margin-bottom: 15px;"><input type="radio"
-                                                                                              name="paymentMethod"
-                                                                                              value="cod"> Thanh toán khi nhận hàng</span>
+                                    <span style="display: block; margin-bottom: 15px;"><input type="radio" name="paymentMethod" value="cod"> Thanh toán khi nhận hàng</span>
                                     <span style="display: block; margin-bottom: 15px;">
                                         <input type="radio" name="paymentMethod" value="paypal"> PayPal
                                         <img th:src="@{/images/paypal.png}" style="width: 60px; height: 40px;">
@@ -326,8 +320,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"
-                                                                                                  aria-hidden="true"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ti-close" aria-hidden="true"></span>
                 </button>
             </div>
             <div class="modal-body">

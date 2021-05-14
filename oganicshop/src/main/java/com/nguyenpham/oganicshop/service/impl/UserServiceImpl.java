@@ -94,12 +94,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByResetPasswordToken(String token) {
+    public User getUserByResetToken(String token) {
         return userRepository.findByResetPasswordToken(token);
     }
 
     @Override
-    public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
+    public void updateResetToken(String token, String email) throws UserNotFoundException {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             user.setResetPasswordToken(token);

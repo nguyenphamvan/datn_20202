@@ -66,7 +66,7 @@ public class Product {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    Set<Rating> ratings;
+    private Set<Rating> ratings;
 
 
 }

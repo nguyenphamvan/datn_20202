@@ -33,7 +33,7 @@ public class ResetPasswordControllerApi {
         String email = object.get("email").asText();
         String token = RandomString.make(30);
         try {
-            userService.updateResetPasswordToken(token, email);
+            userService.updateResetToken(token, email);
             String resetPasswordLink = Utils.getSiteURL(request) + "/reset_password?token=" + token;
             emailSender.sendEmail(email, resetPasswordLink);
             return true;
@@ -48,7 +48,7 @@ public class ResetPasswordControllerApi {
     public boolean processResetPassword(@RequestBody ObjectNode object) {
         String token = object.get("token").asText();
         String password = object.get("password").asText();
-        User user = userService.getByResetPasswordToken(token);
+        User user = userService.getUserByResetToken(token);
         if (user == null) {
             return false;
         } else {

@@ -37,7 +37,7 @@ public class ProductControllerApi {
     }
 
     @GetMapping("/{productUrl}")
-    public ResponseEntity<?> getProduct(@PathVariable("productUrl") String productUrl) {
+    public ResponseEntity<?> getProductByUrl(@PathVariable("productUrl") String productUrl) {
         Map<String, Object> response = new HashMap<>();
         ProductResponseDto product = productService.getProductByUrl(productUrl);
         response.put("product", product);
@@ -45,7 +45,7 @@ public class ProductControllerApi {
     }
 
     @PostMapping("/collections")
-    public Object getProductsByCategoryUrl(@RequestBody ObjectNode object) {
+    public Object getProductsByCategory(@RequestBody ObjectNode object) {
         Page<Product> page = null;
         String categoryUrl = "";
         String supplierName = "";
