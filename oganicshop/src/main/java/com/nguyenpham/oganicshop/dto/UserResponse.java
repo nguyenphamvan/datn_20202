@@ -11,7 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class UserResponseDto {
+public class UserResponse {
     private Long id;
     private String email;
     private String password;

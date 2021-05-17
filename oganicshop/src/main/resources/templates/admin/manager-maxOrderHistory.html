@@ -321,7 +321,7 @@
                 let order = data["maxOrderHistory"];
                 let contact = order["address"];
                 let listOrderDetail = order["listOrderDetail"];
-                let loggingStatus = order["orderLogging"]["loggingStatus"];
+                let loggingStatus = order["orderStatus"]["loggingStatus"];
                 $("#orderId").text(order["id"]);
                 $("#orderStatus").text(order["status"]);
                 $("#deliveryDate").text(order["deliveryDate"]);

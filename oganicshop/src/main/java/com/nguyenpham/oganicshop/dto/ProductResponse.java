@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ProductResponseDto {
+public class ProductResponse {
 
     private Long id;
     private String productName;
@@ -30,5 +30,5 @@ public class ProductResponseDto {
     private String status;
     private String categoryName;
     private String supplierName;
-    private List<ResponseReviewDto> reviews;
+    private List<ReviewResponse> reviews;
 }

@@ -1,8 +1,8 @@
 package com.nguyenpham.oganicshop.api.admin;
 
 import com.nguyenpham.oganicshop.converter.UserConverter;
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.dto.UserResponseDto;
+import com.nguyenpham.oganicshop.dto.OrderResponse;
+import com.nguyenpham.oganicshop.dto.UserResponse;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.OrderService;
@@ -39,19 +39,17 @@ public class ManagerAccountApi {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUser(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
-        Map<String, Object> response = new HashMap<>();
-        User user = myUserDetail.getUser();
+    public ResponseEntity<?> getAllAccount(@AuthenticationPrincipal MyUserDetail myUserDetail) throws Exception {
         try {
-            return ResponseEntity.ok(userService.getAllUser());
+            return ResponseEntity.ok(userService.getAllAccount());
         } catch (Exception e) {
             throw new Exception("Not found");
         }
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getInfoDetailUser(@PathVariable("userId") long userId) {
-        return ResponseEntity.ok(userService.getInfoDetailUser(userId));
+    public ResponseEntity<?> getInfoDetailAccount(@PathVariable("userId") long userId) {
+        return ResponseEntity.ok(userService.getInfoDetailAccount(userId));
     }
 
     @GetMapping("{userId}/wishlist")
@@ -75,10 +73,10 @@ public class ManagerAccountApi {
     @GetMapping("{userId}/maxOrderHistory")
     public ResponseEntity<?> getUserMaxOrdersHistory(@PathVariable("userId") long userId) {
         Map<String, Object> response = new HashMap<>();
-        UserResponseDto user = userConverter.entityToDto(userService.findUserById(userId));
+        UserResponse user = userConverter.entityToDto(userService.findUserById(userId));
         response.put("user", user);
-        OrderDtoResponse maxOrderHistory = orderService.getAllOrderByUserId(userId).stream().max(Comparator.comparing(OrderDtoResponse::getTotal)).orElseThrow(NoSuchElementException::new);
-        maxOrderHistory = orderService.getOrderById(maxOrderHistory.getId());
+        OrderResponse maxOrderHistory = orderService.getAllOrderByUserId(userId).stream().max(Comparator.comparing(OrderResponse::getTotal)).orElseThrow(NoSuchElementException::new);
+        maxOrderHistory = orderService.getOrderDetail(maxOrderHistory.getId());
         response.put("maxOrderHistory", maxOrderHistory);
         return ResponseEntity.ok(response);
     }
@@ -86,15 +84,15 @@ public class ManagerAccountApi {
     @GetMapping("{userId}/orderHistory")
     public ResponseEntity<?> getUserOrdersHistory(@PathVariable("userId") long userId) {
         Map<String, Object> response = new HashMap<>();
-        UserResponseDto user = userConverter.entityToDto(userService.findUserById(userId));
+        UserResponse user = userConverter.entityToDto(userService.findUserById(userId));
         response.put("user", user);
         response.put("ordersHistory", orderService.getAllOrderByUserId(userId));
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("{userId}/updateRole")
-    public ResponseEntity<?> updateRole(@PathVariable("userId") long userId, @RequestParam("role") String role) {
-        return ResponseEntity.ok(userService.updateRoleUser(userId, role));
+    public ResponseEntity<?> setRole(@PathVariable("userId") long userId, @RequestParam("role") String role) {
+        return ResponseEntity.ok(userService.setRoleAccount(userId, role));
     }
 
     @PutMapping("{userId}/block")

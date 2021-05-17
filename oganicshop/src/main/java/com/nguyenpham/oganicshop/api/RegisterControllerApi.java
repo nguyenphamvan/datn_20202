@@ -1,6 +1,6 @@
 package com.nguyenpham.oganicshop.api;
 
-import com.nguyenpham.oganicshop.dto.RegisterAccountRequest;
+import com.nguyenpham.oganicshop.dto.AccountRequest;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.service.EmailSender;
 import com.nguyenpham.oganicshop.service.UserService;
@@ -14,19 +14,19 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-public class LoginRegisterControllerApi {
+public class RegisterControllerApi {
 
     private UserService userService;
     private EmailSender emailSender;
 
     @Autowired
-    public LoginRegisterControllerApi(UserService userService, EmailSender emailSender) {
+    public RegisterControllerApi(UserService userService, EmailSender emailSender) {
         this.userService = userService;
         this.emailSender = emailSender;
     }
 
     @PostMapping("/api/registerAccount")
-    public boolean regisAccount(@Valid @RequestBody RegisterAccountRequest accountRequest, HttpServletRequest request)
+    public boolean regisAccount(@Valid @RequestBody AccountRequest accountRequest, HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
 
         if (userService.register(accountRequest)) {

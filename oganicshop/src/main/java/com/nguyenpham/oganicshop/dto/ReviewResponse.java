@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -16,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ResponseReviewDto {
+public class ReviewResponse {
 
     private Long id;
     private Long idRootReview;
@@ -30,8 +28,8 @@ public class ResponseReviewDto {
     private int numbersOfLike;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date createdAt;
-    private Set<ResponseReviewDto> subReviews;
-    public void addSubReview(ResponseReviewDto subReview) {
+    private Set<ReviewResponse> subReviews;
+    public void addSubReview(ReviewResponse subReview) {
         if (this.subReviews == null) {
             this.subReviews = new HashSet<>();
         }

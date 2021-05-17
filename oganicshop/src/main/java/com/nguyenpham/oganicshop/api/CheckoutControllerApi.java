@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.config.PaypalPaymentIntent;
 import com.nguyenpham.oganicshop.config.PaypalPaymentMethod;
 import com.nguyenpham.oganicshop.constant.Constant;
+import com.nguyenpham.oganicshop.dto.BaseResponse;
 import com.nguyenpham.oganicshop.entity.CartItem;
-import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
+import com.nguyenpham.oganicshop.dto.OrderRequest;
+import com.nguyenpham.oganicshop.dto.OrderResponse;
 import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.entity.Promotion;
 import com.nguyenpham.oganicshop.entity.User;
@@ -55,36 +56,40 @@ public class CheckoutControllerApi {
 
     @GetMapping("/getInfo")
     public ResponseEntity<?> getInfoPayment(HttpSession session) {
+        BaseResponse br = new BaseResponse();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         Map<String, Object> response = new HashMap<>();
-        response.put("order", orderService.getInfoCheckout(cart));
         if (cart != null) {
             response.put("order", orderService.getInfoCheckout(cart));
-            return ResponseEntity.ok(response);
+            br.setStatus(true);
+            br.setData(response);
+        } else {
+            br.setStatus(false);
+            br.setErrMessage("Giỏ hàng trống");
         }
-        return new ResponseEntity<Object>("Có lỗi xảy ra khi kiểm tra thông tin thanh toán", HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/payment")
     public ResponseEntity<?> payOrder(HttpSession session, HttpServletRequest request,
-                           @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderDtoRequest orderDto) {
+                           @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderRequest order) {
         User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
 
             try {
-                if (orderDto.getPaymentMethod().equals("cod")) {
-                    Order orderSaved = orderService.paymentOrder(user, cart, orderDto);
+                if (order.getPaymentMethod().equals("cod")) {
+                    Order orderSaved = orderService.paymentOrder(user, cart, order);
                     // sau bước thanh toán thành công sẽ gửi email thông báo cho người dùng
                     emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
                     session.removeAttribute(Constant.CART_SESSION_NAME);
                     return new ResponseEntity<Object>("/payment_success", HttpStatus.OK); // return home page
-                } else if (orderDto.getPaymentMethod().equals("paypal")){
+                } else if (order.getPaymentMethod().equals("paypal")){
                     String cancelUrl = Utils.getBaseURL(request) + "/" + Constant.URL_PAYPAL_CANCEL;
                     String successUrl = Utils.getBaseURL(request) + "/" + Constant.URL_PAYPAL_SUCCESS;
                     String urlRedirect = null;
                     Payment payment = paypalService.createPayment(
-                            (double) orderDto.getTotal(),
+                            (double) order.getTotal(),
                             "USD",
                             PaypalPaymentMethod.paypal,
                             PaypalPaymentIntent.sale,
@@ -97,7 +102,7 @@ public class CheckoutControllerApi {
                             urlRedirect = links.getHref();
                         }
                     }
-                    session.setAttribute("order", orderDto);
+                    session.setAttribute("order", order);
                     return new ResponseEntity<Object>(urlRedirect, HttpStatus.OK);
                 }
 
@@ -121,7 +126,7 @@ public class CheckoutControllerApi {
             if (promotion != null) {
                 int discountValue = orderService.applyCoupon(cart, promotion);
                 // ? nếu chọn hình thức giao hàng rồi mới áp dụng mã giảm giá thì ntn
-                OrderDtoResponse orderResponse = orderService.getInfoCheckout(cart);
+                OrderResponse orderResponse = orderService.getInfoCheckout(cart);
                 orderResponse.setDiscount(discountValue);
                 orderResponse.setTotal(orderResponse.getSubTotal() + orderResponse.getShipFee() - orderResponse.getDiscount());
                 return new ResponseEntity<Object>(orderResponse, HttpStatus.OK);

@@ -104,13 +104,13 @@
             dataType: 'json',
             success: function (order) {
                 console.log(order);
-                let orderLogging = order["order"]["orderLogging"];
-                $(".order-heading h3").text("Theo dõi đơn hàng #" + orderLogging["orderId"]);
-                $(".status-block .status-text b").text(orderLogging["latestStatus"] + "  |  " + orderLogging["lastUpdatedTime"]);
-                $(".cGrxj").text("Cập nhật mới nhất : " + orderLogging["lastUpdatedTime"]);
+                let orderStatus = order["order"]["orderStatus"];
+                $(".order-heading h3").text("Theo dõi đơn hàng #" + orderStatus["orderId"]);
+                $(".status-block .status-text b").text(orderStatus["latestStatus"] + "  |  " + orderStatus["lastUpdatedTime"]);
+                $(".cGrxj").text("Cập nhật mới nhất : " + orderStatus["lastUpdatedTime"]);
 
                 if (order.hasOwnProperty("loggingStatus")) {
-                    $.each(orderLogging["loggingStatus"], function( index, orderStatus ) {
+                    $.each(orderStatus["loggingStatus"], function( index, orderStatus ) {
                         let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
                             "           <span class=\"left\">" + orderStatus["updatedTime"] + "</span>" +
                             "           <span class=\"right\">" + orderStatus["status"] + "</span>\n" +
@@ -119,8 +119,8 @@
                     });
                 } else {
                     let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
-                        "           <span class=\"left\">" + orderLogging["lastUpdatedTime"] + "</span>" +
-                        "           <span class=\"right\">" + orderLogging["latestStatus"] + "</span>\n" +
+                        "           <span class=\"left\">" + orderStatus["lastUpdatedTime"] + "</span>" +
+                        "           <span class=\"right\">" + orderStatus["latestStatus"] + "</span>\n" +
                         "       </div>";
                     $(html).insertAfter(".cGrxj");
                 }

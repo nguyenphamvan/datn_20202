@@ -1,7 +1,6 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nguyenpham.oganicshop.dto.AddressRequestDto;
 import lombok.*;
 
 import javax.persistence.*;

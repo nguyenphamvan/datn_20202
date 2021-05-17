@@ -388,7 +388,6 @@
         });
 
         $(document).on("click", "#change-role", function () {
-            alert("thay đổi mật khẩu");
             $.ajax({
                 url: "/api/admin/account/" + userId + "/updateRole?role=" + $("#role option:selected").val(),
                 type: "PUT",

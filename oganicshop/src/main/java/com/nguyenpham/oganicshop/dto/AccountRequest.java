@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class RegisterAccountRequest {
+public class AccountRequest {
     @NotBlank
     private String fullName;
     @NotBlank

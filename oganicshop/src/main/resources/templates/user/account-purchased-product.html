@@ -138,7 +138,7 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
         getListCategory();
-        getListProductIsNotReviewed();
+        getProductsIsUnReviewed();
         actionForModal();
 
         $("#btn-post-review").on("click", function () {
@@ -154,22 +154,7 @@
             $("#reviewModal").find(".write-review__heading").text("Vui lòng đánh giá");
             $("#reviewModal").find('path').attr('fill', 'none');
             $('#reviewModal').modal('hide');
-
-            $.ajax({
-                url: "/api/review/post",
-                data: JSON.stringify(data),
-                type: "POST",
-                contentType: "application/json",
-                success: function (result) {
-                    $("#myModal").css("display", "block");
-                    $("#myModal > div.modal-content > p").text(result);
-                    $("#myModal").delay(1000).fadeOut();
-                    getListProductIsNotReviewed();
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
+            postReview(data);
         });
 
         $(document).on('click', '.my-reviews__button', function (e) {
@@ -234,7 +219,7 @@
         });
     });
 
-    function getListProductIsNotReviewed() {
+    function getProductsIsUnReviewed() {
         $.ajax({
             url: "/api/sales/order/product-not-reviewed",
             type: "GET",
@@ -267,6 +252,24 @@
                             "                </div>\n" +
                             "     </div>");
                 }
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function postReview(data) {
+        $.ajax({
+            url: "/api/review/post",
+            data: JSON.stringify(data),
+            type: "POST",
+            contentType: "application/json",
+            success: function (result) {
+                $("#myModal").css("display", "block");
+                $("#myModal > div.modal-content > p").text(result);
+                $("#myModal").delay(1000).fadeOut();
+                getProductsIsUnReviewed();
             },
             error: function (xhr) {
                 alert(xhr.responseText);

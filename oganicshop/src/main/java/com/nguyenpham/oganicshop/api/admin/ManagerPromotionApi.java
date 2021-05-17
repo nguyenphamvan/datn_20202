@@ -35,7 +35,7 @@ public class ManagerPromotionApi {
     }
 
     @PostMapping("/add")
-    Object insertPromotionById(@ModelAttribute PromotionDto promotion) {
+    Object addPromotion(@ModelAttribute PromotionDto promotion) {
         Map<String, Object> response = new HashMap<>();
         try {
             response.put("data", promotionService.addNewCoupon(promotion));
@@ -50,7 +50,7 @@ public class ManagerPromotionApi {
     }
 
     @PutMapping("/edit/{couponId}")
-    Object EditPromotionById(@PathVariable("couponId") long couponId, @ModelAttribute PromotionDto promotion) {
+    Object EditPromotion(@PathVariable("couponId") long couponId, @ModelAttribute PromotionDto promotion) {
         Map<String, Object> response = new HashMap<>();
         try {
             response.put("data", promotionService.editCoupon(promotion));
@@ -65,7 +65,7 @@ public class ManagerPromotionApi {
     }
 
     @PutMapping("/delete/{couponId}")
-    Object EditPromotionById(@PathVariable("couponId") long couponId) {
+    Object deletePromotion(@PathVariable("couponId") long couponId) {
         Map<String, Object> response = new HashMap<>();
         response.put("data", null);
         try {

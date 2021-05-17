@@ -3,10 +3,9 @@ package com.nguyenpham.oganicshop.api;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.ReviewConverter;
 import com.nguyenpham.oganicshop.dto.MyReviewDto;
-import com.nguyenpham.oganicshop.dto.RequestReviewDto;
-import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
-import com.nguyenpham.oganicshop.entity.Review;
-import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.dto.ReviewRequest;
+import com.nguyenpham.oganicshop.dto.ReviewResponse;
+import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class ReviewControllerApi {
     public ResponseEntity<?> getMyReviews(@RequestParam("currentPage") int currentPage, @RequestParam("pageSize") int pageSize) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
-        Page<Review> pageReview = reviewService.getMyReviews(user, currentPage, pageSize);
+        Page<Review> pageReview = reviewService.getMyReviews(user.getId(), currentPage, pageSize);
         ReviewConverter converter = new ReviewConverter();
         List<MyReviewDto> listMyReview = pageReview.getContent().stream().map(rv -> converter.entityToMyReview(rv))
                 .collect(Collectors.toList());
@@ -53,12 +52,12 @@ public class ReviewControllerApi {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> postReview(@RequestBody RequestReviewDto requestReviewDto) {
+    public ResponseEntity<?> postReview(@RequestBody ReviewRequest reviewRequest) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         try {
-            userService.rateProduct(requestReviewDto, user.getId());
-            orderService.updateProductReviewed(user.getId(), requestReviewDto.getProductId());
-            reviewService.save(requestReviewDto);
+            userService.rateProduct(reviewRequest, user.getId());
+            orderService.updateProductReviewed(user.getId(), reviewRequest.getProductId());
+            reviewService.save(reviewRequest);
             return ResponseEntity.ok("Cảm ơn bạn đã đánh giá sản phẩm!");
         } catch (Exception e) {
             return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,8 +65,8 @@ public class ReviewControllerApi {
     }
 
     @PostMapping("/reply")
-    public ResponseEntity<?> replyReview(@RequestBody RequestReviewDto replyReview) {
-        ResponseReviewDto response = reviewService.save(replyReview);
+    public ResponseEntity<?> replyReview(@RequestBody ReviewRequest replyReview) {
+        ReviewResponse response = reviewService.save(replyReview);
         if (response != null) {
             return ResponseEntity.ok(response);
         }

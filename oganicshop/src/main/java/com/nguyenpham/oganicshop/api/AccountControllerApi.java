@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.api;
 
-import com.nguyenpham.oganicshop.dto.AddressRequestDto;
-import com.nguyenpham.oganicshop.dto.UserRequestDto;
+import com.nguyenpham.oganicshop.dto.AddressRequest;
+import com.nguyenpham.oganicshop.dto.UserRequest;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CategoryService;
@@ -44,7 +44,7 @@ public class AccountControllerApi {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateInfoAccount(@RequestBody UserRequestDto userRequest) {
+    public ResponseEntity<?> updateInfoAccount(@RequestBody UserRequest userRequest) {
         Map<String, Object> response = new HashMap<>();
         try {
             response.put("status", true);
@@ -59,16 +59,16 @@ public class AccountControllerApi {
 
     @GetMapping("/address")
     public ResponseEntity<?> getListAddress() {
-        return ResponseEntity.ok(userService.getAddress());
+        return ResponseEntity.ok(userService.getListAddress());
     }
 
     @PostMapping("/address/create")
-    public ResponseEntity<?> addNewAddress(@RequestBody AddressRequestDto request) {
+    public ResponseEntity<?> addNewAddress(@RequestBody AddressRequest request) {
         return ResponseEntity.ok(userService.addAddress(request));
     }
 
     @PutMapping("/address/update")
-    public ResponseEntity<?> updateOldAddress(@RequestBody AddressRequestDto request) {
+    public ResponseEntity<?> updateOldAddress(@RequestBody AddressRequest request) {
         return ResponseEntity.ok(userService.updateAddress(request));
     }
 

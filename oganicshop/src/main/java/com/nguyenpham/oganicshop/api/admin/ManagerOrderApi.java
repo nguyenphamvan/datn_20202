@@ -1,11 +1,8 @@
 package com.nguyenpham.oganicshop.api.admin;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.nguyenpham.oganicshop.converter.OrderConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
-import com.nguyenpham.oganicshop.dto.UserResponseDto;
-import com.nguyenpham.oganicshop.entity.Order;
+import com.nguyenpham.oganicshop.dto.OrderResponse;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +32,14 @@ public class ManagerOrderApi {
 
     @GetMapping("all")
     public ResponseEntity<?> getAllOrder() {
-        List<OrderDtoResponse> order = orderService.getAll();
+        List<OrderResponse> order = orderService.getAll();
         return ResponseEntity.ok(order);
     }
 
     @GetMapping("{orderId}")
     public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
-        OrderDtoResponse order = orderService.getOrderById(orderId);
+        OrderResponse order = orderService.getOrderDetail(orderId);
         order.setMessage(null);
         response.put("order", order);
         return ResponseEntity.ok(response);

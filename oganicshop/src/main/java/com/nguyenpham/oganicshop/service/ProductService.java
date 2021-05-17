@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.service;
 
-import com.nguyenpham.oganicshop.dto.ProductRequestDto;
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
+import com.nguyenpham.oganicshop.dto.ProductRequest;
+import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Product;
 import org.springframework.data.domain.Page;
 
@@ -11,17 +11,17 @@ import java.util.List;
 public interface ProductService {
 
     long countNumberProduct();
-    List<ProductResponseDto> getAllProduct();
+    List<ProductResponse> getAllProduct();
     Page<Product> getProductsByCategory(String categoryUrl, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
     Page<Product> getProductsBySupplier(String Supplier, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
     Page<Product> getProductsByCategoryAndSupplier(String categoryUrl, String supplierName, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
     Page<Product> getProductsByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir);
     int getAmountAvailable(String productUrl);
     boolean isProvideEnoughQuantity(String productUrl, int quantity);
-    ProductResponseDto getProductByUrl(String productUrl);
-    Product getProductById(Long productId);
-    ProductResponseDto addProduct(ProductRequestDto productRequestDto) throws IOException;
-    ProductResponseDto updateProduct(ProductRequestDto productRequestDto) throws IOException;
+    ProductResponse getProductByUrl(String productUrl);
+    Product getProductDetail(Long productId);
+    ProductResponse addProduct(ProductRequest productRequest) throws IOException;
+    ProductResponse updateProduct(ProductRequest productRequest) throws IOException;
     int importProduct(long productId, int amount);
     boolean stopBusinessProduct(long productId);
     boolean openBusinessProduct(long productId);

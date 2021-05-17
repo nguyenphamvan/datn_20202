@@ -215,18 +215,22 @@
 
         $(document).on("click", "tfoot > tr:nth-child(5) > td:nth-child(2) > a.cancel-order", function (e) {
             e.preventDefault();
-            $.ajax({
-                url: "/api/sales/order/cancel/" + orderId,
-                type: "PUT",
-                contentType: "application/json",
-                success: function (result) {
-                    if (result === true) {
-                        window.location.href = "/sales/order/history";
-                    }
-                }
-            });
+            cancelOrder(orderId);
         });
     });
+
+    function cancelOrder(orderId) {
+        $.ajax({
+            url: "/api/sales/order/cancel/" + orderId,
+            type: "PUT",
+            contentType: "application/json",
+            success: function (result) {
+                if (result === true) {
+                    window.location.href = "/sales/order/history";
+                }
+            }
+        });
+    }
 
     function getInfoOrder(orderId) {
         $.ajax({

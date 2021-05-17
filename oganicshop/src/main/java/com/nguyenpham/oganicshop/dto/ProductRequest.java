@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductRequestDto {
+public class ProductRequest {
 
     private long id;
     private String name;

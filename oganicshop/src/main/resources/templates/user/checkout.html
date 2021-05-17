@@ -484,35 +484,39 @@
             url: "/api/checkout/getInfo",
             type: "GET",
             contentType: "application/json",
-            success: function (data) {
-                let order = data["order"];
-                if (order.hasOwnProperty("address")) {
-                    $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
-                    $(".contact-address .address .street").text(order["address"]["contactAddress"]);
-                    $(".contact-address .address .phone").text("Điện thoại : " + order["address"]["contactPhone"]);
-                } else {
-                    $("#payment > div > div:nth-child(1) > div > div > div > div > a").removeAttr("data-toggle").removeAttr("data-target")
-                        .text("thêm mới").attr("href", "/customer/address");
-                    $("#payment > div > div:nth-child(1) > div > div > div > div.title").after("<p style='text-align: center; color: red; margin-top: 50px;'>Bạn chưa thêm địa chỉ giao hàng</p>");
-                    $("#payment > div > div:nth-child(1) > div > div > div > div.address").remove();
-                    $("#payment > div > div:nth-child(1) > div > div > div > div.form-group.note").remove();
-                    $("#payment-order").closest("div").hide();
-                }
+            success: function (res) {
+                if (res["status"] === true) {
+                    let order = res["data"]["order"];
+                    if (order.hasOwnProperty("address")) {
+                        $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
+                        $(".contact-address .address .street").text(order["address"]["contactAddress"]);
+                        $(".contact-address .address .phone").text("Điện thoại : " + order["address"]["contactPhone"]);
+                    } else {
+                        $("#payment > div > div:nth-child(1) > div > div > div > div > a").removeAttr("data-toggle").removeAttr("data-target")
+                            .text("thêm mới").attr("href", "/customer/address");
+                        $("#payment > div > div:nth-child(1) > div > div > div > div.title").after("<p style='text-align: center; color: red; margin-top: 50px;'>Bạn chưa thêm địa chỉ giao hàng</p>");
+                        $("#payment > div > div:nth-child(1) > div > div > div > div.address").remove();
+                        $("#payment > div > div:nth-child(1) > div > div > div > div.form-group.note").remove();
+                        $("#payment-order").closest("div").hide();
+                    }
 
-                $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(order["subTotal"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(order["promotion"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(order["shipFee"]);
-                $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(order["total"]);
-                $("input[name='deliveryMethod']").each(function () {
-                    if ($(this).val() === order["deliveryMethod"]) {
-                        $(this).prop('checked', true);
-                    }
-                });
-                $("input[name='paymentMethod']").each(function () {
-                    if ($(this).val() === order["paymentMethod"]) {
-                        $(this).prop('checked', true);
-                    }
-                });
+                    $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(order["subTotal"]);
+                    $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(order["promotion"]);
+                    $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(order["shipFee"]);
+                    $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(order["total"]);
+                    $("input[name='deliveryMethod']").each(function () {
+                        if ($(this).val() === order["deliveryMethod"]) {
+                            $(this).prop('checked', true);
+                        }
+                    });
+                    $("input[name='paymentMethod']").each(function () {
+                        if ($(this).val() === order["paymentMethod"]) {
+                            $(this).prop('checked', true);
+                        }
+                    });
+                } else {
+                    alert(res["errMessage"]);
+                }
             },
             error: function (xhr) {
                 alert(xhr.responseText);

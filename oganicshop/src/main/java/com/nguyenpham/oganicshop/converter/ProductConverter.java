@@ -1,8 +1,8 @@
 package com.nguyenpham.oganicshop.converter;
 
-import com.nguyenpham.oganicshop.dto.ProductRequestDto;
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
-import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
+import com.nguyenpham.oganicshop.dto.ProductRequest;
+import com.nguyenpham.oganicshop.dto.ProductResponse;
+import com.nguyenpham.oganicshop.dto.ReviewResponse;
 import com.nguyenpham.oganicshop.entity.Product;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,66 +12,66 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProductConverter implements GeneralConverter<Product, ProductRequestDto, ProductResponseDto>{
+public class ProductConverter implements GeneralConverter<Product, ProductRequest, ProductResponse>{
 
     @Override
-    public ProductResponseDto entityToDto(Product product) {
-        ProductResponseDto productResponseDto = new ProductResponseDto();
-        productResponseDto.setId(product.getId());
-        productResponseDto.setProductName(product.getName());
-        productResponseDto.setProductUrl(product.getUrl());
-        productResponseDto.setBaseDescription(product.getBaseDescription());
-        productResponseDto.setDetailDescription(product.getDetailDescription().trim());
-        productResponseDto.setCategoryName(product.getCategory().getCategoryName());
-        productResponseDto.setSupplierName(product.getSupplier().getName());
+    public ProductResponse entityToDto(Product product) {
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setProductName(product.getName());
+        productResponse.setProductUrl(product.getUrl());
+        productResponse.setBaseDescription(product.getBaseDescription());
+        productResponse.setDetailDescription(product.getDetailDescription().trim());
+        productResponse.setCategoryName(product.getCategory().getCategoryName());
+        productResponse.setSupplierName(product.getSupplier().getName());
 
         //image
         if (product.getImage() != null) {
             List<String> imagesDb = Arrays.asList(product.getImage().split(","))
                     .stream().map(img -> "/images/products/" + product.getId() + "/" + img).collect(Collectors.toList());
-            productResponseDto.setMainImage(imagesDb.get(0));
-            productResponseDto.setImages(imagesDb);
+            productResponse.setMainImage(imagesDb.get(0));
+            productResponse.setImages(imagesDb);
         } else {
-            productResponseDto.setMainImage("/images/products/default.png");
-            productResponseDto.setImages(null);
+            productResponse.setMainImage("/images/products/default.png");
+            productResponse.setImages(null);
         }
-        productResponseDto.setPrice(product.getPrice());
-        productResponseDto.setDiscount(product.getDiscount());
-        productResponseDto.setFinalPrice(product.getFinalPrice());
+        productResponse.setPrice(product.getPrice());
+        productResponse.setDiscount(product.getDiscount());
+        productResponse.setFinalPrice(product.getFinalPrice());
 
-        productResponseDto.setRating(product.getRating());
-        productResponseDto.setAmount(product.getAmount());
+        productResponse.setRating(product.getRating());
+        productResponse.setAmount(product.getAmount());
         if (product.isStopBusiness()) {
-            productResponseDto.setStatus("Ngừng bán");
+            productResponse.setStatus("Ngừng bán");
         } else if ((product.getAmount() > 0 ) && (product.getAmount() < 10)) {
-            productResponseDto.setStatus("Sắp hết hàng");
+            productResponse.setStatus("Sắp hết hàng");
         } else if (product.getAmount() == 0 ) {
-            productResponseDto.setStatus("Đã hết hàng");
+            productResponse.setStatus("Đã hết hàng");
         } else {
-            productResponseDto.setStatus("Đang bán");
+            productResponse.setStatus("Đang bán");
         }
 
         if (product.getReviews() != null) {
             ReviewConverter converter = new ReviewConverter();
-            List<ResponseReviewDto> reviews = product.getReviews().stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
-            productResponseDto.setReviews(reviews);
-            productResponseDto.setNumberOfReviews(product.getReviews().size());
+            List<ReviewResponse> reviews = product.getReviews().stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
+            productResponse.setReviews(reviews);
+            productResponse.setNumberOfReviews(product.getReviews().size());
         } else {
-            productResponseDto.setReviews(null);
-            productResponseDto.setNumberOfReviews(0);
+            productResponse.setReviews(null);
+            productResponse.setNumberOfReviews(0);
         }
 
-        return productResponseDto;
+        return productResponse;
     }
 
-    public ProductResponseDto entityToDtoNotReviews(Product product) {
-        ProductResponseDto productResponseDto = entityToDto(product);
-        productResponseDto.setReviews(null);
-        return productResponseDto;
+    public ProductResponse entityToDtoNotReviews(Product product) {
+        ProductResponse productResponse = entityToDto(product);
+        productResponse.setReviews(null);
+        return productResponse;
     }
 
     @Override
-    public Product dtoToEntity(ProductRequestDto request) {
+    public Product dtoToEntity(ProductRequest request) {
         Product product = new Product();
         product.setId(request.getId());
         product.setName(request.getName());

@@ -12,7 +12,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderItem, Long> {
     Set<OrderItem> findAllByReviewedIsFalse(@Param("userId") long userId);
 
     @Query("SELECT od FROM OrderItem od JOIN FETCH od.order o WHERE o.user.id =:userId AND od.reviewed = false AND od.product.id = :productId")
-    Set<OrderItem> findAllByProductUnReviewedOfUser(@Param("userId") long userId, @Param("productId") long productId);
+    Set<OrderItem> findAllByUnReviewedOfUser(@Param("userId") long userId, @Param("productId") long productId);
 
     int countByProductId(long productId);
 }

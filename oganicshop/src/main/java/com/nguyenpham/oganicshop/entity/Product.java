@@ -1,17 +1,13 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
-import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Builder
 @Entity
@@ -67,6 +63,4 @@ public class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Rating> ratings;
-
-
 }

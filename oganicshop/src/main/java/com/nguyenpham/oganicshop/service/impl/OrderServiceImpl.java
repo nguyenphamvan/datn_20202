@@ -7,7 +7,7 @@ import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
-import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
+import com.nguyenpham.oganicshop.repository.AddressRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.util.DateTimeUtil;
@@ -29,13 +29,13 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
-    private ShippingAddressRepository shippingAddressRepository;
+    private AddressRepository addressRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, ShippingAddressRepository shippingAddressRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, AddressRepository addressRepository) {
         this.orderRepository = orderRepository;
         this.orderDetailRepository = orderDetailRepository;
-        this.shippingAddressRepository = shippingAddressRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -44,11 +44,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDtoResponse> getAll() {
+    public List<OrderResponse> getAll() {
         OrderConverter orderConverter = new OrderConverter();
         return orderRepository.findAll().stream()
                 .map(o -> {
-                    OrderDtoResponse response = orderConverter.entityToDto(o);
+                    OrderResponse response = orderConverter.entityToDto(o);
                     response.setListOrderDetail(null);
                     return response;
                 }).collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateProductReviewed(long userId, long productId) {
         try {
-            Set<OrderItem> setOrderItemDb = orderDetailRepository.findAllByProductUnReviewedOfUser(userId,productId);
+            Set<OrderItem> setOrderItemDb = orderDetailRepository.findAllByUnReviewedOfUser(userId,productId);
             setOrderItemDb.forEach(orderDetail -> {
                 orderDetail.setReviewed(true);
             });
@@ -90,11 +90,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDtoResponse> getAllOrderByUserId(long userId) {
+    public List<OrderResponse> getAllOrderByUserId(long userId) {
         OrderConverter converter = new OrderConverter();
         return orderRepository.findAllByUserId(userId).stream()
                 .map(od -> {
-                    OrderDtoResponse response = converter.entityToDto(od);
+                    OrderResponse response = converter.entityToDto(od);
                     response.setListOrderDetail(null);
                     return response;
                 })
@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDtoResponse getOrderById(long orderId) {
+    public OrderResponse getOrderDetail(long orderId) {
         Order order = orderRepository.findById(orderId).get();
         return new OrderConverter().entityToDto(order);
     }
@@ -110,11 +110,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean updatedOrderStatus(long orderId, int statusId, String message) {
         Order order = orderRepository.findById(orderId).get();
-        OrderLogging orderLogging = new OrderLogging(statusId);
-        orderLogging.setOrder(order);
+        OrderStatus orderStatus = new OrderStatus(statusId);
+        orderStatus.setOrder(order);
         order.setStatus(statusId);
         order.setMessage(DateTimeUtil.dateTimeFormat(new Date()) + " - " + message);
-        order.addLogOrder(orderLogging);
+        order.addLogOrder(orderStatus);
 
         try {
             orderRepository.save(order);
@@ -135,12 +135,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDtoResponse> getOrdersHistory(long userId, int pageNum, int pageSize) {
+    public List<OrderResponse> getOrdersHistory(long userId, int pageNum, int pageSize) {
         OrderConverter converter = new OrderConverter();
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id").ascending());
         Page<Order> page = orderRepository.findOrdersByUserId(userId, pageable);
         List<Order> ordersHistory = page.getContent();
-        List<OrderDtoResponse> ordersDtoHistory = new ArrayList<>();
+        List<OrderResponse> ordersDtoHistory = new ArrayList<>();
         ordersHistory.forEach(order -> {
             ordersDtoHistory.add(converter.entityToDto(order));
         });
@@ -179,20 +179,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order paymentOrder(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto) {
+    public Order paymentOrder(User user, HashMap<Long, CartItem> cart, OrderRequest orderDto) {
         Order order = new OrderConverter().dtoToEntity(user, cart, orderDto);
         return this.save(order);
     }
 
     @Override
-    public boolean cancelOrder(long userId, long orderId) {
+    public boolean cancelOrder(long orderId) {
         Order order = orderRepository.findById(orderId).get();
-        if (order.getUser().getId() == userId && order.getStatus() == 0) {
+        if (order.getStatus() == 0) {
             order.setStatus(3);
-            OrderLogging orderLogging = new OrderLogging(3);
-            orderLogging.setOrder(order);
+            OrderStatus orderStatus = new OrderStatus(3);
+            orderStatus.setOrder(order);
             order.setMessage(DateTimeUtil.dateTimeFormat(new Date()) + " - Bạn đã hủy đơn hàng");
-            order.addLogOrder(orderLogging);
+            order.addLogOrder(orderStatus);
             try {
                 orderRepository.save(order);
                 return true;
@@ -204,16 +204,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDtoResponse getInfoCheckout(HashMap<Long, CartItem> cart) {
+    public OrderResponse getInfoCheckout(HashMap<Long, CartItem> cart) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        Address addressDefault = shippingAddressRepository.findByAddrDefaultIsTrue(user.getId());
+        Address addressDefault = addressRepository.findByAddrDefaultIsTrue(user.getId());
         int subCart = 0;
         for (HashMap.Entry<Long, CartItem> item : cart.entrySet()) {
             subCart += item.getValue().calculateTotalItem();
         }
-        OrderDtoResponse orderResponse = new OrderDtoResponse();
+        OrderResponse orderResponse = new OrderResponse();
         if (addressDefault != null) {
-            orderResponse.setAddress(new AddressRequestDto(addressDefault.getContactReceiver(), addressDefault.getContactPhone(),
+            orderResponse.setAddress(new AddressRequest(addressDefault.getContactReceiver(), addressDefault.getContactPhone(),
                     addressDefault.getContactAddress(), addressDefault.isAddrDefault()));
         } else {
             orderResponse.setAddress(null);

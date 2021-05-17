@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Table(name = "order_logging")
 @Data
 @AllArgsConstructor
-public class OrderLogging {
+public class OrderStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +26,10 @@ public class OrderLogging {
     @JsonIgnore
     private Order order;
 
-    public OrderLogging() {
+    public OrderStatus() {
     }
 
-    public OrderLogging(int status) {
+    public OrderStatus(int status) {
         this.status = status;
     }
 }

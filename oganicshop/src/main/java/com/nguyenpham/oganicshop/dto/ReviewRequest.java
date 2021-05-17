@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class RequestReviewDto {
+public class ReviewRequest {
     private Long id;
     private Long rootId;
     private Long productId;

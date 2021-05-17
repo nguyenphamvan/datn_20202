@@ -1,13 +1,13 @@
 package com.nguyenpham.oganicshop.converter;
 
-import com.nguyenpham.oganicshop.dto.AddressRequestDto;
-import com.nguyenpham.oganicshop.dto.AddressResponseDto;
+import com.nguyenpham.oganicshop.dto.AddressRequest;
+import com.nguyenpham.oganicshop.dto.AddressResponse;
 import com.nguyenpham.oganicshop.entity.Address;
 
-public class AddressConverter implements GeneralConverter<Address, AddressRequestDto, AddressResponseDto>{
+public class AddressConverter implements GeneralConverter<Address, AddressRequest, AddressResponse>{
     @Override
-    public AddressResponseDto entityToDto(Address address) {
-        return new AddressResponseDto(
+    public AddressResponse entityToDto(Address address) {
+        return new AddressResponse(
                 address.getId() ,
                 address.getContactReceiver(),
                 address.getContactPhone(),
@@ -17,7 +17,7 @@ public class AddressConverter implements GeneralConverter<Address, AddressReques
     }
 
     @Override
-    public Address dtoToEntity(AddressRequestDto d) {
+    public Address dtoToEntity(AddressRequest d) {
         return null;
     }
 }

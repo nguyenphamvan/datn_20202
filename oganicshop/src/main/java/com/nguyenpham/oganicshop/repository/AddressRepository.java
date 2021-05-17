@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ShippingAddressRepository extends JpaRepository<Address, Long> {
+public interface AddressRepository extends JpaRepository<Address, Long> {
     @Query(value = "SELECT * FROM address AS sp WHERE sp.addr_default = 1 AND users_id = :usersId", nativeQuery = true)
     Address findByAddrDefaultIsTrue(@Param("usersId") long usersId);
     List<Address> findAllByUserId(long userId);

@@ -58,17 +58,6 @@
                             <label class="input-label">Email</label>
                             <input class="form-control" type="email" name="email" disabled="">
                         </div>
-                        <!--                        <div class="div-form-control">-->
-                        <!--                            <label class="input-label">Giới tính</label>-->
-                        <!--                            <div style="margin-right: 50px;">-->
-                        <!--                                <input type="radio" name="gender" value="male" checked="">-->
-                        <!--                                <span style="margin-left: 10px;">Nam</span>-->
-                        <!--                            </div>-->
-                        <!--                            <div style="margin-right: 50px;">-->
-                        <!--                                <input type="radio" name="gender" value="female">-->
-                        <!--                                <span style="margin-left: 10px;">Nữ</span>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
                         <div class="div-form-control">
                             <label class="input-label">Giới tính</label>
                             <label class="Radio__StyledRadio">
@@ -151,7 +140,7 @@
         $(".Account__StyledSideBar").siblings().css('display', 'none');
         let pageURL = $(location).attr("href");
         if (pageURL.includes("/customer/account/edit")) {
-            getInfoUser()
+            updateInfoAccount();
             $("#customer_edit").css('display', 'block');
         }
 
@@ -183,11 +172,11 @@
             if ($("input[name='edit_password']").is(':checked')) {
                 if (validatePassword() === true) {
                     data["password"] = $("input[name='password']").val();
-                    updateInfo(data);
+                    updateInfoUser(data);
                 }
                 alert(data["password"]);
             } else {
-                updateInfo(data);
+                updateInfoUser(data);
             }
         });
         /* end edit password function*/
@@ -258,7 +247,7 @@
         return token;
     }
 
-    function getInfoUser() {
+    function getInfoAccount() {
         $.ajax({
             url: "/api/account/info",
             type: "GET",
@@ -284,7 +273,7 @@
         });
     }
 
-    function updateInfo(data) {
+    function updateInfoAccount(data) {
         $.ajax({
             url: "/api/account/update",
             data: JSON.stringify(data),

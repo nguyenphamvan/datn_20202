@@ -298,7 +298,7 @@
                 "contactPhone": $(".styles__StyledAccountAddressEdit").find("input[name='phone']").val(),
                 "default" : isDefault
             };
-            saveShippingAddress(false, data);
+            addShippingAddress(false, data);
         });
 
         $("div.styles__StyledAccountAddressCreate").find("button[type='button']").on('click', function () {
@@ -317,7 +317,7 @@
                 "contactPhone": $(".styles__StyledAccountAddressCreate").find("input[name='phone']").val(),
                 "default" : isDefault
             };
-            saveShippingAddress(true, data);
+            addShippingAddress(true, data);
         });
 
         $(document).on("click", "div.action > button.delete", function () {
@@ -359,7 +359,7 @@
         });
     }
 
-    function saveShippingAddress(isCreate, data) {
+    function addShippingAddress(isCreate, data) {
         let url = "";
         let type = "";
         if(isCreate === true) {

@@ -50,7 +50,7 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("updateTime ASC")
-    private Set<OrderLogging> orderLoggings;
+    private Set<OrderStatus> orderStatuses;
 
     public void addOrderDetail(OrderItem orderItem) {
         if(this.orderItems == null) {
@@ -59,11 +59,11 @@ public class Order {
         this.orderItems.add(orderItem);
     }
 
-    public void addLogOrder(OrderLogging logOrder) {
-        if(this.orderLoggings == null) {
-            this.orderLoggings = new HashSet<>();
+    public void addLogOrder(OrderStatus logOrder) {
+        if(this.orderStatuses == null) {
+            this.orderStatuses = new HashSet<>();
         }
-        this.orderLoggings.add(logOrder);
+        this.orderStatuses.add(logOrder);
     }
 
     public OrderLoggingDto convertOrderLoggingToOrderLoggingDto() {
@@ -72,7 +72,7 @@ public class Order {
         orderLoggingDto.setLatestStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
         orderLoggingDto.setLastUpdatedTime(DateTimeUtil.dateTimeFormat(this.getDeliveryDate()));
         Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = new TreeSet<>();
-        this.getOrderLoggings().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(ol.getStatus()), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
+        this.getOrderStatuses().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(ol.getStatus()), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
 
         orderLoggingDto.setLoggingStatus(loggingStatus);
         return orderLoggingDto;

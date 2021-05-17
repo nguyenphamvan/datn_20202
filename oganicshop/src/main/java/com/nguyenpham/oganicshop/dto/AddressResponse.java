@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class AddressResponseDto implements Comparable<AddressResponseDto>{
+public class AddressResponse implements Comparable<AddressResponse>{
 
     private Long id;
     private String contactReceiver;
@@ -15,20 +15,20 @@ public class AddressResponseDto implements Comparable<AddressResponseDto>{
     private String contactAddress;
     private boolean isDefault;
 
-    public AddressResponseDto(String contactReceiver, String contactPhone, String contactAddress) {
+    public AddressResponse(String contactReceiver, String contactPhone, String contactAddress) {
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
         this.contactAddress = contactAddress;
     }
 
-    public AddressResponseDto(String contactReceiver, String contactPhone, String contactAddress, boolean isDefault) {
+    public AddressResponse(String contactReceiver, String contactPhone, String contactAddress, boolean isDefault) {
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
         this.contactAddress = contactAddress;
         this.isDefault = isDefault;
     }
 
-    public AddressResponseDto(Long id, String contactReceiver, String contactPhone, String contactAddress, boolean addrDefault) {
+    public AddressResponse(Long id, String contactReceiver, String contactPhone, String contactAddress, boolean addrDefault) {
         this.id = id;
         this.contactReceiver = contactReceiver;
         this.contactPhone = contactPhone;
@@ -37,7 +37,7 @@ public class AddressResponseDto implements Comparable<AddressResponseDto>{
     }
 
     @Override
-    public int compareTo(AddressResponseDto o) {
+    public int compareTo(AddressResponse o) {
         return o.getId().compareTo(this.getId());
     }
 }

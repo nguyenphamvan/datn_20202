@@ -5,7 +5,7 @@ import com.nguyenpham.oganicshop.converter.CategoryConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.dto.ErrorMessage;
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
+import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.Supplier;
 import com.nguyenpham.oganicshop.service.ProductService;
@@ -93,7 +93,7 @@ public class ExceptionHandleApi {
                 setCategorySearch.add(converter.entityToDto(p.getCategory()));
             }
             ProductConverter productConverter = new ProductConverter();
-            List<ProductResponseDto> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
+            List<ProductResponse> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
             result.put("suppliers", setSuppliers);
             result.put("categories", setCategorySearch);
             result.put("products", products);

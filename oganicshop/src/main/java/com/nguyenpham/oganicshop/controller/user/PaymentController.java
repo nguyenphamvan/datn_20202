@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.controller.user;
 
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
+import com.nguyenpham.oganicshop.dto.OrderRequest;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -47,7 +47,7 @@ public class PaymentController {
             User user = myUserDetail.getUser();
             HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
             Payment payment = paypalService.executePayment(paymentId, payerId);
-            OrderDtoRequest order = (OrderDtoRequest) session.getAttribute("order");
+            OrderRequest order = (OrderRequest) session.getAttribute("order");
 
             if (payment.getState().equals("approved")) {
                 orderService.paymentOrder(user, cart, order);

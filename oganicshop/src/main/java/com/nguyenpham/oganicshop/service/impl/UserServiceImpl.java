@@ -9,7 +9,7 @@ import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.RatingRepository;
-import com.nguyenpham.oganicshop.repository.ShippingAddressRepository;
+import com.nguyenpham.oganicshop.repository.AddressRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.UserService;
@@ -33,16 +33,16 @@ public class UserServiceImpl implements UserService {
     private UserConverter userConverter;
     private UserRepository userRepository;
     private ProductRepository productRepository;
-    private ShippingAddressRepository shippingAddressRepository;
+    private AddressRepository addressRepository;
     private RatingRepository ratingRepository;
 
     @Autowired
     public UserServiceImpl(UserConverter userConverter, UserRepository userRepository, ProductRepository productRepository,
-                           ShippingAddressRepository shippingAddressRepository, RatingRepository ratingRepository) {
+                           AddressRepository addressRepository, RatingRepository ratingRepository) {
         this.userConverter = userConverter;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-        this.shippingAddressRepository = shippingAddressRepository;
+        this.addressRepository = addressRepository;
         this.ratingRepository = ratingRepository;
     }
 
@@ -52,13 +52,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> getAllUser() {
+    public List<UserResponse> getAllAccount() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         return userRepository.findAllByIdIsNot(user.getId()).stream().map(u -> userConverter.entityToDto(u)).collect(Collectors.toList());
     }
 
     @Override
-    public Object getInfoDetailUser(long userId) {
+    public Object getInfoDetailAccount(long userId) {
         Map<String, Object> objectMap = new HashMap<>();
         User user = userRepository.findById(userId).get();
         long numbersOfOrder = 0;
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(RegisterAccountRequest accountRequest) {
+    public boolean register(AccountRequest accountRequest) {
         User user = new User();
         user.setFullName(accountRequest.getFullName());
         user.setEmail(accountRequest.getEmail());
@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public boolean updateRoleUser(long userId, String role) {
+    public boolean setRoleAccount(long userId, String role) {
         try {
             User user = userRepository.findById(userId).get();
             user.setRole(role);
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void rateProduct(RequestReviewDto reviewDto, long userId) {
+    public void rateProduct(ReviewRequest reviewDto, long userId) {
         try {
             RatingKey key = new RatingKey(userId, reviewDto.getProductId());
             if (ratingRepository.existsById(key)) {
@@ -223,14 +223,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto getInfoAccount() {
+    public UserResponse getInfoAccount() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         return userConverter.entityToDto(user);
     }
 
     @Override
     @Transactional
-    public UserResponseDto updateInfoAccount(UserRequestDto userRequest) {
+    public UserResponse updateInfoAccount(UserRequest userRequest) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         userDb.setFullName(userRequest.getFullName());
@@ -246,25 +246,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AddressResponseDto> getAddress() {
+    public List<AddressResponse> getListAddress() {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        List<Address> listAddresses = shippingAddressRepository.findAllByUserId(user.getId());
+        List<Address> listAddresses = addressRepository.findAllByUserId(user.getId());
         AddressConverter converter = new AddressConverter();
-        List<AddressResponseDto> resShippingAddress = listAddresses.stream().map(ad -> converter.entityToDto(ad)).collect(Collectors.toList());
+        List<AddressResponse> resShippingAddress = listAddresses.stream().map(ad -> converter.entityToDto(ad)).collect(Collectors.toList());
         Collections.sort(resShippingAddress);
         return resShippingAddress;
     }
 
     @Override
     @Transactional
-    public boolean addAddress(AddressRequestDto request) {
+    public boolean addAddress(AddressRequest request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         try {
             Address address = new Address();
             address = saveAddress(address, request, userDb);
             if (request.isDefault()) {
-                shippingAddressRepository.setAddressDefault(address.getId());
+                addressRepository.setAddressDefault(address.getId());
             }
             return true;
         } catch (Exception e) {
@@ -275,14 +275,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean updateAddress(AddressRequestDto request) {
+    public boolean updateAddress(AddressRequest request) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         User userDb = userRepository.findById(user.getId()).get();
         try {
-            Address address = shippingAddressRepository.findById(request.getId()).get();
+            Address address = addressRepository.findById(request.getId()).get();
             address = saveAddress(address, request, userDb);
             if (request.isDefault()) {
-                shippingAddressRepository.setAddressDefault(address.getId());
+                addressRepository.setAddressDefault(address.getId());
             }
             return true;
         } catch (Exception e) {
@@ -294,7 +294,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteAddress(long addressId) {
         try {
-            shippingAddressRepository.deleteById(addressId);
+            addressRepository.deleteById(addressId);
             return true;
         } catch (Exception e) {
             return false;
@@ -302,9 +302,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<ProductResponseDto> getWishlists(User user) {
+    public Set<ProductResponse> getWishlists(User user) {
         Set<Long> idWishlistProductsSet = getSetIdProductWishlist(user);
-        Set<ProductResponseDto> wishlistProducts = new HashSet<>();
+        Set<ProductResponse> wishlistProducts = new HashSet<>();
         ProductConverter converter = new ProductConverter();
         for (Long productId : idWishlistProductsSet) {
             Product product = productRepository.findById(productId).get();
@@ -356,12 +356,12 @@ public class UserServiceImpl implements UserService {
         return idWishlistProductsSet;
     }
 
-    public Address saveAddress(Address address, AddressRequestDto request, User user) {
+    public Address saveAddress(Address address, AddressRequest request, User user) {
         address.setContactReceiver(request.getContactReceiver());
         address.setContactAddress(request.getContactAddress());
         address.setContactPhone(request.getContactPhone());
         address.setAddrDefault(request.isDefault());
         address.setUser(user);
-        return shippingAddressRepository.save(address);
+        return addressRepository.save(address);
     }
 }

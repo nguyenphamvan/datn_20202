@@ -3,8 +3,8 @@ package com.nguyenpham.oganicshop.api;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.CategoryConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
-import com.nguyenpham.oganicshop.dto.CategoryDto;
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
+import com.nguyenpham.oganicshop.dto.BaseResponse;
+import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.Supplier;
@@ -34,14 +34,6 @@ public class ProductControllerApi {
         this.productService = productService;
         this.categoryService = categoryService;
         this.supplierService = supplierService;
-    }
-
-    @GetMapping("/{productUrl}")
-    public ResponseEntity<?> getProductByUrl(@PathVariable("productUrl") String productUrl) {
-        Map<String, Object> response = new HashMap<>();
-        ProductResponseDto product = productService.getProductByUrl(productUrl);
-        response.put("product", product);
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
     @PostMapping("/collections")
@@ -109,17 +101,43 @@ public class ProductControllerApi {
         }
 
         ProductConverter productConverter = new ProductConverter();
-        List<ProductResponseDto> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
+        List<ProductResponse> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
 
-        result.put("products", products);
-        result.put("page", pageNum);
-        result.put("totalPages", page.getTotalPages());
-        result.put("pageSize", pageSize);
-        result.put("sortBy", filed);
-        result.put("sort", sort);
-        result.put("minPrice", minPrice);
-        result.put("maxPrice", maxPrice);
-        return result;
+        BaseResponse br = new BaseResponse();
+        if (products.size() > 0) {
+            result.put("products", products);
+            result.put("page", pageNum);
+            result.put("totalPages", page.getTotalPages());
+            result.put("pageSize", pageSize);
+            result.put("sortBy", filed);
+            result.put("sort", sort);
+            result.put("minPrice", minPrice);
+            result.put("maxPrice", maxPrice);
+
+            br.setData(result);
+            br.setStatus(true);
+        } else {
+            br.setData(result);
+            br.setErrMessage("Không tìm thấy sản phẩm nào");
+            br.setStatus(false);
+        }
+        return br;
+    }
+
+    @GetMapping("/{productUrl}")
+    public ResponseEntity<?> getProductByUrl(@PathVariable("productUrl") String productUrl) {
+        BaseResponse br = new BaseResponse();
+        Map<String, Object> response = new HashMap<>();
+        ProductResponse product = productService.getProductByUrl(productUrl);
+        response.put("product", product);
+        if (product != null) {
+            br.setData(response);
+            br.setStatus(true);
+        } else {
+            br.setErrMessage("Sản phẩm không tồn tạio");
+            br.setStatus(false);
+        }
+        return new ResponseEntity<Object>(br, HttpStatus.OK);
     }
 
     @GetMapping("/quantity-available/{productUrl}")

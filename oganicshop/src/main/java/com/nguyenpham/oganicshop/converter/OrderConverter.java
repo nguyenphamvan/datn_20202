@@ -1,10 +1,10 @@
 package com.nguyenpham.oganicshop.converter;
 
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.AddressRequestDto;
+import com.nguyenpham.oganicshop.dto.AddressRequest;
 import com.nguyenpham.oganicshop.dto.OrderItemDto;
-import com.nguyenpham.oganicshop.dto.OrderDtoRequest;
-import com.nguyenpham.oganicshop.dto.OrderDtoResponse;
+import com.nguyenpham.oganicshop.dto.OrderRequest;
+import com.nguyenpham.oganicshop.dto.OrderResponse;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.entity.Order;
 import com.nguyenpham.oganicshop.entity.OrderItem;
@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OrderConverter implements GeneralConverter<Order, OrderDtoRequest, OrderDtoResponse> {
+public class OrderConverter implements GeneralConverter<Order, OrderRequest, OrderResponse> {
     @Override
-    public OrderDtoResponse entityToDto(Order order) {
+    public OrderResponse entityToDto(Order order) {
         OrderDetailConverter odConverter = new OrderDetailConverter();
-        OrderDtoResponse orderDto = new OrderDtoResponse();
+        OrderResponse orderDto = new OrderResponse();
         orderDto.setId(order.getId());
-        orderDto.setAddress(new AddressRequestDto(order.getContactReceiver(), order.getContactPhone(), order.getContactAddress()));
+        orderDto.setAddress(new AddressRequest(order.getContactReceiver(), order.getContactPhone(), order.getContactAddress()));
         orderDto.setSubTotal(order.getSubTotal());
         orderDto.setShipFee(order.getShipFee());
         orderDto.setDiscount(order.getDiscount());
@@ -46,11 +46,11 @@ public class OrderConverter implements GeneralConverter<Order, OrderDtoRequest, 
     }
 
     @Override
-    public Order dtoToEntity(OrderDtoRequest d) {
+    public Order dtoToEntity(OrderRequest d) {
         return null;
     }
 
-    public Order dtoToEntity(User user, HashMap<Long, CartItem> cart, OrderDtoRequest orderDto) {
+    public Order dtoToEntity(User user, HashMap<Long, CartItem> cart, OrderRequest orderDto) {
         Order order = new Order();
         order.setUser(user);
         order.setContactReceiver(orderDto.getAddress().getContactReceiver());

@@ -1,8 +1,8 @@
 package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.converter.ReviewConverter;
-import com.nguyenpham.oganicshop.dto.RequestReviewDto;
-import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
+import com.nguyenpham.oganicshop.dto.ReviewRequest;
+import com.nguyenpham.oganicshop.dto.ReviewResponse;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.Review;
 import com.nguyenpham.oganicshop.entity.User;
@@ -36,15 +36,15 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ResponseReviewDto> getReviewsOfProduct(long productId) {
+    public List<ReviewResponse> getReviewsOfProduct(long productId) {
         List<Review> listReviews = reviewRepository.findAllByProductIdAndRootCommentIsNull(productId);
         ReviewConverter converter = new ReviewConverter();
-        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(rv ->converter.entityToDto(rv)).collect(Collectors.toList());
+        List<ReviewResponse> listReviewDto = listReviews.stream().map(rv ->converter.entityToDto(rv)).collect(Collectors.toList());
         return listReviewDto;
     }
 
     @Override
-    public ResponseReviewDto save(RequestReviewDto postReview) {
+    public ReviewResponse save(ReviewRequest postReview) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Review review = new Review();
         review.setTitle(postReview.getTitle());
@@ -66,17 +66,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ResponseReviewDto> getListReviews(User user) {
+    public List<ReviewResponse> getListReviews(User user) {
         List<Review> listReviews = reviewRepository.findReviewsByUserId(user.getId());
         ReviewConverter converter = new ReviewConverter();
-        List<ResponseReviewDto> listReviewDto = listReviews.stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
+        List<ReviewResponse> listReviewDto = listReviews.stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
         return listReviewDto;
     }
 
     @Override
-    public Page<Review> getMyReviews(User user, int pageNum, int pageSize) {
+    public Page<Review> getMyReviews(long userId, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id"));
-        Page<Review> listReviews = reviewRepository.findAllByUserId(user.getId(), pageable);
+        Page<Review> listReviews = reviewRepository.findAllByUserId(userId, pageable);
         return listReviews;
     }
 

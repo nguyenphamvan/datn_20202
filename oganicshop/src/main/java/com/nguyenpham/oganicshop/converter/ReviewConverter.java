@@ -1,14 +1,14 @@
 package com.nguyenpham.oganicshop.converter;
 
 import com.nguyenpham.oganicshop.dto.MyReviewDto;
-import com.nguyenpham.oganicshop.dto.RequestReviewDto;
-import com.nguyenpham.oganicshop.dto.ResponseReviewDto;
+import com.nguyenpham.oganicshop.dto.ReviewRequest;
+import com.nguyenpham.oganicshop.dto.ReviewResponse;
 import com.nguyenpham.oganicshop.entity.Review;
 
-public class ReviewConverter implements GeneralConverter<Review, RequestReviewDto, ResponseReviewDto>{
+public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, ReviewResponse>{
     @Override
-    public ResponseReviewDto entityToDto(Review review) {
-        ResponseReviewDto response = new ResponseReviewDto();
+    public ReviewResponse entityToDto(Review review) {
+        ReviewResponse response = new ReviewResponse();
         response.setId(review.getId());
         response.setComment(review.getComment());
         response.setTitle(review.getTitle());
@@ -20,7 +20,7 @@ public class ReviewConverter implements GeneralConverter<Review, RequestReviewDt
         response.setNumbersOfLike(review.getNumbersOfLike());
         if (review.getSubReviews() != null) {
             for (Review subReview : review.getSubReviews()) {
-                ResponseReviewDto subReviewDto = new ResponseReviewDto();
+                ReviewResponse subReviewDto = new ReviewResponse();
                 subReviewDto.setId(subReview.getId());
                 subReviewDto.setUserId(subReview.getUser().getId());
                 subReviewDto.setReviewerName(subReview.getUser().getFullName());
@@ -53,7 +53,7 @@ public class ReviewConverter implements GeneralConverter<Review, RequestReviewDt
     }
 
     @Override
-    public Review dtoToEntity(RequestReviewDto d) {
+    public Review dtoToEntity(ReviewRequest d) {
         return null;
     }
 }

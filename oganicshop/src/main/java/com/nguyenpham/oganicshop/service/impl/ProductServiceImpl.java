@@ -2,8 +2,8 @@ package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
-import com.nguyenpham.oganicshop.dto.ProductRequestDto;
-import com.nguyenpham.oganicshop.dto.ProductResponseDto;
+import com.nguyenpham.oganicshop.dto.ProductRequest;
+import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.Review;
@@ -45,14 +45,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto addProduct(ProductRequestDto productRequestDto) throws IOException {
-        Product product = new ProductConverter().dtoToEntity(productRequestDto);
-        Category category = categoryRepository.findById(productRequestDto.getCategoryId()).get();
-        Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
+    public ProductResponse addProduct(ProductRequest productRequest) throws IOException {
+        Product product = new ProductConverter().dtoToEntity(productRequest);
+        Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
+        Supplier supplier = supplierRepository.findById(productRequest.getSupplierId()).get();
         product.setCategory(category);
         product.setSupplier(supplier);
         product = productRepository.save(product);
-        for (MultipartFile image : productRequestDto.getImages()) {
+        for (MultipartFile image : productRequest.getImages()) {
             if (image.isEmpty()) {
                 continue;
             }
@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
             String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
             FileUploadUtil.saveFile(uploadDir, fileName, image);
         }
-        ProductResponseDto productResponse = new ProductConverter().entityToDtoNotReviews(product);
+        ProductResponse productResponse = new ProductConverter().entityToDtoNotReviews(product);
         if (productResponse != null) {
             return productResponse;
         }
@@ -69,22 +69,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponseDto updateProduct(ProductRequestDto productRequestDto) throws IOException {
-        ProductResponseDto productResponse = null;
-        Product product = productRepository.findById(productRequestDto.getId()).get();
-        product.setName(productRequestDto.getName());
-        product.setUrl(productRequestDto.getName().replace(" ", "-"));
-        product.setBaseDescription(productRequestDto.getBaseDescription());
-        product.setDetailDescription(productRequestDto.getDetailDescription());
-        product.setPrice(productRequestDto.getPrice());
-        product.setDiscount(productRequestDto.getDiscount());
-        product.setFinalPrice(productRequestDto.getPrice() - productRequestDto.getDiscount());
-        Category category = categoryRepository.findById(productRequestDto.getCategoryId()).get();
-        Supplier supplier = supplierRepository.findById(productRequestDto.getSupplierId()).get();
+    public ProductResponse updateProduct(ProductRequest productRequest) throws IOException {
+        ProductResponse productResponse = null;
+        Product product = productRepository.findById(productRequest.getId()).get();
+        product.setName(productRequest.getName());
+        product.setUrl(productRequest.getName().replace(" ", "-"));
+        product.setBaseDescription(productRequest.getBaseDescription());
+        product.setDetailDescription(productRequest.getDetailDescription());
+        product.setPrice(productRequest.getPrice());
+        product.setDiscount(productRequest.getDiscount());
+        product.setFinalPrice(productRequest.getPrice() - productRequest.getDiscount());
+        Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
+        Supplier supplier = supplierRepository.findById(productRequest.getSupplierId()).get();
         product.setCategory(category);
         product.setSupplier(supplier);
         ArrayList<String> images = new ArrayList<>();
-        for (MultipartFile image : productRequestDto.getImages()) {
+        for (MultipartFile image : productRequest.getImages()) {
             if (image.isEmpty()) {
                 continue;
             }
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
         }
         if (images.size() > 0) {
             product.setImage(org.apache.commons.lang3.StringUtils.join(images, "-"));
-            for (MultipartFile image : productRequestDto.getImages()) {
+            for (MultipartFile image : productRequest.getImages()) {
                 if (image.isEmpty()) {
                     continue;
                 }
@@ -143,7 +143,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> getAllProduct() {
+    public List<ProductResponse> getAllProduct() {
         ProductConverter productConverter = new ProductConverter();
         return productRepository.findAll().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
     }
@@ -187,16 +187,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto getProductByUrl(String productUrl) {
-        Product product = productRepository.findByUrl(productUrl).orElse(null);
-        Set<Review> reviews = product.getReviews().stream().filter(rv -> rv.getRootComment() == null).collect(Collectors.toSet());
-        product.setReviews(reviews);
-        ProductConverter converter = new ProductConverter();
-        return converter.entityToDto(product);
+    public ProductResponse getProductByUrl(String productUrl) {
+        try {
+            Product product = productRepository.findByUrl(productUrl).orElse(null);
+            Set<Review> reviews = product.getReviews().stream().filter(rv -> rv.getRootComment() == null).collect(Collectors.toSet());
+            product.setReviews(reviews);
+            ProductConverter converter = new ProductConverter();
+            return converter.entityToDto(product);
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     @Override
-    public Product getProductById(Long productId) {
+    public Product getProductDetail(Long productId) {
         return productRepository.findById(productId).orElse(null);
     }
 

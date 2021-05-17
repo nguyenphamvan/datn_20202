@@ -11,10 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OrderDtoResponse {
+public class OrderResponse {
 
     private Long id;
-    private AddressRequestDto address;
+    private AddressRequest address;
     private String summaryProductName;
     private int subTotal;
     private int shipFee;
@@ -25,7 +25,7 @@ public class OrderDtoResponse {
     private String deliveryMethod;
     private String paymentMethod;
     private String note;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy@HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private String orderDate;
     private String deliveryDate;
     private List<OrderItemDto> listOrderDetail;

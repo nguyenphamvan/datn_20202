@@ -36,7 +36,7 @@ public class SalesControllerApi {
 
     @GetMapping("/order/view/{orderId}")
     public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") long orderId) {
-        return ResponseEntity.ok(orderService.getOrderById(orderId));
+        return ResponseEntity.ok(orderService.getOrderDetail(orderId));
     }
 
     @GetMapping("/order/{orderId}/list-item")
@@ -49,18 +49,18 @@ public class SalesControllerApi {
     @GetMapping("/order/tracking/{orderId}")
     public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
-        response.put("order", orderService.getOrderById(orderId));
+        response.put("order", orderService.getOrderDetail(orderId));
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/order/cancel/{orderId}")
     public ResponseEntity<?> cancel(@PathVariable("orderId") long orderId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
-        return ResponseEntity.ok(orderService.cancelOrder(user.getId(), orderId));
+        return ResponseEntity.ok(orderService.cancelOrder(orderId));
     }
 
     @GetMapping("/order/product-not-reviewed")
-    public ResponseEntity<?> getListProductNotReviewed(@AuthenticationPrincipal MyUserDetail myUserDetail) {
+    public ResponseEntity<?> getProductsUnreviewed(@AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
         Map<String, Object> response = new HashMap<>();
         response.put("products", orderService.getListProductUnReviewed(user.getId()));

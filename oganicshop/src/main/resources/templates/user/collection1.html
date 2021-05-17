@@ -54,7 +54,7 @@
                         <h3 class="title">Danh mục</h3>
                         <ul class="category-list">
                             <li>
-                                <a>danh mục con</a>
+                                <a></a>
                             </li>
                         </ul>
                     </div>
@@ -64,7 +64,7 @@
                         <h3 class="title">Nhà cung cấp</h3>
                         <ul class="supplier-list">
                             <li>
-                                <a>CategoryName</a>
+                                <a></a>
                             </li>
                         </ul>
                     </div>
@@ -346,65 +346,69 @@
             data : JSON.stringify(data),
             dataType : "json",
             contentType: "application/json",
-            success: function (result) {
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
-                if (result["categories"][0].hasOwnProperty("subCategory")) {
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                        .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                    let firstItemCategory = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(1) > ul > li:first-child");
-                    $.each(result["categories"][0]["subCategory"], function (index, item) {
-                        let itemCategoryClone = firstItemCategory.clone();
-                        itemCategoryClone.show();
-                        itemCategoryClone.find("a").attr("href", "/collections.html?category=" + item["categoryUrl"]).text(item["categoryName"]);
-                        itemCategoryClone.insertAfter(firstItemCategory);
-                    });
-                    firstItemCategory.hide();
-                } else{
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                        .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul").hide();
-                }
-
-
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child").nextAll().remove();
-                let firstItemSupplier = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child");
-                let category = /*[[${category}]]*/;
-                $.each(result["suppliers"], function (index, item) {
-                    let itemSupplierClone = firstItemSupplier.clone();
-                    itemSupplierClone.show();
-                    itemSupplierClone.find("a").text(item["name"]).attr("href", "/collections.html?supplier=" + item["name"] + "&category=" + category);
-                    itemSupplierClone.insertAfter(firstItemSupplier);
-                });
-                firstItemSupplier.hide();
-
-                $("#list-product > div:nth-child(1)").nextAll().remove();
-                genListProduct(result["products"]);
-
-
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
-                    .empty();
-                let html = "<li page='1'><a>Trang đầu</a></li>\n";
-                if (result["page"] > 1) {
-                    html += "<li page=" + (parseInt(result["page"]) - 1 ) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
-                } else {
-                    html += "<li page='1'><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
-                }
-                for(let i=1; i <= result["totalPages"] ; ++i) {
-                    if (i === result["page"]) {
-                        html += "<li page=" + i +" class='active'><a>" + i + "</a></li>";
-                    } else {
-                        html += "<li page=" + i +"><a>" + i + "</a></li>";
+            success: function (res) {
+                if (res["status"] === true) {
+                    let result = res["data"];
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
+                    if (result["categories"][0].hasOwnProperty("subCategory")) {
+                        $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
+                            .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
+                        let firstItemCategory = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(1) > ul > li:first-child");
+                        $.each(result["categories"][0]["subCategory"], function (index, item) {
+                            let itemCategoryClone = firstItemCategory.clone();
+                            itemCategoryClone.show();
+                            itemCategoryClone.find("a").attr("href", "/collections.html?category=" + item["categoryUrl"]).text(item["categoryName"]);
+                            itemCategoryClone.insertAfter(firstItemCategory);
+                        });
+                        firstItemCategory.hide();
+                    } else{
+                        $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
+                            .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
+                        $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul").hide();
                     }
-                }
-                if (parseInt(result["page"]) < parseInt(result["totalPages"])) {
-                    html += "<li page=" + (parseInt(result["page"]) + 1) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
-                } else {
-                    html += "<li page=" + parseInt(result["page"]) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
-                }
-                html += "<li page=" + parseInt(result["totalPages"]) + "><a>Trang cuối</a></li>";
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
-                    .append(html);
 
+
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child").nextAll().remove();
+                    let firstItemSupplier = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child");
+                    let category = /*[[${category}]]*/;
+                    $.each(result["suppliers"], function (index, item) {
+                        let itemSupplierClone = firstItemSupplier.clone();
+                        itemSupplierClone.show();
+                        itemSupplierClone.find("a").text(item["name"]).attr("href", "/collections.html?supplier=" + item["name"] + "&category=" + category);
+                        itemSupplierClone.insertAfter(firstItemSupplier);
+                    });
+                    firstItemSupplier.hide();
+
+                    $("#list-product > div:nth-child(1)").nextAll().remove();
+                    genListProduct(result["products"]);
+
+
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
+                        .empty();
+                    let html = "<li page='1'><a>Trang đầu</a></li>\n";
+                    if (result["page"] > 1) {
+                        html += "<li page=" + (parseInt(result["page"]) - 1 ) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
+                    } else {
+                        html += "<li page='1'><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
+                    }
+                    for(let i=1; i <= result["totalPages"] ; ++i) {
+                        if (i === result["page"]) {
+                            html += "<li page=" + i +" class='active'><a>" + i + "</a></li>";
+                        } else {
+                            html += "<li page=" + i +"><a>" + i + "</a></li>";
+                        }
+                    }
+                    if (parseInt(result["page"]) < parseInt(result["totalPages"])) {
+                        html += "<li page=" + (parseInt(result["page"]) + 1) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
+                    } else {
+                        html += "<li page=" + parseInt(result["page"]) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
+                    }
+                    html += "<li page=" + parseInt(result["totalPages"]) + "><a>Trang cuối</a></li>";
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
+                        .append(html);
+                } else if (res["status"] === false && res["data"].length === 0){
+                    alert(res["errMessage"]);
+                }
             },
             error: function (xhr) {
                 alert(xhr.responseText);
