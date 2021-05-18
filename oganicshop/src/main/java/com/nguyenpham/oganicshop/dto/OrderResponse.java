@@ -29,5 +29,5 @@ public class OrderResponse {
     private String orderDate;
     private String deliveryDate;
     private List<OrderItemDto> listOrderDetail;
-    private OrderLoggingDto orderLogging;
+    private OrderStatusDto orderStatus;
 }

@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.entity;
 
 import com.nguyenpham.oganicshop.constant.Constant;
-import com.nguyenpham.oganicshop.dto.OrderLoggingDto;
+import com.nguyenpham.oganicshop.dto.OrderStatusDto;
 import com.nguyenpham.oganicshop.util.DateTimeUtil;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,8 +17,8 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"orderDetails", "user", "orderLoggings"})
-@ToString(exclude = {"orderDetails", "user", "orderLoggings"})
+@EqualsAndHashCode(exclude = {"orderDetails", "user", "orderStatuses"})
+@ToString(exclude = {"orderDetails", "user", "orderStatuses"})
 public class Order {
 
     @Id
@@ -66,16 +66,16 @@ public class Order {
         this.orderStatuses.add(logOrder);
     }
 
-    public OrderLoggingDto convertOrderLoggingToOrderLoggingDto() {
-        OrderLoggingDto orderLoggingDto = new OrderLoggingDto();
-        orderLoggingDto.setOrderId(this.getId());
-        orderLoggingDto.setLatestStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
-        orderLoggingDto.setLastUpdatedTime(DateTimeUtil.dateTimeFormat(this.getDeliveryDate()));
-        Set<OrderLoggingDto.LoggingOrderStatus> loggingStatus = new TreeSet<>();
-        this.getOrderStatuses().forEach(ol -> loggingStatus.add(new OrderLoggingDto.LoggingOrderStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(ol.getStatus()), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
+    public OrderStatusDto convertOrderLoggingToOrderLoggingDto() {
+        OrderStatusDto orderStatusDto = new OrderStatusDto();
+        orderStatusDto.setOrderId(this.getId());
+        orderStatusDto.setLatestStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(this.getStatus()));
+        orderStatusDto.setLastUpdatedTime(DateTimeUtil.dateTimeFormat(this.getDeliveryDate()));
+        Set<OrderStatusDto.LoggingOrderStatus> loggingStatus = new TreeSet<>();
+        this.getOrderStatuses().forEach(ol -> loggingStatus.add(new OrderStatusDto.LoggingOrderStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(ol.getStatus()), DateTimeUtil.dateTimeFormat((ol.getUpdateTime())))));
 
-        orderLoggingDto.setLoggingStatus(loggingStatus);
-        return orderLoggingDto;
+        orderStatusDto.setLoggingStatus(loggingStatus);
+        return orderStatusDto;
     }
 
 }

@@ -39,7 +39,7 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
             summaryProductName.append(item.getProduct().getName());
             orderItemDtoList.add(odConverter.entityToDto(item));
         });
-        orderDto.setOrderLogging(order.convertOrderLoggingToOrderLoggingDto());
+        orderDto.setOrderStatus(order.convertOrderLoggingToOrderLoggingDto());
         orderDto.setSummaryProductName(summaryProductName.toString());
         orderDto.setListOrderDetail(orderItemDtoList);
         return orderDto;
