@@ -17,8 +17,8 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"orderDetails", "user", "orderLoggings"})
-@ToString(exclude = {"orderDetails", "user", "orderLoggings"})
+@EqualsAndHashCode(exclude = {"orderDetails", "user", "orderStatuses"})
+@ToString(exclude = {"orderDetails", "user", "orderStatuses"})
 public class Order {
 
     @Id
