@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OrderLoggingDto {
+public class OrderStatusDto {
 
     private long orderId;
     private String latestStatus;
