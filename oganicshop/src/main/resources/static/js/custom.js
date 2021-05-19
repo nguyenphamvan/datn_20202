@@ -191,6 +191,7 @@ function loadHeaderCart() {
         type: "GET",
         dataType: 'json',
         success: function (data2) {
+            console.log(data2);
             if (data2["numberOfProducts"] === 0) {
                 $('.shopping-item').children().css('display', 'none');
                 $('#cart-empty-header').css('display', 'block');
@@ -203,7 +204,7 @@ function loadHeaderCart() {
                     let cloneRow = firstRow.clone();
                     cloneRow.attr('id', item.product["url"]);
                     cloneRow.css('display', 'block');
-                    cloneRow.find('a.cart-img').attr('href', '/products/' + item.product["url"]);
+                    cloneRow.find('a.cart-img').attr('href', item.product["image"].split(",")[0]);
                     cloneRow.find('a.cart-item-name').text(item.product["name"]).attr('href', '/products/' + item.product["url"]);
                     cloneRow.find('span.quantity').text(item.quantity);
                     cloneRow.find('span.amount').text("$" + item.product["finalPrice"]);
