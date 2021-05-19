@@ -67,7 +67,8 @@ public class CheckoutControllerApi {
             br.setStatus(false);
             br.setErrMessage("Giỏ hàng trống");
         }
-        return ResponseEntity.ok(response);
+        System.out.println(br.isStatus());
+        return ResponseEntity.ok(br);
     }
 
     @PostMapping("/payment")

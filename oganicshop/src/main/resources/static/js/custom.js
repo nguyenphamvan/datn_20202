@@ -35,7 +35,7 @@ $(document).ready(function () {
     $(document).on('click', '.shopping-cart .qty .button.minus button', function () {
         let buttonMinus = $(this);
         let quantity = buttonMinus.parent().siblings('input').val();
-        let unitPrice = buttonMinus.closest('tr').find('td.price span').text();
+        let unitPrice = buttonMinus.closest('tr').find('td.price span').text().replace("$","");
         let totalAmountItem = (parseInt(quantity) - parseInt(1)) * parseInt(unitPrice);
         let data = {
             url: buttonMinus.closest('tr').attr('data-url'),
@@ -52,11 +52,10 @@ $(document).ready(function () {
                     success: function (result) {
                         $(".quickview-content .error-msg").remove();
                         if (result === false) {
-
                             $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
                         } else {
                             buttonMinus.parent().siblings('input').val(parseInt(quantity) - parseInt(1));
-                            buttonMinus.closest('tr').find('td.total-amount span').text(totalAmountItem);
+                            buttonMinus.closest('tr').find('td.total-amount span').text("$" + totalAmountItem);
                         }
                     }
                 })
@@ -72,7 +71,7 @@ $(document).ready(function () {
     $(document).on('click', '.shopping-cart .qty .button.plus button', function () {
         let buttonPlus = $(this);
         let quantity = buttonPlus.parent().siblings('input').val();
-        let unitPrice = buttonPlus.closest('tr').find('td.price span').text();
+        let unitPrice = buttonPlus.closest('tr').find('td.price span').text().replace("$","");
         let totalAmountItem = (parseInt(quantity) + parseInt(1)) * parseInt(unitPrice);
         let data = {
             url: buttonPlus.closest('tr').attr('data-url'),
@@ -91,7 +90,7 @@ $(document).ready(function () {
                         $("#myModal > div.modal-content > p").text("không đủ số lượng cung cấp!!").css("color", "red");
                     } else {
                         buttonPlus.parent().siblings('input').val(parseInt(quantity) + parseInt(1));
-                        buttonPlus.closest('tr').find('td.total-amount span').text(totalAmountItem);
+                        buttonPlus.closest('tr').find('td.total-amount span').text("$" + totalAmountItem);
                     }
                 }
             })
@@ -181,7 +180,7 @@ function updatePriceCart() {
         type: "GET",
         dataType: 'json',
         success: function (data) {
-            $('#sub-cart').text(data);
+            $('#sub-cart').text("$" + data);
         }
     });
 }
@@ -207,10 +206,10 @@ function loadHeaderCart() {
                     cloneRow.find('a.cart-img').attr('href', '/products/' + item.product["url"]);
                     cloneRow.find('a.cart-item-name').text(item.product["name"]).attr('href', '/products/' + item.product["url"]);
                     cloneRow.find('span.quantity').text(item.quantity);
-                    cloneRow.find('span.amount').text(item.product["finalPrice"]);
+                    cloneRow.find('span.amount').text("$" + item.product["finalPrice"]);
                     cloneRow.insertAfter('ul.shopping-list li:last');
                 })
-                $('span.total-amount').text(data2["totalPriceCart"]);
+                $('span.total-amount').text("$" + data2["totalPriceCart"]);
                 $('#total-items').text(data2["numberOfProducts"]);
             }
             $('.total-count').text(data2["numberOfProducts"]);

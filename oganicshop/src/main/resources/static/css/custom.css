@@ -35,7 +35,7 @@
     display: inline-block;
 }
 
-div.review-item-detail > div > div:nth-child(1) > span > i.yellow {
+.quickview-ratting-review > div.quickview-ratting-wrap > ul > li.yellow {
     color: #F7941D;
 }
 

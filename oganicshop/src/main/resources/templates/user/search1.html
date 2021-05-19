@@ -31,6 +31,7 @@
             line-height: 36px;
             text-align: center;
             width: 36px;
+            cursor: pointer;
         }
 
         a, a:focus, a:active, a:link, img {
@@ -91,43 +92,25 @@
                 <div class="shop-sidebar">
                     <!-- Single Widget -->
                     <div class="single-widget category">
-                        <h3 class="title">Danh mục</h3>
+                        <h3 class="title"></h3>
                         <ul class="category-list">
                             <li>
-                                <a>danh mục con</a>
+                                <a></a>
                             </li>
                         </ul>
                     </div>
                     <!--/ End Single Widget -->
                     <!-- Single Widget -->
                     <div class="single-widget supplier">
-                        <h3 class="title">Nhà cung cấp</h3>
+                        <h3 class="title"></h3>
                         <ul class="supplier-list">
                             <li>
-                                <a>CategoryName</a>
+                                <a></a>
                             </li>
                         </ul>
                     </div>
                     <!--/ End Single Widget -->
-                    <!-- Shop By Price -->
-                    <div class="single-widget range">
-                        <h3 class="title">Lọc theo giá</h3>
-                        <div class="price-filter">
-                            <div class="price-filter-inner">
-                                <div class="price_slider_amount">
-                                    <span>Range:</span><br>
-                                    <div class="label-input" style="display: flex;">
-                                        <input type="text" name="min-price" value="0"
-                                               style="border: ridge; width: 40%;"/>đ -
-                                        <input type="text" name="max-price" value="1000"
-                                               style="border: ridge; width: 40%;"/>đ
-                                    </div>
-                                    <button>Lọc</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--/ End Shop By Price -->
+
                     <!-- Single Widget -->
                     <div class="single-widget recent-post">
                         <h3 class="title">Sản phẩm nổi bật</h3>
@@ -191,29 +174,36 @@
                 </div>
             </div>
             <div class="col-lg-9 col-md-8 col-12">
-                <div class="row">
+                <div class="row" style="background-color: #F6F7FB;">
                     <div class="col-12">
                         <!-- Shop Top -->
-                        <div class="shop-top">
-                            <div class="shop-shorter">
-                                <div class="single-shorter">
-                                    <label>Hiển thị :</label>
-                                    <select id="page-size">
-                                        <option value="6">06</option>
-                                        <option value="9">09</option>
-                                        <option value="15">15</option>
-                                        <option value="25">25</option>
-                                    </select>
-                                </div>
-                                <div class="single-shorter">
-                                    <label>Sắp xếp theo :</label>
-                                    <select id="sort-by">
-                                        <option value="name-asc">Name (A - Z)</option>
-                                        <option value="name-desc">Name (Z - A)</option>
-                                        <option value="finalPrice-asc">Price (Low &gt; High)</option>
-                                        <option value="finalPrice-desc">Price (High &gt; Low)</option>
-                                    </select>
-                                </div>
+                        <div style="padding: 10px; display: flex; align-items: center; justify-content: space-between; height: 80px;">
+                            <div style="display: flex;">
+                                <label style="margin-right: 5px;">Hiển thị </label>
+                                <select id="page-size">
+                                    <option value="6">06</option>
+                                    <option value="9">09</option>
+                                    <option value="15">15</option>
+                                    <option value="25">25</option>
+                                </select>
+                            </div>
+
+                            <div style="align-items: center; display: flex;">
+                                <label style="margin-right: 5px;">Sắp xếp</label>
+                                <select id="sort-by">
+                                    <option value="name-asc">Name (A - Z)</option>
+                                    <option value="name-desc">Name (Z - A)</option>
+                                    <option value="finalPrice-asc">Price (Low &gt; High)</option>
+                                    <option value="finalPrice-desc">Price (High &gt; Low)</option>
+                                </select>
+                            </div>
+
+                            <div style="margin-left: -70px;">
+                                <label style="margin-right: 5px;">Giá từ </label>
+                                <input type="text" name="min-price" value="0" style="width: 80px;"/>
+                                <label style="margin-right: 5px;"> Đến </label>
+                                <input type="text" name="max-price" value="1000" style="width: 80px;"/>
+                                <button id="filter-range-price" style="height: 30px; width: 60px; text-align: center;">Lọc</button>
                             </div>
                         </div>
                         <!--/ End Shop Top -->
@@ -229,11 +219,11 @@
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action" style="margin-right: 10px;">
-                                        <a title="Quick View">
-                                            <i class=" ti-eye"></i><span>Xem nhanh</span>
-                                        </a>
-                                        <a th:if="${#request.userPrincipal}" title="Wishlist">
-                                            <i class=" ti-heart "></i><span>Thêm vào Wishlist</span>
+                                        <!--                                        <a title="Quick View">-->
+                                        <!--                                            <i class=" ti-eye"></i><span>Xem nhanh</span>-->
+                                        <!--                                        </a>-->
+                                        <a th:if="${#request.userPrincipal}" title="Wishlist" style="margin-right: 15px;">
+                                            <i class="ti-heart"></i><span>Thêm vào Wishlist</span>
                                         </a>
                                     </div>
                                     <div class="product-action-2">
@@ -527,8 +517,8 @@
             }
             itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
             itemClone.find("div.product-action-2 > a").attr("href", "/products/" + item["productUrl"] + ".html");
-            itemClone.find("div.product-content > div > span:nth-child(1)").text(item["finalPrice"] + " VNĐ");
-            itemClone.find("div.product-content > div > span.old").text(item["price"] + " VNĐ");
+            itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
+            itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
             $("#list-product").append(itemClone);
         });
         firstItem.hide();

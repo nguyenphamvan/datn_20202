@@ -148,7 +148,7 @@
                                      style="border-bottom: 1px solid rgb(201, 201, 201); display: flex;justify-content: space-between; line-height: 31px; padding-bottom: 10px;">
                                     <span>Địa chỉ nhận hàng</span>
                                     <a class="link" data-toggle="modal" data-target="#addressModal"
-                                       style="color: rgb(13, 92, 182);">Thay đổi</a>
+                                       style="color: rgb(13, 92, 182); cursor: pointer;">Thay đổi</a>
                                 </div>
                                 <div class="address" style="display: inline-grid; padding-bottom: 10px;">
                                     <span class="name"
@@ -176,7 +176,7 @@
                                 <ul>
                                     <li>Tổng các mặt hàng<span id="sub-total" th:utext="${session.subCart}"></span></li>
                                     <li>(+) Phí vận chuyển<span id="ship-fee">0</span></li>
-                                    <li>(-) Giảm giá<span id="promotion">0</span></li>
+                                    <li>(-) Giảm giá<span id="discount">0</span></li>
                                     <li class="last">Tổng thanh toán
                                         <span id="total-cart" th:utext="${session.subCart}"></span>
                                     </li>
@@ -187,7 +187,7 @@
                         <div class="single-widget">
                             <div style="display: flex; justify-content: space-between">
                                 <h2>Mã giảm giá</h2>
-                                <a style="margin: auto 30px auto 0px; font-size: 13px; color: rgb(13, 92, 182);"
+                                <a style="margin: auto 30px auto 0px; font-size: 13px; color: rgb(13, 92, 182); cursor: pointer;"
                                    data-toggle="modal" data-target="#discountModal">Dành cho bạn</a>
                             </div>
                             <div class="coupon" style="margin: 30px 30px;display: flex;">
@@ -318,7 +318,7 @@
 <!-- The Modal -->
 <div class="modal fade" id="addressModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 80%;">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span class="ti-close" aria-hidden="true"></span>
@@ -351,7 +351,7 @@
 <!-- The Modal -->
 <div class="modal fade" id="discountModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 80%;">
             <div class="modal-header">
                 Mã giảm giá dành cho đơn hàng
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"
@@ -426,13 +426,13 @@
 
         $("input[name='deliveryMethod']").on("click", function () {
             if ($(this).val() === "fast") {
-                $("span#ship-fee").text("200");
+                $("span#ship-fee").text("$200");
             } else if ($(this).val() === "standard") {
-                $("span#ship-fee").text("100");
+                $("span#ship-fee").text("$100");
             }
-            let subTotal = $("span#sub-total").text();
-            let promotion = $("span#promotion").text();
-            let shipFee = $("span#ship-fee").text();
+            let subTotal = $("span#sub-total").text().replace("$","");
+            let promotion = $("span#promotion").text().replace("$","");
+            let shipFee = $("span#ship-fee").text().replace("$","");
             $("span#total-cart").text(parseInt(subTotal) + parseInt(shipFee) - parseInt(promotion));
         });
 
@@ -465,11 +465,11 @@
                 $(".error-msg").remove();
                 $(".order-details ul").empty();
                 $(".order-details ul").append(
-                    "<li>Tổng các mặt hàng<span id=\"sub-total\">" + order["subTotal"] + "</span></li>\n" +
-                    "<li>(+) Phí vận chuyển<span id=\"ship-fee\">" + order["shipFee"] + "</span></li>\n" +
-                    "<li>(-) Giảm giá<span id=\"promotion\">" + order["discount"] + "</span></li>\n" +
+                    "<li>Tổng các mặt hàng<span id=\"sub-total\">$" + order["subTotal"] + "</span></li>\n" +
+                    "<li>(+) Phí vận chuyển<span id=\"ship-fee\">$" + order["shipFee"] + "</span></li>\n" +
+                    "<li>(-) Giảm giá<span id=\"discount\">$" + order["discount"] + "</span></li>\n" +
                     "<li class=\"last\">Tổng thanh toán\n" +
-                    "    <span id=\"total-cart\">" + order["total"] + "</span>\n" +
+                    "    <span id=\"total-cart\"$>" + order["total"] + "</span>\n" +
                     "</li>"
                 );
             },
@@ -487,6 +487,7 @@
             success: function (res) {
                 if (res["status"] === true) {
                     let order = res["data"]["order"];
+                    console.log(order);
                     if (order.hasOwnProperty("address")) {
                         $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
                         $(".contact-address .address .street").text(order["address"]["contactAddress"]);
@@ -500,10 +501,10 @@
                         $("#payment-order").closest("div").hide();
                     }
 
-                    $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(order["subTotal"]);
-                    $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(order["promotion"]);
-                    $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(order["shipFee"]);
-                    $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(order["total"]);
+                    $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text("$" + order["subTotal"]);
+                    $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text("$" + order["discount"]);
+                    $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text("$" + order["shipFee"]);
+                    $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text("$" + order["total"]);
                     $("input[name='deliveryMethod']").each(function () {
                         if ($(this).val() === order["deliveryMethod"]) {
                             $(this).prop('checked', true);
@@ -532,10 +533,10 @@
                 "contactAddress": $(".contact-address .address .street").text()
             },
             "note": $("form[id='payment']").find("textarea").val(),
-            "subTotal": $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text(),
-            "promotion": $(".shop.checkout .single-widget .content ul li span[id=\"promotion\"]").text(),
-            "shipFee": $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text(),
-            "total": $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text(),
+            "subTotal": $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text().replace("$",""),
+            "promotion": $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text().replace("$",""),
+            "shipFee": $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text().replace("$",""),
+            "total": $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text().replace("$",""),
             "paymentMethod": $("input[name='paymentMethod']:checked").val(),
             "deliveryMethod": $("input[name='deliveryMethod']:checked").val()
         }

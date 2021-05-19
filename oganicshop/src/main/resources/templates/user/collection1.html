@@ -7,6 +7,58 @@
     <title>Danh mục sản phẩm</title>
     <th:block th:include="user/common/header_tag_common"/>
     <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
+    <style type="text/css">
+        ul {
+            list-style: none;
+            padding-left: 0px;
+            margin-bottom: 0;
+        }
+
+        .pagination-nav ul li {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        .pagination-nav ul li a {
+            background-color: #f7f7f7;
+            color: #808080;
+            display: block;
+            font-size: 14px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            width: 36px;
+            cursor: pointer;
+        }
+
+        .pagination-nav ul li:first-child a {
+            width: 100%;
+            padding: 2px;
+        }
+
+        .pagination-nav ul li:last-child a {
+            width: 100%;
+            padding: 2px;
+        }
+
+        a, a:focus, a:active, a:link, img {
+            outline: none;
+            text-decoration: none;
+        }
+
+        .pagination-nav ul li.active a {
+            background: #F7941D none repeat scroll 0 0;
+            color: #fff;
+        }
+
+        .mt_50 {
+            margin-top: 50px;
+        }
+    </style>
 
 </head>
 <body class="js">
@@ -430,8 +482,8 @@
             itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
             itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
             itemClone.find("div.product-action-2 > a").attr("href", "/products/" + item["productUrl"] + ".html");
-            itemClone.find("div.product-content > div > span:nth-child(1)").text(item["finalPrice"] + " VNĐ");
-            itemClone.find("div.product-content > div > span.old").text(item["price"] + " VNĐ");
+            itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
+            itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
             $("#list-product").append(itemClone);
         });
         firstItem.hide();

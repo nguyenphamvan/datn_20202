@@ -72,10 +72,9 @@
                         <h2></h2>
                         <div class="quickview-ratting-review">
                             <div class="quickview-ratting-wrap">
-                                <div class="quickview-ratting">
-
-                                </div>
-                                <span></span>
+                                <ul class="reviews">
+                                </ul>
+                                <span style="margin-left: 10px;"></span>
                             </div>
                             <div class="quickview-stock">
                                 <span><i class="far fa-check-circle"></i> còn hàng</span>
@@ -234,7 +233,7 @@
 <!--/ End Product Style 1  -->
 
 <!-- Start Most Popular -->
-<div class="product-area most-popular section" style="padding-left: 100px; padding-right: 100px; padding-bottom: 0px;">
+<div class="product-area most-popular section" style="padding-left: 100px; padding-right: 100px; padding-bottom: 50px;">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -556,8 +555,8 @@
                             .text(product["productName"]);
                         $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
                         $("div.modal-body > div > div:nth-child(2) > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
-                        $("div.modal-body > div > div:nth-child(2) > div > div > span#final-price").text(product["finalPrice"] + "đ");
-                        $("div.modal-body > div > div:nth-child(2) > div > div > span#price").text(product["price"] + "đ");
+                        $("div.modal-body > div > div:nth-child(2) > div > div > span#final-price").text("$" + product["finalPrice"]);
+                        $("div.modal-body > div > div:nth-child(2) > div > div > span#price").text("$" + product["price"]);
                         $("div.modal-body > div > div:nth-child(2) > div > div.quickview-peragraph > p").html(product["detailDescription"]);
                         $("#add-cart").attr("productUrl", product["productUrl"]);
                         $("div.modal-body > div > div:nth-child(2) > div > div.quantity > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
@@ -570,14 +569,14 @@
                         // ratting
                         if (parseInt(product["rating"]) > 0) {
                             for (let i = 0; i < parseInt(product["rating"]); i++) {
-                                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > div.quickview-ratting")
-                                    .append("<i class=\"yellow fa fa-star\"></i>");
+                                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews")
+                                    .append("<li class=\"yellow\"><i class=\"ti-star\"></i></li>");
                             }
                         }
                         if ((5 - parseInt(product["rating"])) > 0) {
                             for (let i = 0; i < (5 - parseInt(product["rating"])); i++) {
-                                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > div.quickview-ratting")
-                                    .append("<i class=\"fa fa-star\"></i>");
+                                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews")
+                                    .append("<li><i class=\"ti-star\"></i></li>");
                             }
                         }
                         $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span")

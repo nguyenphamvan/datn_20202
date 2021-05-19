@@ -45,139 +45,96 @@
 
 <!-- Shopping Cart -->
 <div class="shopping-cart section">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <!-- Shopping Summery -->
-                    <table class="table shopping-summery">
-                        <thead>
-                        <tr class="main-hading">
-                            <th class="text-center" style="width: 15%;"></th>
-                            <th class="text-center" style="width: 35%;">TÊN</th>
-                            <th class="text-center" style="width: 10%;">ĐƠN GIÁ</th>
-                            <th class="text-center" style="width: 25%;">SỐ LƯỢNG</th>
-                            <th class="text-center" style="width: 10%;">TỔNG</th>
-                            <th class="text-center" style="width: 5%;"><i class="ti-trash remove-icon"></i></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="image" data-title="No">
-                                    <a>
-                                        <img alt="Image">
-                                    </a>
-                                </td>
-                                <td class="product-des" data-title="Description">
-                                    <p class="product-name">
-                                        <a></a>
-                                    </p>
-                                </td>
-                                <td class="price" data-title="Price"><span></span></td>
-                                <td class="qty" data-title="Qty"><!-- Input Order -->
-                                    <div class="input-group">
-                                        <div class="button minus">
-                                            <button type="button" class="btn btn-primary btn-number button-minus" data-type="minus" data-field="quant[1]">
-                                                <i class="ti-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="100">
-                                        <div class="button plus">
-                                            <button type="button" class="btn btn-primary btn-number button-plus" data-type="plus" data-field="quant[1]">
-                                                <i class="ti-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!--/ End Input Order -->
-                                </td>
-                                <td class="total-amount" data-title="Total"><span></span></td>
-                                <td class="action" data-title="Remove"><a><i class="ti-trash remove-icon"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <td colspan="3"></td>
-                            <td style="text-align: right; color: black; font-size: 18px;">Tạm tính</td>
-                            <td id="sub-cart"></td>
-                            <td></td>
-                        </tfoot>
-                    </table>
-                    <!--/ End Shopping Summery -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <!-- Total Amount -->
-                    <div class="total-amount">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-7 col-12">
-                                <div class="left">
-                                    <div class="button5">
-                                        <a th:href="@{/}" class="btn">Tiếp tục mua sắm</a>
-                                    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Shopping Summery -->
+                <table class="table shopping-summery">
+                    <thead>
+                    <tr class="main-hading">
+                        <th class="text-center" style="width: 15%;"></th>
+                        <th class="text-center" style="width: 35%;">TÊN</th>
+                        <th class="text-center" style="width: 10%;">ĐƠN GIÁ</th>
+                        <th class="text-center" style="width: 25%;">SỐ LƯỢNG</th>
+                        <th class="text-center" style="width: 10%;">TỔNG</th>
+                        <th class="text-center" style="width: 5%;"><i class="ti-trash remove-icon"></i></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="image" data-title="No">
+                            <a>
+                                <img alt="Image">
+                            </a>
+                        </td>
+                        <td class="product-des" data-title="Description">
+                            <p class="product-name">
+                                <a></a>
+                            </p>
+                        </td>
+                        <td class="price" data-title="Price"><span></span></td>
+                        <td class="qty" data-title="Qty"><!-- Input Order -->
+                            <div class="input-group">
+                                <div class="button minus">
+                                    <button type="button" class="btn btn-primary btn-number button-minus"
+                                            data-type="minus" data-field="quant[1]">
+                                        <i class="ti-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="100">
+                                <div class="button plus">
+                                    <button type="button" class="btn btn-primary btn-number button-plus"
+                                            data-type="plus" data-field="quant[1]">
+                                        <i class="ti-plus"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-7 col-12">
+                            <!--/ End Input Order -->
+                        </td>
+                        <td class="total-amount" data-title="Total"><span></span></td>
+                        <td class="action" data-title="Remove"><a><i class="ti-trash remove-icon"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <td colspan="3"></td>
+                    <td style="text-align: right; color: black; font-size: 18px;">Tạm tính</td>
+                    <td id="sub-cart"></td>
+                    <td></td>
+                    </tfoot>
+                </table>
+                <!--/ End Shopping Summery -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- Total Amount -->
+                <div class="total-amount">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-7 col-12">
+                            <div class="left">
+                                <div class="button5">
+                                    <a th:href="@{/}" class="btn">Tiếp tục mua sắm</a>
+                                </div>
                             </div>
-                            <div class="col-lg-4 col-md-7 col-12">
-                                <div class="right">
-                                    <div class="button5">
-                                        <a th:href="@{/checkout.html}" class="btn">Thanh toán</a>
-                                    </div>
+                        </div>
+                        <div class="col-lg-4 col-md-7 col-12">
+                        </div>
+                        <div class="col-lg-4 col-md-7 col-12">
+                            <div class="right">
+                                <div class="button5">
+                                    <a th:href="@{/checkout.html}" class="btn">Thanh toán</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--/ End Total Amount -->
                 </div>
-            </div>
-        </div>
-</div>
-<!--/ End Shopping Cart -->
-
-<!-- Start Shop Services Area  -->
-<section class="shop-services section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-rocket"></i>
-                    <h4>Free shiping</h4>
-                    <p>Orders over $100</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-reload"></i>
-                    <h4>Free Return</h4>
-                    <p>Within 30 days returns</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-lock"></i>
-                    <h4>Sucure Payment</h4>
-                    <p>100% secure payment</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-tag"></i>
-                    <h4>Best Peice</h4>
-                    <p>Guaranteed price</p>
-                </div>
-                <!-- End Single Service -->
+                <!--/ End Total Amount -->
             </div>
         </div>
     </div>
-</section>
-<!-- End Shop Newsletter -->
+</div>
+<!--/ End Shopping Cart -->
 
 
 <!-- Start Footer Area -->
@@ -222,18 +179,19 @@
                         trClone.find("td.image > a > img").attr("src", item["product"]["mainImage"]);
                         trClone.find("td.product-des > p.product-name > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html")
                             .text(item["product"]["productName"]);
-                        trClone.find("td.price > span").text(item["product"]["finalPrice"] + " đ");
+                        trClone.find("td.price > span").text("$" + item["product"]["finalPrice"]);
                         trClone.find("td.qty > div > input").val(item["quantity"]);
-                        trClone.find("td.total-amount > span").text(item["totalItem"] + " đ");
+                        trClone.find("td.total-amount > span").text("$" + item["totalItem"]);
                         trClone.find("td.action > a").attr("id", item["product"]["productUrl"]);
                         trClone.insertAfter(firstTr);
                     });
                     firstTr.remove();
-                    $("#sub-cart").text(totalCart + " đ");
+                    $("#sub-cart").text("$" + totalCart);
                 } else {
                     let html = "<div class=\"row\">\n" +
                         "                <div class=\"cart-empty\" style=\"text-align: center; margin: auto;\">\n" +
-                        "                    Không có sản phẩm nào trong giỏ hàng\n" +
+                        "                    <img style=\"color: green ; font-size: 50px; display: block; margin: auto; width: fit-content; margin-top: 20px;\" src='/images/not-enough.png'>" +
+                        "                    <div><p style='color: red;'>Không có sản phẩm nào trong giỏ hàng</p></div>\n" +
                         "                    <div class=\"center\" style='margin-top: 20px;'>\n" +
                         "                         <div class=\"button5\">\n" +
                         "                               <a href=\"/\" style='color: white;' class=\"btn\">Tiếp tục mua sắm</a>\n" +
