@@ -2,6 +2,7 @@ package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.constant.Constant;
+import com.nguyenpham.oganicshop.dto.BaseResponse;
 import com.nguyenpham.oganicshop.dto.CartItemDto;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.service.CartService;
@@ -28,81 +29,68 @@ public class CartControllerApi {
         this.cartService = cartService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> getListItemCart(HttpSession session) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        if (cart == null) {
-            cart = new HashMap<>();
-        }
-        List<CartItem> listItem = new ArrayList<>(cart.values());
-        return new ResponseEntity<Object>(listItem, HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity<?> getListItemCart(HttpSession session) {
+//        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+//        if (cart == null) {
+//            cart = new HashMap<>();
+//        }
+//        List<CartItem> listItem = new ArrayList<>(cart.values());
+//        return new ResponseEntity<Object>(listItem, HttpStatus.OK);
+//    }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllItemCart(HttpSession session) {
+        BaseResponse br = new BaseResponse();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        if (cart == null) {
-            cart = new HashMap<>();
+        if (cart != null) {
+            List<CartItemDto> listItem = new ArrayList<>(cart.values().stream().map(item -> item.convertDto()).collect(Collectors.toList()));
+            br.setStatus(true);
+            br.setData(listItem);
+        } else {
+            br.setData(null);
+            br.setErrMessage("Không có sản phẩm trong giỏ hàng");
+            br.setStatus(false);
         }
-        List<CartItemDto> listItem = new ArrayList<>(cart.values().stream().map(item -> item.convertDto()).collect(Collectors.toList()));
-        return new ResponseEntity<Object>(listItem, HttpStatus.OK);
+
+        return new ResponseEntity<Object>(br, HttpStatus.OK);
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> addItemCart(HttpSession session, @RequestBody ObjectNode object) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        BaseResponse br = new BaseResponse();
         String productUrl = object.get("productUrl").asText();
         int quantity = object.get("quantity").asInt();
-        if (cart == null) {
-            cart = new HashMap<>();
+        boolean result = cartService.addItemCart(session, productUrl, quantity);
+        br.setStatus(result);
+        if (!result) {
+            br.setErrMessage("Không đủ số lượng cung cấp");
         }
-        cart = cartService.addItemCart(cart, productUrl, quantity);
-        if (cart == null) {
-            return new ResponseEntity<Object>(false, HttpStatus.OK);
-        }
-        session.setAttribute(Constant.CART_SESSION_NAME, cart);
-        session.setAttribute("subCart", cartService.totalSubCart(cart));
-        List<CartItem> listItem = new ArrayList<>(cart.values());
-        return new ResponseEntity<Object>(listItem, HttpStatus.OK);
+        return new ResponseEntity<>(br, HttpStatus.OK);
     }
 
     @PutMapping("/edit")
     public ResponseEntity<?> editItemCart(HttpSession session, @RequestBody ObjectNode object) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        BaseResponse br = new BaseResponse();
         String productUrl = object.get("url").asText();
         String changeMethod = object.get("changeMethod").asText();
-        if (cart == null) {
-            cart = new HashMap<>();
+        boolean result = cartService.editItemCart(session, productUrl, changeMethod);
+        br.setStatus(result);
+        if (!result) {
+            br.setErrMessage("Không đủ số lượng cung cấp");
         }
-        cart = cartService.editItemCart(cart, productUrl, changeMethod);
-        if (cart == null) {
-            return new ResponseEntity<Object>(false, HttpStatus.OK);
-        }
-        session.setAttribute(Constant.CART_SESSION_NAME, cart);
-        session.setAttribute("subCart", cartService.totalSubCart(cart));
-        List<CartItem> listItem = new ArrayList<>(cart.values());
-        return new ResponseEntity<Object>(listItem, HttpStatus.OK);
+        return new ResponseEntity<>(br, HttpStatus.OK);
     }
 
     @DeleteMapping("/remove/{productUrl}")
     public ResponseEntity<?> removeItemCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        Map<String, Object> response = new HashMap<>();
-        if (cart == null) {
-            cart = new HashMap<>();
+        BaseResponse br = new BaseResponse();
+        boolean result = cartService.removeItemCart(session, productUrl);
+        br.setStatus(result);
+        if (!result) {
+            br.setErrMessage("Có lỗi xảy ra");
         }
-        try {
-            cart = cartService.removeItemCart(cart, productUrl);
-            session.setAttribute(Constant.CART_SESSION_NAME, cart);
-            session.setAttribute("subCart", cartService.totalSubCart(cart));
-            response.put("status", true);
-            response.put("cart", cart);
-            return new ResponseEntity<Object>(true, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.put("status", true);
-            return new ResponseEntity<Object>(response, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(br, HttpStatus.OK);
     }
 
     @GetMapping("/total-money-cart")
@@ -115,32 +103,22 @@ public class CartControllerApi {
         return totalPriceCart;
     }
 
-    @GetMapping("/size-cart")
-    public int getCartSize(HttpSession session) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        if (cart == null) {
-            return 0;
-        }
-        int sizeCart = cartService.numberOfProductsInCart(cart);
-        return sizeCart;
-    }
-
     @GetMapping("/load-info-cart")
     public ResponseEntity<?> getNumberOfProductsInCart(HttpSession session) {
+        BaseResponse br = new BaseResponse();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         Map<String, Object> infoCart = new HashMap<>();
         if (cart == null) {
-            infoCart.put("totalPriceCart", 0);
-            infoCart.put("numberOfProducts", 0);
-            infoCart.put("listItemCart", null);
+            br.setData(null);
+            br.setStatus(false);
         } else {
-            int totalPriceCart = cartService.totalSubCart(cart);
-            int numberOfProducts = cartService.numberOfProductsInCart(cart);
             List<CartItem> listItem = new ArrayList<>(cart.values());
-            infoCart.put("totalPriceCart", totalPriceCart);
-            infoCart.put("numberOfProducts", numberOfProducts);
+            infoCart.put("totalPriceCart", cartService.totalSubCart(cart));
+            infoCart.put("numberOfProducts", cartService.numberOfProductsInCart(cart));
             infoCart.put("listItemCart", listItem);
+            br.setData(infoCart);
+            br.setStatus(true);
         }
-        return new ResponseEntity<Object>(infoCart, HttpStatus.OK);
+        return new ResponseEntity<Object>(br, HttpStatus.OK);
     }
 }

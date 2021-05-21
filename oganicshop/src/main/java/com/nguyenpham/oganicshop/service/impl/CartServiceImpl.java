@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.service.impl;
 
+import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
@@ -7,6 +8,7 @@ import com.nguyenpham.oganicshop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 
@@ -22,58 +24,81 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public HashMap<Long, CartItem> addItemCart(HashMap<Long, CartItem> cart, String productUrl, int quantity) {
+    public boolean addItemCart(HttpSession session, String productUrl, int quantity) {
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        if (cart == null) {
+            cart = new HashMap<>();
+        }
+        System.out.println("cart size : " + cart.size());
         Product product = productRepository.findByUrl(productUrl).orElse(null);
         if (product != null) {
             CartItem item;
             if (cart.containsKey(product.getId())) {
                 if (!checkQuantityAvailable(quantity + cart.get(product.getId()).getQuantity(), product.getAmount())) {
-                    return null;
+                    return false;
                 }
                 item = cart.get(product.getId());
                 item.setQuantity(item.getQuantity() + quantity);
             } else {
                 if (!checkQuantityAvailable(quantity , product.getAmount())) {
-                    return null;
+                    return false;
                 }
                 item = new CartItem();
                 item.setProduct(product);
                 item.setQuantity(quantity);
             }
             cart.put(product.getId(), item);
+            session.setAttribute(Constant.CART_SESSION_NAME, cart);
+            session.setAttribute("subCart", totalSubCart(cart));
+            return true;
         }
-        return cart;
+        return false;
     }
 
     @Override
-    public HashMap<Long, CartItem> editItemCart(HashMap<Long, CartItem> cart, String productUrl, String changeMethod) {
-        Product product = productRepository.findByUrl(productUrl).orElse(null);
-        if(product != null && cart.containsKey(product.getId())) {
-            CartItem item = cart.get(product.getId());
-            if(changeMethod.equals("plus")) {
-                if (!checkQuantityAvailable((item.getQuantity() + 1) + cart.get(product.getId()).getQuantity(), product.getAmount())) {
-                    return null;
+    public boolean editItemCart(HttpSession session, String productUrl, String changeMethod) {
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        if (cart == null) {
+            return false;
+        } else {
+            Product product = productRepository.findByUrl(productUrl).orElse(null);
+            if(product != null && cart.containsKey(product.getId())) {
+                CartItem item = cart.get(product.getId());
+                if(changeMethod.equals("plus")) {
+                    if (!checkQuantityAvailable((item.getQuantity() + 1) + cart.get(product.getId()).getQuantity(), product.getAmount())) {
+                        return false;
+                    }
+                    item.setQuantity(item.getQuantity() + 1);
+                } else if (changeMethod.equals("minus")) {
+                    if (item.getQuantity() - 1 > 0) {
+                        item.setQuantity(item.getQuantity() - 1);
+                    } else {
+                        return false;
+                    }
                 }
-                item.setQuantity(item.getQuantity() + 1);
-            } else if (changeMethod.equals("minus")) {
-                if (item.getQuantity() - 1 > 0) {
-                    item.setQuantity(item.getQuantity() - 1);
-                } else {
-                    return null;
-                }
+                cart.put(product.getId(), item);
+                session.setAttribute(Constant.CART_SESSION_NAME, cart);
+                session.setAttribute("subCart", totalSubCart(cart));
+                return true;
             }
-            cart.put(product.getId(), item);
         }
-        return cart;
+        return false;
     }
 
     @Override
-    public HashMap<Long, CartItem> removeItemCart(HashMap<Long, CartItem> cart, String productUrl) {
-        Product product = productRepository.findByUrl(productUrl).orElse(null);
-        if (cart.containsKey(product.getId())) {
-            cart.remove(product.getId());
+    public boolean removeItemCart(HttpSession session, String productUrl) {
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        if (cart == null) {
+            return false;
+        } else {
+            Product product = productRepository.findByUrl(productUrl).orElse(null);
+            if (cart.containsKey(product.getId())) {
+                cart.remove(product.getId());
+            }
+            session.setAttribute(Constant.CART_SESSION_NAME, cart);
+            session.setAttribute("subCart", totalSubCart(cart));
+            return true;
         }
-        return cart;
     }
 
     @Override

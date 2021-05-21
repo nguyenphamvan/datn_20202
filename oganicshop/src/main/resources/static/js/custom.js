@@ -14,10 +14,10 @@ $(document).ready(function () {
                 }),
                 dataType: 'json',
                 contentType: 'application/json',
-                success: function (result) {
+                success: function (res) {
                     $(".quickview-content .error-msg").remove();
-                    if (result === false) {
-                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
+                    if (res["status"] === false) {
+                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>" + res['errMessage'] + "</div>");
                     } else {
                         $("#myModal").css("display", "block");
                         $("#myModal > div.modal-content > p").text("Sản phảm đã được thêm vào giỏ hàng!!");
@@ -46,13 +46,13 @@ $(document).ready(function () {
                 $.ajax({
                     url: "/api/cart/edit",
                     type: "PUT",
-                    data: JSON.stringify(data),
+                    data: JSON.stringify(res),
                     dataType: 'json',
                     contentType: 'application/json',
                     success: function (result) {
                         $(".quickview-content .error-msg").remove();
-                        if (result === false) {
-                            $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng để cung cấp thêm</div>");
+                        if (res["status"] === false) {
+                            $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>" + res['errMessage'] + "</div>");
                         } else {
                             buttonMinus.parent().siblings('input').val(parseInt(quantity) - parseInt(1));
                             buttonMinus.closest('tr').find('td.total-amount span').text("$" + totalAmountItem);
@@ -108,7 +108,7 @@ $(document).ready(function () {
             url: url,
             type: "DELETE",
             dataType: 'json',
-            success: function (result) {
+            success: function (res) {
                 if ($("body > div.shopping-cart.section > div > div:nth-child(1) > div > table > tbody > tr").length === 1) {
                     let html = "<div class=\"row\">\n" +
                         "                <div class=\"cart-empty\" style=\"text-align: center; margin: auto;\">\n" +
@@ -136,7 +136,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 alert("đã xóa sản phẩm khỏi giỏ hàng");
-                console.log(data);
                 if (data["cart"].length > 0) {
                     if (data["status"] === true) {
                         let html = "<div class=\"row\">\n" +
@@ -190,30 +189,32 @@ function loadHeaderCart() {
         url: "/api/cart/load-info-cart",
         type: "GET",
         dataType: 'json',
-        success: function (data2) {
-            console.log(data2);
-            if (data2["numberOfProducts"] === 0) {
+        success: function (res) {
+            if (res["data"] === null) {
                 $('.shopping-item').children().css('display', 'none');
                 $('#cart-empty-header').css('display', 'block');
+                $('.total-count').text("0");
             } else {
                 $('.shopping-item').children().css('display', 'block');
                 $('#cart-empty-header').css('display', 'none');
                 $('ul.shopping-list li#item-for-cloning').nextAll().remove();
                 let firstRow = $('#item-for-cloning');
-                $.each(data2["listItemCart"], function (index, item) {
+                $.each(res["data"]["listItemCart"], function (index, item) {
                     let cloneRow = firstRow.clone();
-                    cloneRow.attr('id', item.product["url"]);
+                    cloneRow.attr('id', item.product["id"]);
                     cloneRow.css('display', 'block');
-                    cloneRow.find('a.cart-img').attr('href', item.product["image"].split(",")[0]);
+                    cloneRow.find('a.cart-img').attr('href', item.product["url"] + ".html");
+                    cloneRow.find('a.cart-img > img').attr('src', "/images/products/" + item.product["id"] + "/" + item.product["image"].split(",")[0]);
                     cloneRow.find('a.cart-item-name').text(item.product["name"]).attr('href', '/products/' + item.product["url"]);
                     cloneRow.find('span.quantity').text(item.quantity);
                     cloneRow.find('span.amount').text("$" + item.product["finalPrice"]);
                     cloneRow.insertAfter('ul.shopping-list li:last');
                 })
-                $('span.total-amount').text("$" + data2["totalPriceCart"]);
-                $('#total-items').text(data2["numberOfProducts"]);
+                $('span.total-amount').text("$" + res["data"]["totalPriceCart"]);
+                $('#total-items').text(res["data"]["numberOfProducts"]);
+                $('.total-count').text(res["data"]["numberOfProducts"]);
             }
-            $('.total-count').text(data2["numberOfProducts"]);
+
         }
     });
 }

@@ -20,14 +20,10 @@ import java.util.Map;
 public class AccountControllerApi {
 
     private UserService userService;
-    private CategoryService categoryService;
-    private ReviewService reviewService;
 
     @Autowired
-    public AccountControllerApi(UserService userService, CategoryService categoryService, ReviewService reviewService) {
+    public AccountControllerApi(UserService userService) {
         this.userService = userService;
-        this.categoryService = categoryService;
-        this.reviewService = reviewService;
     }
 
     @GetMapping("/check-password")

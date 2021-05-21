@@ -2,13 +2,14 @@ package com.nguyenpham.oganicshop.service;
 
 import com.nguyenpham.oganicshop.entity.CartItem;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 public interface CartService {
 
-    HashMap<Long, CartItem> addItemCart(HashMap<Long, CartItem> cart, String productUrl, int quantity);
-    HashMap<Long, CartItem> editItemCart(HashMap<Long, CartItem> cart, String productUrl, String changeMothod);
-    HashMap<Long, CartItem> removeItemCart(HashMap<Long, CartItem> cart, String productUrl);
+    boolean addItemCart(HttpSession session, String productUrl, int quantity);
+    boolean editItemCart(HttpSession session, String productUrl, String changeMothod);
+    boolean removeItemCart(HttpSession session, String productUrl);
     int totalSubCart(HashMap<Long, CartItem> cart);
     int numberOfProductsInCart(HashMap<Long, CartItem> cart);
 }

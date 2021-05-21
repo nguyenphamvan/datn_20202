@@ -15,8 +15,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude={"category", "supplier", "ratings"})
-@ToString(exclude = {"category", "supplier", "ratings"})
+@EqualsAndHashCode(exclude={"category", "supplier", "ratings", "reviews"})
+@ToString(exclude = {"category", "supplier", "ratings", "reviews"})
 
 public class Product {
 
