@@ -29,16 +29,6 @@ public class CartControllerApi {
         this.cartService = cartService;
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> getListItemCart(HttpSession session) {
-//        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-//        if (cart == null) {
-//            cart = new HashMap<>();
-//        }
-//        List<CartItem> listItem = new ArrayList<>(cart.values());
-//        return new ResponseEntity<Object>(listItem, HttpStatus.OK);
-//    }
-
     @GetMapping("/all")
     public ResponseEntity<?> getAllItemCart(HttpSession session) {
         BaseResponse br = new BaseResponse();

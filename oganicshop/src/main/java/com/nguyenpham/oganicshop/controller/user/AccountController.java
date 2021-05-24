@@ -8,7 +8,7 @@ public class AccountController {
 
     @GetMapping("/customer/account/edit")
     public String myAccountPage() {
-        return "user/account";
+        return "account-info";
     }
 
     @GetMapping("/customer/wishlist")

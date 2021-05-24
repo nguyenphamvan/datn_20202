@@ -5,7 +5,7 @@ import com.nguyenpham.oganicshop.converter.OrderConverter;
 import com.nguyenpham.oganicshop.converter.OrderDetailConverter;
 import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
-import com.nguyenpham.oganicshop.repository.OrderDetailRepository;
+import com.nguyenpham.oganicshop.repository.OrderItemRepository;
 import com.nguyenpham.oganicshop.repository.OrderRepository;
 import com.nguyenpham.oganicshop.repository.AddressRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -28,13 +28,13 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
-    private OrderDetailRepository orderDetailRepository;
+    private OrderItemRepository orderItemRepository;
     private AddressRepository addressRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, AddressRepository addressRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, AddressRepository addressRepository) {
         this.orderRepository = orderRepository;
-        this.orderDetailRepository = orderDetailRepository;
+        this.orderItemRepository = orderItemRepository;
         this.addressRepository = addressRepository;
     }
 
@@ -68,11 +68,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateProductReviewed(long userId, long productId) {
         try {
-            Set<OrderItem> setOrderItemDb = orderDetailRepository.findAllByUnReviewedOfUser(userId,productId);
+            Set<OrderItem> setOrderItemDb = orderItemRepository.findAllByUnReviewedOfUser(userId,productId);
             setOrderItemDb.forEach(orderDetail -> {
                 orderDetail.setReviewed(true);
             });
-            orderDetailRepository.saveAll(setOrderItemDb);
+            orderItemRepository.saveAll(setOrderItemDb);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
     public Set<OrderItemDto> getListProductUnReviewed(long userId) {
         OrderDetailConverter odConverter = new OrderDetailConverter();
         Set<Long> productsNotCommentInOrders = new HashSet<>();
-        Set<OrderItemDto> listOrderDetail = orderDetailRepository.findAllByReviewedIsFalse(userId).stream()
+        Set<OrderItemDto> listOrderDetail = orderItemRepository.findAllByReviewedIsFalse(userId).stream()
                 .filter(od -> productsNotCommentInOrders.add(od.getProduct().getId()))
                 .map(od -> odConverter.entityToDto(od))
                 .collect(Collectors.toSet());
@@ -230,7 +230,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int countNumberOfProductInOrder(long productId) {
-        return orderDetailRepository.countByProductId(productId);
+        return orderItemRepository.countByProductId(productId);
     }
 
 
