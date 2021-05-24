@@ -1,21 +1,13 @@
 package com.nguyenpham.oganicshop.controller.user;
 
-import com.nguyenpham.oganicshop.entity.Category;
-import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.Supplier;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.ProductService;
 import com.nguyenpham.oganicshop.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 public class SearchController {
@@ -63,6 +55,6 @@ public class SearchController {
     @GetMapping("/search.html")
     public String getViewSearch(@RequestParam("search") String search, Model model) {
             model.addAttribute("keyword", search);
-        return "user/search1";
+        return "search";
     }
 }

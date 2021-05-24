@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "order_logging")
+@Table(name = "order_status")
 @Data
 @AllArgsConstructor
 public class OrderStatus {
