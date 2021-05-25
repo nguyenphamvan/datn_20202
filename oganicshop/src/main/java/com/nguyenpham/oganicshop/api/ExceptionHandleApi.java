@@ -89,7 +89,7 @@ public class ExceptionHandleApi {
             Set<Supplier> setSuppliers = new HashSet<>();
             Set<CategoryDto> setCategorySearch = new HashSet<>();
             for (Product p : page.getContent()) {
-                setSuppliers.add(p.getSupplier());
+//                setSuppliers.add(p.getSupplier());
                 setCategorySearch.add(converter.entityToDto(p.getCategory()));
             }
             ProductConverter productConverter = new ProductConverter();

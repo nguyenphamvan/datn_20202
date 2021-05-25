@@ -1,7 +1,6 @@
-package com.nguyenpham.oganicshop.api.admin;
+package com.nguyenpham.oganicshop.api;
 
 import com.nguyenpham.oganicshop.dto.PromotionDto;
-import com.nguyenpham.oganicshop.entity.Promotion;
 import com.nguyenpham.oganicshop.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +14,12 @@ import java.util.Map;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/promotion")
-public class ManagerPromotionApi {
+public class PromotionControllerApi {
 
     private PromotionService promotionService;
 
     @Autowired
-    public ManagerPromotionApi(PromotionService promotionService) {
+    public PromotionControllerApi(PromotionService promotionService) {
         this.promotionService = promotionService;
     }
 

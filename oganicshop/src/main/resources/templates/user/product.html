@@ -124,7 +124,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="product__details__tab" style="margin-left: 16px;">
+                <div class="product__details__tab" style="margin: 0px 16px 0px 16px;">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">Thông
@@ -135,7 +135,7 @@
                                 luận <span>(1)</span></a>
                         </li>
                     </ul>
-                    <div class="tab-content" style="margin: 40px 0px 40px 0px;">
+                    <div class="tab-content" style="padding: 40px 0px 0px 0px; background-color: white;">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Thông tin chi tiết về sản phẩm</h6>
@@ -144,10 +144,10 @@
                         </div>
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
                             <div class="col-md-12">
-                                <div class="list-review">
+                                <div class="list-review" style="margin: 0px 32px 0px 32px;">
                                     <ul>
                                         <li class="review-item" style="padding-bottom: 10px;">
-                                            <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+                                            <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="review-user">
                                                         <div style="float: left; border-radius: 10px;"
@@ -195,8 +195,7 @@
                                                     <div class="reply-input" style="display: none;">
                                                         <div class="form-group required">
                                                             <div style="padding-top: 15px;">
-                                                                <form action="/api/review/reply" class="form-inline"
-                                                                      method="post">
+                                                                <form class="form-inline" method="post">
                                                                     <textarea class="form-control" type="text"
                                                                               placeholder="Viết câu trả lời"
                                                                               style="width: 90%;" rows="1"></textarea>
@@ -210,15 +209,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="review-comment_sub-comments">
-                                                        <div class="view-reply-more">Xem tất cả <span></span> câu trả
-                                                            lời
+                                                        <div class="view-reply-more">Xem tất cả <span></span> câu trả lời
                                                         </div>
                                                         <div class="list-reply-item"></div>
                                                         <div class="view-reply-less">Ẩn <span></span> câu trả lời</div>
                                                     </div>
                                                 </div>
-
                                             </div>
+                                            <hr/>
                                         </li>
                                     </ul>
                                 </div>
@@ -395,58 +393,40 @@
             $(this).parent().find(".list-reply-item").show();
             $(this).parent().find(".view-reply-less").show();
         });
+
         $(document).on("click", "div.view-reply-less", function () {
             $(this).hide();
             $(this).parent().find(".list-reply-item").hide();
             $(this).parent().find(".view-reply-more").show();
         });
+
+
         $(document).on("click", ".reply", function () {
             let idReview = $(this).closest("li").attr("data-id_comment");
             if ($("#reply-review-" + idReview).css('display') === 'block') {
-
                 $("#reply-review-" + idReview).hide();
             } else if ($("#reply-review-" + idReview).css('display') === 'none') {
                 $("#reply-review-" + idReview).show();
             }
         });
+
+
         $(document).on("click", ".send-reply-comment", function () {
+            alert("root comment : " + $(this).parent().find(".id-root-review").val());
             let userLogged = [[${#request.userPrincipal}]];
             if (userLogged !== null) {
-                let idReview = $(this).closest(".review-item").attr("data-id_comment");
                 let data = {
-                    "rootId": $(this).parent().find(".id-root-review").val(),
-                    "comment": $(this).parent().find("textarea").val()
+                    "parentId": $(this).parent().find(".id-root-review").val(),
+                    "content": $(this).parent().find("textarea").val()
                 }
-                $.ajax({
-                    url: $(this).parent().attr('action'),
-                    type: "POST",
-                    data: JSON.stringify(data),
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    success: function (result) {
-                        let numberOfReview = $("#reply-items-list-" + idReview).siblings(".view-reply-more").find('span').text();
-                        $("div.reply-input").hide();
-                        let html = "<div  class=\"reply-item\">\n" +
-                            "            <div class=\"info-reply-user\">\n" +
-                            "                 <span class=\"img-user-reply\"><img src='/images/user-avatar.jpg' style=\"width: 30px;\" alt=\"Image\"></span>\n" +
-                            "                 <span class=\"user-name\">" + result["reviewerName"] + "</span>\n" +
-                            "                 <span class=\"comment-date\">" + result["createdAt"] + "</span>\n" +
-                            "                 <p class=\"reply-content\">" + result["comment"] + "</p>\n" +
-                            "            </div>\n" +
-                            "        </div>";
-                        $("#reply-items-list-" + idReview).siblings(".view-reply-more").find('span').text(parseInt(numberOfReview) + 1);
-                        $("#reply-items-list-" + idReview).siblings(".view-reply-less").find('span').text(parseInt(numberOfReview) + 1);
-                        $(html).delay(500).prependTo("#reply-items-list-" + idReview).hide().slideDown().fadeIn();
-                    },
-                    error: function (xhr) {
-                        alert(xhr.responseText);
-                    }
-                });
+                replyReview(data);
             } else {
                 alert("Bạn chưa đăng nhập");
             }
 
         });
+
+
         $(document).on("click", ".quickview-content .quantity .button.minus", function () {
             $.ajax({
                 url: "/api/products/check-provide-enough-quantity",
@@ -467,6 +447,7 @@
                 }
             });
         });
+
         $(document).on("click", ".quickview-content .quantity .button.plus", function () {
             $.ajax({
                 url: "/api/products/check-provide-enough-quantity",
@@ -503,12 +484,47 @@
                 thisLikeButton.css("background-color", "#5ACAE9");
             }
 
+            let data = JSON.stringify({
+                "reviewId": reviewId,
+                "action": actionLike.get(reviewId)
+            })
+            likeComment(data);
+        });
+
+        function replyReview(data) {
+            $.ajax({
+                url: "/api/review/reply",
+                type: "POST",
+                data: JSON.stringify(data),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (result) {
+                    console.log(result);
+                    let numberOfReview = $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text();
+                    $("div.reply-input").hide();
+                    let html = "<div  class=\"reply-item\">\n" +
+                        "            <div class=\"info-reply-user\">\n" +
+                        "                 <span class=\"img-user-reply\"><img src='/images/user-avatar.jpg' style=\"width: 30px;\" alt=\"Image\"></span>\n" +
+                        "                 <span class=\"user-name\">" + result["reviewerName"] + "</span>\n" +
+                        "                 <span class=\"comment-date\">" + result["createdDate"] + "</span>\n" +
+                        "                 <p class=\"reply-content\">" + result["content"] + "</p>\n" +
+                        "            </div>\n" +
+                        "        </div>";
+                    $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text(parseInt(numberOfReview) + 1);
+                    $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-less").find('span').text(parseInt(numberOfReview) + 1);
+                    $(html).delay(500).prependTo("#reply-items-list-" + data["parentId"]).hide().slideDown().fadeIn();
+                },
+                error: function (xhr) {
+                    alert("có lỗi");
+                    alert(xhr.responseText);
+                }
+            });
+        }
+
+        function likeComment(data) {
             $.ajax({
                 url: "/api/review/likeComment",
-                data: JSON.stringify({
-                    "reviewId": reviewId,
-                    "action": actionLike.get(reviewId)
-                }),
+                data: data,
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
@@ -519,7 +535,7 @@
                     alert(xhr.responseText);
                 }
             });
-        });
+        }
 
         function displayProduct(productUrl) {
             $.ajax({
@@ -527,6 +543,7 @@
                 type: "GET",
                 dataType: 'json',
                 success: function (res) {
+                    console.log(res);
                     if (res["status"] === true) {
                         let product = res["data"]["product"];
 
@@ -592,6 +609,7 @@
                             rowClone.find("div.review-item-detail > div.review-des > div.review-content > span").text(item["comment"]);
                             rowClone.find("div.like-and-review > span.like > span > span").text("(" + item["numbersOfLike"] + ")");
                             rowClone.find("div.reply-input").attr("id", "reply-review-" + item["id"]);
+                            rowClone.find("form > input.id-root-review").val(item["id"]);
                             if (parseInt(item["rating"]) > 0) {
                                 for (let i = 0; i < parseInt(item["rating"]); i++) {
                                     rowClone.find("div.review-item-detail > div > div:nth-child(1) > span").append("<i class=\"yellow fa fa-star\"></i>");
@@ -616,13 +634,13 @@
                                         "           <div class=\"info-reply-user\">\n" +
                                         "                <span class=\"img-user-reply\"><img style=\"width: 30px;\" src=\"/images/user-avatar.jpg\" alt=\"image\"></span>\n" +
                                         "                     <span class=\"user-name\">" + subItem["reviewerName"] + "</span>\n" +
-                                        "                     <span class=\"comment-date\">" + subItem["createdAt"] + "</span>\n" +
-                                        "                     <p class=\"reply-content\">" + subItem["comment"] + "</p>\n" +
+                                        "                     <span class=\"comment-date\">" + subItem["createdDate"] + "</span>\n" +
+                                        "                     <p class=\"reply-content\">" + subItem["content"] + "</p>\n" +
                                         "                </div>\n" +
                                         "          </div>";
                                     rowClone.find(".list-reply-item").append(html);
                                 });
-                                rowClone.find("form > input.id-root-review").val(item["id"]);
+
                                 rowClone.find(".list-reply-item").attr("id", "reply-items-list-" + item["id"]);
                                 rowClone.find("div > div.col-md-9 > div.review-comment_sub-comments > div.view-reply-more > span").text(item["subReviews"].length);
                                 rowClone.find("div > div.col-md-9 > div.review-comment_sub-comments > div.view-reply-less > span").text(item["subReviews"].length);

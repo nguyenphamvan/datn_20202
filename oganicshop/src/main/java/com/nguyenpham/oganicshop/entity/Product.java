@@ -39,6 +39,7 @@ public class Product {
     private int rating;
     private int amount;
     private boolean stopBusiness;
+    private String supplier;
 
     @JsonIgnore
     @CreationTimestamp
@@ -53,14 +54,10 @@ public class Product {
     @JsonIgnore
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "supplier_id")
+//    private Supplier supplier;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Review> reviews;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Rating> ratings;
 }

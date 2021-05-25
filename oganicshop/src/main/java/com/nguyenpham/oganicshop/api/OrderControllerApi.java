@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.api.admin;
+package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.UserConverter;
@@ -17,16 +17,12 @@ import java.util.Map;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/order/")
-public class ManagerOrderApi {
+public class OrderControllerApi {
 
-    private UserService userService;
-    private UserConverter userConverter;
     private OrderService orderService;
 
     @Autowired
-    public ManagerOrderApi(UserConverter userConverter, UserService userService, OrderService orderService) {
-        this.userConverter = userConverter;
-        this.userService = userService;
+    public OrderControllerApi(OrderService orderService) {
         this.orderService = orderService;
     }
 

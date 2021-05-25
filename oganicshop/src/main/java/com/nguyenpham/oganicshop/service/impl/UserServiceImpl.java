@@ -8,7 +8,6 @@ import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.exception.UserNotFoundException;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
-import com.nguyenpham.oganicshop.repository.RatingRepository;
 import com.nguyenpham.oganicshop.repository.AddressRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
@@ -34,16 +33,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private ProductRepository productRepository;
     private AddressRepository addressRepository;
-    private RatingRepository ratingRepository;
 
     @Autowired
-    public UserServiceImpl(UserConverter userConverter, UserRepository userRepository, ProductRepository productRepository,
-                           AddressRepository addressRepository, RatingRepository ratingRepository) {
+    public UserServiceImpl(UserConverter userConverter, UserRepository userRepository, ProductRepository productRepository, AddressRepository addressRepository) {
         this.userConverter = userConverter;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.addressRepository = addressRepository;
-        this.ratingRepository = ratingRepository;
     }
 
     @Override
@@ -186,30 +182,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName) {
         return null;
-    }
-
-    @Override
-    public void rateProduct(ReviewRequest reviewDto, long userId) {
-        try {
-            RatingKey key = new RatingKey(userId, reviewDto.getProductId());
-            if (ratingRepository.existsById(key)) {
-                Rating oldRating = ratingRepository.findById(key).get();
-                oldRating.setRatingScore(reviewDto.getRating());
-                ratingRepository.save(oldRating);
-            } else {
-                User user = userRepository.findById(userId).get();
-                Product product = productRepository.findById(reviewDto.getProductId()).get();
-                Rating rating = new Rating();
-                rating.setId(key);
-                rating.setUser(user);
-                rating.setProduct(product);
-                rating.setRatingScore(reviewDto.getRating());
-                ratingRepository.save(rating);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

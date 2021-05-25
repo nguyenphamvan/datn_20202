@@ -16,7 +16,7 @@ public class OrderDetailConverter implements GeneralConverter<OrderItem, OrderIt
         orderItemDto.setDiscount(orderItem.getDiscount());
         orderItemDto.setRawTotal(orderItem.getTotalPrice());
         orderItemDto.setPrice(orderItem.getPrice());
-        orderItemDto.setSupplierName(orderItem.getProduct().getSupplier().getName());
+//        orderItemDto.setSupplierName(orderItem.getProduct().getSupplier().getName());
         orderItemDto.setReviewed(orderItem.isReviewed());
         return orderItemDto;
     }

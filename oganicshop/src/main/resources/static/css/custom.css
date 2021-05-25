@@ -39,6 +39,10 @@
     color: #F7941D;
 }
 
+i.yellow {
+    color: #F7941D;
+}
+
 .view-reply-less .view-reply-more > a:hover {
     color: #F7941D;
 }

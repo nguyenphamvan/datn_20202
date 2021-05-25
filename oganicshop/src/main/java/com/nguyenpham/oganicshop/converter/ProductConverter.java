@@ -23,7 +23,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponse.setBaseDescription(product.getBaseDescription());
         productResponse.setDetailDescription(product.getDetailDescription().trim());
         productResponse.setCategoryName(product.getCategory().getCategoryName());
-        productResponse.setSupplierName(product.getSupplier().getName());
+        productResponse.setSupplierName(product.getSupplier());
 
         //image
         if (product.getImage() != null) {

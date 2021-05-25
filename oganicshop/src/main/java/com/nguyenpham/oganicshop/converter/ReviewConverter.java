@@ -3,7 +3,10 @@ package com.nguyenpham.oganicshop.converter;
 import com.nguyenpham.oganicshop.dto.MyReviewDto;
 import com.nguyenpham.oganicshop.dto.ReviewRequest;
 import com.nguyenpham.oganicshop.dto.ReviewResponse;
+import com.nguyenpham.oganicshop.dto.SubReviewResponse;
 import com.nguyenpham.oganicshop.entity.Review;
+import com.nguyenpham.oganicshop.entity.SubReview;
+import com.nguyenpham.oganicshop.util.DateTimeUtil;
 
 public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, ReviewResponse>{
     @Override
@@ -19,16 +22,13 @@ public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, 
         response.setCreatedAt(review.getCreatedAt());
         response.setNumbersOfLike(review.getNumbersOfLike());
         if (review.getSubReviews() != null) {
-            for (Review subReview : review.getSubReviews()) {
-                ReviewResponse subReviewDto = new ReviewResponse();
+            for (SubReview subReview : review.getSubReviews()) {
+                SubReviewResponse subReviewDto = new SubReviewResponse();
                 subReviewDto.setId(subReview.getId());
-                subReviewDto.setUserId(subReview.getUser().getId());
                 subReviewDto.setReviewerName(subReview.getUser().getFullName());
-                subReviewDto.setIdRootReview(subReview.getRootComment().getId());
-                subReviewDto.setComment(subReview.getComment());
-                subReviewDto.setTitle(subReview.getTitle());
-                subReviewDto.setCreatedAt(subReview.getCreatedAt());
-                subReviewDto.setNumbersOfLike(subReview.getNumbersOfLike());
+                subReviewDto.setRootReviewId(review.getId());
+                subReviewDto.setContent(subReview.getContent());
+                subReviewDto.setCreatedDate(DateTimeUtil.dateFormat(subReview.getCreatedAt()));
                 response.addSubReview(subReviewDto);
             }
         }

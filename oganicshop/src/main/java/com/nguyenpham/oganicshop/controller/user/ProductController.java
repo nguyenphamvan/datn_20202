@@ -29,7 +29,7 @@ public class ProductController {
                                               @RequestParam(value = "supplier", required = false, defaultValue = "") String supplier, Model model) {
         model.addAttribute("category", categoryUrl);
         model.addAttribute("supplier", supplier);
-        return "collection";
+        return "user/collection";
     }
 
     @GetMapping("/products/{productUrl}.html")

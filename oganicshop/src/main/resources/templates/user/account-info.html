@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Tài khoản của tôi</title>
@@ -135,12 +134,13 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
         getListCategory();
+        getInfoAccount();
         actionForModal();
 
         $(".Account__StyledSideBar").siblings().css('display', 'none');
         let pageURL = $(location).attr("href");
-        if (pageURL.includes("/customer/account/edit")) {
-            updateInfoAccount();
+        if (pageURL.includes("/customer/account/info")) {
+            getInfoAccount();
             $("#customer_edit").css('display', 'block');
         }
 
@@ -172,11 +172,11 @@
             if ($("input[name='edit_password']").is(':checked')) {
                 if (validatePassword() === true) {
                     data["password"] = $("input[name='password']").val();
-                    updateInfoUser(data);
+                    updateInfoAccount(data);
                 }
                 alert(data["password"]);
             } else {
-                updateInfoUser(data);
+                updateInfoAccount(data);
             }
         });
         /* end edit password function*/

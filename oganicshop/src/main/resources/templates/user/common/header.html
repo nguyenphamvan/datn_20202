@@ -115,7 +115,7 @@
                     <div class="right-bar">
                         <!-- Search Form -->
                         <div class="sinlge-bar" th:if="${#request.userPrincipal}">
-                            <a th:href="@{/customer/account/edit}" class="single-icon">
+                            <a th:href="@{/customer/account/info}" class="single-icon">
                                 <div style="display: flex;">
                                     <i class="fa fa-user-circle-o" aria-hidden="true" style="margin: auto;"></i>
                                     <span style="font-size: 13px; margin-left: 5px;" sec:authentication="principal.fullName"></span>

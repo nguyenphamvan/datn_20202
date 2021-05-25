@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,22 +27,15 @@ public class Review {
     private String title;
     private String comment;
     private int rating;
-    @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
-    @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updatedAt;
     @Column(name = "numbers_of_like")
     private int numbersOfLike;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "root_comment_id")
-    @JsonIgnore
-    private Review rootComment;
-
-    @OneToMany(mappedBy = "rootComment", fetch = FetchType.LAZY)
-    private List<Review> subReviews;
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SubReview> subReviews;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -51,5 +45,12 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private User user;
+
+    public void addSubReview(SubReview subReview) {
+        if (this.subReviews == null) {
+            this.subReviews = new ArrayList<>();
+        }
+        this.subReviews.add(subReview);
+    }
 
 }

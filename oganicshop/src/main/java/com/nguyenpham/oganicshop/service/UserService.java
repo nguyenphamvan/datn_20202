@@ -34,6 +34,5 @@ public interface UserService {
     boolean setRoleAccount(long userId, String role);
     User registerNewUserAfterOAuthLoginSuccess(String email, String fullName, Provider provider);
     User updateExistCustomerAfterOAuthLoginSuccess(String email, String fullName);
-    void rateProduct(ReviewRequest reviewRequest, long userId);
 
 }

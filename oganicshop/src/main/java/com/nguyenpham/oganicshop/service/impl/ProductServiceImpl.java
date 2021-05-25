@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
         Supplier supplier = supplierRepository.findById(productRequest.getSupplierId()).get();
         product.setCategory(category);
-        product.setSupplier(supplier);
+//        product.setSupplier(supplier);
         product = productRepository.save(product);
         for (MultipartFile image : productRequest.getImages()) {
             if (image.isEmpty()) {
@@ -82,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
         Supplier supplier = supplierRepository.findById(productRequest.getSupplierId()).get();
         product.setCategory(category);
-        product.setSupplier(supplier);
+//        product.setSupplier(supplier);
         ArrayList<String> images = new ArrayList<>();
         for (MultipartFile image : productRequest.getImages()) {
             if (image.isEmpty()) {
@@ -190,8 +190,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductByUrl(String productUrl) {
         try {
             Product product = productRepository.findByUrl(productUrl).orElse(null);
-            Set<Review> reviews = product.getReviews().stream().filter(rv -> rv.getRootComment() == null).collect(Collectors.toSet());
-            product.setReviews(reviews);
             ProductConverter converter = new ProductConverter();
             return converter.entityToDto(product);
         } catch (Exception e) {

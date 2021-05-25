@@ -59,10 +59,6 @@ public class User {
     @JsonIgnore
     private Set<Address> addresses;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Rating> ratings;
-
     public void addOrder(Order order) {
         if (this.orders == null) {
             this.orders = new HashSet<>();
@@ -82,13 +78,6 @@ public class User {
             this.addresses = new HashSet<>();
         }
         this.addresses.add(address);
-    }
-
-    public void addRating(Rating rating) {
-        if (this.ratings == null) {
-            this.ratings = new HashSet<>();
-        }
-        this.ratings.add(rating);
     }
 
 }

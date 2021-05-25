@@ -28,8 +28,8 @@ public class ReviewResponse {
     private int numbersOfLike;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date createdAt;
-    private Set<ReviewResponse> subReviews;
-    public void addSubReview(ReviewResponse subReview) {
+    private Set<SubReviewResponse> subReviews;
+    public void addSubReview(SubReviewResponse subReview) {
         if (this.subReviews == null) {
             this.subReviews = new HashSet<>();
         }

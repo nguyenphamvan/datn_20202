@@ -2,9 +2,7 @@ package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.ReviewConverter;
-import com.nguyenpham.oganicshop.dto.MyReviewDto;
-import com.nguyenpham.oganicshop.dto.ReviewRequest;
-import com.nguyenpham.oganicshop.dto.ReviewResponse;
+import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.*;
@@ -55,9 +53,8 @@ public class ReviewControllerApi {
     public ResponseEntity<?> postReview(@RequestBody ReviewRequest reviewRequest) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         try {
-            userService.rateProduct(reviewRequest, user.getId());
             orderService.updateProductReviewed(user.getId(), reviewRequest.getProductId());
-            reviewService.save(reviewRequest);
+            reviewService.saveReview(reviewRequest);
             return ResponseEntity.ok("Cảm ơn bạn đã đánh giá sản phẩm!");
         } catch (Exception e) {
             return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,8 +62,8 @@ public class ReviewControllerApi {
     }
 
     @PostMapping("/reply")
-    public ResponseEntity<?> replyReview(@RequestBody ReviewRequest replyReview) {
-        ReviewResponse response = reviewService.save(replyReview);
+    public ResponseEntity<?> replyReview(@RequestBody SubReviewRequest postSubReview) {
+        SubReviewResponse response = reviewService.saveSubReview(postSubReview);
         if (response != null) {
             return ResponseEntity.ok(response);
         }
