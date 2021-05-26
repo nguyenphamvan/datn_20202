@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.api.admin;
+package com.nguyenpham.oganicshop.api;
 
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.ProductService;
@@ -15,14 +15,14 @@ import java.util.Map;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/dashboard")
-public class DashboardApi {
+public class DashboardAdminApi {
 
     private UserService userService;
     private ProductService productService;
     private OrderService orderService;
     private PromotionService promotionService;
 
-    public DashboardApi(UserService userService, ProductService productService, OrderService orderService, PromotionService promotionService) {
+    public DashboardAdminApi(UserService userService, ProductService productService, OrderService orderService, PromotionService promotionService) {
         this.userService = userService;
         this.productService = productService;
         this.orderService = orderService;

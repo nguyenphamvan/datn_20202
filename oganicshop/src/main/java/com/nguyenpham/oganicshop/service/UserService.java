@@ -3,7 +3,7 @@ package com.nguyenpham.oganicshop.service;
 import com.nguyenpham.oganicshop.constant.Provider;
 import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.User;
-import com.nguyenpham.oganicshop.exception.UserNotFoundException;
+import com.nguyenpham.oganicshop.util.UserNotFoundException;
 
 import java.util.List;
 import java.util.Set;

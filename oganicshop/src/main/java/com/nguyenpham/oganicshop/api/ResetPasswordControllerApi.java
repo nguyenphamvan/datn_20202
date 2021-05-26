@@ -2,7 +2,7 @@ package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.entity.User;
-import com.nguyenpham.oganicshop.exception.UserNotFoundException;
+import com.nguyenpham.oganicshop.util.UserNotFoundException;
 import com.nguyenpham.oganicshop.service.EmailSender;
 import com.nguyenpham.oganicshop.service.UserService;
 import com.nguyenpham.oganicshop.util.Utils;

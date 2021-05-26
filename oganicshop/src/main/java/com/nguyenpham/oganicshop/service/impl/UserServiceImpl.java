@@ -6,7 +6,7 @@ import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.*;
 import com.nguyenpham.oganicshop.entity.*;
-import com.nguyenpham.oganicshop.exception.UserNotFoundException;
+import com.nguyenpham.oganicshop.util.UserNotFoundException;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.AddressRepository;
 import com.nguyenpham.oganicshop.repository.UserRepository;

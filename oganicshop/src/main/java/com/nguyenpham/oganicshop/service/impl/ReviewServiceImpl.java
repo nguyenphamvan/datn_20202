@@ -11,6 +11,7 @@ import com.nguyenpham.oganicshop.entity.SubReview;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.ReviewRepository;
+import com.nguyenpham.oganicshop.repository.SubReviewRepository;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.ReviewService;
 import com.nguyenpham.oganicshop.util.DateTimeUtil;
@@ -32,11 +33,13 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
 
     private ReviewRepository reviewRepository;
+    private SubReviewRepository subReviewRepository;
     private ProductRepository productRepository;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, ProductRepository productRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, SubReviewRepository subReviewRepository, ProductRepository productRepository) {
         this.reviewRepository = reviewRepository;
+        this.subReviewRepository = subReviewRepository;
         this.productRepository = productRepository;
     }
 
@@ -71,9 +74,9 @@ public class ReviewServiceImpl implements ReviewService {
             subReview.setUser(parentReview.getUser());
             subReview.setContent(postSubReview.getContent());
             subReview.setReview(parentReview);
-            parentReview.addSubReview(subReview);
+//            parentReview.addSubReview(subReview);
             try {
-                reviewRepository.save(parentReview);
+                subReviewRepository.save(subReview);
                 SubReviewResponse subReviewResponse = new SubReviewResponse();
                 subReviewResponse.setReviewerId(user.getId());
                 subReviewResponse.setReviewerName(user.getFullName());

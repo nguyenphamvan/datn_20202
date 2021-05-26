@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.exception;
+package com.nguyenpham.oganicshop.util;
 
 public class UserNotFoundException extends Exception {
 
