@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
-public class AccountControllerApi {
+public class AccountController {
 
     private UserConverter userConverter;
     private UserService userService;
@@ -32,7 +32,7 @@ public class AccountControllerApi {
     private ReviewService reviewService;
 
     @Autowired
-    public AccountControllerApi(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
+    public AccountController(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
         this.userConverter = userConverter;
         this.userService = userService;
         this.orderService = orderService;

@@ -37,7 +37,7 @@
     <div class="container">
         <div class="row">
             <!-- Start account items manager Area -->
-            <th:block th:include="user/common/acount-items-manager"/>
+            <th:block th:include="user/common/left-navbar-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner">
@@ -224,7 +224,6 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        getListCategory();
         getTheShippingAddress();
         actionForModal();
 
@@ -326,102 +325,6 @@
         });
     });
 
-    function getTheShippingAddress() {
-        $.ajax({
-            url: "/api/account/address",
-            type: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (address) {
-                let firstDivAddr = $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item");
-                $.each(address, function( index, item ) {
-                    let itemClone = firstDivAddr.clone();
-                    itemClone.show();
-                    itemClone.attr("isDefault", item["default"]);
-                    itemClone.attr("id-shippingAddr", item["id"]);
-                    itemClone.find(".name span:first-child").text(item["contactReceiver"]);
-                    if (item["default"] === false) {
-                        itemClone.find(".name span:nth-child(2)").hide();
-                        itemClone.find("div.action > a.edit").after("<button class='delete'>Xóa</button>");
-                    }
-                    itemClone.find(".address span:nth-child(2)").text(item["contactAddress"]);
-                    itemClone.find(".phone span:nth-child(2)").text(item["contactPhone"]);
-                    itemClone.insertAfter(firstDivAddr);
-                });
-                firstDivAddr.hide();
-                $("div.styles__StyledAccountAddress").show();
-                $("div.styles__StyledAccountAddressEdit").hide();
-                $("div.styles__StyledAccountAddressCreate").hide();
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
-
-    function addShippingAddress(isCreate, data) {
-        let url = "";
-        let type = "";
-        if(isCreate === true) {
-            url = "/api/account/address/create";
-            type = "POST";
-        } else {
-            url = "/api/account/address/update";
-            type = "PUT";
-        }
-
-        $.ajax({
-            url: url,
-            type: type,
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (data) {
-                console.log(data)
-                if (data === true) {
-                    $("#myModal").fadeIn();
-                    $("#myModal > div.modal-content > img").attr("src", "/images/check-success-icon.png");
-                    $("#myModal > div.modal-content > p").text("Lưu địa chỉ thành công!");
-                    $("#myModal").delay(3000).fadeOut();
-                    $("div.Account__StyledAccountLayoutInner > div.styles__StyledAccountAddress > div.item").nextAll().remove();
-                    getTheShippingAddress();
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
-
-    function deleteShippingAddress(thisItem, addressId) {
-        cuteAlert({
-            type: "question",
-            title: "Xác nhận hành động",
-            message: "Bạn chắc chắn muốn xóa địa chỉ này",
-            confirmText: "Xóa",
-            cancelText: "Hủy"
-        });
-        $("button.confirm-button.question-bg.question-btn").on("click", function () {
-            $.ajax({
-                url: "/api/account/address/delete/" + addressId,
-                type: "DELETE",
-                contentType: "application/json",
-                success: function (data) {
-                    if (data === true) {
-                        $("#myModal").fadeIn();
-                        $("#myModal > div.modal-content > img").attr("src", "/images/not-enough.png");
-                        $("#myModal > div.modal-content > p").text("Xóa thành công!");
-                        $("#myModal").delay(3000).fadeOut();
-                        thisItem.closest("div.item").remove();
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        });
-
-    }
     /*]]>*/
 </script>
 </body>

@@ -37,7 +37,7 @@
         <div class="row">
 
             <!-- Start account items manager Area -->
-            <th:block th:include="user/common/acount-items-manager"/>
+            <th:block th:include="user/common/left-navbar-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner" id="customer_edit" style="display: none;">
@@ -133,7 +133,6 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        getListCategory();
         getInfoAccount();
         actionForModal();
 
@@ -200,111 +199,9 @@
 
     });
 
-    function validatePassword() {
-        let oldPassword = $("input[name='oldPassword']").val();
-        let password = $("input[name='password']").val();
-        let passwordConfirm = $("input[name='passwordConfirm']").val();
-        let token = true;
-        if (oldPassword.length === 0) {
-            token = false;
-            $("input[name='oldPassword']").closest("div.div-form-control").addClass("has-error");
-            $("<div class=\"error-message\">Vui lòng nhập mật khẩu cũ</div>").insertAfter($("input[name='oldPassword']"));
-        }
 
-        if (password.length === 0) {
-            token = false;
-            $("input[name='password']").closest("div.div-form-control").addClass("has-error");
-            $("<div class=\"error-message\">Vui lòng nhập mật khẩu mới</div>").insertAfter($("input[name='password']"));
-        }
 
-        if (passwordConfirm.length === 0) {
-            token = false;
-            $("input[name='passwordConfirm']").closest("div.div-form-control").addClass("has-error");
-            $("<div class=\"error-message\">Bạn chưa xác nhận mật khẩu mới</div>").insertAfter($("input[name='passwordConfirm']"));
-        }
 
-        if (oldPassword.length > 0 && password.length > 0 && passwordConfirm.length > 0) {
-            $.ajax({
-                url: "/api/account/check-password?oldPassword=" + oldPassword,
-                type: "GET",
-                success: function (isMatch) {
-                    if (isMatch === false) {
-                        token = false;
-                        $("input[name='oldPassword']").closest("div.div-form-control").addClass("has-error");
-                        $("<div class=\"error-message\">Mật khẩu cũ không đúng</div>").insertAfter($("input[name='oldPassword']"));
-                    }
-                    if (password !== passwordConfirm) {
-                        token = false;
-                        $("input[name='passwordConfirm']").closest("div.div-form-control").addClass("has-error");
-                        $("<div class=\"error-message\">Mật khẩu không trùng khớp</div>").insertAfter($("input[name='passwordConfirm']"));
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        }
-        return token;
-    }
-
-    function getInfoAccount() {
-        $.ajax({
-            url: "/api/account/info",
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                if (data["status"] === true) {
-                    let info = data["userInfo"];
-                    $("input[name='fullName']").val(info["fullName"]);
-                    $("input[name='phoneNumber']").val(info["phone"]);
-                    $("input[name='email']").val(info["email"]);
-                    $("input[name='birthday']").val(info["birthday"]);
-                    let $radios = $('input:radio[name=gender]');
-                    if (info["gender"] === "male") {
-                        $radios.filter('[value=male]').prop('checked', true);
-                    } else {
-                        $radios.filter('[value=female]').prop('checked', true);
-                    }
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
-
-    function updateInfoAccount(data) {
-        $.ajax({
-            url: "/api/account/update",
-            data: JSON.stringify(data),
-            type: "PUT",
-            dataType: 'json',
-            contentType: "application/json",
-            cache: false,
-            success: function (data) {
-                if (data["status"] === true) {
-                    $("#myModal").fadeIn();
-                    $("#myModal > div.modal-content > p").text("Cập nhật thông tin thành công!");
-                    $("#myModal").delay(3000).fadeOut();
-
-                    // user info
-                    $("input[name='fullName']").val(data["userInfo"]["fullName"]);
-                    $("input[name='phoneNumber']").val(data["userInfo"]["phone"]);
-                    $("input[name='email']").val(data["userInfo"]["email"]);
-                    $("input[name='birthday']").val(data["userInfo"]["birthday"]);
-                    let $radios = $('input:radio[name=gender]');
-                    if (data["userInfo"]["gender"] === "male") {
-                        $radios.filter('[value=male]').prop('checked', true);
-                    } else {
-                        $radios.filter('[value=female]').prop('checked', true);
-                    }
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
 
     /*]]>*/
 </script>

@@ -37,7 +37,7 @@
     <div class="container">
         <div class="row">
             <!-- Start account items manager Area -->
-            <th:block th:include="user/common/acount-items-manager"/>
+            <th:block th:include="user/common/left-navbar-manager"/>
 
             <div class="Account__StyledAccountLayoutInner" id="post_review">
                 <div class="style__StyledMyReviews">
@@ -137,7 +137,6 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        getListCategory();
         getProductsIsUnReviewed();
         actionForModal();
 
@@ -218,64 +217,6 @@
             $("input[name='rating-value']").val(ratingValue);
         });
     });
-
-    function getProductsIsUnReviewed() {
-        $.ajax({
-            url: "/api/sales/order/product-not-reviewed",
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                console.log(data);
-                let listItem = data["products"]
-                $(".my-reviews__inner a:first-child").show().nextAll().remove();
-                if (listItem.length > 0) {
-                    let firstItem = $(".my-reviews__inner a:first-child");
-                    $.each(listItem, function (index, item) {
-                        let itemClone = firstItem.clone();
-                        itemClone.attr("href", "/products/" + item["productUrl"] + ".html");
-                        itemClone.find("div.my-reviews__info").attr("product-id", item["productId"]).attr("orderItem-id", item["id"]);
-                        itemClone.find("div.my-reviews__info > img").attr("src", item["image"]).attr("alt", item["productName"]);
-                        itemClone.find("div.my-reviews__name").text(item["productUrl"]);
-                        itemClone.insertAfter(".my-reviews__inner a:first-child");
-                    });
-                    firstItem.hide();
-                } else {
-                    $(".style__StyledMyReviews").empty()
-                        .append("<div class=\"col-12\">\n" +
-                            "                <div style=\"text-align: center; margin: auto; margin-top: 50px;\">\n" +
-                            "                    <p style=\"font-size: 20px; color: green;\">Không có sản phẩm nào chưa nhận xét!</p>\n" +
-                            "                    <div class=\"center\" style=\"margin-top: 20px;\">\n" +
-                            "                        <div class=\"button5\">\n" +
-                            "                            <a href='/' style=\"color: white;\" class=\"btn\">Tiếp tục mua sắm</a>\n" +
-                            "                        </div>\n" +
-                            "                    </div>\n" +
-                            "                </div>\n" +
-                            "     </div>");
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
-
-    function postReview(data) {
-        $.ajax({
-            url: "/api/review/post",
-            data: JSON.stringify(data),
-            type: "POST",
-            contentType: "application/json",
-            success: function (result) {
-                $("#myModal").css("display", "block");
-                $("#myModal > div.modal-content > p").text(result);
-                $("#myModal").delay(1000).fadeOut();
-                getProductsIsUnReviewed();
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
 
     /*]]>*/
 </script>

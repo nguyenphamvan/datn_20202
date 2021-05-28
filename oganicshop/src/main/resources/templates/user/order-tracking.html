@@ -43,7 +43,7 @@
         <div class="row">
 
             <!-- Start account items manager Area -->
-            <th:block th:include="user/common/acount-items-manager"/>
+            <th:block th:include="user/common/left-navbar-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner">
@@ -93,76 +93,9 @@
     // A $( document ).ready() block.
     $(document).ready(function() {
         var orderId = /*[[${orderId}]]*/;
-        getListCategory();
         getOrderLogging(orderId);
     });
 
-    function getOrderLogging(orderId) {
-        $.ajax({
-            url: "/api/sales/order/tracking/" + orderId,
-            type: "GET",
-            dataType: 'json',
-            success: function (order) {
-                console.log(order);
-                let orderStatus = order["order"]["orderStatus"];
-                $(".order-heading h3").text("Theo dõi đơn hàng #" + orderStatus["orderId"]);
-                $(".status-block .status-text b").text(orderStatus["latestStatus"] + "  |  " + orderStatus["lastUpdatedTime"]);
-                $(".cGrxj").text("Cập nhật mới nhất : " + orderStatus["lastUpdatedTime"]);
-
-                if (order.hasOwnProperty("loggingStatus")) {
-                    $.each(orderStatus["loggingStatus"], function( index, orderStatus ) {
-                        let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
-                            "           <span class=\"left\">" + orderStatus["updatedTime"] + "</span>" +
-                            "           <span class=\"right\">" + orderStatus["status"] + "</span>\n" +
-                            "       </div>";
-                        $(html).insertAfter(".cGrxj");
-                    });
-                } else {
-                    let html = "<div class=\"styles__StyledOrderStatusDetailItem dPnPGf\">\n" +
-                        "           <span class=\"left\">" + orderStatus["lastUpdatedTime"] + "</span>" +
-                        "           <span class=\"right\">" + orderStatus["latestStatus"] + "</span>\n" +
-                        "       </div>";
-                    $(html).insertAfter(".cGrxj");
-                }
-
-
-                let listOrderItem = order["order"]["listOrderDetail"];
-                let itemClone = $(".styles__StyledOrderItems .items div:first-child");
-                $.each(listOrderItem, function (index, item) {
-                    let row = itemClone.clone();
-                    row.find("img.image").attr("src", item["image"]);
-                    row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-                    row.insertAfter(".styles__StyledOrderItems .items div:first-child");
-                });
-                $(".styles__StyledOrderItems .items div:first-child").css("display", "none");
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
-
-    function getListOrderItem(orderId) {
-        $.ajax({
-            url: "/api/sales/order/" + orderId + "/list-item",
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                let orderItems = data["orderItems"];
-                let itemClone = $(".styles__StyledOrderItems .items div:first-child");
-                $.each(orderItems, function (index, item) {
-                    let row = itemClone.clone();
-                    row.find("img.image").attr("src", "/images/products/" + item["image"]);
-                    row.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-                    row.insertAfter(".styles__StyledOrderItems .items div:first-child");
-                });
-                $(".styles__StyledOrderItems .items div:first-child").css("display", "none");
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
     /*]]>*/
 </script>
 </body>

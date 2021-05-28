@@ -15,14 +15,14 @@ import java.util.Map;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/dashboard")
-public class DashboardAdminApi {
+public class DashboardAdmin {
 
     private UserService userService;
     private ProductService productService;
     private OrderService orderService;
     private PromotionService promotionService;
 
-    public DashboardAdminApi(UserService userService, ProductService productService, OrderService orderService, PromotionService promotionService) {
+    public DashboardAdmin(UserService userService, ProductService productService, OrderService orderService, PromotionService promotionService) {
         this.userService = userService;
         this.productService = productService;
         this.orderService = orderService;

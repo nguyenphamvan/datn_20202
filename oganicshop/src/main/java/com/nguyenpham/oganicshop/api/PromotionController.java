@@ -14,12 +14,12 @@ import java.util.Map;
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/promotion")
-public class PromotionControllerApi {
+public class PromotionController {
 
     private PromotionService promotionService;
 
     @Autowired
-    public PromotionControllerApi(PromotionService promotionService) {
+    public PromotionController(PromotionService promotionService) {
         this.promotionService = promotionService;
     }
 

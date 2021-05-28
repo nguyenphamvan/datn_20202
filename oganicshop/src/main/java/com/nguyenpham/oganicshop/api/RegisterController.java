@@ -14,13 +14,13 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-public class RegisterControllerApi {
+public class RegisterController {
 
     private UserService userService;
     private EmailSender emailSender;
 
     @Autowired
-    public RegisterControllerApi(UserService userService, EmailSender emailSender) {
+    public RegisterController(UserService userService, EmailSender emailSender) {
         this.userService = userService;
         this.emailSender = emailSender;
     }

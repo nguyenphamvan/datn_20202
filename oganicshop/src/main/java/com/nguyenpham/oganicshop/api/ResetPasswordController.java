@@ -17,13 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-public class ResetPasswordControllerApi {
+public class ResetPasswordController {
 
     private UserService userService;
     private EmailSender emailSender;
 
     @Autowired
-    public ResetPasswordControllerApi(UserService userService, EmailSender emailSender) {
+    public ResetPasswordController(UserService userService, EmailSender emailSender) {
         this.userService = userService;
         this.emailSender = emailSender;
     }

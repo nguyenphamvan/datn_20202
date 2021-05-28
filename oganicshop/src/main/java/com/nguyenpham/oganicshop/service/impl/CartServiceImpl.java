@@ -29,7 +29,6 @@ public class CartServiceImpl implements CartService {
         if (cart == null) {
             cart = new HashMap<>();
         }
-        System.out.println("cart size : " + cart.size());
         Product product = productRepository.findByUrl(productUrl).orElse(null);
         if (product != null) {
             CartItem item;

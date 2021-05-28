@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cart")
-public class CartControllerApi {
+public class CartController {
 
     private CartService cartService;
 
     @Autowired
-    public CartControllerApi(CartService cartService) {
+    public CartController(CartService cartService) {
         this.cartService = cartService;
     }
 
@@ -76,7 +76,9 @@ public class CartControllerApi {
     public ResponseEntity<?> removeItemCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
         BaseResponse br = new BaseResponse();
         boolean result = cartService.removeItemCart(session, productUrl);
+        int numberItemInCart = getTotalPrice((HttpSession) session);
         br.setStatus(result);
+        br.setData(Integer.valueOf(numberItemInCart));
         if (!result) {
             br.setErrMessage("Có lỗi xảy ra");
         }
@@ -100,15 +102,18 @@ public class CartControllerApi {
         Map<String, Object> infoCart = new HashMap<>();
         if (cart == null) {
             br.setData(null);
-            br.setStatus(false);
         } else {
             List<CartItem> listItem = new ArrayList<>(cart.values());
-            infoCart.put("totalPriceCart", cartService.totalSubCart(cart));
-            infoCart.put("numberOfProducts", cartService.numberOfProductsInCart(cart));
-            infoCart.put("listItemCart", listItem);
-            br.setData(infoCart);
-            br.setStatus(true);
+            if (listItem.size() == 0) {
+                br.setData(null);
+            } else {
+                infoCart.put("totalPriceCart", cartService.totalSubCart(cart));
+                infoCart.put("numberOfProducts", cartService.numberOfProductsInCart(cart));
+                infoCart.put("listItemCart", listItem);
+                br.setData(infoCart);
+            }
         }
+        br.setStatus(true);
         return new ResponseEntity<Object>(br, HttpStatus.OK);
     }
 }

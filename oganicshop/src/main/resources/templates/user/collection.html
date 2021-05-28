@@ -323,11 +323,12 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        let category = /*[[${category}]]*/;
-        let supplier = /*[[${supplier}]]*/;
 
-        actionForModal();
+        const params = new URLSearchParams(window.location.search);
+        let category = params.get("category") !== null ? params.get("category") : "";
+        let supplier = params.get("supplier") !== null ? params.get("supplier") : "";
         getListCategory();
+        actionForModal();
         let data = {
             "category" : category,
             "supplier" : supplier,

@@ -18,12 +18,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-public class SearchControllerApi {
+public class SearchController {
 
     private ProductService productService;
 
     @Autowired
-    public SearchControllerApi(ProductService productService) {
+    public SearchController(ProductService productService) {
         this.productService = productService;
     }
 

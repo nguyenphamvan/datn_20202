@@ -37,7 +37,7 @@
     <div class="container">
         <div class="row">
             <!-- Start account items manager Area -->
-            <th:block th:include="user/common/acount-items-manager"/>
+            <th:block th:include="user/common/left-navbar-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner">
@@ -102,7 +102,6 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        getListCategory();
         getWishlistProducts();
         actionForModal();
 
@@ -112,105 +111,6 @@
         });
     });
 
-    function getWishlistProducts() {
-        $.ajax({
-            url: "/api/account/wishlist",
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                if(data.hasOwnProperty("wishLists")) {
-                    let wishlist = data["wishLists"];
-                    $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
-                    if (wishlist.length > 0) {
-                        let firstItem = $(".styles__StyledAccountWishList ul.list li:first-child");
-                        $.each(wishlist, function (index, item) {
-                            let itemClone = firstItem.clone();
-                            itemClone.find(".btn-delete").attr("product-id", item["id"]);
-                            itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"] + ".html");
-                            itemClone.find(".thumbnail a img.image").attr("src", item["mainImage"]);
-                            itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-                            itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
-                            itemClone.find("div.my-reviews__name").text(item["productUrl"]);
-                            for (let i = 0; i < parseInt(item["rating"]); i++) {
-                                itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
-                            }
-                            for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
-                                itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
-                            }
-                            itemClone.find(".ratting-wrap span").text("(" + item["numberOfReviews"] + " customer review)")
-                            itemClone.find(".footer_favourite .final-price").text(item["finalPrice"] + " ₫");
-                            if (parseInt(item["discount"]) > 0) {
-                                itemClone.find(".footer_favourite .wrap .price").text(item["price"] + " ₫");
-                                itemClone.find(".footer_favourite .wrap .discount").text(item["discount"] + " ₫");
-                            }
-                            itemClone.insertAfter(".styles__StyledAccountWishList ul.list li:first-child");
-                        });
-                        firstItem.remove();
-                    } else {
-                        $(".styles__StyledAccountWishList").empty()
-                            .append("<div class=\"col-12\">\n" +
-                                "                <div style=\"text-align: center; margin: auto; margin-top: 50px;\">\n" +
-                                "                    <p style=\"font-size: 20px; color: green;\">Không có sản trong danh sách yêu thichd!!</p>\n" +
-                                "                    <div class=\"center\" style=\"margin-top: 20px;\">\n" +
-                                "                        <div class=\"button5\">\n" +
-                                "                            <a href='/' style=\"color: white;\" class=\"btn\">Tiếp tục mua sắm</a>\n" +
-                                "                        </div>\n" +
-                                "                    </div>\n" +
-                                "                </div>\n" +
-                                " </div>");
-                    }
-                } else {
-                    $(".styles__StyledAccountWishList").empty()
-                        .append("<div class=\"col-12\">\n" +
-                            "                <div style=\"text-align: center; margin: auto; margin-top: 50px;\">\n" +
-                            "                    <p style=\"font-size: 20px; color: green;\">Không có sản trong danh sách yêu thichd!!</p>\n" +
-                            "                    <div class=\"center\" style=\"margin-top: 20px;\">\n" +
-                            "                        <div class=\"button5\">\n" +
-                            "                            <a href='/' style=\"color: white;\" class=\"btn\">Tiếp tục mua sắm</a>\n" +
-                            "                        </div>\n" +
-                            "                    </div>\n" +
-                            "                </div>\n" +
-                            " </div>");
-
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
-
-    function removeProductFromWishlist(buttonDelete, productId) {
-        cuteAlert({
-            type: "question",
-            title: "Xác nhận hành động",
-            message: "Bạn chắc chắn muốn xóa sản phẩm khỏi wishlist",
-            confirmText: "Xóa",
-            cancelText: "Hủy"
-        });
-
-        $("button.confirm-button.question-bg.question-btn").on("click", function () {
-            $.ajax({
-                url: "/api/account/wishlist/remove/" + productId,
-                type: "DELETE",
-                dataType: 'json',
-                success: function (result) {
-                    if (result === true) {
-                        $("#myModal").fadeIn();
-                        $("#myModal > div.modal-content > p").text("Xóa thành công!");
-                        $("#myModal").delay(3000).fadeOut();
-                        let heading = $(".styles__StyledAccountWishList .heading span");
-                        heading.text(parseInt(heading.text()) - 1);
-                        buttonDelete.closest("li.item").remove();
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        });
-
-    }
 
     /*]]>*/
 </script>

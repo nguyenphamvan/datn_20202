@@ -201,58 +201,11 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        // getListCategory();
+        getListCategory();
         getProductsInCart();
         actionForModal();
     });
 
-    function getProductsInCart() {
-        $.ajax({
-            url: "/api/cart/all",
-            type: "GET",
-            contentType: "application/json",
-            success: function (res) {
-                if (res["status"] === true) {
-                    let items = res["data"];
-                    let totalCart = 0;
-                    let firstTr = $("body > div.shopping-cart.section > div > div:nth-child(1) > div > table > tbody > tr:first-child");
-                    $.each(items, function( index, item ) {
-                        totalCart = totalCart + parseInt(item["totalItem"]);
-                        let trClone = firstTr.clone();
-                        trClone.attr("data-url", item["product"]["productUrl"]);
-                        trClone.find("td.image > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html");
-                        trClone.find("td.image > a > img").attr("src", item["product"]["mainImage"]);
-                        trClone.find("td.product-des > p.product-name > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html")
-                            .text(item["product"]["productName"]);
-                        trClone.find("td.price > span").text("$" + item["product"]["finalPrice"]);
-                        trClone.find("td.qty > div > input").val(item["quantity"]);
-                        trClone.find("td.total-amount > span").text("$" + item["totalItem"]);
-                        trClone.find("td.action > a").attr("id", item["product"]["productUrl"]);
-                        trClone.insertAfter(firstTr);
-                    });
-                    firstTr.remove();
-                    $("#sub-cart").text("$" + totalCart);
-                } else {
-                    let html = "<div class=\"row\">\n" +
-                        "                <div class=\"cart-empty\" style=\"text-align: center; margin: auto;\">\n" +
-                        "                    <img style=\"color: green ; font-size: 50px; display: block; margin: auto; width: fit-content; margin-top: 20px;\" src='/images/cart-empty.png'>" +
-                        "                    <div><p style='color: red;'>Không có sản phẩm nào trong giỏ hàng</p></div>\n" +
-                        "                    <div class=\"center\" style='margin-top: 20px;'>\n" +
-                        "                         <div class=\"button5\">\n" +
-                        "                               <a href=\"/\" style='color: white;' class=\"btn\">Tiếp tục mua sắm</a>\n" +
-                        "                          </div>\n" +
-                        "                    </div>\n" +
-                        "                </div>\n" +
-                        "            </div>";
-                    $("body > div.shopping-cart.section > div.container").empty();
-                    $("body > div.shopping-cart.section > div.container").append(html);
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
 
     /*]]>*/
 </script>

@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/review")
-public class ReviewControllerApi {
+public class ReviewController {
 
     private ReviewService reviewService;
     private OrderService orderService;
     private UserService userService;
 
     @Autowired
-    public ReviewControllerApi(ReviewService reviewService, OrderService orderService, UserService userService) {
+    public ReviewController(ReviewService reviewService, OrderService orderService, UserService userService) {
         this.reviewService = reviewService;
         this.orderService = orderService;
         this.userService = userService;

@@ -383,7 +383,10 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
 
-        let productUrl = /*[[${productUrl}]]*/;
+        let productUrl = window.location.pathname.replace("/products/", "").replace(".html", "");
+        console.log(productUrl);
+
+        // let productUrl = /*[[${productUrl}]]*/;
         getListCategory();
         displayProduct(productUrl);
         actionForModal();
@@ -491,175 +494,7 @@
             likeComment(data);
         });
 
-        function replyReview(data) {
-            $.ajax({
-                url: "/api/review/reply",
-                type: "POST",
-                data: JSON.stringify(data),
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (result) {
-                    console.log(result);
-                    let numberOfReview = $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text();
-                    $("div.reply-input").hide();
-                    let html = "<div  class=\"reply-item\">\n" +
-                        "            <div class=\"info-reply-user\">\n" +
-                        "                 <span class=\"img-user-reply\"><img src='/images/user-avatar.jpg' style=\"width: 30px;\" alt=\"Image\"></span>\n" +
-                        "                 <span class=\"user-name\">" + result["reviewerName"] + "</span>\n" +
-                        "                 <span class=\"comment-date\">" + result["createdDate"] + "</span>\n" +
-                        "                 <p class=\"reply-content\">" + result["content"] + "</p>\n" +
-                        "            </div>\n" +
-                        "        </div>";
-                    $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text(parseInt(numberOfReview) + 1);
-                    $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-less").find('span').text(parseInt(numberOfReview) + 1);
-                    $(html).delay(500).prependTo("#reply-items-list-" + data["parentId"]).hide().slideDown().fadeIn();
-                },
-                error: function (xhr) {
-                    alert("có lỗi");
-                    alert(xhr.responseText);
-                }
-            });
-        }
 
-        function likeComment(data) {
-            $.ajax({
-                url: "/api/review/likeComment",
-                data: data,
-                type: "POST",
-                dataType: "json",
-                contentType: "application/json",
-                success: function (result) {
-                    thisLikeButton.find("span > span").text("(" + result + ")");
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        }
-
-        function displayProduct(productUrl) {
-            $.ajax({
-                url: "/api/products/" + productUrl,
-                type: "GET",
-                dataType: 'json',
-                success: function (res) {
-                    console.log(res);
-                    if (res["status"] === true) {
-                        let product = res["data"]["product"];
-
-                        // set image
-                        $.each(product["images"], function (index, item) {
-                            let html = "<div class=\"single-slider\">\n" +
-                                "           <img src='" + item + "'>\n" +
-                                "        </div>";
-                            $("div.quickview-slider-active-1").append(html);
-                        });
-                        $('.quickview-slider-active-1').owlCarousel({
-                            items: 1,
-                            autoplay: true,
-                            autoplayTimeout: 5000,
-                            smartSpeed: 400,
-                            autoplayHoverPause: true,
-                            nav: true,
-                            loop: true,
-                            merge: true,
-                            dots: false,
-                            navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
-                        });
-
-                        $("div.breadcrumbs > div > div > div > div > ul > li:nth-child(3) > a").attr("href", "/products/" + product["productUrl"] + ".html")
-                            .text(product["productName"]);
-                        $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
-                        $("div.modal-body > div > div:nth-child(2) > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
-                        $("div.modal-body > div > div:nth-child(2) > div > div > span#final-price").text("$" + product["finalPrice"]);
-                        $("div.modal-body > div > div:nth-child(2) > div > div > span#price").text("$" + product["price"]);
-                        $("div.modal-body > div > div:nth-child(2) > div > div.quickview-peragraph > p").html(product["detailDescription"]);
-                        $("#add-cart").attr("productUrl", product["productUrl"]);
-                        $("div.modal-body > div > div:nth-child(2) > div > div.quantity > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
-                        // $("#tabs-1 > div > p").html(product["detailDescription"]);
-                        $("section.product-area.shop-sidebar.shop.section > div > div.row > div > div > ul > li:nth-child(2) > a > span").text("(" + product["numberOfReviews"] + ")");
-                        $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span").text("(" + product["numberOfReviews"] + " lượt bình luận)");
-                        if (product["amount"] <= 0) {
-                            $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-stock > span").hide();
-                        }
-                        // ratting
-                        if (parseInt(product["rating"]) > 0) {
-                            for (let i = 0; i < parseInt(product["rating"]); i++) {
-                                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews")
-                                    .append("<li class=\"yellow\"><i class=\"ti-star\"></i></li>");
-                            }
-                        }
-                        if ((5 - parseInt(product["rating"])) > 0) {
-                            for (let i = 0; i < (5 - parseInt(product["rating"])); i++) {
-                                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews")
-                                    .append("<li><i class=\"ti-star\"></i></li>");
-                            }
-                        }
-                        $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span")
-                            .text(" (" + product["numberOfReviews"] + " lượt bình luận)");
-
-                        // reviews
-                        let firstUl = $("#tabs-3 > div > div > ul > li:first-child");
-                        $.each(product["reviews"], function (index, item) {
-                            let rowClone = firstUl.clone();
-                            rowClone.attr("data-id_comment", item["id"])
-                            rowClone.find("div > div.col-md-3 > div > div:nth-child(2) > h6").text(item["reviewerName"]);
-                            rowClone.find("div > div.col-md-3 > div > div:nth-child(2) > p").text(item["createdAt"]);
-                            rowClone.find("div.review-item-detail > div.review-des > div.title > p > strong").text(item["title"]);
-                            rowClone.find("div.review-item-detail > div.review-des > div.review-content > span").text(item["comment"]);
-                            rowClone.find("div.like-and-review > span.like > span > span").text("(" + item["numbersOfLike"] + ")");
-                            rowClone.find("div.reply-input").attr("id", "reply-review-" + item["id"]);
-                            rowClone.find("form > input.id-root-review").val(item["id"]);
-                            if (parseInt(item["rating"]) > 0) {
-                                for (let i = 0; i < parseInt(item["rating"]); i++) {
-                                    rowClone.find("div.review-item-detail > div > div:nth-child(1) > span").append("<i class=\"yellow fa fa-star\"></i>");
-                                }
-                            }
-                            if ((5 - parseInt(item["rating"])) > 0) {
-                                for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
-                                    rowClone.find("div.review-item-detail > div > div:nth-child(1) > span").append("<i class=\"fa fa-star\"></i>");
-                                }
-                            }
-                            if (item.hasOwnProperty("img")) {
-                                rowClone.find("div.review-item-detail > div > div.review-comment-image > img")
-                                    .attr("src", "/images/image-product-review/" + item["productId"] + "/" + item["img"]);
-                            } else {
-                                rowClone.find("div.review-item-detail > div > div.review-comment-image > img").remove();
-                            }
-
-                            if (item.hasOwnProperty("subReviews")) {
-                                rowClone.find(".review-comment_sub-comments").show();
-                                $.each(item["subReviews"], function (index, subItem) {
-                                    let html = "<div class=\"reply-item\">\n" +
-                                        "           <div class=\"info-reply-user\">\n" +
-                                        "                <span class=\"img-user-reply\"><img style=\"width: 30px;\" src=\"/images/user-avatar.jpg\" alt=\"image\"></span>\n" +
-                                        "                     <span class=\"user-name\">" + subItem["reviewerName"] + "</span>\n" +
-                                        "                     <span class=\"comment-date\">" + subItem["createdDate"] + "</span>\n" +
-                                        "                     <p class=\"reply-content\">" + subItem["content"] + "</p>\n" +
-                                        "                </div>\n" +
-                                        "          </div>";
-                                    rowClone.find(".list-reply-item").append(html);
-                                });
-
-                                rowClone.find(".list-reply-item").attr("id", "reply-items-list-" + item["id"]);
-                                rowClone.find("div > div.col-md-9 > div.review-comment_sub-comments > div.view-reply-more > span").text(item["subReviews"].length);
-                                rowClone.find("div > div.col-md-9 > div.review-comment_sub-comments > div.view-reply-less > span").text(item["subReviews"].length);
-                            } else {
-                                rowClone.find(".review-comment_sub-comments").hide();
-                            }
-                            rowClone.insertAfter(firstUl);
-                        });
-                        firstUl.hide();
-                    } else {
-                        // hoặc redirect về trang 404
-                        $("body > section > div").empty().append("<div class='center'>Không tìm thấy sản phẩm</div>");
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        }
     });
     /*]]>*/
 </script>

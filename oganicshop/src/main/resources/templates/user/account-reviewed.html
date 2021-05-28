@@ -35,7 +35,7 @@
     <div class="container">
         <div class="row">
             <!-- Start account items manager Area -->
-            <th:block th:include="user/common/acount-items-manager"/>
+            <th:block th:include="user/common/left-navbar-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner" id="customer_review">
@@ -84,7 +84,6 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        getListCategory();
         getListMyReview(1,5);
 
         $(document).on('click', 'ul.Pagination__StyledPagination > li', function () {
@@ -93,58 +92,6 @@
             getListMyReview(parseInt($(this).text()), 5);
         });
     });
-
-    function getListMyReview(currentPage, pageSize) {
-        $.ajax({
-            url: "/api/review/my-review?currentPage=" + currentPage + "&pageSize=" + pageSize,
-            type: "GET",
-            dataType: 'json',
-            success: function (data) {
-                $(".styles__StyledReviewList .heading span").text(data["numberOfReview"]);
-                $(".Pagination__StyledPagination").empty();
-                let listMyReview = data["reviews"];
-                if (listMyReview.length > 0) {
-                    let firstItem = $(".styles__StyledReviewList div.list .item:first-child");
-                    $(".styles__StyledReviewList div.list .item:first-child").nextAll().remove();
-                    $.each(listMyReview, function (index, item) {
-                        let itemClone = firstItem.clone();
-                        itemClone.find("div.thumb > div > img").attr("src", item["productImg"]);
-                        itemClone.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-                        itemClone.find(".info div.date").text(item["createdAt"]);
-                        if (item["title"] !== null) {
-                            itemClone.find(".info .wrap .title").text(item["title"]);
-                        }
-                        if (parseInt(item["rating"]) > 0) {
-                            for (let i = 0; i < parseInt(item["rating"]); i++) {
-                                itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
-                            }
-                            for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
-                                itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
-                            }
-                        }
-                        itemClone.find(".info .content-review").text(item["comment"]);
-                        itemClone.show();
-                        itemClone.insertAfter(".styles__StyledReviewList div.list .item:first-child");
-
-                    });
-
-                    for (let i = 0; i < parseInt(data["totalPage"]); ++i) {
-                        if ( (i + 1) === parseInt(data["currentPage"]) ) {
-                            $(".Pagination__StyledPagination").append("<li class='is-active'>" + (i + 1) + "</li>");
-                        } else {
-                            $(".Pagination__StyledPagination").append("<li>" + (i + 1) + "</li>")
-                        }
-                    }
-                } else {
-                    $(".styles__StyledReviewList").empty()
-                        .append("<div style='text-align: center; padding: 50px;'><a href='/'><button class='btn-info'>Tiếp tục muc sắm</button></a></div>")
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
     /*]]>*/
 </script>
 </body>

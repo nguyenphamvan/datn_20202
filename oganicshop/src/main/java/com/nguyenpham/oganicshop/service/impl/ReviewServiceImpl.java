@@ -74,7 +74,6 @@ public class ReviewServiceImpl implements ReviewService {
             subReview.setUser(parentReview.getUser());
             subReview.setContent(postSubReview.getContent());
             subReview.setReview(parentReview);
-//            parentReview.addSubReview(subReview);
             try {
                 subReviewRepository.save(subReview);
                 SubReviewResponse subReviewResponse = new SubReviewResponse();

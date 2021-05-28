@@ -35,7 +35,7 @@
     <div class="container">
         <div class="row">
             <!-- Start account items manager Area -->
-            <th:block th:include="user/common/acount-items-manager"/>
+            <th:block th:include="user/common/left-navbar-manager"/>
             <!-- /End account items manager Area -->
 
             <div class="Account__StyledAccountLayoutInner">
@@ -74,7 +74,6 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        getListCategory();
         getOrdersHistory(1, 5);
         getTotalOrderPage();
 
@@ -86,62 +85,6 @@
         });
     });
 
-    function getTotalOrderPage() {
-        let data = {
-            "pageSize": 5
-        };
-        $.ajax({
-            url: "/api/sales/order/paging",
-            type: "GET",
-            data: data,
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (totalPage) {
-                for (let i = 0; i < parseInt(totalPage); ++i) {
-                    $(".Pagination__StyledPagination").append("<li>" + (i + 1) + "</li>");
-                }
-                $(".Pagination__StyledPagination > li:first-child").addClass("is-active");
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
-
-    function getOrdersHistory(pageNum, pageSize) {
-        $.ajax({
-            url: "/api/sales/order/history",
-            type: "GET",
-            data: {
-                "pageNum": pageNum,
-                "pageSize": pageSize
-            },
-            contentType: "application/json",
-            success: function (orders) {
-                if (orders.length > 0) {
-                    $.each(orders, function (index, value) {
-                        let node = "<tr>\n" +
-                            "           <td><a style='color: rgb(0, 127, 240)' href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
-                            "           <td>" + value["orderDate"] + "</td>\n" +
-                            "           <td>" + value["summaryProductName"] + "</td>\n" +
-                            "           <td>" + value["total"] + " ₫</td>\n" +
-                            "           <td>" + value["status"] + "</td>\n" +
-                            "       </tr>";
-                        $('tbody').append(node);
-                    });
-                } else {
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner").empty();
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner")
-                    .append("<div style='text-align: center; padding-top: 50px;'>" +
-                        "<a href='/' class='btn-info'>Tiếp tục mua hàng</a> " +
-                        "</div>")
-                }
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-    }
     /*]]>*/
 </script>
 </body>

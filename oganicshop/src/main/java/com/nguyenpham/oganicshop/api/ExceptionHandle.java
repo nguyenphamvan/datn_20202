@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ExceptionHandleApi {
+public class ExceptionHandle {
 
     /**
      * Tất cả các Exception không được khai báo sẽ được xử lý tại đây

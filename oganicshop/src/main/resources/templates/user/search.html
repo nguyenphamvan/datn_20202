@@ -343,9 +343,10 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        getListCategory();
+        const params = new URLSearchParams(window.location.search);
+        let keyword = params.get("keyword") !== null ? params.get("keyword") : "";
         let data = {
-            "keyword": /*[[${keyword}]]*/,
+            "keyword": keyword,
             "sort": $("#sort-by option:selected").val().split("-")[1],
             "sortBy": $("#sort-by option:selected").val().split("-")[0],
             "pageSize": $("#page-size option:selected").val()
@@ -431,98 +432,9 @@
         });
     });
 
-    function getListProductByKeyword(data) {
-        $.ajax({
-            url: "/api/search",
-            type: "POST",
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-            success: function (result) {
-                console.log(result["products"]);
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
-                if (result["categories"][0].hasOwnProperty("subCategory")) {
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                        .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                    let firstItemCategory = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(1) > ul > li:first-child");
-                    $.each(result["categories"][0]["subCategory"], function (index, item) {
-                        let itemCategoryClone = firstItemCategory.clone();
-                        itemCategoryClone.show();
-                        itemCategoryClone.find("a").attr("href", "/collections.html?category=" + item["categoryUrl"]).text(item["categoryName"]);
-                        itemCategoryClone.insertAfter(firstItemCategory);
-                    });
-                    firstItemCategory.hide();
-                } else {
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                        .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul").hide();
-                }
 
 
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child").nextAll().remove();
-                let firstItemSupplier = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child");
-                $.each(result["suppliers"], function (index, item) {
-                    let itemSupplierClone = firstItemSupplier.clone();
-                    itemSupplierClone.show();
-                    itemSupplierClone.find("a").text(item["name"]).attr("href", "/collections.html?supplier=" + item["name"]);
-                    itemSupplierClone.insertAfter(firstItemSupplier);
-                });
-                firstItemSupplier.hide();
 
-                $("#list-product > div:nth-child(1)").nextAll().remove();
-                genListProduct(result["products"]);
-
-
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
-                    .empty();
-                let html = "<li page='1'><a>First</a></li>\n";
-                if (result["page"] > 1) {
-                    html += "<li page=" + (parseInt(result["page"]) - 1) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
-                } else {
-                    html += "<li page='1'><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
-                }
-                for (let i = 1; i <= result["totalPages"]; ++i) {
-                    if (i === result["page"]) {
-                        html += "<li page=" + i + " class='active'><a>" + i + "</a></li>";
-                    } else {
-                        html += "<li page=" + i + "><a>" + i + "</a></li>";
-                    }
-                }
-                if (parseInt(result["page"]) < parseInt(result["totalPages"])) {
-                    html += "<li page=" + (parseInt(result["page"]) + 1) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
-                } else {
-                    html += "<li page=" + parseInt(result["page"]) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
-                }
-                html += "<li page=" + parseInt(result["totalPages"]) + "><a>Last</a></li>";
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
-                    .append(html);
-
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        });
-
-    }
-
-    function genListProduct(products) {
-        let firstItem = $("#list-product > div:first-child");
-        $.each(products, function (index, item) {
-            let itemClone = firstItem.clone();
-            itemClone.show();
-            if (item.hasOwnProperty("mainImage")) {
-                itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"] + ".html");
-                itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
-                itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
-            }
-            itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-            itemClone.find("div.product-action-2 > a").attr("href", "/products/" + item["productUrl"] + ".html");
-            itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
-            itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
-            $("#list-product").append(itemClone);
-        });
-        firstItem.hide();
-    }
 
     /*]]>*/
 </script>
