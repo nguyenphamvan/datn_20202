@@ -8,7 +8,6 @@ import com.nguyenpham.oganicshop.dto.ProductRequest;
 import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.Supplier;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.ProductService;
@@ -98,7 +97,6 @@ public class ProductControllerApi {
     public Object getProductsByCategory(@RequestBody ObjectNode object) {
         Page<Product> page = null;
         String categoryUrl = "";
-        String supplierName = "";
         String sort = "asc";
         String filed = "name";
         int pageNum = 1;
@@ -107,9 +105,6 @@ public class ProductControllerApi {
         int maxPrice = 0;
         if (object.has("category")) {
             categoryUrl = object.get("category").asText();
-        }
-        if (object.has("supplier")) {
-            supplierName = object.get("supplier").asText();
         }
         if (object.has("sort")) {
             sort = object.get("sort").asText();
@@ -130,32 +125,11 @@ public class ProductControllerApi {
             maxPrice = object.get("maxPrice").asInt();
         }
 
-        CategoryConverter converter = new CategoryConverter();
         Map<String, Object> result = new HashMap<>();
-        if (categoryUrl.equals("") && !supplierName.equals("")) {
-            Supplier supplier = supplierService.findSupplierByName(supplierName);
-            page = productService.getProductsBySupplier(supplierName, minPrice, maxPrice, pageNum, pageSize, filed, sort);
-            Set<Category> setCategory = new HashSet<>();
-            for (Product p : page.getContent()) {
-                setCategory.add(p.getCategory());
-            }
-            result.put("categories", setCategory.stream().map(category -> converter.entityToDto(category)).collect(Collectors.toSet()));
-            result.put("suppliers", Arrays.asList(supplier));
-        } else if (!categoryUrl.equals("") && supplierName.equals("")) {
+        if (!categoryUrl.equals("")) {
             Category category = categoryService.getByCategoryUrl(categoryUrl);
             page = productService.getProductsByCategory(categoryUrl, minPrice, maxPrice, pageNum, pageSize, filed, sort);
-            List<Supplier> suppliers = supplierService.findSuppliersByCategory(categoryUrl);
-            result.put("suppliers", suppliers);
             result.put("categories", Arrays.asList(new CategoryConverter().entityToDto(category)));
-
-        } else {
-            page = productService.getProductsByCategoryAndSupplier(categoryUrl, supplierName, minPrice, maxPrice, pageNum, pageSize, filed, sort);
-            Supplier supplier = supplierService.findSupplierByName(supplierName);
-            Category category = categoryService.getByCategoryUrl(categoryUrl);
-
-            result.put("suppliers", Arrays.asList(supplier));
-            result.put("categories", Arrays.asList(new CategoryConverter().entityToDto(category)));
-
         }
 
         ProductConverter productConverter = new ProductConverter();

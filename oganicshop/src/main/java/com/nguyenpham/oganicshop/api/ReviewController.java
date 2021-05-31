@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,22 @@ public class ReviewController {
         this.userService = userService;
     }
 
+    @GetMapping("/review_of_product")
+    public ResponseEntity<?> getReviewsOfProduct(@RequestParam("productUrl") String productUrl) {
+        BaseResponse br = new BaseResponse();
+        List<ReviewResponse> listReview = reviewService.getReviewsOfProduct(productUrl);
+        if (listReview.size() > 0) {
+            br.setData(listReview);
+            br.setStatus(true);
+        } else {
+            br.setStatus(false);
+        }
+
+        return ResponseEntity.ok(br);
+    }
+
     @GetMapping("/my-review")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> getMyReviews(@RequestParam("currentPage") int currentPage, @RequestParam("pageSize") int pageSize) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Map<String, Object> response = new HashMap<>();
@@ -50,6 +66,7 @@ public class ReviewController {
     }
 
     @PostMapping("/post")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> postReview(@RequestBody ReviewRequest reviewRequest) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         try {
@@ -62,6 +79,7 @@ public class ReviewController {
     }
 
     @PostMapping("/reply")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<?> replyReview(@RequestBody SubReviewRequest postSubReview) {
         SubReviewResponse response = reviewService.saveSubReview(postSubReview);
         if (response != null) {
@@ -71,6 +89,7 @@ public class ReviewController {
     }
 
     @PostMapping("/likeComment")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public int likeComment(@RequestBody ObjectNode object) {
         try {
             long reviewId = object.get("reviewId").asLong();

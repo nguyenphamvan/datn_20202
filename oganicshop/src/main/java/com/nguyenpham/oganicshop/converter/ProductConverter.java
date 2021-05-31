@@ -2,7 +2,6 @@ package com.nguyenpham.oganicshop.converter;
 
 import com.nguyenpham.oganicshop.dto.ProductRequest;
 import com.nguyenpham.oganicshop.dto.ProductResponse;
-import com.nguyenpham.oganicshop.dto.ReviewResponse;
 import com.nguyenpham.oganicshop.entity.Product;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +22,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponse.setBaseDescription(product.getBaseDescription());
         productResponse.setDetailDescription(product.getDetailDescription().trim());
         productResponse.setCategoryName(product.getCategory().getCategoryName());
-        productResponse.setSupplierName(product.getSupplier());
+//        productResponse.setSupplierName(product.getSupplier());
 
         //image
         if (product.getImage() != null) {
@@ -50,16 +49,16 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         } else {
             productResponse.setStatus("Đang bán");
         }
-
-        if (product.getReviews() != null) {
-            ReviewConverter converter = new ReviewConverter();
-            List<ReviewResponse> reviews = product.getReviews().stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
-            productResponse.setReviews(reviews);
-            productResponse.setNumberOfReviews(product.getReviews().size());
-        } else {
-            productResponse.setReviews(null);
-            productResponse.setNumberOfReviews(0);
-        }
+//
+//        if (product.getReviews() != null) {
+////            ReviewConverter converter = new ReviewConverter();
+////            List<ReviewResponse> reviews = product.getReviews().stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
+////            productResponse.setReviews(reviews);
+//            productResponse.setNumberOfReviews(product.getReviews().size());
+//        } else {
+////            productResponse.setReviews(null);
+//            productResponse.setNumberOfReviews(0);
+//        }
 
         return productResponse;
     }

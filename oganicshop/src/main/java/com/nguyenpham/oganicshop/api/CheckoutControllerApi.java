@@ -61,6 +61,7 @@ public class CheckoutControllerApi {
         Map<String, Object> response = new HashMap<>();
         if (cart != null) {
             response.put("order", orderService.getInfoCheckout(cart));
+            response.put("listOrderItem", cart.values());
             br.setStatus(true);
             br.setData(response);
         } else {

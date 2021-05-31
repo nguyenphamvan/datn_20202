@@ -6,8 +6,6 @@ import com.nguyenpham.oganicshop.dto.ProductRequest;
 import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.Review;
-import com.nguyenpham.oganicshop.entity.Supplier;
 import com.nguyenpham.oganicshop.repository.CategoryRepository;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.repository.SupplierRepository;
@@ -26,7 +24,6 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -149,14 +146,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsByCategory(
-            String categoryUrl,
-            int minPrice,
-            int maxPrice,
-            int pageNum,
-            int pageSize,
-            String sortField,
-            String sortDir )
+    public Page<Product> getProductsByCategory(String categoryUrl, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir )
     {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
@@ -164,26 +154,6 @@ public class ProductServiceImpl implements ProductService {
             return productRepository.findProductsByCategoryCategoryUrlAndFilterPrice(categoryUrl, minPrice, maxPrice, pageable);
         }
         return productRepository.findProductsByCategoryCategoryUrl(categoryUrl, pageable);
-    }
-
-    @Override
-    public Page<Product> getProductsBySupplier(String Supplier, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
-                sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-        if (((minPrice > 0) || (maxPrice > 0)) && (minPrice < maxPrice)) {
-            return productRepository.findProductsBySupplierNameAndFilterPrice(Supplier, minPrice, maxPrice, pageable);
-        }
-        return productRepository.findProductsBySupplierName(Supplier, pageable);
-    }
-
-    @Override
-    public Page<Product> getProductsByCategoryAndSupplier(String categoryUrl, String supplierName, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
-                sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-        if (((minPrice > 0) || (maxPrice > 0)) && (minPrice < maxPrice)) {
-            return productRepository.findProductsByCategoryAndSupplierAndFilterPrice(categoryUrl, supplierName, minPrice, maxPrice, pageable);
-        }
-        return productRepository.findProductsByCategoryAndSupplier(categoryUrl, supplierName, pageable);
     }
 
     @Override

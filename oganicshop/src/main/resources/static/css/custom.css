@@ -47,7 +47,7 @@ i.yellow {
     color: #F7941D;
 }
 
-.review-comment_sub-comments .view-reply-more, .view-reply-less {
+.review-comment_sub-comments .view-reply-more {
     padding-top: 10px;
     cursor: pointer;
 }

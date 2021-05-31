@@ -1720,7 +1720,6 @@ Version:1.0
     display: inline-block;
 }
 .product-area .nav-tabs li a {
-    color: #333;
     text-transform: uppercase;
     display: inline-block;
     position: relative;
@@ -4356,7 +4355,7 @@ Version:1.0
 /* Blog Single CSS */
 .blog-single{
     background:#fff;
-    padding:70px 0 100px;
+    /*padding:70px 0 100px;*/
 }
 .blog-single .blog-single-main {
     margin-top: 30px;
@@ -4479,9 +4478,9 @@ Version:1.0
     background:#F7941D;
 }
 /* Comments */
-.blog-single .comments{
-    margin-top:40px;
-}
+/*.blog-single .comments{*/
+/*    margin-top:40px;*/
+/*}*/
 .blog-single .comments .comment-title {
     position: relative;
     font-size: 18px;
@@ -4501,9 +4500,7 @@ Version:1.0
     width: 3px;
     background:#F7941D;
 }
-.blog-single .comments{
 
-}
 .blog-single .comments .single-comment {
     position: relative;
     margin-bottom: 40px;

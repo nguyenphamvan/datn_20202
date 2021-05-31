@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ReviewService {
 
-//    List<ReviewResponse> getReviewsOfProduct(long productId);
+    List<ReviewResponse> getReviewsOfProduct(String productUrl);
     ReviewResponse saveReview(ReviewRequest postReview);
     SubReviewResponse saveSubReview(SubReviewRequest postSubReview);
     List<ReviewResponse> getListReviews(User user);

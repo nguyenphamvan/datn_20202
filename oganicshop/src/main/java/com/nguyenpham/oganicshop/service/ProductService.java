@@ -13,8 +13,6 @@ public interface ProductService {
     long countNumberProduct();
     List<ProductResponse> getAllProduct();
     Page<Product> getProductsByCategory(String categoryUrl, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
-    Page<Product> getProductsBySupplier(String Supplier, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
-    Page<Product> getProductsByCategoryAndSupplier(String categoryUrl, String supplierName, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
     Page<Product> getProductsByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir);
     int getAmountAvailable(String productUrl);
     boolean isProvideEnoughQuantity(String productUrl, int quantity);

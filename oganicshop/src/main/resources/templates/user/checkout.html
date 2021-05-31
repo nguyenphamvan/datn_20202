@@ -6,6 +6,7 @@
     <!-- Title Tag  -->
     <title>Thanh toán đơn hàng</title>
     <th:block th:include="user/common/header_tag_common"/>
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
     <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
     <style type="text/css">
         .header .cart-item-list li {
@@ -106,6 +107,13 @@
             }
         }
 
+        .shop.checkout .single-widget .checkbox {
+            text-align: left;
+            margin: 0;
+            padding: 0px 30px;
+            /* margin-top: 30px; */
+        }
+
     </style>
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
 
@@ -117,7 +125,7 @@
 <!--/ End Header -->
 
 <!-- Breadcrumbs -->
-<div class="breadcrumbs">
+<div class="breadcrumbs" style="background-color: #fff;">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -134,22 +142,36 @@
 <!-- End Breadcrumbs -->
 
 <!-- Start Checkout -->
-<section class="shop checkout section">
+<section class="shop checkout section" style="background-color: #F6F7FB;">
     <div class="container">
         <!-- Form -->
         <form class="form" id="payment">
             <div class="row">
-                <div class="col-lg-4 col-12">
-                    <div class="checkout-form" style="border: 1px solid #eee; margin-top: 0px; min-height: 430px;">
+                <div class="col-lg-7">
+                    <div class="header" style="border-radius: 5px; margin-bottom: 20px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px); background-color: #fff;">
                         <div class="single-widget">
-                            <h2>Thông tin liên hệ</h2>
-                            <div class="contact-address" style="margin: 25px 30px;">
-                                <div class="title"
-                                     style="border-bottom: 1px solid rgb(201, 201, 201); display: flex;justify-content: space-between; line-height: 31px; padding-bottom: 10px;">
-                                    <span>Địa chỉ nhận hàng</span>
-                                    <a class="link" data-toggle="modal" data-target="#addressModal"
-                                       style="color: rgb(13, 92, 182); cursor: pointer;">Thay đổi</a>
-                                </div>
+                            <h2>Đơn hàng gồm có</h2>
+                            <div class="shopping-item" style="padding: 10px 30px;">
+                                <ul class="cart-item-list">
+                                    <li>
+                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
+                                        <h4><a href="#">Woman Ring</a></h4>
+                                        <p><span class="quantity">1x</span> - <span class="amount">$99.00</span></p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!--/ End Shopping Item -->
+                    </div>
+                    <div class="checkout-form" style="border-radius: 5px; margin-top: 0px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px); background-color: #fff;">
+                        <div class="single-widget">
+                            <div style="display: flex; justify-content: space-between">
+                                <h2>Địa chỉ giao hàng</h2>
+                                <a style="margin: auto 30px auto 0px; font-size: 13px; color: rgb(13, 92, 182); cursor: pointer;"
+                                   data-toggle="modal" data-target="#addressModal">Thay đổi</a>
+                            </div>
+                            <div class="contact-address" style="padding: 10px 30px;">
                                 <div class="address" style="display: inline-grid; padding-bottom: 10px;">
                                     <span class="name"
                                           style="font-size: 15px; font-weight: 700; margin-top: 15px;margin-bottom: 10px;"></span>
@@ -158,7 +180,7 @@
                                     <span class="phone"></span>
                                 </div>
 
-                                <div class="form-group note" style="margin-top: 40px;">
+                                <div class="form-group note">
                                     <label>Ghi chú<span>*</span></label>
                                     <textarea name="note" rows="3"></textarea>
                                 </div>
@@ -167,20 +189,22 @@
                         <!--/ End Form -->
                     </div>
                 </div>
-                <div class="col-lg-4 col-12">
-                    <div class="order-details" style="margin-top: 0px; min-height: 430px;">
+                <div class="col-lg-5">
+                    <div class="order-details" style="border-radius: 5px; margin-top: 0px; margin-bottom: 20px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px); background-color: #fff;">
                         <!-- Order Widget -->
-                        <div class="single-widget">
+                        <div class="single-widget" style="margin-bottom: 0px;">
                             <h2>SỐ TIỀN THANH TOÁN</h2>
                             <div class="content">
-                                <ul>
-                                    <li>Tổng các mặt hàng<span id="sub-total" th:utext="${session.subCart}"></span></li>
-                                    <li>(+) Phí vận chuyển<span id="ship-fee">0</span></li>
-                                    <li>(-) Giảm giá<span id="discount">0</span></li>
-                                    <li class="last">Tổng thanh toán
-                                        <span id="total-cart" th:utext="${session.subCart}"></span>
-                                    </li>
-                                </ul>
+                                <div class="checkbox" style="padding: 0px 0px;">
+                                    <ul style="margin-top: 0px;">
+                                        <li>Tổng các mặt hàng<span id="sub-total" th:utext="${session.subCart}"></span></li>
+                                        <li>(+) Phí vận chuyển<span id="ship-fee">0</span></li>
+                                        <li>(-) Giảm giá<span id="discount">0</span></li>
+                                        <li class="last">Tổng thanh toán
+                                            <span id="total-cart" th:utext="${session.subCart}"></span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <!--/ End Order Widget -->
@@ -216,11 +240,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-12">
-                    <div class="header" style="border: 1px solid #eee; margin-top: 0px; min-height: 430px;">
+                    <div class="header" style="border-radius: 5px; margin-top: 0px; margin-bottom: 20px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px); background-color: #fff;">
                         <!-- Order Widget -->
-                        <div class="single-widget">
+                        <div class="single-widget" style="margin-bottom: 0px;">
                             <h2>Hình thức giao hàng</h2>
                             <div class="content">
                                 <div class="checkbox">
@@ -271,7 +293,7 @@
 <!--/ End Checkout -->
 
 <!-- Start Shop Services Area  -->
-<section class="shop-services section home">
+<section class="shop-services section home" style="background-color: white;">
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-6 col-12">
@@ -387,12 +409,21 @@
 <!-- /End Footer Area -->
 
 <!-- The Modal -->
-<div id="myModal" class="myModal" style="display: none;">
+<div id="paymentModal" class="myModal" style="display: none;">
     <!-- Modal content -->
     <div class="modal-content">
         <span class="closeModal">&times;</span>
         <div class="loader"></div>
         <p style="color:#424646;"></p>
+    </div>
+</div>
+
+<div id="myModal" class="myModal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/coupon.png">
+        <p></p>
     </div>
 </div>
 
@@ -413,13 +444,15 @@
             } else {
                 let data = {"couponCode": couponCode}
                 applyCoupon(data);
+                $("#myModal").css("display", "block");
+                $("#myModal > div.modal-content > p").text("Mã giảm giá đã được áp dụng!");
             }
         });
 
         $(".shop.checkout .single-widget.get-button #payment-order").on("click", function (e) {
             e.preventDefault();
-            $("#myModal").css("display", "block");
-            $("#myModal > div.modal-content > p").text("Vui lòng chờ trong giây lát!");
+            $("#paymentModal").css("display", "block");
+            $("#paymentModal > div.modal-content > p").text("Vui lòng chờ trong giây lát!");
             payment();
         });
 
@@ -430,9 +463,9 @@
                 $("span#ship-fee").text("$100");
             }
             let subTotal = $("span#sub-total").text().replace("$","");
-            let promotion = $("span#promotion").text().replace("$","");
+            let promotion = $("span#discount").text().replace("$","");
             let shipFee = $("span#ship-fee").text().replace("$","");
-            $("span#total-cart").text(parseInt(subTotal) + parseInt(shipFee) - parseInt(promotion));
+            $("span#total-cart").text("$" + (parseInt(subTotal) + parseInt(shipFee) - parseInt(promotion)).toString());
         });
 
         $(document).on("click", "#addressModal > div > div > div.modal-body > div > div > div > p.action", function () {

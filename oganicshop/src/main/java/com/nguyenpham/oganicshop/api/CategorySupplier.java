@@ -2,7 +2,6 @@ package com.nguyenpham.oganicshop.api;
 
 import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.entity.Category;
-import com.nguyenpham.oganicshop.entity.Supplier;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;

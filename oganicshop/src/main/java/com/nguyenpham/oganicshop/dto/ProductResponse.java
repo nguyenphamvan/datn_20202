@@ -29,6 +29,6 @@ public class ProductResponse {
     private int amountSold;
     private String status;
     private String categoryName;
-    private String supplierName;
+//    private String supplierName;
     private List<ReviewResponse> reviews;
 }

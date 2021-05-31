@@ -11,24 +11,23 @@
     <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
 
     <style>
-
-        table, td {
-            border: 1px solid #8c8585;
+        .blog-single .single-comment .content h4 > span:nth-child(1) {
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            display: inline-block;
+            text-transform: capitalize;
         }
 
-        table {
-            border-collapse: collapse;
+        div.list-reply-item > div:nth-child(1) {
+            margin-top: 20px;
         }
 
-        tbody > th, td {
-            text-align: left;
-            padding: 2px;
-        }
-
-        tbody > tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+        /*.blog-single .share-social .content-tags .tag-inner li a > i.ti-star {*/
+        /*    color: #F7941D;*/
+        /*}*/
     </style>
+
 </head>
 <body class="js" style="background-color: #F6F7FB;">
 
@@ -77,7 +76,7 @@
                                 <span style="margin-left: 10px;"></span>
                             </div>
                             <div class="quickview-stock">
-                                <span><i class="far fa-check-circle"></i> còn hàng</span>
+                                <span><i class="fa fa-check-circle"></i> còn hàng</span>
                             </div>
                         </div>
 
@@ -112,12 +111,6 @@
                                 <a th:if="${#request.userPrincipal}" class="btn min"><i class="ti-heart"></i></a>
                             </div>
                         </div>
-
-                        <!--description-->
-                        <div class="quickview-peragraph card">
-                            <p></p>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -127,100 +120,168 @@
                 <div class="product__details__tab" style="margin: 0px 16px 0px 16px;">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">Thông
-                                tin về sản phẩm</a>
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">
+                                Thông tin về sản phẩm
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" aria-selected="false">Bình
-                                luận <span>(1)</span></a>
+                            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" aria-selected="false">
+                                Bình luận <span></span>
+                            </a>
                         </li>
                     </ul>
-                    <div class="tab-content" style="padding: 40px 0px 0px 0px; background-color: white;">
+                    <div class="tab-content" style="background-color: white;">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Thông tin chi tiết về sản phẩm</h6>
                                 <p></p>
                             </div>
                         </div>
-                        <div class="tab-pane" id="tabs-3" role="tabpanel">
-                            <div class="col-md-12">
-                                <div class="list-review" style="margin: 0px 32px 0px 32px;">
-                                    <ul>
-                                        <li class="review-item" style="padding-bottom: 10px;">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="review-user">
-                                                        <div style="float: left; border-radius: 10px;"
-                                                             class="review-avatar">
-                                                            <img style="width: 40px;"
-                                                                 th:src="@{/images/user-avatar.jpg}" alt="Image">
-                                                        </div>
-                                                        <div style="float: left; margin-left: 10px;">
-                                                            <h6 class="user-name"></h6>
-                                                            <p class="comment-date"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="review-item-detail" style="display: flex; flex-direction: column;">
-                                                        <div class="review-des">
-                                                            <div style="display: flex; float: right;">
-                                                                Đánh giá :
-                                                                <span style="margin-left: 5px;"></span>
-                                                            </div>
-                                                            <div class="title">
-                                                                <p style="font-size: 15px;"><strong></strong></p>
-                                                            </div>
-                                                            <div class="review-content">
-                                                                <span></span>
-                                                            </div>
-                                                            <div class="review-comment-image">
-                                                                <img style="border: 1px solid #ada4a4; border-radius: 5px; max-width: 20%; max-height: 100px; height: 80px;">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="like-and-review" style="padding-top: 10px;">
-                                                        <span class="like" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
-                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block; border: 1px solid #333;">
-                                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span></span></span>
-                                                        </span>
-                                                        <span class="reply" style="padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;
-                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">
-                                                            <i class="fa fa-reply"
-                                                               aria-hidden="true"></i><span>Trả lời</span>
-                                                        </span>
-                                                    </div>
-
-                                                    <div class="reply-input" style="display: none;">
-                                                        <div class="form-group required">
-                                                            <div style="padding-top: 15px;">
-                                                                <form class="form-inline" method="post">
-                                                                    <textarea class="form-control" type="text"
-                                                                              placeholder="Viết câu trả lời"
-                                                                              style="width: 90%;" rows="1"></textarea>
-                                                                    <input type="hidden" class="id-root-review">
-                                                                    <button type="button"
-                                                                            class="btn btn-md btn-link send-reply-comment"
-                                                                            style="width: 10%;">Gửi
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="review-comment_sub-comments">
-                                                        <div class="view-reply-more">Xem tất cả <span></span> câu trả lời
-                                                        </div>
-                                                        <div class="list-reply-item"></div>
-                                                        <div class="view-reply-less">Ẩn <span></span> câu trả lời</div>
+                        <div class="tab-pane blog-single" id="tabs-3" role="tabpanel" style="padding: 20px 0px 0px 0px;">
+                            <div class="col-12">
+                                <div class="share-social">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="content-tags" style="display: flex; margin-left: 55px; margin-top: 0px; margin-bottom: 20px;">
+                                                <span style="margin-bottom: auto; margin-top: auto;">Lọc theo</span>
+                                                <ul class="tag-inner">
+                                                    <li><a href="#">1 <i class="ti-star"></i></a></li>
+                                                    <li><a href="#">2 <i class="ti-star"></i></a></li>
+                                                    <li><a href="#">3 <i class="ti-star"></i></a></li>
+                                                    <li><a href="#">4 <i class="ti-star"></i></a></li>
+                                                    <li><a href="#">5 <i class="ti-star"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="comments">
+                                    <!-- Single Comment -->
+                                    <div class="single-comment" style="margin-left: 55px;">
+                                        <img src="https://via.placeholder.com/80x80" alt="#">
+                                        <div class="content">
+                                            <h4>
+                                                <span></span>
+                                                <span></span>
+                                                <span style="display: flex;">
+                                                    <span class="rating" style="display: flex; margin-right: 8px;"></span>
+                                                    <span class="title"></span>
+                                                </span>
+                                            </h4>
+                                            <p class="content"></p>
+                                            <div class="like-and-review">
+                                                <span class="like"
+                                                      style="color: rgb(13, 92, 182);
+                                                      padding: 8px 16px 9px; line-height: 20px;
+                                                      font-weight: 500;border-radius: 4px;
+                                                      margin: 0px 8px 0px 0px;cursor: pointer;
+                                                      display: inline-block; border: 1px solid #333;">
+                                                      <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                                                    <span>Like <span></span></span></span>
+                                                <span class="reply"
+                                                      style="color: rgb(13, 92, 182);
+                                                      padding: 8px 16px 9px;
+                                                      line-height: 20px;
+                                                      font-weight: 500;
+                                                      border-radius: 4px;
+                                                      margin: 0px 8px 0px 0px;
+                                                      cursor: pointer;display: inline-block;">
+                                                      <i class="fa fa-reply" aria-hidden="true"></i><span> Trả lời</span></span>
+                                            </div>
+                                            <div class="reply-input">
+                                                <div class="form-group required">
+                                                    <div style="padding-top: 15px;">
+                                                        <form class="form-inline" method="post">
+                                                            <textarea class="form-control" type="text" placeholder="Viết câu trả lời" style="width: 86%;"rows="1"></textarea>
+                                                            <input type="hidden" class="id-root-review">
+                                                            <button type="button" class="btn btn-md btn-link send-reply-comment">
+                                                                Gửi
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <hr/>
-                                        </li>
-                                    </ul>
+                                            <div class="view-reply-more" style="color: rgb(13, 92, 182); margin-top: 10px; cursor: pointer">Xem tất cả <span>2</span> câu trả lời</div>
+                                            <div class="list-reply-item">
+
+                                            </div>
+                                            <div class="view-reply-less" style="color: rgb(13, 92, 182); cursor: pointer;">Ẩn <span>2</span> câu trả lời</div>
+                                        </div>
+                                    </div>
+                                    <!-- End Single Comment -->
                                 </div>
                             </div>
+<!--                            <div class="col-md-12">-->
+<!--                                <div class="list-review" style="margin: 0px 32px 0px 32px;">-->
+<!--                                    <ul>-->
+<!--                                        <li class="review-item" style="padding-bottom: 10px;">-->
+<!--                                            <div class="row">-->
+<!--                                                <div class="col-md-3">-->
+<!--                                                    <div class="review-user">-->
+<!--                                                        <div class="review-avatar">-->
+<!--                                                            <img style="display: block; margin-left: auto; margin-right: auto; width: 40px;" th:src="@{/images/user-avatar.jpg}" alt="image">-->
+<!--                                                        </div>-->
+<!--                                                        <div style="float: left; margin-left: 10px;">-->
+<!--                                                            <h6 class="user-name"></h6>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col-md-9">-->
+<!--                                                    <div class="review-item-detail" style="display: flex; flex-direction: column;">-->
+<!--                                                        <div class="review-des">-->
+<!--                                                            <div class="title" style="display: flex;">-->
+<!--                                                                <span style="display: flex; margin-right: 8px; "></span><span style="font-size: 16px; font-weight: 600; color: rgb(36, 36, 36);"></span>-->
+<!--                                                            </div>-->
+<!--                                                            <div class="review-content" style="margin-top: 16px;">-->
+<!--                                                                <span style="font-size: 14px; line-height: 20px;"></span>-->
+<!--                                                            </div>-->
+<!--                                                            <div class="review-date" style="margin-top: 8px;">-->
+<!--                                                                <span></span>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+
+<!--                                                    <div class="like-and-review" style="padding-top: 10px;">-->
+<!--                                                        <span class="like" style="color: rgb(13, 92, 182); padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;-->
+<!--                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block; border: 1px solid #333;">-->
+<!--                                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span></span></span>-->
+<!--                                                        </span>-->
+<!--                                                        <span class="reply" style="color: rgb(13, 92, 182); padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;-->
+<!--                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">-->
+<!--                                                            <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>-->
+<!--                                                        </span>-->
+<!--                                                    </div>-->
+
+<!--                                                    <div class="reply-input" style="display: none;">-->
+<!--                                                        <div class="form-group required">-->
+<!--                                                            <div style="padding-top: 15px;">-->
+<!--                                                                <form class="form-inline" method="post">-->
+<!--                                                                    <textarea class="form-control" type="text"-->
+<!--                                                                              placeholder="Viết câu trả lời"-->
+<!--                                                                              style="width: 86%;" rows="1"></textarea>-->
+<!--                                                                    <input type="hidden" class="id-root-review">-->
+<!--                                                                    <button type="button" class="btn btn-md btn-link send-reply-comment">-->
+<!--                                                                        Gửi-->
+<!--                                                                    </button>-->
+<!--                                                                </form>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="review-comment_sub-comments">-->
+<!--                                                        <div class="view-reply-more" style="color: rgb(13, 92, 182);">Xem tất cả <span></span> câu trả lời-->
+<!--                                                        </div>-->
+<!--                                                        <div class="list-reply-item"></div>-->
+<!--                                                        <div class="view-reply-less" style="color: rgb(13, 92, 182);">Ẩn <span></span> câu trả lời</div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <hr/>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -382,13 +443,10 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-
         let productUrl = window.location.pathname.replace("/products/", "").replace(".html", "");
-        console.log(productUrl);
-
-        // let productUrl = /*[[${productUrl}]]*/;
         getListCategory();
         displayProduct(productUrl);
+        displayReviewOfProduct(productUrl)
         actionForModal();
 
         $(document).on("click", "div.view-reply-more", function () {
@@ -403,9 +461,8 @@
             $(this).parent().find(".view-reply-more").show();
         });
 
-
-        $(document).on("click", ".reply", function () {
-            let idReview = $(this).closest("li").attr("data-id_comment");
+        $(document).on("click", "div.like-and-review > span.reply", function () {
+            let idReview = $(this).closest(".single-comment").attr("data-id_comment");
             if ($("#reply-review-" + idReview).css('display') === 'block') {
                 $("#reply-review-" + idReview).hide();
             } else if ($("#reply-review-" + idReview).css('display') === 'none') {
@@ -413,9 +470,7 @@
             }
         });
 
-
         $(document).on("click", ".send-reply-comment", function () {
-            alert("root comment : " + $(this).parent().find(".id-root-review").val());
             let userLogged = [[${#request.userPrincipal}]];
             if (userLogged !== null) {
                 let data = {
@@ -426,7 +481,6 @@
             } else {
                 alert("Bạn chưa đăng nhập");
             }
-
         });
 
 
@@ -475,7 +529,7 @@
         var actionLike = new Map();
         $(document).on("click", "div.like-and-review > span.like", function () {
             let thisLikeButton = $(this);
-            let reviewId = $(this).closest(".review-item").attr("data-id_comment");
+            let reviewId = $(this).closest(".single-comment").attr("data-id_comment");
             if (actionLike.has(reviewId) && actionLike.get(reviewId) === "like") {
                 thisLikeButton.css("background-color", "transparent");
                 actionLike.set(reviewId, "cancel");
@@ -490,8 +544,8 @@
             let data = JSON.stringify({
                 "reviewId": reviewId,
                 "action": actionLike.get(reviewId)
-            })
-            likeComment(data);
+            });
+            likeComment(thisLikeButton, data);
         });
 
 

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/admin/promotion")
 public class PromotionController {
 
@@ -34,6 +33,7 @@ public class PromotionController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     Object addPromotion(@ModelAttribute PromotionDto promotion) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -49,6 +49,7 @@ public class PromotionController {
     }
 
     @PutMapping("/edit/{couponId}")
+    @PreAuthorize("hasRole('ADMIN')")
     Object EditPromotion(@PathVariable("couponId") long couponId, @ModelAttribute PromotionDto promotion) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -64,6 +65,7 @@ public class PromotionController {
     }
 
     @PutMapping("/delete/{couponId}")
+    @PreAuthorize("hasRole('ADMIN')")
     Object deletePromotion(@PathVariable("couponId") long couponId) {
         Map<String, Object> response = new HashMap<>();
         response.put("data", null);

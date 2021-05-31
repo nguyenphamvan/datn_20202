@@ -337,6 +337,37 @@ function getListCategory() {
     });
 }
 
+function getListCategoryHome() {
+    $.ajax({
+        url: "/api/categories",
+        type: "GET",
+        contentType: "application/json",
+        success: function (categories) {
+            // show category
+            let html = "";
+            $.each(categories, function (index, item) {
+                html += "<li>\n" +
+                    "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
+                    "            <ul class=\"sub-category\">\n";
+                if (item.hasOwnProperty("subCategory")) {
+                    $.each(item["subCategory"], function (index, subItem) {
+                        html += "<li>\n" +
+                            "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
+                            "    </li>\n";
+                    });
+                }
+                html += "     </ul>\n" +
+                    "</li>";
+            });
+            $("body > header > div.header-inner > div > div > div > div.col-lg-3 > div > ul").append(html);
+
+        },
+        error: function (xhr) {
+            alert(xhr.responseText);
+        }
+    });
+}
+
 function genListProduct(products) {
     let firstItem = $("#list-product > div:first-child");
     $.each(products, function (index, item) {
@@ -1121,6 +1152,33 @@ function getOrderLogging(orderId) {
     });
 }
 
+function getAllCouponUser() {
+    $.ajax({
+        url: "/api/admin/promotion/all",
+        type: "GET",
+        contentType: "application/json",
+        success: function (data) {
+            let itemClone = $("body > section > div.container > div > div:nth-child(1)");
+            $.each(data, function (index, item) {
+                console.log(item);
+                let coupon = itemClone.clone();
+                coupon.find("p.code > span").text(item["code"]);
+                coupon.find("p.title").text(item["title"]);
+                if (item.hasOwnProperty("startDate") && item.hasOwnProperty("endDate")) {
+                    coupon.find("p.expires > span").text(item["endDate"]);
+                } else {
+                    coupon.find("p.expires").hide();
+                }
+                $("body > section > div.container > div").append(coupon);
+            });
+            itemClone.hide();
+        },
+        error: function () {
+            alert("có lỗi xảy ra, không lấy được danh sách Coupon");
+        }
+    });
+}
+
 function getListOrderItem(orderId) {
     $.ajax({
         url: "/api/order/" + orderId + "/list-item",
@@ -1172,17 +1230,14 @@ function displayProduct(productUrl) {
                     navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
                 });
 
-                $("div.breadcrumbs > div > div > div > div > ul > li:nth-child(3) > a").attr("href", "/products/" + product["productUrl"] + ".html")
-                    .text(product["productName"]);
+                $("div.breadcrumbs > div > div > div > div > ul > li:nth-child(3) > a").attr("href", "/products/" + product["productUrl"] + ".html").text(product["productName"]);
                 $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
                 $("div.modal-body > div > div:nth-child(2) > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
                 $("div.modal-body > div > div:nth-child(2) > div > div > span#final-price").text("$" + product["finalPrice"]);
                 $("div.modal-body > div > div:nth-child(2) > div > div > span#price").text("$" + product["price"]);
-                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-peragraph > p").html(product["detailDescription"]);
                 $("#add-cart").attr("productUrl", product["productUrl"]);
                 $("div.modal-body > div > div:nth-child(2) > div > div.quantity > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
                 // $("#tabs-1 > div > p").html(product["detailDescription"]);
-                $("section.product-area.shop-sidebar.shop.section > div > div.row > div > div > ul > li:nth-child(2) > a > span").text("(" + product["numberOfReviews"] + ")");
                 $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span").text("(" + product["numberOfReviews"] + " lượt bình luận)");
                 if (product["amount"] <= 0) {
                     $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-stock > span").hide();
@@ -1202,59 +1257,6 @@ function displayProduct(productUrl) {
                 }
                 $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span")
                     .text(" (" + product["numberOfReviews"] + " lượt bình luận)");
-
-                // reviews
-                let firstUl = $("#tabs-3 > div > div > ul > li:first-child");
-                $.each(product["reviews"], function (index, item) {
-                    let rowClone = firstUl.clone();
-                    rowClone.attr("data-id_comment", item["id"])
-                    rowClone.find("div > div.col-md-3 > div > div:nth-child(2) > h6").text(item["reviewerName"]);
-                    rowClone.find("div > div.col-md-3 > div > div:nth-child(2) > p").text(item["createdAt"]);
-                    rowClone.find("div.review-item-detail > div.review-des > div.title > p > strong").text(item["title"]);
-                    rowClone.find("div.review-item-detail > div.review-des > div.review-content > span").text(item["comment"]);
-                    rowClone.find("div.like-and-review > span.like > span > span").text("(" + item["numbersOfLike"] + ")");
-                    rowClone.find("div.reply-input").attr("id", "reply-review-" + item["id"]);
-                    rowClone.find("form > input.id-root-review").val(item["id"]);
-                    if (parseInt(item["rating"]) > 0) {
-                        for (let i = 0; i < parseInt(item["rating"]); i++) {
-                            rowClone.find("div.review-item-detail > div > div:nth-child(1) > span").append("<i class=\"yellow fa fa-star\"></i>");
-                        }
-                    }
-                    if ((5 - parseInt(item["rating"])) > 0) {
-                        for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
-                            rowClone.find("div.review-item-detail > div > div:nth-child(1) > span").append("<i class=\"fa fa-star\"></i>");
-                        }
-                    }
-                    if (item.hasOwnProperty("img")) {
-                        rowClone.find("div.review-item-detail > div > div.review-comment-image > img")
-                            .attr("src", "/images/image-product-review/" + item["productId"] + "/" + item["img"]);
-                    } else {
-                        rowClone.find("div.review-item-detail > div > div.review-comment-image > img").remove();
-                    }
-
-                    if (item.hasOwnProperty("subReviews")) {
-                        rowClone.find(".review-comment_sub-comments").show();
-                        $.each(item["subReviews"], function (index, subItem) {
-                            let html = "<div class=\"reply-item\">\n" +
-                                "           <div class=\"info-reply-user\">\n" +
-                                "                <span class=\"img-user-reply\"><img style=\"width: 30px;\" src=\"/images/user-avatar.jpg\" alt=\"image\"></span>\n" +
-                                "                     <span class=\"user-name\">" + subItem["reviewerName"] + "</span>\n" +
-                                "                     <span class=\"comment-date\">" + subItem["createdDate"] + "</span>\n" +
-                                "                     <p class=\"reply-content\">" + subItem["content"] + "</p>\n" +
-                                "                </div>\n" +
-                                "          </div>";
-                            rowClone.find(".list-reply-item").append(html);
-                        });
-
-                        rowClone.find(".list-reply-item").attr("id", "reply-items-list-" + item["id"]);
-                        rowClone.find("div > div.col-md-9 > div.review-comment_sub-comments > div.view-reply-more > span").text(item["subReviews"].length);
-                        rowClone.find("div > div.col-md-9 > div.review-comment_sub-comments > div.view-reply-less > span").text(item["subReviews"].length);
-                    } else {
-                        rowClone.find(".review-comment_sub-comments").hide();
-                    }
-                    rowClone.insertAfter(firstUl);
-                });
-                firstUl.hide();
             } else {
                 // hoặc redirect về trang 404
                 $("body > section > div").empty().append("<div class='center'>Không tìm thấy sản phẩm</div>");
@@ -1264,6 +1266,88 @@ function displayProduct(productUrl) {
             alert(xhr.responseText);
         }
     });
+}
+
+function displayReviewOfProduct(productUrl) {
+    $.ajax({
+        url: "/api/review/review_of_product?productUrl=" + productUrl,
+        type: "GET",
+        dataType: 'json',
+        success: function (res) {
+            if (res["status"] === true) {
+                $("section.product-area.shop-sidebar.shop.section > div > div.row > div > div > ul > li:nth-child(2) > a > span").text("(" + res["data"].length + ")");
+
+                let firstUl = $("#tabs-3 > div:nth-child(2) > div > div:nth-child(1)");
+                $.each(res["data"], function (index, item) {
+                    let rowClone = firstUl.clone();
+                    rowClone.attr("data-id_comment", item["id"])
+                    rowClone.find("div > h4 > span:nth-child(1)").text(item["reviewerName"]);
+                    rowClone.find("div > h4 > span:nth-child(2)").text(item["createdAt"]);
+                    rowClone.find("div > h4 > span:nth-child(3) > span.title").text(item["title"]);
+                    rowClone.find("div > p.content").text(item["comment"]);
+
+                    rowClone.find("div > div.like-and-review > span.like > span > span").text("(" + item["numbersOfLike"] + ")");
+                    rowClone.find("div.reply-input").attr("id", "reply-review-" + item["id"]).hide();
+                    rowClone.find("form > input.id-root-review").val(item["id"]);
+                    rowClone.find(".list-reply-item").attr("id", "reply-items-list-" + item["id"]);
+                    if (parseInt(item["rating"]) > 0) {
+                        for (let i = 0; i < parseInt(item["rating"]); i++) {
+                            rowClone.find("div > h4 > span:nth-child(3) > span.rating").append("<i class=\"yellow fa fa-star\"></i>");
+                        }
+                    }
+                    if ((5 - parseInt(item["rating"])) > 0) {
+                        for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
+                            rowClone.find("div > h4 > span:nth-child(3) > span.rating").append("<i class=\"fa fa-star\"></i>");
+                        }
+                    }
+
+                    if (item.hasOwnProperty("subReviews")) {
+                        rowClone.find(".review-comment_sub-comments").show();
+                        $.each(item["subReviews"], function (index, subItem) {
+                            let html = "";
+                            if (index === (item["subReviews"].length - 1)) {
+                                html = "<div class=\"single-comment\" style='margin-bottom: 0px;'>\n";
+                            } else {
+                                html = "<div class=\"single-comment\">\n";
+                            }
+                            html += "<img src=\"https://via.placeholder.com/80x80\" alt=\"#\">\n" +
+                                "       <div class=\"content\">\n" +
+                                "           <h4>" +
+                                "               <span>" + subItem["reviewerName"] + "</span>\n" +
+                                "               <span>" + subItem["createdDate"] + "</span>" +
+                                "           </h4>\n" +
+                                "           <p>" + subItem["content"] + "</p>\n" +
+                                "       </div>\n" +
+                                "   </div>";
+                            rowClone.find(".list-reply-item").append(html);
+                        });
+                        rowClone.find("div.view-reply-more > span").text(item["subReviews"].length);
+                        rowClone.find("div.view-reply-less > span").text(item["subReviews"].length);
+                        rowClone.find(".list-reply-item").hide();
+                        rowClone.find("div.view-reply-more").show();
+                        rowClone.find("div.view-reply-less").hide();
+
+                    } else {
+                        rowClone.find(".review-comment_sub-comments").hide();
+                    }
+                    rowClone.insertAfter(firstUl);
+                });
+                firstUl.remove();
+            }
+            else {
+                $("#tabs-3").empty().append("<div class='col-12'>" +
+                    "   <div class='reviews-empty' style='text-align: center; min-height: 160px;'>" +
+                    "       <img src='/images/review.png' style='width: 100px;'>" +
+                    "       <p style='#333; margin-top: 10px; font-size: 16px; font-weight: 500;'>Sản phẩm chưa có bình luận nào</p>" +
+                    "   </div>" +
+                    "</div>")
+            }
+        },
+        error: function (xhr) {
+            alert(xhr.responseText);
+        }
+    });
+
 }
 
 function applyCoupon(couponCode) {
@@ -1281,7 +1365,7 @@ function applyCoupon(couponCode) {
                 "<li>(+) Phí vận chuyển<span id=\"ship-fee\">$" + order["shipFee"] + "</span></li>\n" +
                 "<li>(-) Giảm giá<span id=\"discount\">$" + order["discount"] + "</span></li>\n" +
                 "<li class=\"last\">Tổng thanh toán\n" +
-                "    <span id=\"total-cart\"$>" + order["total"] + "</span>\n" +
+                "    <span id=\"total-cart\"$>$" + order["total"] + "</span>\n" +
                 "</li>"
             );
         },
@@ -1297,7 +1381,21 @@ function getInfoPayment() {
         type: "GET",
         contentType: "application/json",
         success: function (res) {
+            console.log(res);
             if (res["status"] === true) {
+
+                let listOrderItem = res["data"]["listOrderItem"];
+                let firstItem = $("#payment > div > div.col-lg-7 > div.header > div > div > ul > li:nth-child(1)");
+                $.each(listOrderItem, function( index, item ) {
+                    let itemClone = firstItem.clone();
+                    itemClone.find("h4 > a").attr("href", "/products/" + item["product"]["url"] + ".html").text(item["product"]["name"]);
+                    itemClone.find(".quantity").text(item["quantity"] + "x");
+                    itemClone.find(".amount").text("$" + item["product"]["finalPrice"]);
+                    itemClone.find("a > img").attr("src", "/images/products/" + item["product"]["id"] + "/" + item["product"]["image"].split(",")[0]);
+                    itemClone.insertAfter(firstItem);
+                });
+                firstItem.remove();
+
                 let order = res["data"]["order"];
                 if (order.hasOwnProperty("address")) {
                     $(".contact-address .address .name").text(order["address"]["contactReceiver"]);
@@ -1376,19 +1474,31 @@ function replyReview(data) {
         dataType: 'json',
         contentType: 'application/json',
         success: function (result) {
+            console.log(result);
+
+        let html = "<div class=\"single-comment\">\n" +
+            "           <img src=\"https://via.placeholder.com/80x80\" alt=\"#\">\n" +
+            "           <div class=\"content\">\n" +
+            "               <h4>" +
+            "                   <span>" + result["reviewerName"] + "</span>\n" +
+            "                   <span>" + result["createdDate"] + "</span></h4>\n" +
+            "                   <p>" + result["content"] + "</p>\n" +
+            "           </div>\n" +
+            "      </div>";
             let numberOfReview = $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text();
+            console.log(numberOfReview);
+            if (numberOfReview === "") {
+                numberOfReview = 0;
+                console.log(numberOfReview);
+            }
             $("div.reply-input").hide();
-            let html = "<div  class=\"reply-item\">\n" +
-                "            <div class=\"info-reply-user\">\n" +
-                "                 <span class=\"img-user-reply\"><img src='/images/user-avatar.jpg' style=\"width: 30px;\" alt=\"Image\"></span>\n" +
-                "                 <span class=\"user-name\">" + result["reviewerName"] + "</span>\n" +
-                "                 <span class=\"comment-date\">" + result["createdDate"] + "</span>\n" +
-                "                 <p class=\"reply-content\">" + result["content"] + "</p>\n" +
-                "            </div>\n" +
-                "        </div>";
             $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text(parseInt(numberOfReview) + 1);
             $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-less").find('span').text(parseInt(numberOfReview) + 1);
             $(html).delay(500).prependTo("#reply-items-list-" + data["parentId"]).hide().slideDown().fadeIn();
+            $("#reply-items-list-" + data["parentId"]).show();
+            $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").hide();
+            $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-less").show();
+            $("#reply-items-list-" + data["parentId"]).show();
         },
         error: function (xhr) {
             alert("có lỗi");
@@ -1397,7 +1507,7 @@ function replyReview(data) {
     });
 }
 
-function likeComment(data) {
+function likeComment(thisLikeButton, data) {
     $.ajax({
         url: "/api/review/likeComment",
         data: data,

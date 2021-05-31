@@ -1,16 +1,6 @@
 package com.nguyenpham.oganicshop.api;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.nguyenpham.oganicshop.converter.CategoryConverter;
-import com.nguyenpham.oganicshop.converter.ProductConverter;
-import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.dto.ErrorMessage;
-import com.nguyenpham.oganicshop.dto.ProductResponse;
-import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.Supplier;
-import com.nguyenpham.oganicshop.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ExceptionHandle {

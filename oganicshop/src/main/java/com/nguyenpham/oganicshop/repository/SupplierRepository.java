@@ -1,7 +1,5 @@
 package com.nguyenpham.oganicshop.repository;
 
-import com.nguyenpham.oganicshop.entity.Product;
-import com.nguyenpham.oganicshop.entity.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
