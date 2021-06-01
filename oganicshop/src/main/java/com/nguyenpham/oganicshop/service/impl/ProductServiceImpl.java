@@ -8,7 +8,6 @@ import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.repository.CategoryRepository;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
-import com.nguyenpham.oganicshop.repository.SupplierRepository;
 import com.nguyenpham.oganicshop.service.ProductService;
 import com.nguyenpham.oganicshop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +30,11 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     private CategoryRepository categoryRepository;
-    private SupplierRepository supplierRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, SupplierRepository supplierRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
-        this.supplierRepository = supplierRepository;
     }
 
     @Override
@@ -45,7 +42,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse addProduct(ProductRequest productRequest) throws IOException {
         Product product = new ProductConverter().dtoToEntity(productRequest);
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
-        Supplier supplier = supplierRepository.findById(productRequest.getSupplierId()).get();
         product.setCategory(category);
 //        product.setSupplier(supplier);
         product = productRepository.save(product);
@@ -77,7 +73,6 @@ public class ProductServiceImpl implements ProductService {
         product.setDiscount(productRequest.getDiscount());
         product.setFinalPrice(productRequest.getPrice() - productRequest.getDiscount());
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
-        Supplier supplier = supplierRepository.findById(productRequest.getSupplierId()).get();
         product.setCategory(category);
 //        product.setSupplier(supplier);
         ArrayList<String> images = new ArrayList<>();

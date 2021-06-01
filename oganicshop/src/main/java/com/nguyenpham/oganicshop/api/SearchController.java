@@ -52,8 +52,7 @@ public class SearchController {
 
         CategoryConverter converter = new CategoryConverter();
         Map<String, Object> result = new HashMap<>();
-        Page<Product> page = productService.getProductsByKeyword(search, pageNum, pageSize, filed, sort);
-        Set<Supplier> setSuppliers = new HashSet<>();
+        Page<Product> page = productService.getProductsByKeyword(search, pageNum, pageSize, filed, sort);;
         Set<CategoryDto> setCategorySearch = new HashSet<>();
         for (Product p : page.getContent()) {
 //                setSuppliers.add(p.getSupplier());
@@ -61,7 +60,6 @@ public class SearchController {
         }
         ProductConverter productConverter = new ProductConverter();
         List<ProductResponse> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
-        result.put("suppliers", setSuppliers);
         result.put("categories", setCategorySearch);
         result.put("products", products);
         result.put("page", pageNum);

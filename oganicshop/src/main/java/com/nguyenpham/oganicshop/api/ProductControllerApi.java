@@ -11,7 +11,6 @@ import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.ProductService;
-import com.nguyenpham.oganicshop.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -30,14 +29,12 @@ public class ProductControllerApi {
     private OrderService orderService;
     private ProductService productService;
     private CategoryService categoryService;
-    private SupplierService supplierService;
 
     @Autowired
-    public ProductControllerApi(OrderService orderService, ProductService productService, CategoryService categoryService, SupplierService supplierService) {
+    public ProductControllerApi(OrderService orderService, ProductService productService, CategoryService categoryService) {
         this.orderService = orderService;
         this.productService = productService;
         this.categoryService = categoryService;
-        this.supplierService = supplierService;
     }
 
     // Admin
