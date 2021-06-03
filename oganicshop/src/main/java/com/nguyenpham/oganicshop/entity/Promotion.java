@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "discount")
+@Table(name = "promotion")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

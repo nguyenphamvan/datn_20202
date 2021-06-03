@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
 public class OrderControllerApi {
 
     private OrderService orderService;
@@ -29,12 +28,14 @@ public class OrderControllerApi {
     }
 
     @GetMapping("/api/admin/order/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllOrder() {
         List<OrderResponse> order = orderService.getAll();
         return ResponseEntity.ok(order);
     }
 
     @GetMapping("/api/admin/order/{orderId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
         OrderResponse order = orderService.getOrderDetail(orderId);
@@ -43,7 +44,8 @@ public class OrderControllerApi {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/api/admin/order//updateStatus/{orderId}")
+    @PutMapping("/api/admin/order/updateStatus/{orderId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public boolean updateStatus(@PathVariable("orderId") long orderId, @RequestBody ObjectNode objectNode) {
         int statusId = objectNode.get("status").asInt();
         String message = objectNode.get("message").asText();

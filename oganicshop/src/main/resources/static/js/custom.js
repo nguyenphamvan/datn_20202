@@ -1274,6 +1274,7 @@ function displayReviewOfProduct(productUrl) {
         type: "GET",
         dataType: 'json',
         success: function (res) {
+            console.log(res);
             if (res["status"] === true) {
                 $("section.product-area.shop-sidebar.shop.section > div > div.row > div > div > ul > li:nth-child(2) > a > span").text("(" + res["data"].length + ")");
 
