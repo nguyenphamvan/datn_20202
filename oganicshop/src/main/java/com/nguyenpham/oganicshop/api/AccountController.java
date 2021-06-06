@@ -1,5 +1,6 @@
 package com.nguyenpham.oganicshop.api;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.AddressRequest;
 import com.nguyenpham.oganicshop.dto.OrderResponse;
@@ -7,10 +8,10 @@ import com.nguyenpham.oganicshop.dto.UserRequest;
 import com.nguyenpham.oganicshop.dto.UserResponse;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
-import com.nguyenpham.oganicshop.service.CategoryService;
-import com.nguyenpham.oganicshop.service.OrderService;
-import com.nguyenpham.oganicshop.service.ReviewService;
-import com.nguyenpham.oganicshop.service.UserService;
+import com.nguyenpham.oganicshop.service.*;
+import com.nguyenpham.oganicshop.util.UserNotFoundException;
+import com.nguyenpham.oganicshop.util.Utils;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,13 +34,16 @@ public class AccountController {
     private UserService userService;
     private OrderService orderService;
     private ReviewService reviewService;
+    private EmailSender emailSender;
 
     @Autowired
-    public AccountController(UserConverter userConverter, UserService userService, OrderService orderService, ReviewService reviewService) {
+    public AccountController(UserConverter userConverter, UserService userService, OrderService orderService,
+                             ReviewService reviewService, EmailSender emailSender) {
         this.userConverter = userConverter;
         this.userService = userService;
         this.orderService = orderService;
         this.reviewService = reviewService;
+        this.emailSender = emailSender;
     }
 
     @GetMapping("/api/admin/account/all")
@@ -181,6 +188,35 @@ public class AccountController {
     @DeleteMapping("/api/account/wishlist/remove/{productId}")
     public ResponseEntity<?> removeProductFromWishlist(@PathVariable("productId") long productId) {
         return ResponseEntity.ok(userService.removeProductFromWishlist(productId));
+    }
+
+    @PostMapping("/api/forgot_password")
+    public boolean processForgotPassword(HttpServletRequest request, @RequestBody ObjectNode object) throws UserNotFoundException, UnsupportedEncodingException, MessagingException {
+        String email = object.get("email").asText();
+        String token = RandomString.make(30);
+        try {
+            userService.updateResetToken(token, email);
+            String resetPasswordLink = Utils.getSiteURL(request) + "/reset_password?token=" + token;
+            emailSender.sendEmail(email, resetPasswordLink);
+            return true;
+        } catch (UserNotFoundException ex) {
+            return false;
+        } catch (UnsupportedEncodingException | MessagingException e) {
+            return false;
+        }
+    }
+
+    @PostMapping("/api/reset_password")
+    public boolean processResetPassword(@RequestBody ObjectNode object) {
+        String token = object.get("token").asText();
+        String password = object.get("password").asText();
+        User user = userService.getUserByResetToken(token);
+        if (user == null) {
+            return false;
+        } else {
+            userService.updatePassword(user, password);
+            return true;
+        }
     }
 
 }

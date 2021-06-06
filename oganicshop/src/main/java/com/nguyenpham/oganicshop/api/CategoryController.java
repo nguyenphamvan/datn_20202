@@ -13,12 +13,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class CategorySupplier {
+public class CategoryController {
 
     private CategoryService categoryService;
 
     @Autowired
-    public CategorySupplier(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 

@@ -25,13 +25,13 @@ public class ReviewController {
 
     private ReviewService reviewService;
     private OrderService orderService;
-    private ProductService ProductService;
+    private ProductService productService;
 
     @Autowired
     public ReviewController(ReviewService reviewService, OrderService orderService, ProductService productService) {
         this.reviewService = reviewService;
         this.orderService = orderService;
-        this.ProductService = productService;
+        this.productService = productService;
     }
 
     @GetMapping("/review_of_product")

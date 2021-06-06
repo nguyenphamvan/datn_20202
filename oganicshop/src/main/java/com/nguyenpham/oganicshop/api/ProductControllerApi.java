@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.CategoryConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.BaseResponse;
+import com.nguyenpham.oganicshop.dto.CategoryDto;
 import com.nguyenpham.oganicshop.dto.ProductRequest;
 import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Category;
@@ -177,5 +178,51 @@ public class ProductControllerApi {
     @GetMapping("/api/products/check-provide-enough-quantity")
     public boolean isProvideEnoughQuantity(@RequestParam("productUrl") String productUrl, @RequestParam("quantity") int quantity) {
         return productService.isProvideEnoughQuantity(productUrl, quantity);
+    }
+
+    @PostMapping("/api/search")
+    public Object getProductsByKeyword(@RequestBody ObjectNode object) {
+
+        String search = "";
+        String sort = "asc";
+        String filed = "finalPrice";
+        int pageNum = 1;
+        int pageSize = 6;
+        if (object.has("keyword")) {
+            search = object.get("keyword").asText();
+        }
+        if (object.has("sort")) {
+            sort = object.get("sort").asText();
+        }
+        if (object.has("sortBy")) {
+            filed = object.get("sortBy").asText();
+        }
+        if (object.has("page")) {
+            pageNum = object.get("page").asInt();
+        }
+        if (object.has("pageSize")) {
+            pageSize = object.get("pageSize").asInt();
+        }
+
+        CategoryConverter converter = new CategoryConverter();
+        Map<String, Object> result = new HashMap<>();
+        Page<Product> page = productService.getProductsByKeyword(search, pageNum, pageSize, filed, sort);;
+        Set<CategoryDto> setCategorySearch = new HashSet<>();
+        for (Product p : page.getContent()) {
+//                setSuppliers.add(p.getSupplier());
+            setCategorySearch.add(converter.entityToDto(p.getCategory()));
+        }
+        ProductConverter productConverter = new ProductConverter();
+        List<ProductResponse> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
+        result.put("categories", setCategorySearch);
+        result.put("products", products);
+        result.put("page", pageNum);
+        result.put("totalPages", page.getTotalPages());
+        result.put("pageSize", pageSize);
+        result.put("sortBy", filed);
+        result.put("sort", sort);
+        result.put("keyword", search);
+
+        return result;
     }
 }

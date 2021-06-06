@@ -30,7 +30,7 @@ public class CartController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllItemCart(HttpSession session) {
+    public ResponseEntity<?> getListProductInCart(HttpSession session) {
         BaseResponse br = new BaseResponse();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null && cart.size() > 0) {
@@ -47,7 +47,7 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addItemCart(HttpSession session, @RequestBody ObjectNode object) {
+    public ResponseEntity<?> addProductToCart(HttpSession session, @RequestBody ObjectNode object) {
         BaseResponse br = new BaseResponse();
         String productUrl = object.get("productUrl").asText();
         int quantity = object.get("quantity").asInt();
@@ -60,7 +60,7 @@ public class CartController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<?> editItemCart(HttpSession session, @RequestBody ObjectNode object) {
+    public ResponseEntity<?> editProductInCart(HttpSession session, @RequestBody ObjectNode object) {
         BaseResponse br = new BaseResponse();
         String productUrl = object.get("url").asText();
         String changeMethod = object.get("changeMethod").asText();
@@ -73,7 +73,7 @@ public class CartController {
     }
 
     @DeleteMapping("/remove/{productUrl}")
-    public ResponseEntity<?> removeItemCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
+    public ResponseEntity<?> removeProductOutCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
         BaseResponse br = new BaseResponse();
         boolean result = cartService.removeItemCart(session, productUrl);
         int numberItemInCart = getTotalPrice((HttpSession) session);
