@@ -58,7 +58,6 @@
                             <li th:if="${#request.userPrincipal}"><i class="fa fa-sign-out"></i><a th:href="@{/logout}">Đăng xuất</a></li>
                             <li th:unless="${#request.userPrincipal}"><i class="fa fa-user"></i><a th:href="@{/signup}">Đăng ký</a></li>
                             <li th:unless="${#request.userPrincipal}"><i class="ti-power-off"></i><a th:href="@{/login}">Đăng nhập</a></li>
-                            <li sec:authorize="hasRole('ROLE_ADMIN')"><img style="width: 15px;" th:src="@{/images/product-manager.png}"> <a th:href="@{/admin}">Trang quản trị</a></li>
                         </ul>
                     </div>
                     <!-- End Top Right -->

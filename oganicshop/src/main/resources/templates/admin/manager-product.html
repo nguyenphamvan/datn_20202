@@ -54,6 +54,23 @@
             </div>
         </li>
 
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseThree"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-user-circle"></i>
+                <span>Tài khoản</span>
+            </a>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item"><i class="fas fa-users"></i>Cập nhật thông tin</a>
+                    <a class="collapse-item"><i class="fab fa-product-hunt"></i>Đăng xuất</a>
+                </div>
+            </div>
+        </li>
+
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -138,11 +155,11 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 10%;">Mã</th>
-                                        <th>Ảnh</th>
-                                        <th style="width: 40%;">Tên sản phẩm</th>
+                                        <th style="width: 10%;">Ảnh</th>
+                                        <th style="width: 30%;">Tên sản phẩm</th>
                                         <th style="width: 15%;">Danh mục</th>
-                                        <th style="width: 15%;" align="center">Tình trạng</th>
-                                        <th style="width: 12%;"></th>
+                                        <th style="width: 20%;">Tình trạng</th>
+                                        <th style="width: 15%;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -226,19 +243,27 @@
                         {
                             data: "status", "render": function (data, type, row) {
                                 if ((data === "Ngừng bán") || (data === "Đã hết hàng")) {
-                                    return "<button class='btn btn-sm shadow-sm btn-danger'>" + data + "</button>";
+                                    return "<span class=\"badge badge-danger\">" + data + "</span>";
                                 } else if (data === "Sắp hết hàng") {
-                                    return "<button class='btn btn-sm shadow-sm btn-warning'>" + data + "</button>";
+                                    return "<span class=\"badge badge-warning\">" + data + "</span>";
                                 } else {
-                                    return "<button class='btn btn-sm shadow-sm btn-primary'>" + data + "</button>";
+                                    return "<span class=\"badge badge-primary\">" + data + "</span>";
                                 }
                             }
                         },
                         {
                             data: "id", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_products/product/" + data + "'>" +
-                                    "<button id='manageBtn' type='button' class='btn btn-success btn-sm shadow-sm'> <i class=\"far fa-eye\"></i> Chi tiết</button>" +
-                                    "</a>";
+                                return "<span style='display: flex'>" +
+                                    "<a href='/admin/manager_products/product/" + data + "'>" +
+                                    "<button id='manageBtn' type='button' class='btn btn-success btn-sm shadow-sm'> <i class=\"far fa-eye\"></i></button>" +
+                                    "</a>" +
+                                    "<a href='/admin/manager_products/updateProduct/" + data + "'>" +
+                                    "<button id='manageBtn' type='button' class='btn btn-primary btn-sm shadow-sm'> <i class=\"fas fa-edit\"></i></button>"+
+                                    "</a>" +
+                                    "<a>" +
+                                    "<button id='manageBtn' type='button' class='btn btn-danger btn-sm shadow-sm'><i class=\"fas fa-lock\"></i></button>"+
+                                    "</a>" +
+                                    "</span>";
                             }
                         }
                     ]

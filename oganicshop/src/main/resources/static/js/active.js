@@ -162,7 +162,7 @@ Version:1.0
 			nav:true,
 			loop:true,
 			merge:true,
-			dots:false,
+			dots:true,
 			navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
 		});
 

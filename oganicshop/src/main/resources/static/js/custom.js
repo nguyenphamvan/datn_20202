@@ -21,7 +21,7 @@ $(document).ready(function () {
                     } else {
                         $("#myModal").css("display", "block");
                         $("#myModal > div.modal-content > p").text("Sản phảm đã được thêm vào giỏ hàng!!");
-                        $("#myModal").delay(3000).fadeOut();
+                        $("#myModal").delay(60000).fadeOut();
                     }
                 }
             })

@@ -53,6 +53,23 @@
             </div>
         </li>
 
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseThree"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-user-circle"></i>
+                <span>Tài khoản</span>
+            </a>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item"><i class="fas fa-users"></i>Cập nhật thông tin</a>
+                    <a class="collapse-item"><i class="fab fa-product-hunt"></i>Đăng xuất</a>
+                </div>
+            </div>
+        </li>
+
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -116,12 +133,12 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th style="width: 5%;">Mã</th>
-                                    <th style="width: 35%;">Mặt hàng</th>
-                                    <th style="width: 18%;">Ngày đặt hàng</th>
+                                    <th style="width: 10%;">Mã</th>
+                                    <th style="width: 30%;">Mặt hàng</th>
+                                    <th style="width: 20%;">Ngày đặt hàng</th>
                                     <th style="width: 10%;">Giá trị</th>
-                                    <th style="width: 20%;">Trạng thái đơn hàng</th>
-                                    <th style="width: 12%;">Hành động</th>
+                                    <th style="width: 20%;">Trạng thái</th>
+                                    <th style="width: 10%;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -203,24 +220,27 @@
                         {data: 'id'},
                         {data: 'summaryProductName'},
                         {data: 'orderDate'},
-                        {data: 'total'},
+                        {data: "total", "render": function (data, type, row) {
+                                return "<span>$" + data + "</span>";
+                            }
+                        },
                         {
                             data: "status", "render": function (data, type, row) {
                                 if ((data === "Đã hủy") || (data === "Giao hàng không thành công")) {
-                                    return "<button class='btn-sm shadow-sm btn btn-danger'>" + data + "</button>";
+                                    return "<span class=\"badge badge-danger\">" + data + "</span>";
                                 } else if (data === "Giao hàng thành công") {
-                                    return "<button class='btn-sm shadow-sm btn btn-success'>" + data + "</button>";
+                                    return "<span class=\"badge badge-success\">" + data + "</span>";
                                 } else if (data === "Đang xử lý") {
-                                    return "<button class='btn-sm shadow-sm btn btn-warning'>" + data + "</button>";
+                                    return "<span class=\"badge badge-warning\">" + data + "</span>";
                                 } else {
-                                    return "<button class='btn-sm shadow-sm btn btn-default'>" + data + "</button>";
+                                    return "<span class=\"badge badge-dark\">" + data + "</span>";
                                 }
                             }
                         },
                         {
                             data: "id", "render": function (data, type, row) {
                                 return "<a style='text-align: center;' href='/admin/manager_orders/" + data + "' >" +
-                                    "<button id='manageBtn' type='button' class='d-none d-sm-inline-block btn btn-success btn-sm shadow-sm'><i class=\"far fa-eye\"></i> Chi tiết</button>" +
+                                    "<button id='manageBtn' type='button' class='d-none d-sm-inline-block btn btn-success btn-sm shadow-sm'><i class=\"far fa-eye\"></i></button>" +
                                     "</a>";
                             }
                         }
