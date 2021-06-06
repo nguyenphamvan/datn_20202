@@ -33,7 +33,7 @@ public class CartController {
     public ResponseEntity<?> getAllItemCart(HttpSession session) {
         BaseResponse br = new BaseResponse();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        if (cart != null) {
+        if (cart != null && cart.size() > 0) {
             List<CartItemDto> listItem = new ArrayList<>(cart.values().stream().map(item -> item.convertDto()).collect(Collectors.toList()));
             br.setStatus(true);
             br.setData(listItem);

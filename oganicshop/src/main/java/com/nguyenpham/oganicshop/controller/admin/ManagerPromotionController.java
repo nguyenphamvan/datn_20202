@@ -25,7 +25,7 @@ public class ManagerPromotionController {
     @GetMapping("/edit/{promotionId}")
     public String editPromotion(@PathVariable("promotionId") long promotionId, Model model) {
         model.addAttribute("promotionId", promotionId);
-        return "manager-updatePromotion";
+        return "admin/manager-updatePromotion";
     }
 
 }

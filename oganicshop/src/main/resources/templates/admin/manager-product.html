@@ -4,6 +4,9 @@
 <th:block th:include="admin/common/header"/>
 <head>
     <title>Quản lý sản phẩm</title>
+    <style>
+        th, td { text-align: center; margin: 0 auto;}
+    </style>
 </head>
 
 <body id="page-top">
@@ -47,7 +50,6 @@
                     <a class="collapse-item active" th:href="@{/admin/manager_products}"><i class="fab fa-product-hunt"></i> Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}"><i class="fas fa-shopping-basket"></i> Quản lý đơn hàng</a>
                     <a class="collapse-item" th:href="@{/admin/manager_promotions}"><i class="fa fa-gift"></i> Quản lý khuyến mãi</a>
-                    <a class="collapse-item" href="manager-contact"><i class="fas fa-envelope-open-text"></i> Quản lý liên hệ</a>
                 </div>
             </div>
         </li>
@@ -134,17 +136,14 @@
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
-                                <tr>
-                                <tr>
-                                    <th style="width: 5%;">Mã</th>
-                                    <th style="width: 10%;">Ảnh</th>
-                                    <th style="width: 28%;">Tên sản phẩm</th>
-                                    <th style="width: 15%;">Nhà cung cấp</th>
-                                    <th style="width: 15%;">Danh mục</th>
-                                    <th style="width: 15%;">Tình trạng</th>
-                                    <th style="width: 12%;"></th>
-                                </tr>
-                                </tr>
+                                    <tr>
+                                        <th style="width: 10%;">Mã</th>
+                                        <th>Ảnh</th>
+                                        <th style="width: 40%;">Tên sản phẩm</th>
+                                        <th style="width: 15%;">Danh mục</th>
+                                        <th style="width: 15%;" align="center">Tình trạng</th>
+                                        <th style="width: 12%;"></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -219,20 +218,19 @@
                         {data: 'id'},
                         {
                             data: "mainImage", "render": function (image, type, row) {
-                                return "<a href='#'><img src='" + image + "' style='width: 80px; height: 80px;'></a>";
+                                return "<a><img src='" + image + "' style='width: 80px; height: 80px;'></a>";
                             }
                         },
                         {data: 'productName'},
-                        {data: 'supplierName'},
                         {data: 'categoryName'},
                         {
                             data: "status", "render": function (data, type, row) {
                                 if ((data === "Ngừng bán") || (data === "Đã hết hàng")) {
-                                    return "<p class='text-danger'>" + data + "</p>";
+                                    return "<button class='btn btn-sm shadow-sm btn-danger'>" + data + "</button>";
                                 } else if (data === "Sắp hết hàng") {
-                                    return "<p class='text-warning'>" + data + "</p>";
+                                    return "<button class='btn btn-sm shadow-sm btn-warning'>" + data + "</button>";
                                 } else {
-                                    return "<p class='text-primary'>" + data + "</p>";
+                                    return "<button class='btn btn-sm shadow-sm btn-primary'>" + data + "</button>";
                                 }
                             }
                         },

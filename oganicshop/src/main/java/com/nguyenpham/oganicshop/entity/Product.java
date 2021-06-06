@@ -36,7 +36,7 @@ public class Product {
     private int discount;
     @Column(nullable = false)
     private int finalPrice;
-    private int rating;
+    private double rating;
     private int amount;
     private boolean stopBusiness;
     private String supplier;

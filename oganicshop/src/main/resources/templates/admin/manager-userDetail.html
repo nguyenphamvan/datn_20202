@@ -47,7 +47,6 @@
                     <a class="collapse-item" th:href="@{/admin/manager_products}"><i class="fab fa-product-hunt"></i> Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}"><i class="fas fa-shopping-basket"></i> Quản lý đơn hàng</a>
                     <a class="collapse-item" th:href="@{/admin/manager_promotions}"><i class="fa fa-gift"></i> Quản lý khuyến mãi</a>
-                    <a class="collapse-item" href="manager-contact"><i class="fas fa-envelope-open-text"></i> Quản lý liên hệ</a>
                 </div>
             </div>
         </li>
@@ -151,7 +150,7 @@
                     <div class="col-xl-12 col-md-12">
                         <div class="d-sm-flex align-items-center justify-content-between">
                             <div id="btn-change-role" style="display: flex;">
-                                <button type="button" class="d-none d-sm-inline-block btn btn-info shadow-sm"><i class="fas fa-user-plus"></i> Cấp quyền tài khoản</button>
+                                <button type="button" class="d-none d-sm-inline-block btn btn-info btn-sm shadow-sm"><i class="fas fa-user-plus"></i> Cấp quyền tài khoản</button>
                                 <div id="div-role"
                                      style="margin-left: 10px; margin-top: auto; margin-bottom: auto; display: none;">
                                     <div class="form-inline" style="float: left;">
@@ -159,7 +158,7 @@
                                             <option value="ROLE_ADMIN">Quản trị viên</option>
                                             <option value="ROLE_USER">Người dùng</option>
                                         </select>
-                                        <button id="change-role" type="submit" class="d-none d-sm-inline-block btn btn-primary shadow-sm">Cập nhật</button>
+                                        <button id="change-role" type="submit" class="d-none d-sm-inline-block btn btn-primary btn-sm shadow-sm">Cập nhật</button>
                                     </div>
                                 </div>
                             </div>
@@ -439,10 +438,10 @@
                     $("#btn-change-role").nextAll().remove();
                     if (account["blocked"] === true) {
                         $("#btn-change-role")
-                            .after("<button id=\"btn-unblock\" style=\"margin-left: 10px;\" type=\"button\" class=\"d-none d-sm-inline-block btn btn-primary\"><i class=\"fas fa-lock-open\"></i> Mở khóa tài khoản</button>");
+                            .after("<button id=\"btn-unblock\" style=\"margin-left: 10px;\" type=\"button\" class=\"d-none d-sm-inline-block btn btn-sm btn-primary\"><i class=\"fas fa-lock-open\"></i> Mở khóa tài khoản</button>");
                     } else {
                         $("#btn-change-role")
-                            .after("<button id=\"btn-block\" type=\"button\" class=\"d-none d-sm-inline-block btn btn-warning shadow-sm\" style=\"margin-left: 10px;\"><i class=\"fas fa-lock\"></i> Khóa tài khoản</button>");
+                            .after("<button id=\"btn-block\" type=\"button\" class=\"d-none d-sm-inline-block btn btn-warning btn-sm shadow-sm\" style=\"margin-left: 10px;\"><i class=\"fas fa-lock\"></i> Khóa tài khoản</button>");
                     }
                     $("#email").val(account["email"]);
                     $("#name").val(account["fullName"]);

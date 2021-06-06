@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ProductService {
 
+    Product save(Product product);
     long countNumberProduct();
     List<ProductResponse> getAllProduct();
     Page<Product> getProductsByCategory(String categoryUrl, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir);

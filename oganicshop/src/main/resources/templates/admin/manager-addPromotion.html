@@ -5,6 +5,12 @@
 <th:block th:include="admin/common/header"/>
 <head>
     <title>Thêm chương trình khuyến mại</title>
+    <style>
+        .form-group > label {
+            color: #3a3b45;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -47,7 +53,6 @@
                     <a class="collapse-item" th:href="@{/admin/manager_products}"><i class="fab fa-product-hunt"></i> Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}"><i class="fas fa-shopping-basket"></i> Quản lý đơn hàng</a>
                     <a class="collapse-item active" th:href="@{/admin/manager_promotions}"><i class="fa fa-gift"></i> Quản lý khuyến mãi</a>
-                    <a class="collapse-item" href="manager-contact"><i class="fas fa-envelope-open-text"></i> Quản lý liên hệ</a>
                 </div>
             </div>
         </li>
@@ -113,8 +118,8 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <h5 class="h3 mb-0 text-gray-800">Thêm chương trình khuyễn mãi mới</h5>
+                    <div class="col-md-6">
+                        <h5 class="h3 mb-0 text-gray-800" style="text-align: center;">Thêm chương trình khuyễn mãi mới</h5>
                         <form id="add-promotion" style="margin-top: 50px;">
                             <div class="row">
                                 <div class="col-md-6">

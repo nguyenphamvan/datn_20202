@@ -4,6 +4,9 @@
 <th:block th:include="admin/common/header"/>
 <head>
     <title>Quản lý đơn hàng</title>
+    <style>
+        th, td { text-align: center; margin: 0 auto;}
+    </style>
 </head>
 
 <body id="page-top">
@@ -46,7 +49,6 @@
                     <a class="collapse-item" th:href="@{/admin/manager_products}"><i class="fab fa-product-hunt"></i> Quản lý sản phẩm</a>
                     <a class="collapse-item active" th:href="@{/admin/manager_orders}"><i class="fas fa-shopping-basket"></i> Quản lý đơn hàng</a>
                     <a class="collapse-item" th:href="@{/admin/manager_promotions}"><i class="fa fa-gift"></i> Quản lý khuyến mãi</a>
-                    <a class="collapse-item" href="manager-contact"><i class="fas fa-envelope-open-text"></i> Quản lý liên hệ</a>
                 </div>
             </div>
         </li>
@@ -118,7 +120,7 @@
                                     <th style="width: 35%;">Mặt hàng</th>
                                     <th style="width: 18%;">Ngày đặt hàng</th>
                                     <th style="width: 10%;">Giá trị</th>
-                                    <th style="width: 20%;">Trạng thái</th>
+                                    <th style="width: 20%;">Trạng thái đơn hàng</th>
                                     <th style="width: 12%;">Hành động</th>
                                 </tr>
                                 </thead>
@@ -205,13 +207,13 @@
                         {
                             data: "status", "render": function (data, type, row) {
                                 if ((data === "Đã hủy") || (data === "Giao hàng không thành công")) {
-                                    return "<p class='text-danger' style='text-align: center;'>" + data + "</p>";
+                                    return "<button class='btn-sm shadow-sm btn btn-danger'>" + data + "</button>";
                                 } else if (data === "Giao hàng thành công") {
-                                    return "<p class='text-success' style='text-align: center;'>" + data + "</p>";
+                                    return "<button class='btn-sm shadow-sm btn btn-success'>" + data + "</button>";
                                 } else if (data === "Đang xử lý") {
-                                    return "<p class='text-warning' style='text-align: center;'>" + data + "</p>";
+                                    return "<button class='btn-sm shadow-sm btn btn-warning'>" + data + "</button>";
                                 } else {
-                                    return "<p style='text-align: center;'>" + data + "</p>";
+                                    return "<button class='btn-sm shadow-sm btn btn-default'>" + data + "</button>";
                                 }
                             }
                         },

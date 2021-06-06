@@ -46,13 +46,13 @@ $(document).ready(function () {
                 $.ajax({
                     url: "/api/cart/edit",
                     type: "PUT",
-                    data: JSON.stringify(res),
+                    data: JSON.stringify(data),
                     dataType: 'json',
                     contentType: 'application/json',
                     success: function (result) {
                         $(".quickview-content .error-msg").remove();
-                        if (res["status"] === false) {
-                            $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>" + res['errMessage'] + "</div>");
+                        if (result["status"] === false) {
+                            $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>" + result['errMessage'] + "</div>");
                         } else {
                             buttonMinus.parent().siblings('input').val(parseInt(quantity) - parseInt(1));
                             buttonMinus.closest('tr').find('td.total-amount span').text("$" + totalAmountItem);
@@ -136,11 +136,19 @@ $(document).ready(function () {
     /* function remove item cart using jquery ajax */
     $('.shopping-list').on('click', '.remove', function () {
         let url = "/api/cart/remove/" + $(this).parent('li').attr('url');
+        let productUrl = $(this).parent('li').attr('url');
         $.ajax({
             url: url,
             type: "DELETE",
             dataType: 'json',
-            success: function (data) {
+            success: function (result) {
+                if (result["data"] > 0) {
+                    $('#payment > div > div.col-lg-7 > div.header > div > div > ul.cart-item-list > li').each(function() {
+                        if ($(this).attr("url") === productUrl) {
+                            $(this).remove();
+                        }
+                    });
+                }
             }
         }).then(function () {
             loadHeaderCart();
@@ -174,17 +182,21 @@ function updatePriceCart() {
 }
 
 function loadHeaderCart() {
+    let thisPage = window.location.pathname;
     $.ajax({
         url: "/api/cart/load-info-cart",
         type: "GET",
         dataType: 'json',
         success: function (res) {
             if (res["data"] === null) {
-                $('.shopping-item').children().css('display', 'none');
+                $('div.sinlge-bar.shopping > div.shopping-item').children().css('display', 'none');
                 $('#cart-empty-header').css('display', 'block');
                 $('.total-count').text("0");
+                if (thisPage === "/checkout.html") {
+                    window.location = "/cart.html";
+                }
             } else {
-                $('.shopping-item').children().css('display', 'block');
+                $('div.sinlge-bar.shopping > div.shopping-item').children().css('display', 'block');
                 $('#cart-empty-header').css('display', 'none');
                 $('ul.shopping-list li#item-for-cloning').nextAll().remove();
                 let firstRow = $('#item-for-cloning');
@@ -877,6 +889,7 @@ function getProductsInCart() {
         type: "GET",
         contentType: "application/json",
         success: function (res) {
+            console.log(res);
             if (res["status"] === true) {
                 let items = res["data"];
                 let totalCart = 0;
@@ -1384,11 +1397,12 @@ function getInfoPayment() {
         success: function (res) {
             console.log(res);
             if (res["status"] === true) {
-
                 let listOrderItem = res["data"]["listOrderItem"];
                 let firstItem = $("#payment > div > div.col-lg-7 > div.header > div > div > ul > li:nth-child(1)");
-                $.each(listOrderItem, function( index, item ) {
+                $.each(listOrderItem, function(index, item) {
                     let itemClone = firstItem.clone();
+                    itemClone.attr("url", item["product"]["url"]);
+                    itemClone.find("a.cart-img").attr("href", "/products/" + item["product"]["url"] + ".html");
                     itemClone.find("h4 > a").attr("href", "/products/" + item["product"]["url"] + ".html").text(item["product"]["name"]);
                     itemClone.find(".quantity").text(item["quantity"] + "x");
                     itemClone.find(".amount").text("$" + item["product"]["finalPrice"]);

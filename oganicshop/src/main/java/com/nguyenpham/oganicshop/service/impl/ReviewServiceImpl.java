@@ -52,6 +52,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<Review> getReviewsOfProduct(long productId) {
+        return reviewRepository.findAllByProductId(productId);
+    }
+
+    @Override
     public ReviewResponse saveReview(ReviewRequest postReview) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Review review = new Review();

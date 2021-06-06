@@ -14,7 +14,6 @@
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div class="sidebar-brand-icon rotate-n-15">
@@ -48,7 +47,6 @@
                     <a class="collapse-item active" th:href="@{/admin/manager_products}"><i class="fab fa-product-hunt"></i> Quản lý sản phẩm</a>
                     <a class="collapse-item" th:href="@{/admin/manager_orders}"><i class="fas fa-shopping-basket"></i> Quản lý đơn hàng</a>
                     <a class="collapse-item" th:href="@{/admin/manager_promotions}"><i class="fa fa-gift"></i> Quản lý khuyến mãi</a>
-                    <a class="collapse-item" href="manager-contact"><i class="fas fa-envelope-open-text"></i> Quản lý liên hệ</a>
                 </div>
             </div>
         </li>
@@ -61,178 +59,232 @@
     </ul>
     <!-- End of Sidebar -->
 
-    <!-- Begin Page Content -->
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
-                <form id="addNewProduct" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="name">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="name"
-                                       name="name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" id="add-category-supplier" style="display: none;">
-                        <div class="col-md-3">
-                            <label for="add-category">Danh mục</label>
-                            <div style="width: 100%; display: flex; justify-content: space-between;">
-                                <input type="text" class="form-control" placeholder="danh mục cha" id="add-category">
-                                <button type="button" id="btn-add-category" class="d-none d-sm-inline-block shadow-sm btn btn-primary">Thêm</button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="add-category">Danh mục con</label>
-                            <div style="width: 100%; display: flex; justify-content: space-between;">
-                                <select class="form-control" id="add-category2" name="parentCategoryId">
-                                </select>
-                                <input type="text" class="form-control" placeholder="Tên danh mục con"
-                                       id="add-sub-category">
-                                <button type="button" id="btn-add-sub-category" class="btn btn-primary">Thêm</button>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="add-supplier">Tên nhà sản xuất</label>
-                            <div style="width: 100%; display: flex; justify-content: space-between;">
-                                <input type="text" min="0" class="form-control" id="add-supplier">
-                                <button type="button" id="btn-add-supplier" class="btn btn-primary">Thêm</button>
-                            </div>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
 
-                        </div>
-                    </div>
-                    <div class="row" id="select-category-supplier">
-                        <div class="col-md-4">
-                            <label for="category">Danh mục cha</label>
-                            <select class="form-control" id="category" name="parentCategoryId">
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="sub-category">Danh mục con</label>
-                            <select class="form-control" id="sub-category" name="categoryId">
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="supplier">Nhà sản xuất:</label>
-                            <select class="form-control" id="supplier" name="supplierId">
-                            </select>
-                        </div>
-                        <div class="col-md-2 justify-content-end" style="position: relative;">
-                            <button type="button" style="position: absolute; bottom: 0;"
-                                    class="btn btn-primary shadow-sm" id="btn-add-category-supplier">Thêm mới
+                <!-- Topbar Search -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                               aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
                             </button>
                         </div>
                     </div>
-                    <br/>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="price">Giá bán (VNĐ)</label>
-                                <input type="number" class="form-control" placeholder="Nhập giá gốc" id="price"
-                                       name="price">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="promotion">Giảm giá (VNĐ)</label>
-                                <input type="number" class="form-control" placeholder="giảm giá" id="promotion"
-                                       name="promotion">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label for="imageUpload">Thêm ảnh chính:</label>
-                                <div class="custom-file">
-                                    <input type="file" name="images" class="custom-file-input" id="imageUpload"
-                                           accept="image/*" onchange="loadFile(event)">
-                                    <label class="custom-file-label" for="imageUpload">Choose file</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <img id="output" style="width: 100%; height: 150px;"/>
-                        </div>
-                    </div>
-
-                    <label>Thêm ảnh phụ</label>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="imageUpload1">ảnh 1</label>
-                            <div class="form-group">
-                                <div class="custom-file">
-                                    <input type="file" name="images" class="custom-file-input" id="imageUpload1"
-                                           accept="image/*" onchange="loadFile1(event)">
-                                    <label class="custom-file-label" for="imageUpload1">Choose file</label>
-                                </div>
-                                <img id="output1"
-                                     style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="imageUpload2">ảnh 2</label>
-                            <div class="form-group">
-                                <div class="custom-file">
-                                    <input type="file" name="images" class="custom-file-input" id="imageUpload2"
-                                           accept="image/*" onchange="loadFile2(event)">
-                                    <label class="custom-file-label" for="imageUpload2">Choose file</label>
-                                </div>
-                                <img id="output2"
-                                     style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="imageUpload3">ảnh 3</label>
-                            <div class="form-group">
-                                <div class="custom-file">
-                                    <input type="file" name="images" class="custom-file-input" id="imageUpload3"
-                                           accept="image/*" onchange="loadFile3(event)">
-                                    <label class="custom-file-label" for="imageUpload3">Choose file</label>
-                                </div>
-                                <img id="output3"
-                                     style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="baseDescription">Mô tả ngắn:</label>
-                                <input type="text" class="form-control" id="baseDescription" name="baseDescription">
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="detailDescription">Mô tả chi tiết:</label>
-                                <textarea rows="10" class="ckeditor form-control" id="detailDescription"
-                                          name="detailDescription"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="button" class="d-none d-sm-inline-block shadow-sm btn btn-info" id="btn-add-product">Thêm</button>
-                    <input class="d-none d-sm-inline-block shadow-sm btn btn-primary" type="reset" value="Reset">
                 </form>
-            </div>
-        </div>
 
-        <a th:href="@{/admin/manager_products}" class="btn btn-light btn-icon-split">
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Tài khoản
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Đăng xuất
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <h4 style="text-align: center">Thêm sản phẩm mới</h4>
+                    </div>
+                    <div class="col-md-8">
+                        <form id="addNewProduct" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="name">Tên sản phẩm:</label>
+                                        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="name" name="name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="add-category-supplier" style="display: none;">
+                                <div class="col-md-3">
+                                    <label for="add-category">Danh mục</label>
+                                    <div style="width: 100%; display: flex; justify-content: space-between;">
+                                        <input type="text" class="form-control" placeholder="danh mục cha" id="add-category">
+                                        <button type="button" id="btn-add-category" class="d-none d-sm-inline-block shadow-sm btn btn-primary">Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="add-category">Danh mục con</label>
+                                    <div style="width: 100%; display: flex; justify-content: space-between;">
+                                        <select class="form-control" id="add-category2" name="parentCategoryId">
+                                        </select>
+                                        <input type="text" class="form-control" placeholder="Tên danh mục con"
+                                               id="add-sub-category">
+                                        <button type="button" id="btn-add-sub-category" class="btn btn-primary">Thêm</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="add-supplier">Tên nhà sản xuất</label>
+                                    <div style="width: 100%; display: flex; justify-content: space-between;">
+                                        <input type="text" min="0" class="form-control" id="add-supplier">
+                                        <button type="button" id="btn-add-supplier" class="btn btn-primary">Thêm</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row" id="select-category-supplier">
+                                <div class="col-md-4">
+                                    <label for="category">Danh mục cha</label>
+                                    <select class="form-control" id="category" name="parentCategoryId">
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="sub-category">Danh mục con</label>
+                                    <select class="form-control" id="sub-category" name="categoryId">
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="supplier">Nhà sản xuất:</label>
+                                    <select class="form-control" id="supplier" name="supplierId">
+                                    </select>
+                                </div>
+                                <div class="col-md-2 justify-content-end" style="position: relative;">
+                                    <button type="button" style="position: absolute; bottom: 0;"
+                                            class="btn btn-primary shadow-sm" id="btn-add-category-supplier">Thêm mới
+                                    </button>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="price">Giá bán (VNĐ)</label>
+                                        <input type="number" class="form-control" placeholder="Nhập giá gốc" id="price"
+                                               name="price">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="promotion">Giảm giá (VNĐ)</label>
+                                        <input type="number" class="form-control" placeholder="giảm giá" id="promotion"
+                                               name="promotion">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="imageUpload">Thêm ảnh chính:</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="images" class="custom-file-input" id="imageUpload"
+                                                   accept="image/*" onchange="loadFile(event)">
+                                            <label class="custom-file-label" for="imageUpload">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <img id="output" style="width: 100%; height: 150px;"/>
+                                </div>
+                            </div>
+
+                            <!--                    <label>Thêm ảnh phụ</label>-->
+                            <!--                    <div class="row">-->
+                            <!--                        <div class="col-md-4">-->
+                            <!--                            <label for="imageUpload1">ảnh 1</label>-->
+                            <!--                            <div class="form-group">-->
+                            <!--                                <div class="custom-file">-->
+                            <!--                                    <input type="file" name="images" class="custom-file-input" id="imageUpload1"-->
+                            <!--                                           accept="image/*" onchange="loadFile1(event)">-->
+                            <!--                                    <label class="custom-file-label" for="imageUpload1">Choose file</label>-->
+                            <!--                                </div>-->
+                            <!--                                <img id="output1"-->
+                            <!--                                     style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="col-md-4">-->
+                            <!--                            <label for="imageUpload2">ảnh 2</label>-->
+                            <!--                            <div class="form-group">-->
+                            <!--                                <div class="custom-file">-->
+                            <!--                                    <input type="file" name="images" class="custom-file-input" id="imageUpload2"-->
+                            <!--                                           accept="image/*" onchange="loadFile2(event)">-->
+                            <!--                                    <label class="custom-file-label" for="imageUpload2">Choose file</label>-->
+                            <!--                                </div>-->
+                            <!--                                <img id="output2"-->
+                            <!--                                     style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="col-md-4">-->
+                            <!--                            <label for="imageUpload3">ảnh 3</label>-->
+                            <!--                            <div class="form-group">-->
+                            <!--                                <div class="custom-file">-->
+                            <!--                                    <input type="file" name="images" class="custom-file-input" id="imageUpload3"-->
+                            <!--                                           accept="image/*" onchange="loadFile3(event)">-->
+                            <!--                                    <label class="custom-file-label" for="imageUpload3">Choose file</label>-->
+                            <!--                                </div>-->
+                            <!--                                <img id="output3"-->
+                            <!--                                     style="width: 100%; height: 150px; max-height: 200px; margin-top: 10px;"/>-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+                            <!--                    </div>-->
+
+                            <!--                    <div class="row">-->
+                            <!--                        <div class="col-md-12">-->
+                            <!--                            <div class="form-group">-->
+                            <!--                                <label for="baseDescription">Mô tả ngắn:</label>-->
+                            <!--                                <input type="text" class="form-control" id="baseDescription" name="baseDescription">-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+
+                            <!--                    </div>-->
+
+                            <!--                    <div class="row">-->
+                            <!--                        <div class="col-md-12">-->
+                            <!--                            <div class="form-group">-->
+                            <!--                                <label for="detailDescription">Mô tả chi tiết:</label>-->
+                            <!--                                <textarea rows="10" class="ckeditor form-control" id="detailDescription"-->
+                            <!--                                          name="detailDescription"></textarea>-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+                            <!--                    </div>-->
+
+                            <button type="button" class="d-none d-sm-inline-block shadow-sm btn btn-info" id="btn-add-product">Thêm</button>
+                            <input class="d-none d-sm-inline-block shadow-sm btn btn-primary" type="reset" value="Reset">
+                        </form>
+                    </div>
+                </div>
+
+                <a th:href="@{/admin/manager_products}" class="btn btn-light btn-icon-split">
                     <span class="icon text-gray-600">
                         <i class="fas fa-arrow-left"></i>
                     </span>
-            <span class="text">Quay lại</span>
-        </a>
+                    <span class="text">Quay lại</span>
+                </a>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- Main Content -->
     </div>
-    <!-- /.container-fluid -->
-
 </div>
 <!-- End of Page Wrapper -->
 
@@ -406,74 +458,74 @@
         output.style.display = "block";
     };
 
-    let loadFile1 = function (event) {
-        let output1 = document.getElementById('output1');
-        output1.src = URL.createObjectURL(event.target.files[0]);
-        output1.onload = function () {
-            URL.revokeObjectURL(output1.src) // free memory
-        }
-        output1.style.display = "block";
-    };
-
-    let loadFile2 = function (event) {
-        let output2 = document.getElementById('output2');
-        output2.src = URL.createObjectURL(event.target.files[0]);
-        output2.onload = function () {
-            URL.revokeObjectURL(output2.src) // free memory
-        }
-        output2.style.display = "block";
-    };
-
-    let loadFile3 = function (event) {
-        let output3 = document.getElementById('output3');
-        output3.src = URL.createObjectURL(event.target.files[0]);
-        output3.onload = function () {
-            URL.revokeObjectURL(output3.src) // free memory
-        }
-        output3.style.display = "block";
-    };
+    // let loadFile1 = function (event) {
+    //     let output1 = document.getElementById('output1');
+    //     output1.src = URL.createObjectURL(event.target.files[0]);
+    //     output1.onload = function () {
+    //         URL.revokeObjectURL(output1.src) // free memory
+    //     }
+    //     output1.style.display = "block";
+    // };
+    //
+    // let loadFile2 = function (event) {
+    //     let output2 = document.getElementById('output2');
+    //     output2.src = URL.createObjectURL(event.target.files[0]);
+    //     output2.onload = function () {
+    //         URL.revokeObjectURL(output2.src) // free memory
+    //     }
+    //     output2.style.display = "block";
+    // };
+    //
+    // let loadFile3 = function (event) {
+    //     let output3 = document.getElementById('output3');
+    //     output3.src = URL.createObjectURL(event.target.files[0]);
+    //     output3.onload = function () {
+    //         URL.revokeObjectURL(output3.src) // free memory
+    //     }
+    //     output3.style.display = "block";
+    // };
 
     $("#btn-add-category-supplier").on("click", function () {
         $("#add-category-supplier").show();
         $("#select-category-supplier").hide();
     });
 
-    function getListCategoryAndSupplier() {
-        $.ajax({
-            url: "/api/categories-suppliers",
-            type: "GET",
-            contentType: "application/json",
-            success: function (data) {
-                // Put the object into storage
-                let categories = data["categories"];
-                let suppliers = data["suppliers"];
-                localStorage.setItem('categories', JSON.stringify(categories));
-
-                // show category
-                $('#category').empty();
-                $("#sub-category").empty();
-                $.each(categories, function (index, item) {
-                    $('#category').append(new Option(item["categoryName"], item["id"]));
-                    $('#add-category2').append(new Option(item["categoryName"], item["id"]));
-                });
-                $('#category > option:first-child').prop('selected', true);
-                $.each(categories[0]["subCategory"], function (index, item) {
-                    $("#sub-category").append(new Option(item["categoryName"], item["id"]));
-                });
-                $('#sub-category > option:first-child').prop('selected', true);
-
-                // suppliers
-                $.each(suppliers, function (index, item) {
-                    $('#supplier').append(new Option(item["name"], item["id"]));
-                });
-                $('#supplier > option:first-child').prop('selected', true);
-
-            },
-            error: function () {
-                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
-            }
-        });
-    }
+    // function getListCategoryAndSupplier() {
+    //     $.ajax({
+    //         url: "/api/categories-suppliers",
+    //         type: "GET",
+    //         contentType: "application/json",
+    //         success: function (data) {
+    //             // Put the object into storage
+    //             let categories = data["categories"];
+    //             let suppliers = data["suppliers"];
+    //             localStorage.setItem('categories', JSON.stringify(categories));
+    //
+    //             // show category
+    //             $('#category').empty();
+    //             $("#sub-category").empty();
+    //             $.each(categories, function (index, item) {
+    //                 $('#category').append(new Option(item["categoryName"], item["id"]));
+    //                 $('#add-category2').append(new Option(item["categoryName"], item["id"]));
+    //             });
+    //             $('#category > option:first-child').prop('selected', true);
+    //             $.each(categories[0]["subCategory"], function (index, item) {
+    //                 $("#sub-category").append(new Option(item["categoryName"], item["id"]));
+    //             });
+    //             $('#sub-category > option:first-child').prop('selected', true);
+    //
+    //             // suppliers
+    //             $.each(suppliers, function (index, item) {
+    //                 $('#supplier').append(new Option(item["name"], item["id"]));
+    //             });
+    //             $('#supplier > option:first-child').prop('selected', true);
+    //
+    //         },
+    //         error: function () {
+    //             alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+    //         }
+    //     });
+    // }
 
     function removeAccents(str) {
         return str.normalize('NFD')

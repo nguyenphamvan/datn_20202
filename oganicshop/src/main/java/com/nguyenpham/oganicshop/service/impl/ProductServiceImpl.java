@@ -130,6 +130,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
     public long countNumberProduct() {
         return productRepository.count();
     }

@@ -25,13 +25,13 @@ public class ReviewController {
 
     private ReviewService reviewService;
     private OrderService orderService;
-    private UserService userService;
+    private ProductService ProductService;
 
     @Autowired
-    public ReviewController(ReviewService reviewService, OrderService orderService, UserService userService) {
+    public ReviewController(ReviewService reviewService, OrderService orderService, ProductService productService) {
         this.reviewService = reviewService;
         this.orderService = orderService;
-        this.userService = userService;
+        this.ProductService = productService;
     }
 
     @GetMapping("/review_of_product")
@@ -72,6 +72,17 @@ public class ReviewController {
         try {
             orderService.updateProductReviewed(user.getId(), reviewRequest.getProductId());
             reviewService.saveReview(reviewRequest);
+            // tính điểm đánh giá trung bình của sản phẩm ở đây
+            List<Review> listReviewOfProduct = reviewService.getReviewsOfProduct(reviewRequest.getProductId());
+            int totalRating = 0;
+            for (Review r : listReviewOfProduct) {
+                totalRating += r.getRating();
+            }
+            double meanRating = totalRating / listReviewOfProduct.size();
+            Product product = productService.getProductDetail(reviewRequest.getProductId());
+            product.setRating(meanRating);
+            productService.save(product);
+
             return ResponseEntity.ok("Cảm ơn bạn đã đánh giá sản phẩm!");
         } catch (Exception e) {
             return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.INTERNAL_SERVER_ERROR);
