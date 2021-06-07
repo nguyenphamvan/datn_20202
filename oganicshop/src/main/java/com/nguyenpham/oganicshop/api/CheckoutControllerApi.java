@@ -68,7 +68,6 @@ public class CheckoutControllerApi {
             br.setStatus(false);
             br.setErrMessage("Giỏ hàng trống");
         }
-        System.out.println(br.isStatus());
         return ResponseEntity.ok(br);
     }
 
@@ -83,34 +82,10 @@ public class CheckoutControllerApi {
                 if (order.getPaymentMethod().equals("cod")) {
                     Order orderSaved = orderService.paymentOrder(user, cart, order);
                     // sau bước thanh toán thành công sẽ gửi email thông báo cho người dùng
-                    emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
+//                    emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
                     session.removeAttribute(Constant.CART_SESSION_NAME);
                     return new ResponseEntity<Object>("/payment_success", HttpStatus.OK); // return home page
-                } else if (order.getPaymentMethod().equals("paypal")){
-                    String cancelUrl = Utils.getBaseURL(request) + "/" + Constant.URL_PAYPAL_CANCEL;
-                    String successUrl = Utils.getBaseURL(request) + "/" + Constant.URL_PAYPAL_SUCCESS;
-                    String urlRedirect = null;
-                    Payment payment = paypalService.createPayment(
-                            (double) order.getTotal(),
-                            "USD",
-                            PaypalPaymentMethod.paypal,
-                            PaypalPaymentIntent.sale,
-                            "payment description",
-                            cancelUrl,
-                            successUrl);
-
-                    for (Links links : payment.getLinks()) {
-                        if (links.getRel().equals("approval_url")) {
-                            urlRedirect = links.getHref();
-                        }
-                    }
-                    session.setAttribute("order", order);
-                    return new ResponseEntity<Object>(urlRedirect, HttpStatus.OK);
                 }
-
-            } catch (PayPalRESTException e) {
-                log.error(e.getMessage());
-                return new ResponseEntity<Object>("Hệ thống gặp lỗi, vui lòng liên hệ số điện thoại ...", HttpStatus.INTERNAL_SERVER_ERROR);
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<Object>("Hệ thống gặp lỗi, vui lòng liên hệ số điện thoại ...", HttpStatus.INTERNAL_SERVER_ERROR);

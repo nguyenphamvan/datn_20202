@@ -46,6 +46,19 @@ public class CartController {
         return new ResponseEntity<Object>(br, HttpStatus.OK);
     }
 
+    @PostMapping("/quick-addToCart/{productUrl}")
+    public ResponseEntity<?> quickAddProductToCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
+        BaseResponse br = new BaseResponse();
+        boolean result = cartService.addItemCart(session, productUrl, 1);
+        if (!result) {
+            br.setErrMessage("Không đủ số lượng cung cấp");
+        } else {
+            br.setStatus(result);
+            br.setData("/cart.html");
+        }
+        return new ResponseEntity<>(br, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<?> addProductToCart(HttpSession session, @RequestBody ObjectNode object) {
         BaseResponse br = new BaseResponse();

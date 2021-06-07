@@ -342,10 +342,6 @@ textarea {
     color: rgb(51, 51, 51);
 }
 
-.styles__StyledAccountListOrder th:last-child, .styles__StyledAccountListOrder td:last-child {
-    text-align: right;
-}
-
 .styles__StyledAccountListOrder tr:hover {
     background-color: aliceblue;
 }

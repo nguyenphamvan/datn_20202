@@ -215,7 +215,7 @@
                             <div class="product-img">
                                 <a>
                                     <img class="default-img" alt="#">
-                                    <img class="hover-img" alt="#">
+<!--                                    <img class="hover-img" alt="#">-->
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action" style="margin-right: 10px;">
@@ -452,17 +452,6 @@
                     }
 
 
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child").nextAll().remove();
-                    let firstItemSupplier = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child");
-                    let category = /*[[${category}]]*/;
-                    $.each(result["suppliers"], function (index, item) {
-                        let itemSupplierClone = firstItemSupplier.clone();
-                        itemSupplierClone.show();
-                        itemSupplierClone.find("a").text(item["name"]).attr("href", "/collections.html?supplier=" + item["name"] + "&category=" + category);
-                        itemSupplierClone.insertAfter(firstItemSupplier);
-                    });
-                    firstItemSupplier.hide();
-
                     $("#list-product > div:nth-child(1)").nextAll().remove();
                     genListProduct(result["products"]);
 
@@ -508,18 +497,35 @@
             itemClone.show();
             if (item.hasOwnProperty("mainImage")) {
                 itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"] + ".html");
-                itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
-                itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
+                itemClone.find("div.product-img > a > img.default-img").attr("src", "http://images.amazon.com/images/P/0195153448.01.LZZZZZZZ.jpg");
+                // itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
             }
             itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
             itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
-            itemClone.find("div.product-action-2 > a").attr("href", "/products/" + item["productUrl"] + ".html");
+            itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
             itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
             itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
             $("#list-product").append(itemClone);
         });
         firstItem.hide();
     }
+
+
+    $(document).on("click", "div.product-action-2 > a", function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr("href"),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            success: function (res) {
+                window.location = res["data"];
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        })
+    });
     /*]]>*/
 </script>
 
