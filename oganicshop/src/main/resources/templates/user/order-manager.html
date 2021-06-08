@@ -7,6 +7,11 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
+    <style>
+        .badge {
+            padding: 10px 15px;
+        }
+    </style>
 </head>
 <body class="js">
 <!-- Header -->
@@ -49,7 +54,7 @@
                                 <th style="min-width: 145px;">Ngày mua</th>
                                 <th>Sản phẩm</th>
                                 <th>Tổng tiền</th>
-                                <th style="min-width: 182px;">Trạng thái đơn hàng</th>
+                                <th style="min-width: 186px;">Trạng thái đơn hàng</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -74,6 +79,7 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
+        getListCategory();
         getOrdersHistory(1, 5);
         getTotalOrderPage();
 

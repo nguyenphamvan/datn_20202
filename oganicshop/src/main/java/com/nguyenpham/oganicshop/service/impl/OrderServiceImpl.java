@@ -137,7 +137,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponse> getOrdersHistory(long userId, int pageNum, int pageSize) {
         OrderConverter converter = new OrderConverter();
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id").ascending());
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("orderDate").descending());
         Page<Order> page = orderRepository.findOrdersByUserId(userId, pageable);
         List<Order> ordersHistory = page.getContent();
         List<OrderResponse> ordersDtoHistory = new ArrayList<>();

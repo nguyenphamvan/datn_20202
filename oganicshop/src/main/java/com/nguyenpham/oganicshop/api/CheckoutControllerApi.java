@@ -72,19 +72,24 @@ public class CheckoutControllerApi {
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<?> payOrder(HttpSession session, HttpServletRequest request,
-                           @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderRequest order) {
+    public ResponseEntity<?> payOrder(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderRequest order) {
         User user = myUserDetail.getUser();
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
         if (cart != null) {
-
             try {
+                BaseResponse br = new BaseResponse();
                 if (order.getPaymentMethod().equals("cod")) {
                     Order orderSaved = orderService.paymentOrder(user, cart, order);
                     // sau bước thanh toán thành công sẽ gửi email thông báo cho người dùng
-//                    emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
+                    emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
                     session.removeAttribute(Constant.CART_SESSION_NAME);
-                    return new ResponseEntity<Object>("/payment_success", HttpStatus.OK); // return home page
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("urlRedirect", "/payment_success");
+                    hashMap.put("orderId", orderSaved.getId());
+                    hashMap.put("orderValue", order.getTotal());
+                    br.setStatus(true);
+                    br.setData(hashMap);
+                    return new ResponseEntity<Object>(br, HttpStatus.OK); // return home page
                 }
             } catch (Exception e) {
                 e.printStackTrace();

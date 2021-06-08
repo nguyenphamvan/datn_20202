@@ -45,9 +45,11 @@ public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, 
         response.setProductImg(review.getProduct().getMainImage());
         response.setReviewerName(review.getUser().getFullName());
         response.setUserId(review.getUser().getId());
+
+        response.setProductUrl(review.getProduct().getProductUrl());
         response.setProductName(review.getProduct().getTitle());
-        response.setCreatedAt(review.getCreatedAt());
-        response.setUpdatedAt(review.getUpdatedAt());
+        response.setCreatedAt(DateTimeUtil.dateTimeFormat(review.getCreatedAt()));
+        response.setUpdatedAt(DateTimeUtil.dateTimeFormat(review.getUpdatedAt()));
 
         return response;
     }
