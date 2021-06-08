@@ -204,8 +204,8 @@ function loadHeaderCart() {
                     let cloneRow = firstRow.clone();
                     cloneRow.attr('url', item.product["url"]);
                     cloneRow.css('display', 'block');
-                    cloneRow.find('a.cart-img').attr('href', item.product["url"] + ".html");
-                    cloneRow.find('a.cart-img > img').attr('src', "/images/products/" + item.product["id"] + "/" + item.product["image"].split(",")[0]);
+                    cloneRow.find('a.cart-img').attr('href', item.product["url"]);
+                    cloneRow.find('a.cart-img > img').attr('src', item.product["mainImage"]);
                     cloneRow.find('a.cart-item-name').text(item.product["name"]).attr('href', '/products/' + item.product["url"]);
                     cloneRow.find('span.quantity').text(item.quantity);
                     cloneRow.find('span.amount').text("$" + item.product["finalPrice"]);
@@ -324,21 +324,13 @@ function getListCategory() {
         type: "GET",
         contentType: "application/json",
         success: function (categories) {
+            console.log(categories);
             // show category
             let html = "";
             $.each(categories, function (index, item) {
                 html += "<li>\n" +
-                    "            <a class=\"parent-category\" href='/collections.html?category=" + item["categoryUrl"] + "'>" + item["categoryName"] + "</a>\n" +
-                    "            <ul class=\"list-child-category\">\n";
-                if (item.hasOwnProperty("subCategory")) {
-                    $.each(item["subCategory"], function (index, subItem) {
-                        html += "<li>\n" +
-                            "         <a href='/collections.html?category=" + subItem["categoryUrl"] + "'>" + subItem["categoryName"] + "</a>\n" +
-                            "    </li>\n";
-                    });
-                }
-                html += "     </ul>\n" +
-                    "</li>";
+                    "        <a class=\"parent-category\" href='/collections.html?category=" + item["id"] + "'>" + item["categoryName"] + "</a>\n" +
+                    "    </li>";
             });
             $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
@@ -590,7 +582,7 @@ function getProductsIsUnReviewed() {
                 let firstItem = $(".my-reviews__inner a:first-child");
                 $.each(listItem, function (index, item) {
                     let itemClone = firstItem.clone();
-                    itemClone.attr("href", "/products/" + item["productUrl"] + ".html");
+                    itemClone.attr("href", "/products/" + item["productUrl"]);
                     itemClone.find("div.my-reviews__info").attr("product-id", item["productId"]).attr("orderItem-id", item["id"]);
                     itemClone.find("div.my-reviews__info > img").attr("src", item["image"]).attr("alt", item["productName"]);
                     itemClone.find("div.my-reviews__name").text(item["productUrl"]);
@@ -650,7 +642,7 @@ function getListMyReview(currentPage, pageSize) {
                 $.each(listMyReview, function (index, item) {
                     let itemClone = firstItem.clone();
                     itemClone.find("div.thumb > div > img").attr("src", item["productImg"]);
-                    itemClone.find(".info a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+                    itemClone.find(".info a.name").attr("href", "/products/" + item["productUrl"]).text(item["productName"]);
                     itemClone.find(".info div.date").text(item["createdAt"]);
                     if (item["title"] !== null) {
                         itemClone.find(".info .wrap .title").text(item["title"]);
@@ -797,10 +789,10 @@ function getWishlistProducts() {
                     $.each(wishlist, function (index, item) {
                         let itemClone = firstItem.clone();
                         itemClone.find(".btn-delete").attr("product-id", item["id"]);
-                        itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"] + ".html");
+                        itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"]);
                         itemClone.find(".thumbnail a img.image").attr("src", item["mainImage"]);
-                        itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-                        itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
+                        itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"]).text(item["productName"]);
+                        // itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
                         itemClone.find("div.my-reviews__name").text(item["productUrl"]);
                         for (let i = 0; i < parseInt(item["rating"]); i++) {
                             itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
@@ -1220,9 +1212,9 @@ function displayProduct(productUrl) {
         type: "GET",
         dataType: 'json',
         success: function (res) {
+            console.log(res);
             if (res["status"] === true) {
                 let product = res["data"]["product"];
-
                 // set image
                 $.each(product["images"], function (index, item) {
                     let html = "<div class=\"single-slider\">\n" +
@@ -1243,7 +1235,7 @@ function displayProduct(productUrl) {
                     navText: ['<i class=" ti-arrow-left"></i>', '<i class=" ti-arrow-right"></i>'],
                 });
 
-                $("div.breadcrumbs > div > div > div > div > ul > li:nth-child(3) > a").attr("href", "/products/" + product["productUrl"] + ".html").text(product["productName"]);
+                $("div.breadcrumbs > div > div > div > div > ul > li:nth-child(3) > a").attr("href", "/products/" + product["productUrl"]).text(product["productName"]);
                 $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
                 $("div.modal-body > div > div:nth-child(2) > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
                 $("div.modal-body > div > div:nth-child(2) > div > div > span#final-price").text("$" + product["finalPrice"]);
@@ -1402,11 +1394,11 @@ function getInfoPayment() {
                 $.each(listOrderItem, function(index, item) {
                     let itemClone = firstItem.clone();
                     itemClone.attr("url", item["product"]["url"]);
-                    itemClone.find("a.cart-img").attr("href", "/products/" + item["product"]["url"] + ".html");
-                    itemClone.find("h4 > a").attr("href", "/products/" + item["product"]["url"] + ".html").text(item["product"]["name"]);
+                    itemClone.find("a.cart-img").attr("href", "/products/" + item["product"]["url"]);
+                    itemClone.find("h4 > a").attr("href", "/products/" + item["product"]["url"]).text(item["product"]["name"]);
                     itemClone.find(".quantity").text(item["quantity"] + "x");
                     itemClone.find(".amount").text("$" + item["product"]["finalPrice"]);
-                    itemClone.find("a > img").attr("src", "/images/products/" + item["product"]["id"] + "/" + item["product"]["image"].split(",")[0]);
+                    itemClone.find("a > img").attr("src", item["product"]["mainImage"]);
                     itemClone.insertAfter(firstItem);
                 });
                 firstItem.remove();
@@ -1516,7 +1508,6 @@ function replyReview(data) {
             $("#reply-items-list-" + data["parentId"]).show();
         },
         error: function (xhr) {
-            alert("có lỗi");
             alert(xhr.responseText);
         }
     });

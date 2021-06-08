@@ -84,7 +84,7 @@ public class EmailSenderImpl implements EmailSender {
                 + "<ul>";
         for (OrderItem orderItem : order.getOrderItems()) {
             content += "<li>" +
-                    "<p>" + orderItem.getProduct().getName() + "</p>" +
+                    "<p>" + orderItem.getProduct().getTitle() + "</p>" +
                     "<p>Đơn giá : " + orderItem.getProduct().getFinalPrice() + "</p>" +
                     "<p>Số lượng : " + orderItem.getQuantity() + "</p>" +
                     "</li>";

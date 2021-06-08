@@ -45,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewResponse> getReviewsOfProduct(String productUrl) {
-        List<Review> listReviews = reviewRepository.findAllByProductUrl(productUrl);
+        List<Review> listReviews = reviewRepository.findAllByProductProductUrl(productUrl);
         ReviewConverter converter = new ReviewConverter();
         List<ReviewResponse> listReviewDto = listReviews.stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
         return listReviewDto;

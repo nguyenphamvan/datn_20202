@@ -32,16 +32,16 @@ public class CategoryController {
         return new ResponseEntity<Object>(categoryService.getByCategoryId(categoryId), HttpStatus.OK);
     }
 
-    @GetMapping("/categories/{categoryURL}")
-    public ResponseEntity<?> getCategoryByCategoryUrl(@PathVariable("categoryURL") String categoryUrl) {
-        return new ResponseEntity<Object>(categoryService.getByCategoryUrl(categoryUrl), HttpStatus.OK);
+    @GetMapping("/categories/{categoryId}")
+    public ResponseEntity<?> getCategoryById(@PathVariable("categoryId") long categoryId) {
+        return new ResponseEntity<Object>(categoryService.getByCategory(categoryId), HttpStatus.OK);
     }
 
-    @PostMapping("/categories/insert")
-    public ResponseEntity<?> insertCategory(@RequestBody CategoryDto categoryRequest) {
-        Category savedCategory = categoryService.addCategory(categoryRequest);
-        return new ResponseEntity<Object>(savedCategory, HttpStatus.OK);
-    }
+//    @PostMapping("/categories/insert")
+//    public ResponseEntity<?> insertCategory(@RequestBody CategoryDto categoryRequest) {
+//        Category savedCategory = categoryService.addCategory(categoryRequest);
+//        return new ResponseEntity<Object>(savedCategory, HttpStatus.OK);
+//    }
 
 
 }

@@ -14,16 +14,7 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class CategoryDto implements Comparable<CategoryDto>{
     private Long id;
-    private String categoryUrl;
     private String categoryName;
-    private Long parentId;
-    private Set<CategoryDto> subCategory;
-    public void addSubCategory(CategoryDto category) {
-        if (subCategory == null) {
-            subCategory = new HashSet<>();
-        }
-        subCategory.add(category);
-    }
 
     @Override
     public int compareTo(CategoryDto o) {

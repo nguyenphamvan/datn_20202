@@ -15,12 +15,11 @@ public class ProductRequest {
     private long id;
     private String name;
     private String url;
-    private MultipartFile[] images;
-    private String baseDescription;
-    private String detailDescription;
-    private int price;
-    private int discount;
-    private int finalPrice;
+    private MultipartFile images;
+    private String description;
+    private Double price;
+    private Double discount;
+    private Double finalPrice;
     private int amount;
     private long categoryId;
     private long parentCategoryId;

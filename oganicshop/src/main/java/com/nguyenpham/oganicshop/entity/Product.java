@@ -15,8 +15,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude={"category", "supplier", "ratings", "reviews"})
-@ToString(exclude = {"category", "supplier", "ratings", "reviews"})
+@EqualsAndHashCode(exclude={"category" , "reviews"})
+@ToString(exclude = {"category" , "reviews"})
 
 public class Product {
 
@@ -24,27 +24,29 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String name;
-    @Column(nullable = false, unique = true)
-    private String url;
-    private String image;
-    private String baseDescription;
-    private String detailDescription;
+    private String title;
+    @Column(name = "product_url")
+    private String productUrl;
+    private String authors;
+    private String originalPublicationYear;
+    private int ratingsCount;
+    private float weightedRating;
+    private String mainImage;
+    private String smallImage;
+    private String description;
     @Column(nullable = false)
-    private int price;
+    private Double price;
     @Column(nullable = false)
-    private int discount;
+    private Double discount;
     @Column(nullable = false)
-    private int finalPrice;
-    private double rating;
+    private Double finalPrice;
+    private double averageRating;
     private int amount;
     private boolean stopBusiness;
-    private String supplier;
 
     @JsonIgnore
     @CreationTimestamp
     private Date createdAt;
-
     @JsonIgnore
     @UpdateTimestamp
     private Date updatedAt;
@@ -53,7 +55,6 @@ public class Product {
     @JoinColumn(name = "category_id")
     @JsonIgnore
     private Category category;
-
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Review> reviews;

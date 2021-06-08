@@ -94,7 +94,7 @@ public class ProductControllerApi {
     @PostMapping("/api/products/collections")
     public Object getProductsByCategory(@RequestBody ObjectNode object) {
         Page<Product> page = null;
-        String categoryUrl = "";
+        long categoryId = 0;
         String sort = "asc";
         String filed = "name";
         int pageNum = 1;
@@ -102,7 +102,7 @@ public class ProductControllerApi {
         int minPrice = 0;
         int maxPrice = 0;
         if (object.has("category")) {
-            categoryUrl = object.get("category").asText();
+            categoryId = object.get("category").asLong();
         }
         if (object.has("sort")) {
             sort = object.get("sort").asText();
@@ -124,9 +124,9 @@ public class ProductControllerApi {
         }
 
         Map<String, Object> result = new HashMap<>();
-        if (!categoryUrl.equals("")) {
-            Category category = categoryService.getByCategoryUrl(categoryUrl);
-            page = productService.getProductsByCategory(categoryUrl, minPrice, maxPrice, pageNum, pageSize, filed, sort);
+        if (!(categoryId == 0)) {
+            Category category = categoryService.getByCategory(categoryId);
+            page = productService.getProductsByCategory(categoryId, minPrice, maxPrice, pageNum, pageSize, filed, sort);
             result.put("categories", Arrays.asList(new CategoryConverter().entityToDto(category)));
         }
 

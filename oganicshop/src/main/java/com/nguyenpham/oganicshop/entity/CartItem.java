@@ -10,9 +10,9 @@ import lombok.*;
 public class CartItem {
     private Product product;
     private int quantity;
-    private int discount = 0;
+    private double discount = 0;
 
-    public int calculateTotalItem() {
+    public double calculateTotalItem() {
         return this.product.getFinalPrice() * this.quantity;
     }
 

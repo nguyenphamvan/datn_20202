@@ -38,14 +38,14 @@ public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, 
     public MyReviewDto entityToMyReview(Review review) {
         MyReviewDto response = new MyReviewDto();
         response.setId(review.getId());
+        response.setProductUrl(review.getProduct().getProductUrl());
         response.setComment(review.getComment());
         response.setTitle(review.getTitle());
         response.setRating(review.getRating());
-        response.setProductImg("/images/products/" + review.getProduct().getId() + "/" + review.getProduct().getImage().split(",")[0]);
+        response.setProductImg(review.getProduct().getMainImage());
         response.setReviewerName(review.getUser().getFullName());
         response.setUserId(review.getUser().getId());
-        response.setProductUrl(review.getProduct().getUrl());
-        response.setProductName(review.getProduct().getName());
+        response.setProductName(review.getProduct().getTitle());
         response.setCreatedAt(review.getCreatedAt());
         response.setUpdatedAt(review.getUpdatedAt());
 

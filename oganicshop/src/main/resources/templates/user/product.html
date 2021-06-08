@@ -23,6 +23,18 @@
             margin-top: 20px;
         }
 
+        .product-area .nav-tabs li a.active, .product-area .nav-tabs li a {
+            background: #F7941D;
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .product-area .nav-tabs li a.active, .product-area .nav-tabs li:hover a {
+            background: #fff;
+            color: #000000;
+            border-color: transparent;
+        }
+
         /*.blog-single .share-social .content-tags .tag-inner li a > i.ti-star {*/
         /*    color: #F7941D;*/
         /*}*/
@@ -442,7 +454,7 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
-        let productUrl = window.location.pathname.replace("/products/", "").replace(".html", "");
+        let productUrl = window.location.pathname.replace("/products/", "");
         getListCategory();
         displayProduct(productUrl);
         displayReviewOfProduct(productUrl)

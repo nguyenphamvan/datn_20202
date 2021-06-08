@@ -9,9 +9,8 @@ public class OrderDetailConverter implements GeneralConverter<OrderItem, OrderIt
         OrderItemDto orderItemDto = new OrderItemDto();
         orderItemDto.setId(orderItem.getId());
         orderItemDto.setProductId(orderItem.getProduct().getId());
-        orderItemDto.setProductName(orderItem.getProduct().getName());
-        orderItemDto.setProductUrl(orderItem.getProduct().getUrl());
-        orderItemDto.setImage( "/images/products/" + orderItem.getProduct().getId() + "/" + orderItem.getProduct().getImage().split(",")[0]);
+        orderItemDto.setProductName(orderItem.getProduct().getTitle());
+        orderItemDto.setImage(orderItem.getProduct().getMainImage());
         orderItemDto.setQuantity(orderItem.getQuantity());
         orderItemDto.setDiscount(orderItem.getDiscount());
         orderItemDto.setRawTotal(orderItem.getTotalPrice());

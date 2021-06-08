@@ -10,7 +10,7 @@ public interface CategoryService {
     List<Category> getCategories();
     List<CategoryDto> getListCategory();
     CategoryDto getByCategoryId(long categoryId);
-    Category getByCategoryUrl(String categoryUrl);
-    Category addCategory(CategoryDto categoryRequest);
-    Category updateCategory(Category category);
+    Category getByCategory(long categoryId);
+//    Category addCategory(CategoryDto categoryRequest);
+//    Category updateCategory(Category category);
 }

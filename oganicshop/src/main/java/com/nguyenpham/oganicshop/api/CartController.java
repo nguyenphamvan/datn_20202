@@ -46,7 +46,7 @@ public class CartController {
         return new ResponseEntity<Object>(br, HttpStatus.OK);
     }
 
-    @PostMapping("/quick-addToCart/{productUrl}")
+    @PostMapping("/quick-addToCart/{productId}")
     public ResponseEntity<?> quickAddProductToCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
         BaseResponse br = new BaseResponse();
         boolean result = cartService.addItemCart(session, productUrl, 1);
@@ -85,7 +85,7 @@ public class CartController {
         return new ResponseEntity<>(br, HttpStatus.OK);
     }
 
-    @DeleteMapping("/remove/{productUrl}")
+    @DeleteMapping("/remove/{productId}")
     public ResponseEntity<?> removeProductOutCart(HttpSession session, @PathVariable("productUrl") String productUrl) {
         BaseResponse br = new BaseResponse();
         boolean result = cartService.removeItemCart(session, productUrl);

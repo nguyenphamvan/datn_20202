@@ -29,7 +29,7 @@ public class CartServiceImpl implements CartService {
         if (cart == null) {
             cart = new HashMap<>();
         }
-        Product product = productRepository.findByUrl(productUrl).orElse(null);
+        Product product = productRepository.findByProductUrl(productUrl);
         if (product != null) {
             CartItem item;
             if (cart.containsKey(product.getId())) {
@@ -60,7 +60,7 @@ public class CartServiceImpl implements CartService {
         if (cart == null) {
             return false;
         } else {
-            Product product = productRepository.findByUrl(productUrl).orElse(null);
+            Product product = productRepository.findByProductUrl(productUrl);
             if(product != null && cart.containsKey(product.getId())) {
                 CartItem item = cart.get(product.getId());
                 if(changeMethod.equals("plus")) {
@@ -90,7 +90,7 @@ public class CartServiceImpl implements CartService {
         if (cart == null) {
             return false;
         } else {
-            Product product = productRepository.findByUrl(productUrl).orElse(null);
+            Product product = productRepository.findByProductUrl(productUrl);
             if (cart.containsKey(product.getId())) {
                 cart.remove(product.getId());
             }

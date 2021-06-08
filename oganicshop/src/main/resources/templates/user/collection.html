@@ -191,8 +191,8 @@
                             <div style="align-items: center; display: flex;">
                                 <label style="margin-right: 5px;">Sắp xếp</label>
                                 <select id="sort-by">
-                                    <option value="name-asc">Name (A - Z)</option>
-                                    <option value="name-desc">Name (Z - A)</option>
+                                    <option value="title-asc">Name (A - Z)</option>
+                                    <option value="title-desc">Name (Z - A)</option>
                                     <option value="finalPrice-asc">Price (Low &gt; High)</option>
                                     <option value="finalPrice-desc">Price (High &gt; Low)</option>
                                 </select>
@@ -315,65 +315,62 @@
 
         const params = new URLSearchParams(window.location.search);
         let category = params.get("category") !== null ? params.get("category") : "";
-        let supplier = params.get("supplier") !== null ? params.get("supplier") : "";
         getListCategory();
         actionForModal();
         let data = {
             "category" : category,
-            "supplier" : supplier,
             "sort" : $("#sort-by option:selected").val().split("-")[1],
             "sortBy" : $("#sort-by option:selected").val().split("-")[0],
             "pageSize": $("#page-size option:selected").val()
         }
         displayListProductByCategory(data);
 
-        $(document).on("click", ".quickview-content .quantity .button.minus", function () {
-            $.ajax({
-                url: "/api/products/check-provide-enough-quantity",
-                data: {
-                    "quantity": $(".quickview-content .quantity .input-number").val(),
-                    "productUrl": $(".quickview-content").attr("product-url")
-                },
-                type: "GET",
-                dataType: 'json',
-                success: function (check) {
-                    $(".quickview-content .error-msg").remove();
-                    if (check === false) {
-                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        });
-
-        $(document).on("click", ".quickview-content .quantity .button.plus", function () {
-            $.ajax({
-                url: "/api/products/check-provide-enough-quantity",
-                data: {
-                    "quantity": $(".quickview-content .quantity .input-number").val(),
-                    "productUrl": $(".quickview-content").attr("product-url")
-                },
-                type: "GET",
-                dataType: 'json',
-                success: function (check) {
-                    $(".quickview-content .error-msg").remove();
-                    if (check === false) {
-                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        });
+        // $(document).on("click", ".quickview-content .quantity .button.minus", function () {
+        //     $.ajax({
+        //         url: "/api/products/check-provide-enough-quantity",
+        //         data: {
+        //             "quantity": $(".quickview-content .quantity .input-number").val(),
+        //             "productUrl": $(".quickview-content").attr("product-url")
+        //         },
+        //         type: "GET",
+        //         dataType: 'json',
+        //         success: function (check) {
+        //             $(".quickview-content .error-msg").remove();
+        //             if (check === false) {
+        //                 $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
+        //             }
+        //         },
+        //         error: function (xhr) {
+        //             alert(xhr.responseText);
+        //         }
+        //     });
+        // });
+        //
+        // $(document).on("click", ".quickview-content .quantity .button.plus", function () {
+        //     $.ajax({
+        //         url: "/api/products/check-provide-enough-quantity",
+        //         data: {
+        //             "quantity": $(".quickview-content .quantity .input-number").val(),
+        //             "productUrl": $(".quickview-content").attr("product-url")
+        //         },
+        //         type: "GET",
+        //         dataType: 'json',
+        //         success: function (check) {
+        //             $(".quickview-content .error-msg").remove();
+        //             if (check === false) {
+        //                 $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
+        //             }
+        //         },
+        //         error: function (xhr) {
+        //             alert(xhr.responseText);
+        //         }
+        //     });
+        // });
 
         $("#page-size").change(function () {
             let sort = $("#sort-by option:selected").val().split("-");
             let data = {
                 "category" : category,
-                "supplier" : supplier,
                 "sort" : sort[1],
                 "sortBy" : sort[0],
                 "pageSize": $("#page-size option:selected").val()
@@ -386,7 +383,6 @@
             let sort = $("#sort-by option:selected").val().split("-");
             let data = {
                 "category" : category,
-                "supplier" : supplier,
                 "sort" : sort[1],
                 "sortBy" : sort[0],
                 "pageSize": $("#page-size option:selected").val()
@@ -399,7 +395,6 @@
             let sort = $("#sort-by option:selected").val().split("-");
             let data = {
                 "category" : category,
-                "supplier" : supplier,
                 "sort" : sort[1],
                 "sortBy" : sort[0],
                 "page" : $(this).attr("page"),
@@ -411,7 +406,6 @@
         $("#filter-range-price").on("click", function () {
             let data = {
                 "category" : category,
-                "supplier" : supplier,
                 "sort" : $("#sort-by option:selected").val().split("-")[1],
                 "sortBy" : $("#sort-by option:selected").val().split("-")[0],
                 "pageSize": $("#page-size option:selected").val(),
@@ -431,26 +425,10 @@
             dataType : "json",
             contentType: "application/json",
             success: function (res) {
+                console.log(res);
                 if (res["status"] === true) {
                     let result = res["data"];
                     $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
-                    if (result["categories"][0].hasOwnProperty("subCategory")) {
-                        $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                            .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                        let firstItemCategory = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(1) > ul > li:first-child");
-                        $.each(result["categories"][0]["subCategory"], function (index, item) {
-                            let itemCategoryClone = firstItemCategory.clone();
-                            itemCategoryClone.show();
-                            itemCategoryClone.find("a").attr("href", "/collections.html?category=" + item["categoryUrl"]).text(item["categoryName"]);
-                            itemCategoryClone.insertAfter(firstItemCategory);
-                        });
-                        firstItemCategory.hide();
-                    } else{
-                        $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                            .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                        $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul").hide();
-                    }
-
 
                     $("#list-product > div:nth-child(1)").nextAll().remove();
                     genListProduct(result["products"]);
@@ -496,13 +474,13 @@
             let itemClone = firstItem.clone();
             itemClone.show();
             if (item.hasOwnProperty("mainImage")) {
-                itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"] + ".html");
-                itemClone.find("div.product-img > a > img.default-img").attr("src", "http://images.amazon.com/images/P/0195153448.01.LZZZZZZZ.jpg");
+                itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
+                itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
                 // itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
             }
-            itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
+            itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["productName"]);
             itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
-            itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
+            itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["id"]);
             itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
             itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
             $("#list-product").append(itemClone);

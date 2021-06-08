@@ -17,8 +17,8 @@ public class OrderItemDto {
     private String image;
     private String SupplierName;
     private int quantity;
-    private int price;
-    private int discount;
-    private int rawTotal;
+    private Double price;
+    private Double discount;
+    private Double rawTotal;
     private boolean reviewed;
 }

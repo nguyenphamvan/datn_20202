@@ -27,14 +27,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getCategories() {
-        return categoryRepository.findAllByParentIsNull();
+        return categoryRepository.findAll();
     }
 
     @Override
     @Cacheable(cacheNames = "listCategory")
     public List<CategoryDto> getListCategory() {
         CategoryConverter converter = new CategoryConverter();
-        List<CategoryDto> categories = categoryRepository.findAllByParentIsNull().stream()
+        List<CategoryDto> categories = categoryRepository.findAll().stream()
                 .map(c -> converter.entityToDto(c)).collect(Collectors.toList());
         return categories;
     }
@@ -49,25 +49,25 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getByCategoryUrl(String categoryUrl) {
-        return categoryRepository.findByCategoryUrl(categoryUrl).orElse(null);
+    public Category getByCategory(long categoryId) {
+        return categoryRepository.findById(categoryId).orElse(null);
     }
 
-    @Override
-    public Category addCategory(CategoryDto categoryRequest) {
-        Category newCategory = new Category(categoryRequest.getCategoryUrl(), categoryRequest.getCategoryName());
-        if (categoryRequest.getParentId() != null) {
-            Category parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElse(null);
-            if(parentCategory != null) {
-                newCategory.setParent(parentCategory);
-            }
-        }
-        return categoryRepository.save(newCategory);
-    }
+//    @Override
+//    public Category addCategory(CategoryDto categoryRequest) {
+//        Category newCategory = new Category(categoryRequest.getCategoryUrl(), categoryRequest.getCategoryName());
+//        if (categoryRequest.getParentId() != null) {
+//            Category parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElse(null);
+//            if(parentCategory != null) {
+//                newCategory.setParent(parentCategory);
+//            }
+//        }
+//        return categoryRepository.save(newCategory);
+//    }
 
-    @Override
-    public Category updateCategory(Category category) {
-        return null;
-    }
+//    @Override
+//    public Category updateCategory(Category category) {
+//        return null;
+//    }
 
 }

@@ -20,9 +20,9 @@ public class ProductResponse {
     private List<String> images;
     private String baseDescription;
     private String detailDescription;
-    private int price;
-    private int discount;
-    private int finalPrice;
+    private Double price;
+    private Double discount;
+    private Double finalPrice;
     private double rating;
     private int numberOfReviews;
     private int amount;

@@ -45,14 +45,10 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
 //        product.setSupplier(supplier);
         product = productRepository.save(product);
-        for (MultipartFile image : productRequest.getImages()) {
-            if (image.isEmpty()) {
-                continue;
-            }
-            String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-            String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
-            FileUploadUtil.saveFile(uploadDir, fileName, image);
-        }
+        MultipartFile image = productRequest.getImages();
+        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+        String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
+        FileUploadUtil.saveFile(uploadDir, fileName, image);
         ProductResponse productResponse = new ProductConverter().entityToDtoNotReviews(product);
         if (productResponse != null) {
             return productResponse;
@@ -65,34 +61,17 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse updateProduct(ProductRequest productRequest) throws IOException {
         ProductResponse productResponse = null;
         Product product = productRepository.findById(productRequest.getId()).get();
-        product.setName(productRequest.getName());
-        product.setUrl(productRequest.getName().replace(" ", "-"));
-        product.setBaseDescription(productRequest.getBaseDescription());
-        product.setDetailDescription(productRequest.getDetailDescription());
+        product.setTitle(productRequest.getName());
+        product.setDescription(productRequest.getDescription());
         product.setPrice(productRequest.getPrice());
         product.setDiscount(productRequest.getDiscount());
         product.setFinalPrice(productRequest.getPrice() - productRequest.getDiscount());
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
         product.setCategory(category);
-//        product.setSupplier(supplier);
-        ArrayList<String> images = new ArrayList<>();
-        for (MultipartFile image : productRequest.getImages()) {
-            if (image.isEmpty()) {
-                continue;
-            }
-            images.add(StringUtils.cleanPath(image.getOriginalFilename()));
-        }
-        if (images.size() > 0) {
-            product.setImage(org.apache.commons.lang3.StringUtils.join(images, "-"));
-            for (MultipartFile image : productRequest.getImages()) {
-                if (image.isEmpty()) {
-                    continue;
-                }
-                String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-                String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
-                FileUploadUtil.saveFile(uploadDir, fileName, image);
-            }
-        }
+        MultipartFile image = productRequest.getImages();
+        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+        String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
+        FileUploadUtil.saveFile(uploadDir, fileName, image);
         productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
         return productResponse;
     }
@@ -146,26 +125,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsByCategory(String categoryUrl, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir )
+    public Page<Product> getProductsByCategory(long categoryId, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir )
     {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
         if (((minPrice > 0) || (maxPrice > 0)) && (minPrice < maxPrice)) {
-            return productRepository.findProductsByCategoryCategoryUrlAndFilterPrice(categoryUrl, minPrice, maxPrice, pageable);
+            return productRepository.findProductsByCategoryCategoryAndFilterPrice(categoryId, minPrice, maxPrice, pageable);
         }
-        return productRepository.findProductsByCategoryCategoryUrl(categoryUrl, pageable);
+        return productRepository.findProductsByCategoryId(categoryId, pageable);
     }
 
     @Override
-    public ProductResponse getProductByUrl(String productUrl) {
+    public ProductResponse getProductById(long productid) {
         try {
-            Product product = productRepository.findByUrl(productUrl).orElse(null);
+            Product product = productRepository.findById(productid).orElse(null);
             ProductConverter converter = new ProductConverter();
             return converter.entityToDto(product);
         } catch (Exception e) {
             return null;
         }
 
+    }
+
+    @Override
+    public ProductResponse getProductByUrl(String productUrl) {
+        try {
+            Product product = productRepository.findByProductUrl(productUrl);
+            ProductConverter converter = new ProductConverter();
+            return converter.entityToDto(product);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -182,12 +172,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int getAmountAvailable(String productUrl) {
-        return productRepository.findByUrl(productUrl).get().getAmount();
+        return productRepository.findByProductUrl(productUrl).getAmount();
     }
 
     @Override
     public boolean isProvideEnoughQuantity(String productUrl, int quantity) {
-        int quantityAvailable = productRepository.findByUrl(productUrl).get().getAmount();
+        int quantityAvailable = productRepository.findByProductUrl(productUrl).getAmount();
         if (quantityAvailable >= quantity) {
             return true;
         }

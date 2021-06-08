@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class CartItemDto {
     private ProductResponse product;
     private int quantity;
-    private int discount = 0;
-    private int totalItem;
+    private Double discount;
+    private Double totalItem;
 
 }

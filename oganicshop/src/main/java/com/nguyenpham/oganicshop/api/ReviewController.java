@@ -80,7 +80,7 @@ public class ReviewController {
             }
             double meanRating = totalRating / listReviewOfProduct.size();
             Product product = productService.getProductDetail(reviewRequest.getProductId());
-            product.setRating(meanRating);
+            product.setAverageRating(meanRating);
             productService.save(product);
 
             return ResponseEntity.ok("Cảm ơn bạn đã đánh giá sản phẩm!");

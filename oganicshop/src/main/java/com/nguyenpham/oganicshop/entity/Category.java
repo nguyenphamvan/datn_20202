@@ -25,30 +25,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
-    private String categoryUrl;
     @Column(nullable = false)
     private String categoryName;
-    @JsonIgnore
-    @CreationTimestamp
-    private Date createdAt;
-    @JsonIgnore
-    @UpdateTimestamp
-    private Date updatedAt;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parent_id")
-    @JsonIgnore
-    private Category parent;
-
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Set<Category> subCategories;
-
-    public Category(String categoryUrl, String categoryName) {
-        this.categoryUrl = categoryUrl;
-        this.categoryName = categoryName;
-    }
-
 
 }

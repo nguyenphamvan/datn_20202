@@ -36,7 +36,7 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
         List<OrderItemDto> orderItemDtoList = new ArrayList<>();
         StringBuilder summaryProductName = new StringBuilder("");
         order.getOrderItems().forEach(item -> {
-            summaryProductName.append(item.getProduct().getName());
+            summaryProductName.append(item.getProduct().getTitle());
             orderItemDtoList.add(odConverter.entityToDto(item));
         });
         orderDto.setOrderStatus(order.convertOrderLoggingToOrderLoggingDto());
@@ -70,7 +70,7 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
             orderItem.setQuantity(item.getQuantity());
             orderItem.setPrice(item.calculateTotalItem());
             orderItem.setDiscount(item.getDiscount());
-            orderItem.setTotalPrice(item.calculateTotalItem() - item.getDiscount());
+            orderItem.setTotalPrice(item.calculateTotalItem() - item.getDiscount()*item.getProduct().getPrice());
             orderItem.setProduct(item.getProduct());
             orderItem.setOrder(order);
             order.addOrderDetail(orderItem);

@@ -20,18 +20,18 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantity;
-    private int price;
-    private int discount;
-    private int totalPrice;
+    private Double price;
+    private Double discount;
+    private Double totalPrice;
     @Column(columnDefinition = "boolean default false")
     private boolean reviewed;
 
     @ManyToOne
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn(name = "order_id")
     @JsonIgnore
     private Order order;
 }
