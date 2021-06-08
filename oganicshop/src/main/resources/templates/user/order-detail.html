@@ -6,6 +6,7 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
 </head>
 <body class="js">
 
@@ -58,25 +59,18 @@
                         <div class="styles__StyledSection order-info-1">
                             <div class="title">Địa chỉ người nhận</div>
                             <div class="content">
-                                <p class="name"></p>
+                                <p class="name" style="color: rgb(21 20 20);"></p>
                                 <p class="address">
-                                    <span>Địa chỉ: </span> <span></span>
+                                    <span style="color: rgb(21 20 20);">Địa chỉ: </span> <span></span>
                                 </p>
                                 <p class="phone">
-                                    <span>Điện thoại: </span>
+                                    <span style="color: rgb(21 20 20);">Điện thoại: </span>
                                     <span></span>
                                 </p>
                             </div>
                         </div>
-                        <div class="styles__StyledSection order-info-2">
-                            <div class="title">Hình thức giao hàng</div>
-                            <div class="content">
-                                <p></p>
-                                <p></p>
-                            </div>
-                        </div>
                         <div class="styles__StyledSection order-info-3">
-                            <div class="title">Hình thức thanh toán</div>
+                            <div class="title">Phương thức thanh toán</div>
                             <div class="content">
                                 <p></p>
                             </div>
@@ -140,6 +134,16 @@
 </section>
 <!--/ End Product Style 1  -->
 
+<!-- The Modal -->
+<div id="myModal" class="myModal" style="z-index: 9999;">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/check-success-icon.png">
+        <p></p>
+    </div>
+</div>
+
 <!-- Start Footer Area -->
 <th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
@@ -150,6 +154,8 @@
     $(document).ready(function() {
         var orderId = /*[[${orderId}]]*/;
         getInfoOrder(orderId);
+        actionForModal();
+        getListCategory();
 
         $(document).on('click', '.my-reviews_btn', function (e) {
             e.preventDefault();
@@ -225,7 +231,14 @@
             contentType: "application/json",
             success: function (result) {
                 if (result === true) {
-                    window.location.href = "/sales/order/history";
+
+                    setTimeout(function(){
+                        $("#myModal").css("display", "block");
+                        $("#myModal > div.modal-content > p").text("Hủy đơn hàng thành công");
+                        $('#myModal').delay(3000).fadeOut(1000,function(){
+                            window.location.href = "/sales/order/history";
+                        });
+                    });
                 }
             }
         });

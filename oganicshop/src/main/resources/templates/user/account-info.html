@@ -133,12 +133,13 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function () {
+        getListCategory();
         getInfoAccount();
         actionForModal();
 
         $(".Account__StyledSideBar").siblings().css('display', 'none');
         let pageURL = $(location).attr("href");
-        if (pageURL.includes("/customer/account/info")) {
+        if (pageURL.includes("/customer/account/info") || pageURL.includes("/customer/account/edit")) {
             getInfoAccount();
             $("#customer_edit").css('display', 'block');
         }
@@ -195,13 +196,7 @@
             $("input[name='orderItem-id']").val($(this).siblings(".my-reviews__info").attr("orderItem-id"));
             $("input[name='product-id']").val($(this).siblings(".my-reviews__info").attr("product-id"));
         });
-
-
     });
-
-
-
-
 
     /*]]>*/
 </script>

@@ -336,6 +336,11 @@ textarea {
     text-align: left;
 }
 
+.styles__StyledAccountListOrder th {
+    color: black;
+    font-weight: 600;
+}
+
 .styles__StyledAccountListOrder td {
     font-size: 13px;
     line-height: 20px;
@@ -989,7 +994,7 @@ img {
 }
 
 .styles__StyledGroupSection > div {
-    width: 33.3333%;
+    width: 50%;
     margin: 0px 5px;
 }
 
@@ -1068,9 +1073,9 @@ img {
     min-width: 100px;
     position: relative;
     background: 0px 0px;
-    color: rgb(120, 120, 120);
+    color: rgb(21 20 20);
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 500;
     border-bottom: 1px solid rgb(244, 244, 244);
     text-align: left;
 }

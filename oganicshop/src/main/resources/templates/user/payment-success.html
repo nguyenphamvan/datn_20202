@@ -33,13 +33,13 @@
         <div class="row">
             <div class="col-12">
                 <div style="text-align: center; margin: auto;">
-                    <p style="font-size: 20px; color: green;">Thanh toán thành công</p>
+                    <p style="font-size: 20px; color: green;">Mã đơn hàng : <span id="orderId"></span> - Tổng thanh toán : $<span id="orderValue"></span></p>
                     <div style="color: green ; font-size: 50px; display: block; margin: auto; width: fit-content; margin-top: 20px;">
                         <img th:src="@{/images/order-success.png}" style="width: 25%;">
                     </div>
                     <div class="center" style="margin-top: 20px;">
                         <div class="button5">
-                            <a th:href="@{/}" style="color: white;" class="btn">Tiếp tục mua sắm</a>
+                            <a style="color: white;" class="btn">Chi tiết đơn hàng</a>
                         </div>
                     </div>
                 </div>
@@ -58,6 +58,12 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
         getListCategory();
+        let orderId = localStorage.getItem('orderId');
+        let orderValue = localStorage.getItem('orderValue');
+        $("#orderId").text(orderId);
+        $("#orderValue").text(orderValue);
+        $("div.shopping-cart.section > div > div > div > div > div.center > div > a").attr("href", "/sales/order/view/" + orderId);
+
     });
     /*]]>*/
 </script>

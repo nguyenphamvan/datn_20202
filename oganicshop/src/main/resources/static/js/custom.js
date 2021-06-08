@@ -21,7 +21,7 @@ $(document).ready(function () {
                     } else {
                         $("#myModal").css("display", "block");
                         $("#myModal > div.modal-content > p").text("Sản phảm đã được thêm vào giỏ hàng!!");
-                        $("#myModal").delay(60000).fadeOut();
+                        $("#myModal").delay(3000).fadeOut();
                     }
                 }
             })
@@ -1017,24 +1017,17 @@ function getInfoOrder(orderId) {
                 $(".styles__StyledSection.order-info-1 > div.content > p.name").text(order["contactReceiver"]);
                 $(".styles__StyledSection.order-info-1 .content p.address span:last-child").text(order["address"]["contactAddress"]);
                 $(".styles__StyledSection.order-info-1 .content p.phone span:last-child").text(order["address"]["contactPhone"]);
-                $(".styles__StyledSection.order-info-2 .content p:first-child").text("Giao hàng vào ngày : " + order["deliveryDate"]);
-                if (parseInt(order["shipFee"]) === 0) {
-                    $(".styles__StyledSection.order-info-2 .content p:last-child").text("Miễn phí vận chuyển");
-                } else {
-                    $(".styles__StyledSection.order-info-2 .content p:last-child").text("Giao hàng nhanh");
-                }
                 if (order["status"] === "Đang xử lý") {
                     $("div.Account__StyledAccountLayoutInner > div > table > tfoot")
                         .append("<tr><td colspan=\"4\"></td><td><a title=\"Hủy đơn hàng\" class=\"cancel-order\">Hủy đơn hàng</a></td></tr>");
                 }
                 $(".styles__StyledSection.order-info-3 .content p:first-child").text(order["paymentMethod"]);
-                $(".styles__StyledSection.order-info-3 .content p.cc-info").text(order["paymentMethod"]);
 
                 genreListOrderDetail(order["listOrderDetail"]);
-                $("table tfoot tr:first-child td:nth-child(2)").text(order["subTotal"] + " ₫");
-                $("table tfoot tr:nth-child(2) td:nth-child(2)").text("-" + order["discount"] + " ₫");
-                $("table tfoot tr:nth-child(3) td:nth-child(2)").text(order["shipFee"] + " ₫");
-                $("table tfoot tr:nth-child(4) td:nth-child(2) span.sum").text(order["total"] + " ₫");
+                $("table tfoot tr:first-child td:nth-child(2)").text("$" + order["subTotal"]);
+                $("table tfoot tr:nth-child(2) td:nth-child(2)").text("- $" + order["discount"]);
+                $("table tfoot tr:nth-child(3) td:nth-child(2)").text("$" + order["shipFee"]);
+                $("table tfoot tr:nth-child(4) td:nth-child(2) span.sum").text("$" + order["total"]);
             } else {
                 $(".styles__StyledAccountOrderDetail").empty();
                 $(".styles__StyledAccountOrderDetail").append("<div style='margin: auto;'>Không tìm thấy đơn hàng</div>")
@@ -1055,10 +1048,10 @@ function genreListOrderDetail(listOrderDetail) {
         rowClone.find("td:nth-child(1) > div > img").attr("src", orderItem["image"]);
         rowClone.find("td:nth-child(1) > div > div > a.product-name").attr("href", "/products/" + orderItem["productUrl"] + ".html").text(orderItem["productName"]);
         rowClone.find("td:nth-child(1) > div > div > div.product-review > a").attr("href", "/products/" + orderItem["productUrl"] + ".html");
-        rowClone.find("td.price").text(orderItem["price"] + " ₫");
+        rowClone.find("td.price").text("$" + orderItem["price"]);
         rowClone.find("td.quantity").text(orderItem["quantity"]);
-        rowClone.find("td.promotion-amount").text(orderItem["discount"] + " ₫");
-        rowClone.find("td.raw-total").text(orderItem["rawTotal"] + " ₫");
+        rowClone.find("td.promotion-amount").text("$" + orderItem["discount"]);
+        rowClone.find("td.raw-total").text("$" + orderItem["rawTotal"]);
         rowClone.insertAfter(firstRow);
     });
     firstRow.css("display", "none");
@@ -1102,9 +1095,18 @@ function getOrdersHistory(pageNum, pageSize) {
                         "           <td><a style='color: rgb(0, 127, 240)' href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
                         "           <td>" + value["orderDate"] + "</td>\n" +
                         "           <td>" + value["summaryProductName"] + "</td>\n" +
-                        "           <td>" + value["total"] + " ₫</td>\n" +
-                        "           <td>" + value["status"] + "</td>\n" +
-                        "       </tr>";
+                        "           <td>" + value["total"] + " ₫</td>\n";
+                    if (value["status"] === "Giao hàng thành công") {
+                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-success'>Giao hàng thành công</span></td>\n";
+                    } else if (value["status"] === "Đang xử lý") {
+                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-warning'>Đang xử lý</span></td>\n";
+                    } else if (value["status"] === "Đã hủy") {
+                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-danger'>Đã hủy</span></td>\n";
+                    } else {
+                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-dark'>" + value["status"] + "</span></td>\n";
+                    }
+                    node +=    "       </tr>";
+
                     $('tbody').append(node);
                 });
             } else {
@@ -1461,8 +1463,7 @@ function payment() {
         "promotion": $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text().replace("$",""),
         "shipFee": $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text().replace("$",""),
         "total": $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text().replace("$",""),
-        "paymentMethod": $("input[name='paymentMethod']:checked").val(),
-        "deliveryMethod": $("input[name='deliveryMethod']:checked").val()
+        "paymentMethod": $("input[name='paymentMethod']:checked").val()
     }
     // thah toán xong return về trang thông báo thanh toán đơn hàng thành công
     $.ajax({
@@ -1470,9 +1471,12 @@ function payment() {
         type: "POST",
         data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
-        success: function (url) {
+        success: function (res) {
+            console.log(res);
             $("#myModal").delay(1000).fadeOut();
-            window.location = url;
+            localStorage.setItem('orderId', res["data"]["orderId"]);
+            localStorage.setItem('orderValue', res["data"]["orderValue"]);
+            window.location = res["data"]["urlRedirect"];
         },
         error: function (xhr) {
             alert(xhr.responseText);

@@ -25,8 +25,6 @@ public class MyReviewDto {
     private String title;
     private String comment;
     private int rating;
-    @CreationTimestamp
-    private Date createdAt;
-    @UpdateTimestamp
-    private Date updatedAt;
+    private String createdAt;
+    private String updatedAt;
 }
