@@ -78,6 +78,8 @@ public class ReviewController {
             for (Review r : listReviewOfProduct) {
                 totalRating += r.getRating();
             }
+
+            /// cập nhật các thông tin về số ratting , ratting trung bình
             double meanRating = totalRating / listReviewOfProduct.size();
             Product product = productService.getProductDetail(reviewRequest.getProductId());
             product.setAverageRating(meanRating);

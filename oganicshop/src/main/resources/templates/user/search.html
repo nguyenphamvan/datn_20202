@@ -101,66 +101,6 @@
                     </div>
                     <!--/ End Single Widget -->
 
-                    <!-- Single Widget -->
-                    <div class="single-widget recent-post">
-                        <h3 class="title">Sản phẩm nổi bật</h3>
-                        <!-- Single Post -->
-                        <div class="single-post first">
-                            <div class="image">
-                                <img src="https://via.placeholder.com/75x75" alt="#">
-                            </div>
-                            <div class="content">
-                                <h5><a href="#">Girls Dress</a></h5>
-                                <p class="price">$99.50</p>
-                                <ul class="reviews">
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Single Post -->
-                        <!-- Single Post -->
-                        <div class="single-post first">
-                            <div class="image">
-                                <img src="https://via.placeholder.com/75x75" alt="#">
-                            </div>
-                            <div class="content">
-                                <h5><a href="#">Women Clothings</a></h5>
-                                <p class="price">$99.50</p>
-                                <ul class="reviews">
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Single Post -->
-                        <!-- Single Post -->
-                        <div class="single-post first">
-                            <div class="image">
-                                <img src="https://via.placeholder.com/75x75" alt="#">
-                            </div>
-                            <div class="content">
-                                <h5><a href="#">Man Tshirt</a></h5>
-                                <p class="price">$99.50</p>
-                                <ul class="reviews">
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Single Post -->
-                    </div>
-                    <!--/ End Single Widget -->
-
                 </div>
             </div>
             <div class="col-lg-9 col-md-8 col-12">
@@ -181,8 +121,8 @@
                             <div style="align-items: center; display: flex;">
                                 <label style="margin-right: 5px;">Sắp xếp</label>
                                 <select id="sort-by">
-                                    <option value="name-asc">Name (A - Z)</option>
-                                    <option value="name-desc">Name (Z - A)</option>
+                                    <option value="title-asc">Name (A - Z)</option>
+                                    <option value="title-desc">Name (Z - A)</option>
                                     <option value="finalPrice-asc">Price (Low &gt; High)</option>
                                     <option value="finalPrice-desc">Price (High &gt; Low)</option>
                                 </select>
@@ -342,48 +282,6 @@
             "pageSize": $("#page-size option:selected").val()
         }
         getListProductByKeyword(data);
-
-        $(document).on("click", ".quickview-content .quantity .button.minus", function () {
-            $.ajax({
-                url: "/api/products/check-provide-enough-quantity",
-                data: {
-                    "quantity": $(".quickview-content .quantity .input-number").val(),
-                    "productUrl": $(".quickview-content").attr("product-url")
-                },
-                type: "GET",
-                dataType: 'json',
-                success: function (check) {
-                    $(".quickview-content .error-msg").remove();
-                    if (check === false) {
-                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        });
-
-        $(document).on("click", ".quickview-content .quantity .button.plus", function () {
-            $.ajax({
-                url: "/api/products/check-provide-enough-quantity",
-                data: {
-                    "quantity": $(".quickview-content .quantity .input-number").val(),
-                    "productUrl": $(".quickview-content").attr("product-url")
-                },
-                type: "GET",
-                dataType: 'json',
-                success: function (check) {
-                    $(".quickview-content .error-msg").remove();
-                    if (check === false) {
-                        $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
-                    }
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        });
 
         $("#page-size").change(function () {
             let sort = $("#sort-by option:selected").val().split("-");

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ProductController {
-
     @GetMapping("/products/{productUrl}")
     public String getProductDetail(@PathVariable("productUrl") String productUrl) {
         return "user/product";

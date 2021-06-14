@@ -63,7 +63,10 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item"><i class="fas fa-users"></i>Cập nhật thông tin</a>
-                    <a class="collapse-item"><i class="fab fa-product-hunt"></i>Đăng xuất</a>
+                    <form name="logoutForm" th:hidden="true" method="post" th:action="@{/admin/logout}">
+                        <input type="submit" value="Logout" />
+                    </form>
+                    <a class="collapse-item" href="javascript: logoutForm.submit();"><i class="fab fa-product-hunt"></i> <span>Đăng xuất</span></a>
                 </div>
             </div>
         </li>
@@ -88,26 +91,14 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-                <!-- Topbar Search -->
-                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                               aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            <span th:text="${#request.userPrincipal.principal.getFullName()}"
+                                  class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
                         <!-- Dropdown - User Information -->
@@ -144,9 +135,9 @@
                 </div>
                 <br>
 
-                <div class="row" id="div-info-2">
+                <div class="row" id="div-info-2" style="margin-bottom: 40px;">
                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-4 col-md-4 mb-4">
+                    <div class="col-xl-6 col-md-6 mb-6">
                         <div class="card border-left-primary shadow h-100">
                             <div class="card-header font-weight-bold">Địa chỉ người nhận</div>
                             <div class="card-body">
@@ -162,28 +153,16 @@
                     </div>
 
                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-4 col-md-4 mb-4">
+                    <div class="col-xl-6 col-md-6 mb-6">
                         <div class="card border-left-success shadow h-100">
-                            <div class="card-header font-weight-bold">Hình thức giao hàng</div>
+                            <div class="card-header font-weight-bold">Thông tin đơn hàng</div>
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div id="deliveryMethod">Giao hàng nội thành</div>
-                                        <div id="shipFee"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pending Requests Card Example -->
-                    <div class="col-xl-4 col-md-4 mb-4">
-                        <div class="card border-left-warning shadow h-100">
-                            <div class="card-header font-weight-bold">Phương thức thanh toán</div>
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div id="paymentMethod"></div>
+                                        <div><b>Tổng giá trị các mặt hàng : </b><span>$1000</span></div>
+                                        <div id="shipFee"><b>Phí vận chuyển: </b><span>$50</span></div>
+                                        <div><b>Giảm giá : </b><span>$50</span></div>
+                                        <div><b>Tổng thanh toán : </b><span>$1000</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -236,14 +215,6 @@
                         </div>
                     </div>
                 </div>
-
-                <a class="btn btn-light btn-icon-split">
-                    <span class="icon text-gray-600">
-                        <i class="fas fa-arrow-left"></i>
-                    </span>
-                    <span class="text">Quay lại</span>
-                </a>
-
             </div>
             <!-- /.container-fluid -->
 
@@ -340,7 +311,7 @@
                 $.each(listOrderDetail, function (index, product) {
                     let row = "<tr>\n" +
                         "           <td><img style='width: 80px; height: 80px;' src='/images/products/2/laptop-asus.jpg'></td>\n" +
-                        "           <td><a>" + product["productName"] + "</a><p>Hãng sx : " + product["supplierName"] + "</p></td>\n" +
+                        "           <td><a>" + product["productName"] + "</a></td>\n" +
                         "           <td>" + product["price"] + "</td>\n" +
                         "           <td>" + product["discount"] + "</td>\n" +
                         "           <td>" + product["quantity"] + "</td>\n" +
@@ -353,22 +324,22 @@
                     let row = "";
                     if (logging["status"] === "Đã hủy") {
                         row = "<tr>\n" +
-                            "           <td class='text-danger'>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-danger\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
                     } else if (logging["status"] === "Giao hàng thành công") {
                         row = "<tr>\n" +
-                            "           <td class='text-success'>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-success\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
                     } else if (logging["status"] === "Đang xử lý") {
                         row = "<tr>\n" +
-                            "           <td class='text-warning'>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-warning\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
-                    }  else {
+                    } else {
                         row = "<tr>\n" +
-                            "           <td>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-dark\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
                     }

@@ -1,8 +1,8 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.nguyenpham.oganicshop.config.PaypalPaymentIntent;
-import com.nguyenpham.oganicshop.config.PaypalPaymentMethod;
+//import com.nguyenpham.oganicshop.config.PaypalPaymentIntent;
+//import com.nguyenpham.oganicshop.config.PaypalPaymentMethod;
 import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.dto.BaseResponse;
 import com.nguyenpham.oganicshop.entity.CartItem;
@@ -13,11 +13,11 @@ import com.nguyenpham.oganicshop.entity.Promotion;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.*;
-import com.nguyenpham.oganicshop.service.impl.PaypalService;
-import com.nguyenpham.oganicshop.util.Utils;
-import com.paypal.api.payments.Links;
-import com.paypal.api.payments.Payment;
-import com.paypal.base.rest.PayPalRESTException;
+//import com.nguyenpham.oganicshop.service.impl.PaypalService;
+//import com.nguyenpham.oganicshop.util.Utils;
+//import com.paypal.api.payments.Links;
+//import com.paypal.api.payments.Payment;
+//import com.paypal.base.rest.PayPalRESTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class CheckoutControllerApi {
 
     private Logger log = LoggerFactory.getLogger(CheckoutControllerApi.class);
 
-    private PaypalService paypalService;
+//    private PaypalService paypalService;
     private UserService userService;
     private CartService cartService;
     private OrderService orderService;
@@ -44,9 +44,8 @@ public class CheckoutControllerApi {
     private EmailSender emailSender;
 
     @Autowired
-    public CheckoutControllerApi(PaypalService paypalService, CartService cartService, OrderService orderService,
+    public CheckoutControllerApi(CartService cartService, OrderService orderService,
                                  UserService userService, PromotionService promotionService, EmailSender emailSender) {
-        this.paypalService = paypalService;
         this.cartService = cartService;
         this.orderService = orderService;
         this.userService = userService;

@@ -28,7 +28,7 @@ Version:1.0
 	padding: 45px 0 0px 0;
 }
 .breadcrumbs {
-	padding: 20px 0;
+	padding: 10px 0;
 }
 .blog-single.grid .pagination{
 	float:none;
@@ -502,7 +502,7 @@ Version:1.0
 	font-size: 13px;
 }
 .breadcrumbs {
-	padding: 20px 0;
+	padding: 10px 0;
 }
 .header.shop .topbar .top-left{
 	text-align:center;
@@ -1201,7 +1201,7 @@ Version:1.0
 	font-size: 13px;
 }
 .breadcrumbs {
-	padding: 20px 0;
+	padding: 10px 0;
 }
 .header.shop .topbar {
 	background: #fff;

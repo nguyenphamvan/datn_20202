@@ -6,6 +6,7 @@ import com.nguyenpham.oganicshop.security.oauth2.Oauth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -21,20 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(2)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    private CustomOAuth2UserService oauth2UserService;
-//    @Autowired
-//    private Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
 
-    @Bean
-    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-        return new DefaultHttpFirewall();
-    }
-
-    @Bean
+    @Bean("userDetailService1")
     public UserDetailsService userDetailsService() {
         return new UserDetailServiceImpl();
     }
@@ -61,32 +53,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests().
-                antMatchers("/oauth2/**").permitAll().
-                antMatchers("/signup", "/api/registerAccount", "/api/verifyAccount").permitAll()
+        http.authorizeRequests()
                 // Các yêu cầu phải login với vai trò user hoặc admin
                 // Nếu chưa login, nó sẽ redirect tới trang /login.
-                .antMatchers("/login", "/nhan-xet-san-pham-ban-da-mua", "/sales/**", "/checkout.html", "/add-product-review",
+                .antMatchers("/nhan-xet-san-pham-ban-da-mua", "/sales/**", "/checkout.html", "/add-product-review",
                         "/customer/**", "/api/customer/**", "/sales/**", "/api/sales/**")
                 .access("hasAnyRole('USER', 'ADMIN')")
-                // Các trang chỉ dành cho ADMIN
-                .antMatchers("/admin/**").access("hasRole('ADMIN')")
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic().and()
-//                .formLogin()
-//                    .permitAll()
-//                    .loginPage("/login")
-//                    .usernameParameter("email")
-//                    .passwordParameter("password")
-//                .and()
-                .logout().permitAll()
-                .logoutSuccessUrl("/logout_success").and()
-//                .oauth2Login()
-//                .loginPage("/login")
-//                .userInfoEndpoint()
-//                .userService(oauth2UserService)
-//                .and().successHandler(oauth2LoginSuccessHandler);
-                .exceptionHandling().accessDeniedPage("/403");
+                .formLogin()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .loginProcessingUrl("/doLogin")
+                    .defaultSuccessUrl("/")//
+                    .failureUrl("/doLogin?error=true")//
+                .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/logout_success").and()
+                    .exceptionHandling().accessDeniedPage("/403");
     }
 }

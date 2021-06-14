@@ -16,6 +16,8 @@ public class ProductResponse {
     private Long id;
     private String productName;
     private String productUrl;
+    private String author;
+    private String since;
     private String mainImage;
     private List<String> images;
     private String baseDescription;

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Đăng nhập</title>
-
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet"/>
     <!-- Font Icon -->
     <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
 
@@ -20,14 +20,17 @@
     <section class="sign-in">
         <div class="container">
             <div class="signin-content">
-                <div class="signin-image">
+                <div class="signin-image" style="margin-left: 65px;">
                     <figure><img th:src="@{/images/signin-image.png}" alt="sing up image"></figure>
                     <a th:href="@{/signup}" class="signup-image-link">Tạo tài khoản mới</a>
                 </div>
 
-                <div class="signin-form">
-                    <h2 class="form-title">Sign up</h2>
-                    <form th:action="@{/login}" method="POST" class="login-form" id="login-form">
+                <div class="signin-form" style="margin-left: 25px;">
+                    <h2 class="form-title" style="font-size: 27px">Đăng nhập hệ thống</h2>
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                    </div>
+                        <form th:action="@{/doLogin}" method="POST" class="login-form" id="login-form">
                         <div class="form-group">
                             <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i></label>
                             <input type="email" name="email" id="email" placeholder="Your Email"/>

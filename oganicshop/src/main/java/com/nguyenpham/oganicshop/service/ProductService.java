@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
-
+    List<Product> findAll(List<Long> listId);
     Product save(Product product);
     long countNumberProduct();
     List<ProductResponse> getAllProduct();

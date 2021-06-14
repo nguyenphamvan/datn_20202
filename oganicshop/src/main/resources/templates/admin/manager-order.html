@@ -6,6 +6,10 @@
     <title>Quản lý đơn hàng</title>
     <style>
         th, td { text-align: center; margin: 0 auto;}
+
+        .badge {
+            padding: 10px 15px;
+        }
     </style>
 </head>
 
@@ -65,7 +69,10 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item"><i class="fas fa-users"></i>Cập nhật thông tin</a>
-                    <a class="collapse-item"><i class="fab fa-product-hunt"></i>Đăng xuất</a>
+                    <form name="logoutForm" th:hidden="true" method="post" th:action="@{/admin/logout}">
+                        <input type="submit" value="Logout" />
+                    </form>
+                    <a class="collapse-item" href="javascript: logoutForm.submit();"><i class="fab fa-product-hunt"></i> <span>Đăng xuất</span></a>
                 </div>
             </div>
         </li>
@@ -98,22 +105,11 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            <span th:text="${#request.userPrincipal.principal.getFullName()}"
+                                  class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Tài khoản
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Đăng xuất
-                            </a>
-                        </div>
+
                     </li>
 
                 </ul>
@@ -137,8 +133,9 @@
                                     <th style="width: 30%;">Mặt hàng</th>
                                     <th style="width: 20%;">Ngày đặt hàng</th>
                                     <th style="width: 10%;">Giá trị</th>
-                                    <th style="width: 20%;">Trạng thái</th>
-                                    <th style="width: 10%;">Action</th>
+                                    <th style="width: 10%;">Số điện thoại</th>
+                                    <th style="width: 15%;">Trạng thái</th>
+                                    <th style="width: 5%;">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -147,14 +144,6 @@
                         </div>
                     </div>
                 </div>
-
-                <a class="btn btn-light btn-icon-split">
-                    <span class="icon text-gray-600">
-                        <i class="fas fa-arrow-left"></i>
-                    </span>
-                    <span class="text">Quay lại</span>
-                </a>
-
             </div>
             <!-- /.container-fluid -->
 
@@ -222,6 +211,10 @@
                         {data: 'orderDate'},
                         {data: "total", "render": function (data, type, row) {
                                 return "<span>$" + data + "</span>";
+                            }
+                        },
+                        {data: "address", "render": function (data, type, row) {
+                                return data['contactPhone'];
                             }
                         },
                         {

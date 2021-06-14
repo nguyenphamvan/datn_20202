@@ -63,7 +63,10 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item"><i class="fas fa-users"></i>Cập nhật thông tin</a>
-                    <a class="collapse-item"><i class="fab fa-product-hunt"></i>Đăng xuất</a>
+                    <form name="logoutForm" th:hidden="true" method="post" th:action="@{/admin/logout}">
+                        <input type="submit" value="Logout" />
+                    </form>
+                    <a class="collapse-item" href="javascript: logoutForm.submit();"><i class="fab fa-product-hunt"></i> <span>Đăng xuất</span></a>
                 </div>
             </div>
         </li>
@@ -109,7 +112,8 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            <span th:text="${#request.userPrincipal.principal.getFullName()}"
+                                  class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
                         <!-- Dropdown - User Information -->
@@ -141,9 +145,9 @@
                         <div class="col-lg-5">
                             <div class="row">
                                 <div class="col-md-12" style="margin-bottom: 30px;">
-                                    <div class="card">
+                                    <div class="card" style="    border: none; text-align: center; background: none;">
                                         <a data-size="710x823">
-                                            <img style="width: 100%;" class="img-fluid z-depth-1">
+                                            <img style="width: 65%;" class="img-fluid z-depth-1">
                                         </a>
                                     </div>
                                 </div>
@@ -237,7 +241,9 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="detailDescription"></div>
+                                    <div id="detailDescription">
+                                        <p>Nội dung chính: Bộ truyện Harry Potter kể về sự đấu tranh giữa cái thiện và cái ác trong thế giới phép thuật đầy huyền bí, mà tiêu biểu là cuộc chiến vĩ đại chống lại tên trùm phù thủy hắc ám Voldemort của cậu bé phù thủy Harry Potter và hai người bạn thân thiết Hermione Granger, Ronald Weasley.</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -76,7 +76,11 @@
                     <!-- Top Right -->
                     <div class="right-content">
                         <ul class="list-main">
-                            <li th:if="${#request.userPrincipal}"><i class="fa fa-sign-out"></i><a th:href="@{/logout}">Đăng xuất</a></li>
+                            <form name="logoutForm" th:hidden="true" method="post" th:action="@{/logout}">
+                                <input type="submit" value="Logout" />
+                            </form>
+                            <li th:if="${#request.userPrincipal}"><i class="fa fa-sign-out"></i><a href="javascript: logoutForm.submit();">Đăng xuất</a>
+                            </li>
                             <li th:unless="${#request.userPrincipal}"><i class="fa fa-user"></i><a th:href="@{/signup}">Đăng ký</a></li>
                             <li th:unless="${#request.userPrincipal}"><i class="ti-power-off"></i><a th:href="@{/login}">Đăng nhập</a></li>
                         </ul>
@@ -93,7 +97,7 @@
                 <div class="col-lg-2 col-md-2 col-12">
                     <!-- Logo -->
                     <div class="logo">
-                        <a href="index.html"><img src="images/logo.png" alt="logo"></a>
+                        <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a>
                     </div>
                     <!--/ End Logo -->
                     <!-- Search Form -->

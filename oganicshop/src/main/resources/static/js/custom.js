@@ -163,7 +163,7 @@ $(document).ready(function () {
         addProductFromWishlist($(this).attr("href"));
     });
 
-    $(document).on("click", "div.add-to-cart > a.btn.min", function (e) {
+    $(document).on("click", "#add-wishlist", function (e) {
         e.preventDefault();
         addProductFromWishlist($(this).attr("href"));
     });
@@ -202,11 +202,11 @@ function loadHeaderCart() {
                 let firstRow = $('#item-for-cloning');
                 $.each(res["data"]["listItemCart"], function (index, item) {
                     let cloneRow = firstRow.clone();
-                    cloneRow.attr('url', item.product["url"]);
+                    cloneRow.attr('url', item.product["productUrl"]);
                     cloneRow.css('display', 'block');
-                    cloneRow.find('a.cart-img').attr('href', item.product["url"]);
+                    cloneRow.find('a.cart-img').attr('href', item.product["productUrl"]);
                     cloneRow.find('a.cart-img > img').attr('src', item.product["mainImage"]);
-                    cloneRow.find('a.cart-item-name').text(item.product["name"]).attr('href', '/products/' + item.product["url"]);
+                    cloneRow.find('a.cart-item-name').text(item.product["name"]).attr('href', '/products/' + item.product["productUrl"]);
                     cloneRow.find('span.quantity').text(item.quantity);
                     cloneRow.find('span.amount').text("$" + item.product["finalPrice"]);
                     cloneRow.insertAfter('ul.shopping-list li:last');
@@ -265,39 +265,9 @@ function filterByPrice(categoryUrl, supplierName) {
     window.location = url;
 }
 
-function getSortAndShow(filterByPrice, categoryUrl, supplierName, keyword) {
-    let sort = $("#sort-by option:selected").val().split("-");
-    let pageSize = $("#page-size option:selected").val();
-    let minPrice = $('input[name="min-price"]').val();
-    let maxPrice = $('input[name="max-price"]').val();
-    let url;
-    if (keyword != null) {
-        url = "/search.html?search=" + keyword + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-    } else if (categoryUrl != null && supplierName == null) {
-        if (filterByPrice === true) {
-            url = "/collections.html?category=" + categoryUrl + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-        } else {
-            url = "/collections.html?category=" + categoryUrl + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-        }
-    } else if (categoryUrl == null && supplierName != null) {
-        if (filterByPrice === true) {
-            url = "/collections.html?supplier=" + supplierName + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-        } else {
-            url = "/collections.html?supplier=" + supplierName + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-        }
-    } else if (categoryUrl != null && supplierName != null) {
-        if (filterByPrice === true) {
-            url = "/collections.html?category=" + categoryUrl + "&supplier=" + supplierName + "&minPrice=" + minPrice + "&maxPrice=" + maxPrice + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-        } else {
-            url = "/collections.html?category=" + categoryUrl + "&supplier=" + supplierName + "&page=1&sortBy=" + sort[0] + "&sort=" + sort[1] + "&pageSize=" + pageSize;
-        }
-    }
-    window.location = url;
-}
-
 function searchProduct() {
     let keyword = $('input[id="input-search-bar"]').val();
-    window.location.href = "/search.html?search=" + keyword;
+    window.location.href = "/search?keyword=" + keyword;
 }
 
 function addProductFromWishlist(url) {
@@ -324,7 +294,6 @@ function getListCategory() {
         type: "GET",
         contentType: "application/json",
         success: function (categories) {
-            console.log(categories);
             // show category
             let html = "";
             $.each(categories, function (index, item) {
@@ -334,6 +303,27 @@ function getListCategory() {
             });
             $("div.header-inner > div > div > div > div > div > nav > div > div > ul > li:nth-child(2) > ul").append(html);
 
+        },
+        error: function (xhr) {
+            alert(xhr.responseText);
+        }
+    });
+}
+
+function getListCategory2() {
+    $.ajax({
+        url: "/api/categories",
+        type: "GET",
+        contentType: "application/json",
+        success: function (categories) {
+            // show category
+            let html = "";
+            $.each(categories, function (index, item) {
+                html += "<li style='margin-bottom: 10px;'>\n" +
+                    "        <a href='/collections.html?category=" + item["id"] + "'>" + item["categoryName"] + "</a>\n" +
+                    "    </li>";
+            });
+            $("ul.category-list").append(html);
         },
         error: function (xhr) {
             alert(xhr.responseText);
@@ -399,63 +389,36 @@ function getListProductByKeyword(data) {
         dataType: "json",
         contentType: "application/json",
         success: function (result) {
-            $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
-            if (result["categories"][0].hasOwnProperty("subCategory")) {
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                    .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                let firstItemCategory = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(1) > ul > li:first-child");
-                $.each(result["categories"][0]["subCategory"], function (index, item) {
-                    let itemCategoryClone = firstItemCategory.clone();
-                    itemCategoryClone.show();
-                    itemCategoryClone.find("a").attr("href", "/collections.html?category=" + item["categoryUrl"]).text(item["categoryName"]);
-                    itemCategoryClone.insertAfter(firstItemCategory);
-                });
-                firstItemCategory.hide();
-            } else {
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > h3")
-                    .attr("categoryUrl", result["categories"][0]["categoryUrl"]).text(result["categories"][0]["categoryName"]);
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul").hide();
-            }
+            console.log(result);
+            if (result["products"].length > 0) {
+                genListProduct(result["products"]);
 
-
-            $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child").nextAll().remove();
-            let firstItemSupplier = $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div:nth-child(2) > ul > li:first-child");
-            $.each(result["suppliers"], function (index, item) {
-                let itemSupplierClone = firstItemSupplier.clone();
-                itemSupplierClone.show();
-                itemSupplierClone.find("a").text(item["name"]).attr("href", "/collections.html?supplier=" + item["name"]);
-                itemSupplierClone.insertAfter(firstItemSupplier);
-            });
-            firstItemSupplier.hide();
-
-            $("#list-product > div:nth-child(1)").nextAll().remove();
-            genListProduct(result["products"]);
-
-
-            $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
-                .empty();
-            let html = "<li page='1'><a>First</a></li>\n";
-            if (result["page"] > 1) {
-                html += "<li page=" + (parseInt(result["page"]) - 1) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
-            } else {
-                html += "<li page='1'><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
-            }
-            for (let i = 1; i <= result["totalPages"]; ++i) {
-                if (i === result["page"]) {
-                    html += "<li page=" + i + " class='active'><a>" + i + "</a></li>";
+                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
+                    .empty();
+                let html = "<li page='1'><a>First</a></li>\n";
+                if (result["page"] > 1) {
+                    html += "<li page=" + (parseInt(result["page"]) - 1) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
                 } else {
-                    html += "<li page=" + i + "><a>" + i + "</a></li>";
+                    html += "<li page='1'><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
                 }
-            }
-            if (parseInt(result["page"]) < parseInt(result["totalPages"])) {
-                html += "<li page=" + (parseInt(result["page"]) + 1) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
+                for (let i = 1; i <= result["totalPages"]; ++i) {
+                    if (i === result["page"]) {
+                        html += "<li page=" + i + " class='active'><a>" + i + "</a></li>";
+                    } else {
+                        html += "<li page=" + i + "><a>" + i + "</a></li>";
+                    }
+                }
+                if (parseInt(result["page"]) < parseInt(result["totalPages"])) {
+                    html += "<li page=" + (parseInt(result["page"]) + 1) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
+                } else {
+                    html += "<li page=" + parseInt(result["page"]) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
+                }
+                html += "<li page=" + parseInt(result["totalPages"]) + "><a>Last</a></li>";
+                $("div.pagination-nav.text-center.mt_50 > ul")
+                    .append(html);
             } else {
-                html += "<li page=" + parseInt(result["page"]) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
+                $("body > section > div > div").empty().text("Không tìm thấy sản phẩm nào cho từ khóa " + result["keyword"]);
             }
-            html += "<li page=" + parseInt(result["totalPages"]) + "><a>Last</a></li>";
-            $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
-                .append(html);
-
         },
         error: function (xhr) {
             alert(xhr.responseText);
@@ -1033,20 +996,21 @@ function getInfoOrder(orderId) {
 }
 
 function genreListOrderDetail(listOrderDetail) {
+    console.log(listOrderDetail);
     let firstRow = $("div.Account__StyledAccountLayoutInner > div > table > tbody > tr:first-child");
     $.each(listOrderDetail, function( index, orderItem ) {
         let rowClone = firstRow.clone();
         rowClone.find("td:nth-child(1) > div").attr("orderItem-id", orderItem["id"]).attr("product-id", orderItem["productId"]);
         rowClone.find("td:nth-child(1) > div > img").attr("src", orderItem["image"]);
-        rowClone.find("td:nth-child(1) > div > div > a.product-name").attr("href", "/products/" + orderItem["productUrl"] + ".html").text(orderItem["productName"]);
-        rowClone.find("td:nth-child(1) > div > div > div.product-review > a").attr("href", "/products/" + orderItem["productUrl"] + ".html");
+        rowClone.find("td:nth-child(1) > div > div > a.product-name").attr("href", "/products/" + orderItem["productUrl"]).text(orderItem["productName"]);
+        rowClone.find("td:nth-child(1) > div > div > div.product-review > a").attr("href", "/products/" + orderItem["productUrl"]);
         rowClone.find("td.price").text("$" + orderItem["price"]);
         rowClone.find("td.quantity").text(orderItem["quantity"]);
         rowClone.find("td.promotion-amount").text("$" + orderItem["discount"]);
         rowClone.find("td.raw-total").text("$" + orderItem["rawTotal"]);
         rowClone.insertAfter(firstRow);
     });
-    firstRow.css("display", "none");
+    firstRow.remove();
 }
 
 function getTotalOrderPage() {
@@ -1238,32 +1202,33 @@ function displayProduct(productUrl) {
                 });
 
                 $("div.breadcrumbs > div > div > div > div > ul > li:nth-child(3) > a").attr("href", "/products/" + product["productUrl"]).text(product["productName"]);
+                $("#author").text(product["author"].replace("['", "").replace("']",""));
+                $("#since").text(product["since"]);
+                $("#rating_count").text(product["numberOfReviews"]);
+                $("#amount").text(product["amount"]);
                 $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
-                $("div.modal-body > div > div:nth-child(2) > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
-                $("div.modal-body > div > div:nth-child(2) > div > div > span#final-price").text("$" + product["finalPrice"]);
-                $("div.modal-body > div > div:nth-child(2) > div > div > span#price").text("$" + product["price"]);
+                $("div.modal-body > div > div > div > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
+                $("#final-price").text("$" + product["finalPrice"]);
+                $("#price").text("$" + product["price"]);
                 $("#add-cart").attr("productUrl", product["productUrl"]);
                 $("div.modal-body > div > div:nth-child(2) > div > div.quantity > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
+                $("#tabs-1 > div > h6").text(product["productName"]);
                 // $("#tabs-1 > div > p").html(product["detailDescription"]);
-                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span").text("(" + product["numberOfReviews"] + " lượt bình luận)");
+                $("div.quickview-ratting-review > div > span").text("("+ product["rating"] + ")");
                 if (product["amount"] <= 0) {
-                    $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-stock > span").hide();
+                    $("div.modal-body > div > div:nth-child(2) > div > div:nth-child(1) > div > span").hide();
                 }
                 // ratting
                 if (parseInt(product["rating"]) > 0) {
                     for (let i = 0; i < parseInt(product["rating"]); i++) {
-                        $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews")
-                            .append("<li class=\"yellow\"><i class=\"ti-star\"></i></li>");
+                        $("div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews").append("<li class=\"yellow\"><i class=\"ti-star\"></i></li>");
                     }
                 }
                 if ((5 - parseInt(product["rating"])) > 0) {
                     for (let i = 0; i < (5 - parseInt(product["rating"])); i++) {
-                        $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews")
-                            .append("<li><i class=\"ti-star\"></i></li>");
+                        $("div.quickview-ratting-review > div.quickview-ratting-wrap > ul.reviews").append("<li><i class=\"ti-star\"></i></li>");
                     }
                 }
-                $("div.modal-body > div > div:nth-child(2) > div > div.quickview-ratting-review > div.quickview-ratting-wrap > span")
-                    .text(" (" + product["numberOfReviews"] + " lượt bình luận)");
             } else {
                 // hoặc redirect về trang 404
                 $("body > section > div").empty().append("<div class='center'>Không tìm thấy sản phẩm</div>");
@@ -1395,9 +1360,9 @@ function getInfoPayment() {
                 let firstItem = $("#payment > div > div.col-lg-7 > div.header > div > div > ul > li:nth-child(1)");
                 $.each(listOrderItem, function(index, item) {
                     let itemClone = firstItem.clone();
-                    itemClone.attr("url", item["product"]["url"]);
-                    itemClone.find("a.cart-img").attr("href", "/products/" + item["product"]["url"]);
-                    itemClone.find("h4 > a").attr("href", "/products/" + item["product"]["url"]).text(item["product"]["name"]);
+                    itemClone.attr("url", item["product"]["productUrl"]);
+                    itemClone.find("a.cart-img").attr("href", "/products/" + item["product"]["productUrl"]);
+                    itemClone.find("h4 > a").attr("href", "/products/" + item["product"]["productUrl"]).text(item["product"]["title"]);
                     itemClone.find(".quantity").text(item["quantity"] + "x");
                     itemClone.find(".amount").text("$" + item["product"]["finalPrice"]);
                     itemClone.find("a > img").attr("src", item["product"]["mainImage"]);

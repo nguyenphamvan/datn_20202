@@ -38,12 +38,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findAll(List<Long> listId) {
+        return productRepository.findAllById(listId);
+    }
+
+    @Override
     @Transactional
     public ProductResponse addProduct(ProductRequest productRequest) throws IOException {
         Product product = new ProductConverter().dtoToEntity(productRequest);
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
         product.setCategory(category);
-//        product.setSupplier(supplier);
         product = productRepository.save(product);
         MultipartFile image = productRequest.getImages();
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());

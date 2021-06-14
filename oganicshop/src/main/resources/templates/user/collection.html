@@ -58,6 +58,43 @@
         .mt_50 {
             margin-top: 50px;
         }
+
+        .single-widget .title {
+            position: relative;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: capitalize;
+            margin-bottom: 30px;
+            display: block;
+            background: #fff;
+            padding-left: 12px;
+        }
+
+        .single-widget .title {
+            position: relative;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: capitalize;
+            margin-bottom: 25px;
+            display: block;
+            border-bottom: 1px solid #ddd;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        .single-widget .title::before {
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: -1px;
+            height: 100%;
+            width: 3px;
+            background: #F7941D;
+        }
+
+        .single-widget > .category-list > li > a:hover {
+            color: #F7941D;
+        }
     </style>
 
 </head>
@@ -100,84 +137,19 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-4 col-12">
-                <div class="shop-sidebar">
-                    <!-- Single Widget -->
-                    <div class="single-widget category">
-                        <h3 class="title">Danh mục</h3>
-                        <ul class="category-list">
-                            <li>
-                                <a></a>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="single-widget category" style="background: #dfe6ec; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px);">
+                    <h3 class="title">Danh mục sản phẩm</h3>
+                    <ul class="category-list">
 
-                    <!-- Single Widget -->
-                    <div class="single-widget recent-post">
-                        <h3 class="title">Sản phẩm nổi bật</h3>
-                        <!-- Single Post -->
-                        <div class="single-post first">
-                            <div class="image">
-                                <img src="https://via.placeholder.com/75x75" alt="#">
-                            </div>
-                            <div class="content">
-                                <h5><a href="#">Girls Dress</a></h5>
-                                <p class="price">$99.50</p>
-                                <ul class="reviews">
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Single Post -->
-                        <!-- Single Post -->
-                        <div class="single-post first">
-                            <div class="image">
-                                <img src="https://via.placeholder.com/75x75" alt="#">
-                            </div>
-                            <div class="content">
-                                <h5><a href="#">Women Clothings</a></h5>
-                                <p class="price">$99.50</p>
-                                <ul class="reviews">
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Single Post -->
-                        <!-- Single Post -->
-                        <div class="single-post first">
-                            <div class="image">
-                                <img src="https://via.placeholder.com/75x75" alt="#">
-                            </div>
-                            <div class="content">
-                                <h5><a href="#">Man Tshirt</a></h5>
-                                <p class="price">$99.50</p>
-                                <ul class="reviews">
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                    <li class="yellow"><i class="ti-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Single Post -->
-                    </div>
-                    <!--/ End Single Widget -->
-
+                    </ul>
                 </div>
             </div>
             <div class="col-lg-9 col-md-8 col-12">
-                <div class="row" style="background-color: #F6F7FB;">
+                <div class="row">
                     <div class="col-12">
                         <!-- Shop Top -->
-                        <div style="padding: 10px; display: flex; align-items: center; justify-content: space-between; height: 80px;">
+                        <div style="padding: 10px; display: flex; align-items: center; background: #dfe6ec;
+                        justify-content: space-between; height: 80px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px);">
                             <div style="display: flex;">
                                 <label style="margin-right: 5px;">Hiển thị </label>
                                 <select id="page-size">
@@ -214,7 +186,7 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a>
-                                    <img class="default-img" alt="#">
+                                    <img class="default-img" alt="#" style="min-height: 396px;">
 <!--                                    <img class="hover-img" alt="#">-->
                                 </a>
                                 <div class="button-head">
@@ -228,7 +200,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-content">
+                            <div class="product-content" style="text-align: center;">
                                 <h3><a></a></h3>
                                 <div class="product-price">
                                     <span style="font-size: 18px;"></span>
@@ -316,6 +288,7 @@
         const params = new URLSearchParams(window.location.search);
         let category = params.get("category") !== null ? params.get("category") : "";
         getListCategory();
+        getListCategory2()
         actionForModal();
         let data = {
             "category" : category,
@@ -325,47 +298,6 @@
         }
         displayListProductByCategory(data);
 
-        // $(document).on("click", ".quickview-content .quantity .button.minus", function () {
-        //     $.ajax({
-        //         url: "/api/products/check-provide-enough-quantity",
-        //         data: {
-        //             "quantity": $(".quickview-content .quantity .input-number").val(),
-        //             "productUrl": $(".quickview-content").attr("product-url")
-        //         },
-        //         type: "GET",
-        //         dataType: 'json',
-        //         success: function (check) {
-        //             $(".quickview-content .error-msg").remove();
-        //             if (check === false) {
-        //                 $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
-        //             }
-        //         },
-        //         error: function (xhr) {
-        //             alert(xhr.responseText);
-        //         }
-        //     });
-        // });
-        //
-        // $(document).on("click", ".quickview-content .quantity .button.plus", function () {
-        //     $.ajax({
-        //         url: "/api/products/check-provide-enough-quantity",
-        //         data: {
-        //             "quantity": $(".quickview-content .quantity .input-number").val(),
-        //             "productUrl": $(".quickview-content").attr("product-url")
-        //         },
-        //         type: "GET",
-        //         dataType: 'json',
-        //         success: function (check) {
-        //             $(".quickview-content .error-msg").remove();
-        //             if (check === false) {
-        //                 $(".quickview-content .add-to-cart").after("<div class='error-msg' style='color: red;'>Không đủ số lượng đáp ứng</div>");
-        //             }
-        //         },
-        //         error: function (xhr) {
-        //             alert(xhr.responseText);
-        //         }
-        //     });
-        // });
 
         $("#page-size").change(function () {
             let sort = $("#sort-by option:selected").val().split("-");
@@ -465,7 +397,6 @@
                 alert(xhr.responseText);
             }
         });
-
     }
 
     function genListProduct(products) {
@@ -480,14 +411,13 @@
             }
             itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["productName"]);
             itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
-            itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["id"]);
+            itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
             itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
             itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
             $("#list-product").append(itemClone);
         });
         firstItem.hide();
     }
-
 
     $(document).on("click", "div.product-action-2 > a", function (e) {
         e.preventDefault();

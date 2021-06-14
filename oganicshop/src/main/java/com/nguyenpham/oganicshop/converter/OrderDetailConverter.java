@@ -8,6 +8,7 @@ public class OrderDetailConverter implements GeneralConverter<OrderItem, OrderIt
     public OrderItemDto entityToDto(OrderItem orderItem) {
         OrderItemDto orderItemDto = new OrderItemDto();
         orderItemDto.setId(orderItem.getId());
+        orderItemDto.setProductUrl(orderItem.getProduct().getProductUrl());
         orderItemDto.setProductId(orderItem.getProduct().getId());
         orderItemDto.setProductName(orderItem.getProduct().getTitle());
         orderItemDto.setImage(orderItem.getProduct().getMainImage());
@@ -15,7 +16,6 @@ public class OrderDetailConverter implements GeneralConverter<OrderItem, OrderIt
         orderItemDto.setDiscount(orderItem.getDiscount());
         orderItemDto.setRawTotal(orderItem.getTotalPrice());
         orderItemDto.setPrice(orderItem.getPrice());
-//        orderItemDto.setSupplierName(orderItem.getProduct().getSupplier().getName());
         orderItemDto.setReviewed(orderItem.isReviewed());
         return orderItemDto;
     }

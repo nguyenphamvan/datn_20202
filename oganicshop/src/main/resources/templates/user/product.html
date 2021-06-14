@@ -23,25 +23,84 @@
             margin-top: 20px;
         }
 
-        .product-area .nav-tabs li a.active, .product-area .nav-tabs li a {
-            background: #F7941D;
-            color: #fff;
+        .product-area .nav-tabs li a.active, .product-area .nav-tabs li:hover a {
+            background: #fff;
+            color: #F7931E;
             border-color: transparent;
         }
 
-        .product-area .nav-tabs li a.active, .product-area .nav-tabs li:hover a {
-            background: #fff;
+        .product-area .nav-tabs li a {
             color: #000000;
             border-color: transparent;
         }
 
-        /*.blog-single .share-social .content-tags .tag-inner li a > i.ti-star {*/
-        /*    color: #F7941D;*/
-        /*}*/
+        .product-area > .nav-tabs > li:hover > hr {
+            transition: all 0.5s;
+        }
+
+        body > section > div > div.row > div > div > ul > li > a.active + hr {
+            border: 1px solid #F7931E;
+            background: #ccc;
+            height: 1px;
+            width: 100%;
+        }
+
+        div.modal-body > div > div:nth-child(2) > div > div:nth-child(1) > div > span > i {
+            font-size: 16px;
+            color: #63ab01;
+            margin-right: 2px;
+            position: relative;
+            top: 3px;
+        }
+
+        #add-cart {
+            background: linear-gradient(90deg, rgba(255, 152, 0, 1) 0%, rgba(247, 105, 93, 1) 100%);
+            border: 1px solid;
+            color: #ffffff;
+            height: 45px;
+            width: auto;
+            padding: 0px 20px;
+            line-height: 45px;
+            text-align: center;
+            text-transform: capitalize;
+            margin-right: 5px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        #add-wishlist {
+            border: 1px solid #F7931E;
+            height: 45px;
+            width: auto;
+            padding: 0px 20px;
+            line-height: 45px;
+            text-align: center;
+            text-transform: capitalize;
+            margin-right: 5px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: 500;
+            color: rgba(255, 152, 0, 1);
+            cursor: pointer;
+        }
+
+        #discount-percent {
+            margin-left: 8px;
+            padding: 4px 10px;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            background-color: #e84252;
+            color: #FFFFFF;
+            font-size: 1em;
+            font-weight: 600;
+        }
     </style>
 
 </head>
-<body class="js" style="background-color: #F6F7FB;">
+<body class="js" style="background-color: #e0e6eb;">
 
 <!-- Header -->
 <th:block th:include="user/common/header"/>
@@ -66,41 +125,60 @@
 <!-- End Breadcrumbs -->
 
 <!-- Product Style -->
-<section class="product-area shop-sidebar shop section" style="padding-top: 0px;">
+<section class="product-area shop-sidebar shop section" style="paddind: 0px;">
     <div class="container">
-        <div class="modal-body">
-            <div class="row no-gutters" style="background: white;">
-                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+        <div class="modal-body" style="padding: 0px;">
+            <div class="row no-gutters" style="background: white; padding: 15px 0px; border-radius: 5px;">
+                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12"></div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <!-- Product Slider -->
-                    <div class="product-gallery product-detail" style="margin-top: 50px;">
+                    <div class="product-gallery product-detail">
                         <div class="quickview-slider-active-1">
                         </div>
                     </div>
                     <!-- End Product slider -->
                 </div>
-                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                    <div class="quickview-content">
-                        <h2 style="margin-bottom: 20px;"></h2>
+                <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
+                    <div class="quickview-content" style="margin-left: 70px;">
+                        <div style="display: flex">
+                            <h2 style=" margin-bottom: 20px; font-size: 26px;"></h2>
+                            <div class="quickview-stock" style="margin-left: 20px;">
+                                <span><i class="fa fa-check-circle"></i> còn hàng</span>
+                            </div>
+                        </div>
+
+                        <p style="margin-bottom: 20px;">Tác giả: <span id="author"
+                                                                       style="color: #0b0b0b; font-weight: 500;">dsfdsfsdf</span>
+                        </p>
+                        <p style="margin-bottom: 20px;">Năm xuất bản: <span id="since"
+                                                                            style="color: #0b0b0b; font-weight: 500;">2346</span>
+                        </p>
                         <div class="quickview-ratting-review" style="margin-bottom: 20px;">
                             <div class="quickview-ratting-wrap">
                                 <ul class="reviews">
                                 </ul>
                                 <span style="margin-left: 10px;"></span>
                             </div>
-                            <div class="quickview-stock">
-                                <span><i class="fa fa-check-circle"></i> còn hàng</span>
-                            </div>
                         </div>
+
+                        <p style="margin-bottom: 20px;">Số lượt bình luận: <span id="rating_count"
+                                                                                 style="color: #0b0b0b; font-weight: 500;"></span>
+                        </p>
 
                         <div style="margin: 20px 0px 20px 0px;">
                             <span id="final-price" style="font-size: 25px; color: red;"></span>
                             <span id="price"
                                   style="text-decoration: line-through; opacity: .6; margin-left: 10px; font-size: 20px;"></span>
+                            <span id="discount-percent">-5%</span>
                         </div>
 
+                        <p style="margin-bottom: 20px;">Số lượng còn lại: <span id="amount"
+                                                                                style="color: #0b0b0b; font-weight: 500;"></span>
+                        </p>
 
                         <div class="quantity" style="margin-bottom: 30px;">
                             <!-- Input Order -->
+                            Số lượng
                             <div class="input-group">
                                 <div class="button minus">
                                     <button type="button" class="btn btn-primary btn-number" disabled="disabled"
@@ -117,11 +195,12 @@
                                     </button>
                                 </div>
                             </div>
-                            <!--/ End Input Order -->
-                            <div class="add-to-cart">
-                                <a id="add-cart" class="btn">Thêm vào giỏ hàng</a>
-                                <a th:if="${#request.userPrincipal}" class="btn min"><i class="ti-heart"></i></a>
-                            </div>
+                        </div>
+                        <!--/ End Input Order -->
+                        <div class="add-to-cart">
+                            <a id="add-cart"><i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng</a>
+                            <a id="add-wishlist" th:if="${#request.userPrincipal}"><i class="ti-heart"></i> thêm vào
+                                Wishlist</a>
                         </div>
                     </div>
                 </div>
@@ -129,32 +208,39 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="product__details__tab" style="margin: 0px 16px 0px 16px;">
-                    <ul class="nav nav-tabs" role="tablist">
+                <div class="product__details__tab" style="padding-top: 16px; border-radius: 5px;">
+                    <ul class="nav nav-tabs" role="tablist" style="background: #fff">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">
                                 Thông tin về sản phẩm
                             </a>
+                            <hr style="margin-top: 0px; margin-bottom: 0px; height: 0px;">
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab" aria-selected="false">
                                 Bình luận <span></span>
                             </a>
+                            <hr style="margin-top: 0px; margin-bottom: 0px; height: 0px;">
                         </li>
                     </ul>
                     <div class="tab-content" style="background-color: white;">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                            <div class="product__details__tab__desc">
-                                <h6>Thông tin chi tiết về sản phẩm</h6>
-                                <p></p>
+                            <div class="product__details__tab__desc" style="padding: 25px; min-height: 200px;">
+                                <h6 style="margin-bottom: 16px;"></h6>
+                                <p>Nội dung chính: Bộ truyện Harry Potter kể về sự đấu tranh giữa cái thiện và cái ác
+                                    trong thế giới phép thuật đầy huyền bí, mà tiêu biểu là cuộc chiến vĩ đại chống lại
+                                    tên trùm phù thủy hắc ám Voldemort của cậu bé phù thủy Harry Potter và hai người bạn
+                                    thân thiết Hermione Granger, Ronald Weasley.</p>
                             </div>
                         </div>
-                        <div class="tab-pane blog-single" id="tabs-3" role="tabpanel" style="padding: 20px 0px 20px 0px;">
+                        <div class="tab-pane blog-single" id="tabs-3" role="tabpanel"
+                             style="padding: 20px 0px 20px 0px;">
                             <div class="col-12">
                                 <div class="share-social">
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="content-tags" style="display: flex; margin-left: 55px; margin-top: 0px; margin-bottom: 20px; float: right;">
+                                            <div class="content-tags"
+                                                 style="display: flex; margin-left: 55px; margin-top: 0px; margin-bottom: 20px; float: right;">
                                                 <span style="margin-bottom: auto; margin-top: auto;">Lọc theo</span>
                                                 <ul class="tag-inner">
                                                     <li><a href="#">1 <i class="ti-star"></i></a></li>
@@ -178,7 +264,8 @@
                                                 <span></span>
                                                 <span></span>
                                                 <span style="display: flex;">
-                                                    <span class="rating" style="display: flex; margin-right: 8px;"></span>
+                                                    <span class="rating"
+                                                          style="display: flex; margin-right: 8px;"></span>
                                                     <span class="title"></span>
                                                 </span>
                                             </h4>
@@ -200,99 +287,40 @@
                                                       border-radius: 4px;
                                                       margin: 0px 8px 0px 0px;
                                                       cursor: pointer;display: inline-block;">
-                                                      <i class="fa fa-reply" aria-hidden="true"></i><span> Trả lời</span></span>
+                                                      <i class="fa fa-reply"
+                                                         aria-hidden="true"></i><span> Trả lời</span></span>
                                             </div>
                                             <div class="reply-input">
                                                 <div class="form-group required">
                                                     <div style="padding-top: 15px;">
                                                         <form class="form-inline" method="post">
-                                                            <textarea class="form-control" type="text" placeholder="Viết câu trả lời" style="width: 86%;"rows="1"></textarea>
+                                                            <textarea class="form-control" type="text"
+                                                                      placeholder="Viết câu trả lời" style="width: 86%;"
+                                                                      rows="1"></textarea>
                                                             <input type="hidden" class="id-root-review">
-                                                            <button type="button" class="btn btn-md btn-link send-reply-comment">
+                                                            <button type="button"
+                                                                    class="btn btn-md btn-link send-reply-comment">
                                                                 Gửi
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="view-reply-more" style="color: rgb(13, 92, 182); margin-top: 10px; cursor: pointer; display: none;">Xem <span></span> câu trả lời</div>
+                                            <div class="view-reply-more"
+                                                 style="color: rgb(13, 92, 182); margin-top: 10px; cursor: pointer; display: none;">
+                                                Xem <span></span> câu trả lời
+                                            </div>
                                             <div class="list-reply-item">
                                             </div>
-                                            <div class="view-reply-less" style="color: rgb(13, 92, 182); cursor: pointer; display: none;">Ẩn <span></span> câu trả lời</div>
+                                            <div class="view-reply-less"
+                                                 style="color: rgb(13, 92, 182); cursor: pointer; display: none;">Ẩn
+                                                <span></span> câu trả lời
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- End Single Comment -->
                                 </div>
                             </div>
-<!--                            <div class="col-md-12">-->
-<!--                                <div class="list-review" style="margin: 0px 32px 0px 32px;">-->
-<!--                                    <ul>-->
-<!--                                        <li class="review-item" style="padding-bottom: 10px;">-->
-<!--                                            <div class="row">-->
-<!--                                                <div class="col-md-3">-->
-<!--                                                    <div class="review-user">-->
-<!--                                                        <div class="review-avatar">-->
-<!--                                                            <img style="display: block; margin-left: auto; margin-right: auto; width: 40px;" th:src="@{/images/user-avatar.jpg}" alt="image">-->
-<!--                                                        </div>-->
-<!--                                                        <div style="float: left; margin-left: 10px;">-->
-<!--                                                            <h6 class="user-name"></h6>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <div class="col-md-9">-->
-<!--                                                    <div class="review-item-detail" style="display: flex; flex-direction: column;">-->
-<!--                                                        <div class="review-des">-->
-<!--                                                            <div class="title" style="display: flex;">-->
-<!--                                                                <span style="display: flex; margin-right: 8px; "></span><span style="font-size: 16px; font-weight: 600; color: rgb(36, 36, 36);"></span>-->
-<!--                                                            </div>-->
-<!--                                                            <div class="review-content" style="margin-top: 16px;">-->
-<!--                                                                <span style="font-size: 14px; line-height: 20px;"></span>-->
-<!--                                                            </div>-->
-<!--                                                            <div class="review-date" style="margin-top: 8px;">-->
-<!--                                                                <span></span>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-
-<!--                                                    <div class="like-and-review" style="padding-top: 10px;">-->
-<!--                                                        <span class="like" style="color: rgb(13, 92, 182); padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;-->
-<!--                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block; border: 1px solid #333;">-->
-<!--                                                            <i class="fa fa-thumbs-up" aria-hidden="true"></i><span>Like <span></span></span>-->
-<!--                                                        </span>-->
-<!--                                                        <span class="reply" style="color: rgb(13, 92, 182); padding: 8px 16px 9px; line-height: 20px; font-weight: 500;border-radius: 4px;-->
-<!--                                                                                                        margin: 0px 8px 0px 0px;cursor: pointer;display: inline-block;">-->
-<!--                                                            <i class="fa fa-reply" aria-hidden="true"></i><span>Trả lời</span>-->
-<!--                                                        </span>-->
-<!--                                                    </div>-->
-
-<!--                                                    <div class="reply-input" style="display: none;">-->
-<!--                                                        <div class="form-group required">-->
-<!--                                                            <div style="padding-top: 15px;">-->
-<!--                                                                <form class="form-inline" method="post">-->
-<!--                                                                    <textarea class="form-control" type="text"-->
-<!--                                                                              placeholder="Viết câu trả lời"-->
-<!--                                                                              style="width: 86%;" rows="1"></textarea>-->
-<!--                                                                    <input type="hidden" class="id-root-review">-->
-<!--                                                                    <button type="button" class="btn btn-md btn-link send-reply-comment">-->
-<!--                                                                        Gửi-->
-<!--                                                                    </button>-->
-<!--                                                                </form>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="review-comment_sub-comments">-->
-<!--                                                        <div class="view-reply-more" style="color: rgb(13, 92, 182);">Xem tất cả <span></span> câu trả lời-->
-<!--                                                        </div>-->
-<!--                                                        <div class="list-reply-item"></div>-->
-<!--                                                        <div class="view-reply-less" style="color: rgb(13, 92, 182);">Ẩn <span></span> câu trả lời</div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <hr/>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -303,24 +331,22 @@
 <!--/ End Product Style 1  -->
 
 <!-- Start Most Popular -->
-<div class="product-area most-popular section" style="padding-left: 100px; padding-right: 100px; padding-bottom: 50px;">
+<div class="product-area most-popular section" style="padding-top: 10px; padding-bottom: 50px;">
     <div class="container">
-        <div class="row">
+        <div class="row" style="background: #FFFFFF; border-radius: 5px;margin: 0px;">
             <div class="col-12">
                 <div class="section-title" style="margin-bottom: 0px;">
-                    <h2>Sản phẩm tương tự</h2>
+                    <h2>Gợi ý sản phẩm tương tự</h2>
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-12">
                 <div class="owl-carousel popular-slider">
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-img">
                             <a href="product-details.html">
-                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="default-img" src="https://images.gr-assets.com/books/1306787560m/1067.jpg" alt="#">
+                                <img class="hover-img" src="https://images.gr-assets.com/books/1306787560m/1067.jpg" alt="#">
                                 <span class="out-of-stock">Hot</span>
                             </a>
                             <div class="button-head">
@@ -349,8 +375,8 @@
                     <div class="single-product">
                         <div class="product-img">
                             <a href="product-details.html">
-                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="default-img" src="https://images.gr-assets.com/books/1353173297m/13547180.jpg" alt="#">
+                                <img class="hover-img" src="https://images.gr-assets.com/books/1353173297m/13547180.jpg" alt="#">
                             </a>
                             <div class="button-head">
                                 <div class="product-action">
@@ -377,8 +403,8 @@
                     <div class="single-product">
                         <div class="product-img">
                             <a>
-                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="default-img" src="https://images.gr-assets.com/books/1359853842m/16101128.jpg" alt="#">
+                                <img class="hover-img" src="https://images.gr-assets.com/books/1359853842m/16101128.jpg" alt="#">
                                 <span class="new">New</span>
                             </a>
                             <div class="button-head">
@@ -406,8 +432,8 @@
                     <div class="single-product">
                         <div class="product-img">
                             <a href="product-details.html">
-                                <img class="default-img" src="https://via.placeholder.com/550x750" alt="#">
-                                <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+                                <img class="default-img" src="https://images.gr-assets.com/books/1372086100s/15749186.jpg" alt="#">
+                                <img class="hover-img" src="https://images.gr-assets.com/books/1372086100s/15749186.jpg" alt="#">
                             </a>
                             <div class="button-head">
                                 <div class="product-action">

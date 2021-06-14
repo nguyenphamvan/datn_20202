@@ -63,7 +63,10 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item"><i class="fas fa-users"></i>Cập nhật thông tin</a>
-                    <a class="collapse-item"><i class="fab fa-product-hunt"></i>Đăng xuất</a>
+                    <form name="logoutForm" th:hidden="true" method="post" th:action="@{/admin/logout}">
+                        <input type="submit" value="Logout" />
+                    </form>
+                    <a class="collapse-item" href="javascript: logoutForm.submit();"><i class="fab fa-product-hunt"></i> <span>Đăng xuất</span></a>
                 </div>
             </div>
         </li>
@@ -87,42 +90,16 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
-
-                <!-- Topbar Search -->
-                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                               aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                            <span th:text="${#request.userPrincipal.principal.getFullName()}"
+                                  class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Tài khoản
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Đăng xuất
-                            </a>
-                        </div>
                     </li>
                 </ul>
 
@@ -241,13 +218,6 @@
                         </div>
                     </div>
                 </div>
-
-                <a class="btn btn-light btn-icon-split">
-                    <span class="icon text-gray-600">
-                        <i class="fas fa-arrow-left"></i>
-                    </span>
-                    <span class="text">Quay lại</span>
-                </a>
             </div>
             <!-- /.container-fluid -->
 
@@ -391,33 +361,27 @@
                     let row = "";
                     if (logging["status"] === "Đã hủy") {
                         row = "<tr>\n" +
-                            "           <td class='text-danger'>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-danger\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
                     } else if (logging["status"] === "Giao hàng thành công") {
                         row = "<tr>\n" +
-                            "           <td class='text-success'>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-success\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
                     } else if (logging["status"] === "Đang xử lý") {
                         row = "<tr>\n" +
-                            "           <td class='text-warning'>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-warning\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
                     } else {
                         row = "<tr>\n" +
-                            "           <td>" + logging["status"] + "</td>\n" +
+                            "           <td><span class=\"badge badge-dark\">" + logging["status"] + "</span></td>\n" +
                             "           <td>" + logging["updatedTime"] + "</td>\n" +
                             "      </tr>";
                     }
                     $("#logging-status").find("tbody").append(row);
                 });
-                if (userOrderHistory === true) {
-                    $("#content > div > a").attr("href", "/admin/manager_users/user/" + data["user"]["id"] + "/orderHistory");
-                } else {
-                    $("#content > div > a").attr("href", "/admin/manager_orders");
-                }
-
 
             },
             error: function () {

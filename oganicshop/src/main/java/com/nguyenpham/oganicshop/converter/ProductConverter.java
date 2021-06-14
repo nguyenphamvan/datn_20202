@@ -20,6 +20,8 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponse.setId(product.getId());
         productResponse.setProductName(product.getTitle());
         productResponse.setProductUrl(product.getProductUrl());
+        productResponse.setAuthor(product.getAuthors());
+        productResponse.setSince(product.getOriginalPublicationYear());
         productResponse.setBaseDescription(product.getDescription());
         productResponse.setCategoryName(product.getCategory().getCategoryName());
 
@@ -41,7 +43,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponse.setPrice(product.getPrice());
         productResponse.setDiscount(product.getDiscount());
         productResponse.setFinalPrice(product.getFinalPrice());
-
+        productResponse.setNumberOfReviews(product.getRatingsCount());
         productResponse.setRating(product.getAverageRating());
         productResponse.setAmount(product.getAmount());
         if (product.isStopBusiness()) {
@@ -53,16 +55,6 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         } else {
             productResponse.setStatus("Đang bán");
         }
-
-//        if (product.getReviews() != null) {
-//            ReviewConverter converter = new ReviewConverter();
-//            List<ReviewResponse> reviews = product.getReviews().stream().map(rv -> converter.entityToDto(rv)).collect(Collectors.toList());
-//            productResponse.setReviews(reviews);
-//            productResponse.setNumberOfReviews(product.getReviews().size());
-//        } else {
-//            productResponse.setReviews(null);
-//            productResponse.setNumberOfReviews(0);
-//        }
 
         return productResponse;
     }

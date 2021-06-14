@@ -11,7 +11,8 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("user/home");
         registry.addViewController("/403").setViewName("403");
-        registry.addViewController("/login").setViewName("user/signin");
+        registry.addViewController("/loginAdmin").setViewName("admin/loginAdmin");
+        registry.addViewController("/login").setViewName("user/login");
         registry.addViewController("/signup").setViewName("user/signup");
         registry.addViewController("/contact").setViewName("user/contact");
         registry.addViewController("/payment_success").setViewName("user/payment-success");
@@ -27,7 +28,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/contact").setViewName("user/contact");
         registry.addViewController("/collections.html").setViewName("user/collection");
 
-        registry.addViewController("/search.html").setViewName("user/search");
+        registry.addViewController("/search").setViewName("user/search");
         registry.addViewController("/promotion.html").setViewName("user/promotion");
     }
 }

@@ -15,7 +15,6 @@ public class OrderItemDto {
     private String productName;
     private String productUrl;
     private String image;
-    private String SupplierName;
     private int quantity;
     private Double price;
     private Double discount;

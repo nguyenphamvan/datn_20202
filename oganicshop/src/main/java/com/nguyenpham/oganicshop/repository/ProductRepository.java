@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByProductUrl(String productUrl);
-//    Page findAll(Pageable pageable);
+    List<Product> findAll();
 
     @Query(value = "SELECT p FROM Product p  WHERE p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%",
            countQuery = "SELECT COUNT(p) FROM Product p WHERE p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%")

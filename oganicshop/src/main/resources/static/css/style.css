@@ -1666,7 +1666,7 @@ Version:1.0
     top: 0;
 }
 .most-popular .single-product{
-    margin:50px 15px 0 15px;
+    margin:15px 15px 0 15px;
 }
 /* Slider Nav */
 .most-popular .owl-nav{
@@ -1723,7 +1723,6 @@ Version:1.0
     text-transform: uppercase;
     display: inline-block;
     position: relative;
-    margin-right: 5px;
     font-weight: 500;
     background: #fff;
     color: #333;
