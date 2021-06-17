@@ -7,8 +7,13 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
-    <link rel="stylesheet" th:href="@{/css/style-alert.css}" />
+    <link rel="stylesheet" th:href="@{/css/style-alert.css}"/>
     <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
+    <style>
+        html {
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+        }
+    </style>
 </head>
 <body class="js">
 <!-- Header -->
@@ -68,9 +73,9 @@
                                     </div>
                                 </div>
                                 <div class="footer_favourite">
-                                    <div class="final-price"></div>
+                                    <div class="final-price" style="font-size: 16px;font-weight: 600;"></div>
                                     <div class="wrap">
-                                        <div class="price"></div> |
+                                        <div class="price" style="margin-right: 6px"></div> |
                                         <div class="discount"></div>
                                     </div>
                                 </div>

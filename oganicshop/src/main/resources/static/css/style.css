@@ -4531,7 +4531,7 @@ Version:1.0
 .blog-single .single-comment .content h4 span {
     display: inline-block;
     font-size: 13px;
-    color: #8D8D8D;
+    color: #000000;
     margin: 0;
     font-weight: 400;
     text-transform: capitalize;
@@ -4539,7 +4539,7 @@ Version:1.0
     margin-top: 5px;
 }
 .blog-single .single-comment .content p {
-    color: #666;
+    color: #000000;
     font-weight: 400;
     display: block;
     margin: 0;

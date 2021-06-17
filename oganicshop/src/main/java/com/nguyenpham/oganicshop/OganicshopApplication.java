@@ -8,32 +8,35 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
-import java.util.List;
-import java.util.Locale;
+import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.*;
 
 
 @SpringBootApplication(scanBasePackages = "com.nguyenpham.oganicshop")
 @EnableCaching
-public class OganicshopApplication {
+public class OganicshopApplication{
 
     public static void main(String[] args) {
         SpringApplication.run(OganicshopApplication.class, args);
     }
-
+//
 //    @Autowired
 //    private ProductRepository productRepository;
 //
 //    @Override
 //    public void run(String... args) throws Exception {
-//        List<Product> products = productRepository.findAll();
-//        products.forEach(product -> {
-//            String[] proUrl = product.getTitle().replace("/","").replace("\"", "").replace("#", "")
-//                    .replace("*","").trim().toLowerCase().split(" ");
-//            String newUrl = String.join("_", proUrl) + "_" + product.getId();
-//            product.setProductUrl(newUrl);
-//        });
-//
-//        productRepository.saveAll(products);
-//
+////        List<Product> products = productRepository.findAll();
+////        products.forEach(product -> {
+////            String[] proUrl = product.getTitle().replace("/","").replace("\"", "").replace("#", "")
+////                    .replace("*","").trim().toLowerCase().split(" ");
+////            String newUrl = String.join("_", proUrl) + "_" + product.getId();
+////            product.setProductUrl(newUrl);
+////        });
+////
+////        productRepository.saveAll(products);
 //    }
 }

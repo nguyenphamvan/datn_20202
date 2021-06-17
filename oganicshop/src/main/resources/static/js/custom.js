@@ -548,7 +548,7 @@ function getProductsIsUnReviewed() {
                     itemClone.attr("href", "/products/" + item["productUrl"]);
                     itemClone.find("div.my-reviews__info").attr("product-id", item["productId"]).attr("orderItem-id", item["id"]);
                     itemClone.find("div.my-reviews__info > img").attr("src", item["image"]).attr("alt", item["productName"]);
-                    itemClone.find("div.my-reviews__name").text(item["productUrl"]);
+                    itemClone.find("div.my-reviews__name").text(item["productName"]);
                     itemClone.insertAfter(".my-reviews__inner a:first-child");
                 });
                 firstItem.hide();
@@ -744,6 +744,7 @@ function getWishlistProducts() {
         type: "GET",
         dataType: 'json',
         success: function (data) {
+            console.log(data)
             if(data.hasOwnProperty("wishLists")) {
                 let wishlist = data["wishLists"];
                 $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
@@ -755,7 +756,7 @@ function getWishlistProducts() {
                         itemClone.find(".thumbnail a").attr("href", "/products/" + item["productUrl"]);
                         itemClone.find(".thumbnail a img.image").attr("src", item["mainImage"]);
                         itemClone.find(".body a.name").attr("href", "/products/" + item["productUrl"]).text(item["productName"]);
-                        // itemClone.find(".body .description").text(item["detailDescription"].substring(0, 100));
+                        itemClone.find(".body .description").text(item["description"].substring(0, 100) + "...");
                         itemClone.find("div.my-reviews__name").text(item["productUrl"]);
                         for (let i = 0; i < parseInt(item["rating"]); i++) {
                             itemClone.find(".ratting-star").append("<i class=\"yellow fa fa-star\"></i>");
@@ -764,10 +765,10 @@ function getWishlistProducts() {
                             itemClone.find(".ratting-star").append("<i class=\"fa fa-star\"></i>");
                         }
                         itemClone.find(".ratting-wrap span").text("(" + item["numberOfReviews"] + " customer review)")
-                        itemClone.find(".footer_favourite .final-price").text(item["finalPrice"] + " ₫");
-                        if (parseInt(item["discount"]) > 0) {
-                            itemClone.find(".footer_favourite .wrap .price").text(item["price"] + " ₫");
-                            itemClone.find(".footer_favourite .wrap .discount").text(item["discount"] + " ₫");
+                        itemClone.find(".footer_favourite .final-price").text("$" + item["finalPrice"]);
+                        itemClone.find(".footer_favourite .wrap .price").text("$" + item["price"]);
+                        if ((parseFloat(item["discount"])*100 ) > 0) {
+                            itemClone.find(".footer_favourite .wrap .discount").text("-" + (parseFloat(item["discount"])*100) + "%").attr("color", "red");
                         }
                         itemClone.insertAfter(".styles__StyledAccountWishList ul.list li:first-child");
                     });

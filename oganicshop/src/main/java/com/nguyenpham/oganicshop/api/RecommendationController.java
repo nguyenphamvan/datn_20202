@@ -33,7 +33,6 @@ public class RecommendationController {
         String UrlRoot =  "http://127.0.0.1:5000/get_trending";
         HttpUrl.Builder urlBuilder = HttpUrl.parse(UrlRoot).newBuilder();
         // Create body request
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         Request request = new Request.Builder()
                 .url(urlBuilder.build().toString())
                 .build();

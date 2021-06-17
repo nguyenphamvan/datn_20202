@@ -20,8 +20,7 @@ public class ProductResponse {
     private String since;
     private String mainImage;
     private List<String> images;
-    private String baseDescription;
-    private String detailDescription;
+    private String description;
     private Double price;
     private Double discount;
     private Double finalPrice;

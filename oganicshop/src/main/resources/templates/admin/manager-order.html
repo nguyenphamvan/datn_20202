@@ -99,6 +99,10 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
+                <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <h1 class="h3 mb-0 text-body" style="color: black!important;">Quản lý đơn hàng</h1>
+                </div>
+
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Nav Item - User Information -->
@@ -109,7 +113,6 @@
                                   class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
                             <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
                         </a>
-
                     </li>
 
                 </ul>
@@ -233,7 +236,7 @@
                         {
                             data: "id", "render": function (data, type, row) {
                                 return "<a style='text-align: center;' href='/admin/manager_orders/" + data + "' >" +
-                                    "<button id='manageBtn' type='button' class='d-none d-sm-inline-block btn btn-success btn-sm shadow-sm'><i class=\"far fa-eye\"></i></button>" +
+                                    "<button id='manageBtn' type='button' class='d-none d-sm-inline-block btn btn-primary btn-sm shadow-sm'><i class=\"far fa-eye\"></i></button>" +
                                     "</a>";
                             }
                         }

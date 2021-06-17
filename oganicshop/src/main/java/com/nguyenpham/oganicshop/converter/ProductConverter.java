@@ -22,7 +22,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         productResponse.setProductUrl(product.getProductUrl());
         productResponse.setAuthor(product.getAuthors());
         productResponse.setSince(product.getOriginalPublicationYear());
-        productResponse.setBaseDescription(product.getDescription());
+        productResponse.setDescription(product.getDescription());
         productResponse.setCategoryName(product.getCategory().getCategoryName());
 
         //image
