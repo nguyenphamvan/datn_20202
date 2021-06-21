@@ -146,16 +146,16 @@
         <!-- Form -->
         <form class="form" id="payment">
             <div class="row">
-                <div class="col-lg-7">
-                    <div class="header" style="border-radius: 5px; margin-bottom: 20px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px); background-color: #fff;">
+                <div class="col-lg-6">
+                    <div class="header" style="min-height: 246px; border-radius: 5px; margin-bottom: 20px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px); background-color: #fff;">
                         <div class="single-widget">
                             <h2>Đơn hàng gồm có</h2>
                             <div class="shopping-item" style="padding: 10px 30px;">
                                 <ul class="cart-item-list">
                                     <li>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-                                        <h4><a href="#">Woman Ring</a></h4>
-                                        <p><span class="quantity">1x</span> - <span class="amount">$99.00</span></p>
+                                        <a class="cart-img" href="#"><img alt="image"></a>
+                                        <h4><a></a></h4>
+                                        <p style="margin-top: 24px;"><span class="quantity"></span> - <span class="amount"></span></p>
                                     </li>
                                 </ul>
                             </div>
@@ -182,7 +182,7 @@
                     </div>
 
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="checkout-form" style="border-radius: 5px; margin-top: 0px; margin-bottom: 20px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px); background-color: #fff;">
                         <div class="single-widget">
                             <div style="display: flex; justify-content: space-between">
@@ -214,10 +214,9 @@
                                 <a style="margin: auto 30px auto 0px; font-size: 13px; color: rgb(13, 92, 182); cursor: pointer;"
                                    data-toggle="modal" data-target="#discountModal">Dành cho bạn</a>
                             </div>
-                            <div class="coupon" style="margin: 30px 30px;display: flex;">
+                            <div class="coupon" style="padding: 30px 30px;display: flex;">
                                 <form>
-                                    <input name="coupon" placeholder="Nhập mã giảm giá"
-                                           style="
+                                    <input name="coupon" placeholder="Nhập mã giảm giá" style="
                                            margin-right: 10px;
                                             width: 70%;
                                             height: 48px;
@@ -226,8 +225,7 @@
                                             box-shadow: 0px 0px 5px #0000000a;
                                             border: 1px solid #5a5656;
                                             border-radius: 5px;">
-                                    <button class="btn" type="button"
-                                            style="height: 48px;
+                                    <button class="btn" type="button" style="height: 48px;
                                             padding: 0px;
                                             width: 30%;
                                             color: #333;
@@ -320,23 +318,26 @@
                     <span class="ti-close" aria-hidden="true"></span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-x:hidden;">
                 <div class="row no-gutters">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="display: none;">
-                        <div class="address-item"
-                             style="margin: 20px 50px 20px 20px; border: 1px dashed red; padding: 10px 15px; min-height: 172px; position: relative;">
-                            <p class="name" style="text-transform: uppercase;  margin: 0px 0px 10px; font-weight: 500;">
-                                <span></span>
-                            </p>
-                            <p class="address">
-                                <span>Địa chỉ: </span> <span></span>
-                            </p>
-                            <p class="phone">
-                                <span>Điện thoại: </span> <span></span>
-                            </p>
-                            <p class="action" style="position: absolute; bottom: 10px; left: 15px;">
-                                <button type="button" class="btn saving-address">Giao đến địa chỉ này</button>
-                            </p>
+                    <div class="card-deck">
+                        <div class="card" style="display: none; border: 1px dashed red; border-radius: .25rem;">
+                            <div class="card-body">
+                                <div class="address-item">
+                                    <p class="name" style="text-transform: uppercase;  margin: 0px 0px 10px; font-weight: 500;">
+                                        <span></span>
+                                    </p>
+                                    <p class="address">
+                                        <span>Địa chỉ: </span> <span></span>
+                                    </p>
+                                    <p class="phone">
+                                        <span>Điện thoại: </span> <span></span>
+                                    </p>
+                                    <div class="center" style="display: flex; justify-content: center; align-items: center;">
+                                        <button type="button" class="btn select-address">Giao đến địa chỉ này</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -347,17 +348,17 @@
 <!-- The Modal -->
 <div class="modal fade" id="discountModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 80%;">
-            <div class="modal-header">Mã giảm giá dành cho đơn hàng
+        <div class="modal-content" style="width: 100%;">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span class="ti-close" aria-hidden="true"></span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="row no-gutters">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="display: none;">
-                        <div class="promotion-item"
-                             style="margin: 20px 50px 20px 20px; border: 1px dashed red; padding: 10px 15px; min-height: 172px; position: relative;">
+            <div class="modal-body" style="overflow-x:hidden; padding: 20px;">
+                <p style="text-align: center; font-size: 1.25rem; font-weight: 600; padding-bottom: 10px;">Mã giảm giá dành cho đơn hàng</p>
+                <div class="row no-gutters card-deck">
+                    <div class="card" style="display: none; border: 1px dashed red;">
+                        <div class="promotion-item" style="padding-bottom: 15px; padding-top: 15px;">
                             <p class="title" style="margin: 0px 0px 10px; font-weight: 500;">
                                 <span></span>
                             </p>
@@ -367,9 +368,9 @@
                             <p class="end-date">
                                 <span>Ngày hết hạn: </span> <span></span>
                             </p>
-                            <p class="action" style="position: absolute; bottom: 10px; left: 15px;">
+                            <div class="center" style="display: flex; justify-content: center; align-items: center;">
                                 <button type="button" class="btn apply-coupon">Áp dụng</button>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -414,7 +415,7 @@
         $(".coupon button").on("click", function () {
             let couponCode = $(".coupon input[name='coupon']").val();
             if (couponCode === "") {
-                $(".coupon").after("<div class='error-msg' style='color: red; margin: 0px 30px;'>Bạn chưa nhập mã giảm giá</div>")
+                $(".coupon").after("<div class='error-msg' style='color: red; margin-left: 30px; margin-right: 30px; padding-bottom: 20px;'>Bạn chưa nhập mã giảm giá</div>")
             } else {
                 let data = {"couponCode": couponCode}
                 applyCoupon(data);
@@ -430,19 +431,7 @@
             payment();
         });
 
-        $("input[name='deliveryMethod']").on("click", function () {
-            if ($(this).val() === "fast") {
-                $("span#ship-fee").text("$200");
-            } else if ($(this).val() === "standard") {
-                $("span#ship-fee").text("$100");
-            }
-            let subTotal = $("span#sub-total").text().replace("$","");
-            let promotion = $("span#discount").text().replace("$","");
-            let shipFee = $("span#ship-fee").text().replace("$","");
-            $("span#total-cart").text("$" + (parseInt(subTotal) + parseInt(shipFee) - parseInt(promotion)).toString());
-        });
-
-        $(document).on("click", "#addressModal > div > div > div.modal-body > div > div > div > p.action", function () {
+        $(document).on("click", "button.select-address", function () {
             let receiver = $(this).closest("div.address-item").find("p.name > span:nth-child(1)").text();
             let address = $(this).closest("div.address-item").find("p.address > span:nth-child(2)").text();
             let phone = $(this).closest("div.address-item").find("p.phone > span:nth-child(2)").text();
@@ -452,9 +441,9 @@
             $('#addressModal').modal('hide');
         });
 
-        $(document).on("click", "#discountModal > div > div > div.modal-body > div > div > div > p.action", function () {
+        $(document).on("click", "button.apply-coupon", function () {
             let couponCode = $(this).closest("div.promotion-item").find("p.code > span:nth-child(2)").text();
-            $("#payment > div > div:nth-child(2) > div > div:nth-child(2) > div.coupon > input").val(couponCode);
+            $(".coupon input[name='coupon']").val(couponCode);
             $('#discountModal').modal('hide');
         });
     });

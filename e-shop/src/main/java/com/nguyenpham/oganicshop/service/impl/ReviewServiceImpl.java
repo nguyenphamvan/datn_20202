@@ -78,6 +78,20 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
+    public boolean deleteReview(long reviewId) {
+        try {
+            Review review = reviewRepository.findById(reviewId).get();
+            review.setSubReviews(null);
+            reviewRepository.save(review);
+            reviewRepository.delete(review);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public SubReviewResponse saveSubReview(SubReviewRequest postSubReview) {
         User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
         Review parentReview = reviewRepository.findById(postSubReview.getParentId()).orElse(null);

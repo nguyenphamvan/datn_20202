@@ -77,19 +77,17 @@ public class CheckoutControllerApi {
         if (cart != null) {
             try {
                 BaseResponse br = new BaseResponse();
-                if (order.getPaymentMethod().equals("cod")) {
-                    Order orderSaved = orderService.paymentOrder(user, cart, order);
-                    // sau bước thanh toán thành công sẽ gửi email thông báo cho người dùng
-                    emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
-                    session.removeAttribute(Constant.CART_SESSION_NAME);
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("urlRedirect", "/payment_success");
-                    hashMap.put("orderId", orderSaved.getId());
-                    hashMap.put("orderValue", order.getTotal());
-                    br.setStatus(true);
-                    br.setData(hashMap);
-                    return new ResponseEntity<Object>(br, HttpStatus.OK); // return home page
-                }
+                Order orderSaved = orderService.paymentOrder(user, cart, order);
+                // sau bước thanh toán thành công sẽ gửi email thông báo cho người dùng
+                emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
+                session.removeAttribute(Constant.CART_SESSION_NAME);
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("urlRedirect", "/payment_success");
+                hashMap.put("orderId", orderSaved.getId());
+                hashMap.put("orderValue", order.getTotal());
+                br.setStatus(true);
+                br.setData(hashMap);
+                return new ResponseEntity<Object>(br, HttpStatus.OK); // return home page
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<Object>("Hệ thống gặp lỗi, vui lòng liên hệ số điện thoại ...", HttpStatus.INTERNAL_SERVER_ERROR);

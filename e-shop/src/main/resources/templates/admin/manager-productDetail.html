@@ -13,7 +13,6 @@
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
             <div class="sidebar-brand-icon rotate-n-15">
@@ -81,13 +80,10 @@
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
         <!-- Main Content -->
         <div id="content">
-
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                 <!-- Sidebar Toggle (Topbar) -->
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
@@ -121,17 +117,15 @@
                             </a>
                         </div>
                     </li>
-
                 </ul>
-
             </nav>
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-            <div class="container-fluid">
+            <div class="container">
 
                 <!--Section: Block Content-->
-                <section class="mb-5">
+                <section>
                     <div class="row">
                         <div class="col-lg-5">
                             <div class="row">
@@ -144,9 +138,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-7">
+                        <div class="col-lg-6">
                             <div class="row">
-                                <div class="col-md-12" style="display: flex; margin: 0px 0px 20px 0px;">
+                                <div class="col-md-12 d-flex justify-content-center" style="margin: 20px 0px 20px 0px;">
                                     <a id="btn-import-product" class="btn btn-info btn-sm shadow-sm" style="margin-right: 10px;"><i class="fas fa-plus-circle"></i> Nhập thêm</a>
                                     <a th:href="@{'/admin/manager_products/updateProduct/' + ${productId}}" class="btn btn-primary btn-sm shadow-sm" style="margin-right: 10px;"><i class="fas fa-edit"></i> Cập nhật</a>
                                     <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger btn-sm shadow-sm" style="margin-right: 10px;">
@@ -173,8 +167,8 @@
                                             id="categoryName"></span></p>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="row" style="display: flex; justify-content: space-between;">
+                            <hr style="margin: 0px;">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <table class="table table-sm table-borderless mb-0">
                                         <tbody>
@@ -184,7 +178,7 @@
                                         </tr>
                                         <tr>
                                             <td class="pl-0" scope="row"><strong>Giảm giá</strong></td>
-                                            <td id="promotion"></td>
+                                            <td id="discount"></td>
                                         </tr>
                                         <tr>
                                             <td class="pl-0" scope="row"><strong>Giá bán</strong></td>
@@ -212,7 +206,6 @@
                                     </table>
                                 </div>
                             </div>
-                            <br>
                             <div id="import-products" class="row" style="display: none;">
                                 <div class="col-md-12">
                                     <form>
@@ -229,10 +222,10 @@
                                     </form>
                                 </div>
                             </div>
-                            <hr>
+                            <hr style="margin: 0px;">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="detailDescription">
+                                    <div id="description">
                                         <p>Nội dung chính: Bộ truyện Harry Potter kể về sự đấu tranh giữa cái thiện và cái ác trong thế giới phép thuật đầy huyền bí, mà tiêu biểu là cuộc chiến vĩ đại chống lại tên trùm phù thủy hắc ám Voldemort của cậu bé phù thủy Harry Potter và hai người bạn thân thiết Hermione Granger, Ronald Weasley.</p>
                                     </div>
                                 </div>
@@ -249,7 +242,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <footer class="sticky-footer bg-white">
+        <footer class="sticky-footer bg-white shadow">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
                     <span>Copyright &copy; Your Website 2020</span>
@@ -257,10 +250,8 @@
             </div>
         </footer>
         <!-- End of Footer -->
-
     </div>
     <!-- End of Content Wrapper -->
-
 </div>
 <!-- End of Page Wrapper -->
 
@@ -357,30 +348,11 @@
                 console.log(data);
                 //image
                 let mainImage = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(1) > div > a > img");
-                let subImage1 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(1) > div > img");
-                let subImage2 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(2) > div > img");
-                let subImage3 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(3) > div > img");
-                let subImage4 = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(2) > div > div:nth-child(4) > div > img");
 
                 if (data.hasOwnProperty("mainImage")) {
                     mainImage.closest("a").attr("href", data["mainImage"]);
                     mainImage.attr("src", data["mainImage"]);
                 }
-
-                if (data.hasOwnProperty("images")) {
-                    $.each(data["images"], function (index, img) {
-                        if (index === 0) {
-                            subImage1.attr("src", img);
-                        } else if (index === 1) {
-                            subImage2.attr("src", img);
-                        } else if (index === 2) {
-                            subImage3.attr("src", img);
-                        } else if (index === 3) {
-                            subImage4.attr("src", img);
-                        }
-                    });
-                }
-
                 //productName
                 $("#productName > b").text(data["productName"]);
                 // rating
@@ -397,14 +369,17 @@
                 $("#numbers-of-review").text(data['numberOfReviews'] + " lượt nhận xét"); // number of reviews
                 $("#categoryName").text(data["categoryName"]); // category
                 $("#supplierName").text(data["supplierName"]); // supplier
-                $("#price").text(data["price"]); // price
-                $("#promotion").text(data["promotion"]); // promotion
-                $("#finalPrice").text(data["finalPrice"]) // finalPrice
-                $("#amount").text(data["amount"]); // amount
-                $("#amountSold").text(data["amountSold"]); // amountSold
+                $("#price").text("$ " + data["price"]); // price
+                $("#discount").text((parseFloat(data["discount"])*100) + "%"); // discount
+                $("#finalPrice").text("$ " + data["finalPrice"]) // finalPrice
+                $("#amount").text(data["amount"] + "(cuốn)"); // amount
+                $("#amountSold").text(data["amountSold"] + "(cuốn)"); // amountSold
+                $("#description > p").text(data["description"]);
                 // status product
-                if (data["status"] === "Sắp hết hàng") {
+                if ( data["status"] === "Sắp hết hàng" ) {
                     $("#status").addClass("text-warning").text(data["status"]);
+                }else if (data["status"] === "Đã hết hàng") {
+                    $("#status").addClass("text-danger").text(data["status"]);
                 } else if (data["status"] === "Ngừng bán") {
                     $("#stop-business").removeClass("btn-danger").addClass("btn-success")
                         .attr("id", "open-business").text("Mở bán");
@@ -412,8 +387,6 @@
                 } else {
                     $("#status").addClass("text-primary").text(data["status"]);
                 }
-                $("#baseDescription").text(data["baseDescription"]);
-                $("#detailDescription").html(data["detailDescription"]);
             },
             error: function () {
                 alert("có lỗi xảy ra");

@@ -45,14 +45,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponse addProduct(ProductRequest productRequest) throws IOException {
-        Product product = new ProductConverter().dtoToEntity(productRequest);
+        Product product = new Product();
+        Product lastProductInDb = productRepository.findTopByOrderByIdDesc();
+        product = new ProductConverter().dtoToEntity(product, productRequest, lastProductInDb.getId());
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
         product.setCategory(category);
         product = productRepository.save(product);
-        MultipartFile image = productRequest.getImages();
-        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-        String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
-        FileUploadUtil.saveFile(uploadDir, fileName, image);
         ProductResponse productResponse = new ProductConverter().entityToDtoNotReviews(product);
         if (productResponse != null) {
             return productResponse;
@@ -62,23 +60,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponse updateProduct(ProductRequest productRequest) throws IOException {
-        ProductResponse productResponse = null;
-        Product product = productRepository.findById(productRequest.getId()).get();
-        product.setTitle(productRequest.getName());
-        product.setDescription(productRequest.getDescription());
-        product.setPrice(productRequest.getPrice());
-        product.setDiscount(productRequest.getDiscount());
-        product.setFinalPrice(productRequest.getPrice() - productRequest.getDiscount());
-        Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
+    public ProductResponse updateProduct(ProductRequest request) throws IOException {
+        Product product = productRepository.findById(request.getId()).get();
+        product = new ProductConverter().dtoToEntity(product, request, product.getId());
+        Category category = categoryRepository.findById(request.getCategoryId()).get();
         product.setCategory(category);
-        MultipartFile image = productRequest.getImages();
-        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-        String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + product.getId();
-        FileUploadUtil.saveFile(uploadDir, fileName, image);
-        productResponse = new ProductConverter().entityToDtoNotReviews(productRepository.save(product));
-        return productResponse;
+        product = productRepository.save(product);
+        ProductResponse productResponse = new ProductConverter().entityToDtoNotReviews(product);
+        if (productResponse != null) {
+            return productResponse;
+        }
+        return null;
     }
+
 
     @Override
     public int importProduct(long productId, int amount) {
@@ -129,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsByCategory(long categoryId, int minPrice, int maxPrice, int pageNum, int pageSize, String sortField, String sortDir )
+    public Page<Product> getProductsByCategory(long categoryId, double minPrice, double maxPrice, int pageNum, int pageSize, String sortField, String sortDir )
     {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());

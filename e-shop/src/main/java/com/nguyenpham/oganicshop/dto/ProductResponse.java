@@ -19,7 +19,7 @@ public class ProductResponse {
     private String author;
     private String since;
     private String mainImage;
-    private List<String> images;
+    private String smallImage;
     private String description;
     private Double price;
     private Double discount;

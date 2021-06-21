@@ -222,8 +222,8 @@ public class OrderServiceImpl implements OrderService {
         orderResponse.setDiscount(0);
         orderResponse.setShipFee(Constant.SHIP_FEE_STANDARD); // mặc định ban đầu phí giao hàng là giao hàng tiêu chuẩn
         orderResponse.setTotal(orderResponse.getSubTotal() + orderResponse.getShipFee() - orderResponse.getDiscount());
-        orderResponse.setDeliveryMethod("standard");
-        orderResponse.setPaymentMethod("cod");
+//        orderResponse.setDeliveryMethod("standard");
+//        orderResponse.setPaymentMethod("cod");
 
         return orderResponse;
     }

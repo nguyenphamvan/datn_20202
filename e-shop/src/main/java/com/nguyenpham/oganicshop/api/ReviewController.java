@@ -44,7 +44,6 @@ public class ReviewController {
         } else {
             br.setStatus(false);
         }
-
         return ResponseEntity.ok(br);
     }
 
@@ -89,6 +88,11 @@ public class ReviewController {
         } catch (Exception e) {
             return new ResponseEntity<>("Có lỗi trong quá trình xử lý!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @DeleteMapping("/delete/{reviewId}")
+    public ResponseEntity<?> deleteReview(@PathVariable("reviewId") long reviewId) {
+        return ResponseEntity.ok(reviewService.deleteReview(reviewId));
     }
 
     @PostMapping("/reply")

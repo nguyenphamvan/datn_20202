@@ -295,19 +295,11 @@ textarea {
     padding: 6px 12px;
 }
 
-
-.heading {
-    font-size: 19px;
-    line-height: 21px;
-    font-weight: 300;
-    margin: 20px 0px 15px;
-}
-
 .inner {
     background-color: rgb(255, 255, 255);
     border-radius: 4px;
     padding: 1px;
-    /*padding: 30px 20px;*/
+    margin-bottom: 20px;
 }
 
 .div-form {
@@ -470,7 +462,6 @@ textarea {
     background-color: rgb(255, 255, 255);
     padding: 17px;
     border-radius: 4px;
-    margin: 0px 0px 10px;
     display: flex;
     -webkit-box-pack: justify;
     justify-content: space-between;
@@ -542,11 +533,6 @@ textarea {
     flex: 1 1 0%;
 }
 
-img {
-    border-style: none;
-    max-width: 100%;
-}
-
 .bVfYSc .my-reviews__name {
     margin: 15px 0px 0px;
     color: rgb(36, 36, 36);
@@ -592,7 +578,6 @@ a {
 
 .styles__StyledAccountWishList .item {
     background-color: rgb(255, 255, 255);
-    margin-bottom: 2px;
     border-radius: 2px;
     padding: 20px 70px 20px 15px;
     display: flex;
@@ -731,11 +716,6 @@ img {
     vertical-align: middle;
 }
 
-img {
-    border-style: none;
-    max-width: 100%;
-}
-
 .styles__StyledReviewList .info {
     padding-left: 20px;
 }
@@ -787,7 +767,8 @@ img {
 
 .styles__StyledReviewList .item {
     display: flex;
-    padding: 20px;
+    justify-content: space-between;
+    padding: 10px;
     border-top: 1px solid rgb(204 193 193);
 }
 
@@ -795,6 +776,23 @@ img {
     width: 100px;
     min-width: 100px;
     padding: 15px;
+}
+
+.styles__StyledReviewList .inner .list .item .delete {
+    font-size: 14px;
+    color: rgb(255, 66, 78);
+    border: 0px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    outline: 0px;
+}
+
+.styles__StyledReviewList .inner .list .item .edit {
+    font-size: 14px;
+    color: rgb(27, 168, 255);
+    display: inline-block;
+    padding: 6px 12px;
 }
 
 .Picture__StyledPicture {
@@ -806,10 +804,6 @@ img {
 
 .Picture__StyledPicture .image {
     display: inline-block;
-}
-
-.styles__StyledReviewList .info {
-    padding-left: 20px;
 }
 
 .styles__StyledReviewList .name {
@@ -912,12 +906,6 @@ img {
     -webkit-box-orient: vertical;
 }
 
-img {
-    max-width: 100%;
-    border-style: none;
-}
-
-
 /* css for order detail */
 .styles__StyledAccountOrderDetail {
     font-size: 13px;
@@ -928,7 +916,7 @@ img {
 .heading {
     font-size: 19px;
     font-weight: 300;
-    margin: 20px 0px 0px;
+    margin: 0px 0px 20px;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -989,12 +977,12 @@ img {
 }
 
 .styles__StyledGroupSection > div {
-    width: 50%;
+    width: 33%;
     margin: 0px 5px;
 }
 
 .styles__StyledSection {
-    margin: 10px 0px 20px;
+    /*margin: 10px 0px 20px;*/
     display: flex;
     flex-direction: column;
     color: rgba(0, 0, 0, 0.65);
@@ -1451,7 +1439,6 @@ img {
     align-items: flex-end;
     display: flex;
     -webkit-box-pack: justify;
-    justify-content: space-between;
     padding: 0px 0px 16px;
     margin: 12px 0px 0px;
 }
@@ -1623,6 +1610,7 @@ a, a:focus, a:active, a:link, img {
 .mt_50 {
     margin-top: 50px;
 }
+
 
 
 

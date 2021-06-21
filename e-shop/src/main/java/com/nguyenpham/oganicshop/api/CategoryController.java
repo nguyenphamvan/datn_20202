@@ -22,7 +22,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/categories/get")
     public ResponseEntity<?> getListCategory() {
         return new ResponseEntity<Object>(categoryService.getListCategory(), HttpStatus.OK);
     }

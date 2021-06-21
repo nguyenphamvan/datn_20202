@@ -99,8 +99,8 @@ public class ProductControllerApi {
         String filed = "name";
         int pageNum = 1;
         int pageSize = 8;
-        int minPrice = 0;
-        int maxPrice = 0;
+        double minPrice = 0.0;
+        double maxPrice = 0.0;
         if (object.has("category")) {
             categoryId = object.get("category").asLong();
         }

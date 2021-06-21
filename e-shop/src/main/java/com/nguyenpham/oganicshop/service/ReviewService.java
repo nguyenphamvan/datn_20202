@@ -15,6 +15,7 @@ public interface ReviewService {
     List<ReviewResponse> getReviewsOfProduct(String productUrl);
     List<Review> getReviewsOfProduct(long productId);
     ReviewResponse saveReview(ReviewRequest postReview);
+    boolean deleteReview(long reviewId);
     SubReviewResponse saveSubReview(SubReviewRequest postSubReview);
     List<ReviewResponse> getListReviews(User user);
     Page<Review> getMyReviews(long userId, int pageNum, int pageSize);

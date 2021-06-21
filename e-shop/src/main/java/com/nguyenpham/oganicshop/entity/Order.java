@@ -32,8 +32,8 @@ public class Order {
     private int discount;
     private int total;
     private int status;
-    private String deliveryMethod;
-    private String paymentMethod;
+//    private String deliveryMethod;
+//    private String paymentMethod;
     private String message;
     private String note;
     @CreationTimestamp

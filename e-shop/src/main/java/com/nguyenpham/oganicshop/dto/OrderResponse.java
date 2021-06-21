@@ -25,8 +25,6 @@ public class OrderResponse{
     private int total;
     private String message;
     private String status;
-    private String deliveryMethod;
-    private String paymentMethod;
     private String note;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private String orderDate;

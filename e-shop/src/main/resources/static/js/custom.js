@@ -290,7 +290,7 @@ function addProductFromWishlist(url) {
 
 function getListCategory() {
     $.ajax({
-        url: "/api/categories",
+        url: "/api/categories/get",
         type: "GET",
         contentType: "application/json",
         success: function (categories) {
@@ -312,7 +312,7 @@ function getListCategory() {
 
 function getListCategory2() {
     $.ajax({
-        url: "/api/categories",
+        url: "/api/categories/get",
         type: "GET",
         contentType: "application/json",
         success: function (categories) {
@@ -333,7 +333,7 @@ function getListCategory2() {
 
 function getListCategoryHome() {
     $.ajax({
-        url: "/api/categories",
+        url: "/api/categories/get",
         type: "GET",
         contentType: "application/json",
         success: function (categories) {
@@ -389,7 +389,6 @@ function getListProductByKeyword(data) {
         dataType: "json",
         contentType: "application/json",
         success: function (result) {
-            console.log(result);
             if (result["products"].length > 0) {
                 genListProduct(result["products"]);
 
@@ -604,6 +603,7 @@ function getListMyReview(currentPage, pageSize) {
                 $(".styles__StyledReviewList div.list .item:first-child").nextAll().remove();
                 $.each(listMyReview, function (index, item) {
                     let itemClone = firstItem.clone();
+                    itemClone.attr("review_id", item["id"]);
                     itemClone.find("div.thumb > div > img").attr("src", item["productImg"]);
                     itemClone.find(".info a.name").attr("href", "/products/" + item["productUrl"]).text(item["productName"]);
                     itemClone.find(".info div.date").text(item["createdAt"]);
@@ -621,8 +621,8 @@ function getListMyReview(currentPage, pageSize) {
                     itemClone.find(".info .content-review").text(item["comment"]);
                     itemClone.show();
                     itemClone.insertAfter(".styles__StyledReviewList div.list .item:first-child");
-
                 });
+                firstItem.hide();
 
                 for (let i = 0; i < parseInt(data["totalPage"]); ++i) {
                     if ( (i + 1) === parseInt(data["currentPage"]) ) {
@@ -744,7 +744,6 @@ function getWishlistProducts() {
         type: "GET",
         dataType: 'json',
         success: function (data) {
-            console.log(data)
             if(data.hasOwnProperty("wishLists")) {
                 let wishlist = data["wishLists"];
                 $(".styles__StyledAccountWishList .heading span").text(wishlist.length);
@@ -845,7 +844,6 @@ function getProductsInCart() {
         type: "GET",
         contentType: "application/json",
         success: function (res) {
-            console.log(res);
             if (res["status"] === true) {
                 let items = res["data"];
                 let totalCart = 0;
@@ -910,8 +908,6 @@ function getDiscountForOrder() {
                 $("#payment > div > div:nth-child(2) > div > div:nth-child(2) > div:nth-child(1) > a").remove();
                 $("#discountModal").remove();
             }
-
-
         },
         error: function (xhr) {
             alert(xhr.responseText);
@@ -927,7 +923,7 @@ function getShippingAddress() {
         contentType: "application/json",
         success: function (address) {
             if (address.length > 0) {
-                let firstDivAddr = $("#addressModal > div > div > div.modal-body > div > div:nth-child(1)");
+                let firstDivAddr = $("#addressModal > div > div > div.modal-body > div > div > div:nth-child(1)");
                 $.each(address, function (index, item) {
                     let itemClone = firstDivAddr.clone();
                     itemClone.show();
@@ -964,20 +960,20 @@ function getInfoOrder(orderId) {
         url: "/api/order/view/" + orderId,
         type: "GET",
         success: function (order) {
+            console.log(order);
             if (order !== null) {
                 $(".styles__StyledAccountOrderDetail .heading span:first-child").text("Chi tiết đơn hàng #" + order["id"]);
                 $(".styles__StyledAccountOrderDetail .heading span.status").text(order["status"]);
                 $(".styles__StyledAccountOrderDetail .created-date").text("Ngày đặt hàng: " + order["orderDate"]);
                 $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .date").text(order["message"].split(" - ")[0]);
                 $(".styles__StyledAccountOrderDetail .message").find(".notifications__item .comment").text(order["message"].split(" - ")[1]);
-                $(".styles__StyledSection.order-info-1 > div.content > p.name").text(order["contactReceiver"]);
+                $(".styles__StyledSection.order-info-1 > div.content > p.name").text(order["address"]["contactReceiver"]);
                 $(".styles__StyledSection.order-info-1 .content p.address span:last-child").text(order["address"]["contactAddress"]);
                 $(".styles__StyledSection.order-info-1 .content p.phone span:last-child").text(order["address"]["contactPhone"]);
                 if (order["status"] === "Đang xử lý") {
                     $("div.Account__StyledAccountLayoutInner > div > table > tfoot")
                         .append("<tr><td colspan=\"4\"></td><td><a title=\"Hủy đơn hàng\" class=\"cancel-order\">Hủy đơn hàng</a></td></tr>");
                 }
-                $(".styles__StyledSection.order-info-3 .content p:first-child").text(order["paymentMethod"]);
 
                 genreListOrderDetail(order["listOrderDetail"]);
                 $("table tfoot tr:first-child td:nth-child(2)").text("$" + order["subTotal"]);
@@ -997,7 +993,6 @@ function getInfoOrder(orderId) {
 }
 
 function genreListOrderDetail(listOrderDetail) {
-    console.log(listOrderDetail);
     let firstRow = $("div.Account__StyledAccountLayoutInner > div > table > tbody > tr:first-child");
     $.each(listOrderDetail, function( index, orderItem ) {
         let rowClone = firstRow.clone();
@@ -1052,7 +1047,7 @@ function getOrdersHistory(pageNum, pageSize) {
                         "           <td><a style='color: rgb(0, 127, 240)' href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
                         "           <td>" + value["orderDate"] + "</td>\n" +
                         "           <td>" + value["summaryProductName"] + "</td>\n" +
-                        "           <td>" + value["total"] + " ₫</td>\n";
+                        "           <td>$" + value["total"] + "</td>\n";
                     if (value["status"] === "Giao hàng thành công") {
                         node += "<td style='text-align: center;'><span class='badge badge-pill badge-success'>Giao hàng thành công</span></td>\n";
                     } else if (value["status"] === "Đang xử lý") {
@@ -1132,7 +1127,6 @@ function getAllCouponUser() {
         success: function (data) {
             let itemClone = $("body > section > div.container > div > div:nth-child(1)");
             $.each(data, function (index, item) {
-                console.log(item);
                 let coupon = itemClone.clone();
                 coupon.find("p.code > span").text(item["code"]);
                 coupon.find("p.title").text(item["title"]);
@@ -1179,16 +1173,19 @@ function displayProduct(productUrl) {
         type: "GET",
         dataType: 'json',
         success: function (res) {
-            console.log(res);
             if (res["status"] === true) {
                 let product = res["data"]["product"];
                 // set image
-                $.each(product["images"], function (index, item) {
-                    let html = "<div class=\"single-slider\">\n" +
-                        "           <img src='" + item + "'>\n" +
-                        "        </div>";
-                    $("div.quickview-slider-active-1").append(html);
-                });
+                $("div.quickview-slider-active-1").append(
+                    "<div class=\"single-slider\">\n" +
+                    "           <img src='" + product["mainImage"] + "'>\n" +
+                    "        </div>"
+                );
+                $("div.quickview-slider-active-1").append(
+                    "<div class=\"single-slider\">\n" +
+                    "           <img src='" + product["smallImage"] + "'>\n" +
+                    "        </div>"
+                );
                 $('.quickview-slider-active-1').owlCarousel({
                     items: 1,
                     autoplay: true,
@@ -1210,15 +1207,13 @@ function displayProduct(productUrl) {
                 $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
                 $("div.modal-body > div > div > div > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
                 $("#final-price").text("$" + product["finalPrice"]);
+                $("#discount-percent").text("-" + (parseFloat(product["discount"])*100) + "%");
                 $("#price").text("$" + product["price"]);
                 $("#add-cart").attr("productUrl", product["productUrl"]);
                 $("div.modal-body > div > div:nth-child(2) > div > div.quantity > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
                 $("#tabs-1 > div > h6").text(product["productName"]);
                 // $("#tabs-1 > div > p").html(product["detailDescription"]);
                 $("div.quickview-ratting-review > div > span").text("("+ product["rating"] + ")");
-                if (product["amount"] <= 0) {
-                    $("div.modal-body > div > div:nth-child(2) > div > div:nth-child(1) > div > span").hide();
-                }
                 // ratting
                 if (parseInt(product["rating"]) > 0) {
                     for (let i = 0; i < parseInt(product["rating"]); i++) {
@@ -1247,7 +1242,6 @@ function displayReviewOfProduct(productUrl) {
         type: "GET",
         dataType: 'json',
         success: function (res) {
-            console.log(res);
             if (res["status"] === true) {
                 $("section.product-area.shop-sidebar.shop.section > div > div.row > div > div > ul > li:nth-child(2) > a > span").text("(" + res["data"].length + ")");
 
@@ -1355,10 +1349,9 @@ function getInfoPayment() {
         type: "GET",
         contentType: "application/json",
         success: function (res) {
-            console.log(res);
             if (res["status"] === true) {
                 let listOrderItem = res["data"]["listOrderItem"];
-                let firstItem = $("#payment > div > div.col-lg-7 > div.header > div > div > ul > li:nth-child(1)");
+                let firstItem = $("#payment > div > div:nth-child(1) > div.header > div > div > ul > li:nth-child(1)");
                 $.each(listOrderItem, function(index, item) {
                     let itemClone = firstItem.clone();
                     itemClone.attr("url", item["product"]["productUrl"]);
@@ -1418,7 +1411,7 @@ function payment() {
         },
         "note": $("form[id='payment']").find("textarea").val(),
         "subTotal": $(".shop.checkout .single-widget .content ul li span[id=\"sub-total\"]").text().replace("$",""),
-        "promotion": $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text().replace("$",""),
+        "discount": $(".shop.checkout .single-widget .content ul li span[id=\"discount\"]").text().replace("$",""),
         "shipFee": $(".shop.checkout .single-widget .content ul li span[id=\"ship-fee\"]").text().replace("$",""),
         "total": $(".shop.checkout .single-widget .content ul li span[id=\"total-cart\"]").text().replace("$",""),
         "paymentMethod": $("input[name='paymentMethod']:checked").val()
@@ -1430,7 +1423,6 @@ function payment() {
         data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         success: function (res) {
-            console.log(res);
             $("#myModal").delay(1000).fadeOut();
             localStorage.setItem('orderId', res["data"]["orderId"]);
             localStorage.setItem('orderValue', res["data"]["orderValue"]);
@@ -1451,8 +1443,6 @@ function replyReview(data) {
         dataType: 'json',
         contentType: 'application/json',
         success: function (result) {
-            console.log(result);
-
         let html = "<div class=\"single-comment\">\n" +
             "           <img src=\"https://via.placeholder.com/80x80\" alt=\"#\">\n" +
             "           <div class=\"content\">\n" +
@@ -1463,10 +1453,8 @@ function replyReview(data) {
             "           </div>\n" +
             "      </div>";
             let numberOfReview = $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text();
-            console.log(numberOfReview);
             if (numberOfReview === "") {
                 numberOfReview = 0;
-                console.log(numberOfReview);
             }
             $("div.reply-input").hide();
             $("#reply-items-list-" + data["parentId"]).siblings(".view-reply-more").find('span').text(parseInt(numberOfReview) + 1);
@@ -1481,6 +1469,32 @@ function replyReview(data) {
             alert(xhr.responseText);
         }
     });
+}
+
+function deleteReview(thisItem, reviewId) {
+    cuteAlert({
+        type: "question",
+        title: "Xác nhận hành động",
+        message: "Bạn chắc chắn muốn đánh giá này",
+        confirmText: "Xóa",
+        cancelText: "Hủy"
+    });
+    $("button.confirm-button.question-bg.question-btn").on("click", function () {
+        $.ajax({
+            url: "/api/review/delete/" + reviewId,
+            type: "DELETE",
+            contentType: "application/json",
+            success: function (data) {
+                if (data === true) {
+                    getListMyReview(1,5);
+                }
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    });
+
 }
 
 function likeComment(thisLikeButton, data) {

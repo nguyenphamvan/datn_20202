@@ -22,17 +22,23 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
     private String title;
-    @Column(name = "product_url")
+    @Column(nullable = false)
     private String productUrl;
+    @Column(nullable = false)
     private String authors;
+    @Column(nullable = false)
     private String originalPublicationYear;
     private int ratingsCount;
     private float weightedRating;
+    @Column(nullable = false)
     private String mainImage;
+    @Column(nullable = false)
     private String smallImage;
+    @Column(nullable = false)
     private String description;
     @Column(nullable = false)
     private Double price;

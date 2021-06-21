@@ -129,25 +129,26 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="name">Tên sản phẩm:</label>
-                                        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="name" name="name">
+                                        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="name" name="name" required>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div style="display: none;" id="alert_title" class="alert alert-danger">Bạn chưa nhập tiêu đề sách</div>
+                                </div>
                             </div>
-                            <div class="row" id="select-category-supplier">
+                            <div class="row">
                                 <div class="col-md-4">
-                                    <label for="category">Danh mục</label>
-                                    <select class="form-control" id="category" name="parentCategoryId">
-                                        <option>Art</option>
+                                    <label for="categoryId">Danh mục</label>
+                                    <select class="form-control" id="categoryId" name="categoryId">
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="author">Tác giả</label>
-                                    <input class="form-control" id="author" name="author" placeholder="Nhập tên tác giả">
+                                    <label for="authors">Tác giả</label>
+                                    <input class="form-control" id="authors" name="authors" placeholder="Nhập tên tác giả" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="publishih_year">Năm xuất bản:</label>
-                                    <select class="form-control" id="publishih_year" name="publishih_year">
-                                        <option value="">Year</option>
+                                    <label for="publishYear">Năm xuất bản</label>
+                                    <select class="form-control" id="publishYear" name="publishYear">
                                         <option value="2012">2021</option>
                                         <option value="2011">2020</option>
                                         <option value="2012">2019</option>
@@ -272,30 +273,32 @@
                                         <option value="1900">1900</option>
                                     </select>
                                 </div>
+                                <div class="col-md-12">
+                                    <div style="display: none;" id="alert_author" class="alert alert-danger">Bạn chưa nhập tên tác giả</div>
+                                </div>
                             </div>
-                            <br/>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="price">Giá bán(VNĐ)</label>
-                                        <input type="number" class="form-control" placeholder="Nhập giá gốc" id="price"
-                                               name="price">
+                                        <input type="number" class="form-control" placeholder="Nhập giá gốc" id="price" name="price" min="0" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="promotion">Giảm giá(%)</label>
-                                        <input type="number" class="form-control" placeholder="giảm giá" id="promotion"
-                                               name="promotion">
+                                        <label for="discount">Giảm giá(%)</label>
+                                        <input type="number" class="form-control" placeholder="Giảm giá" id="discount" name="discount" min="0" required>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div style="display: none;" id="alert_price" class="alert alert-danger">Giá gốc phải lớn hơn 0!</div>
+                                </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label for="image_1">Ảnh chính</label>
                                     <div class="form-group" id="image_1">
-                                        <input id="file_image1" type="file" name="img[]" class="file" accept="image/*">
+                                        <input id="image1" type="file" name="image1" class="file" accept="image/*">
                                         <div class="input-group">
                                             <input type="text" class="form-control" disabled placeholder="Upload File" id="file1">
                                             <div class="input-group-append">
@@ -303,12 +306,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <img style="width: 100%; height: 400px; display: none; margin: 16px 0px; border: 1px solid;" id="preview1">
+                                    <img style="margin: 0 auto; width: 50%; height: 256px; display: none; border: 1px solid;" id="preview1">
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="image-form">Ảnh nhỏ</label>
                                     <div class="form-group" id="image-form">
-                                        <input id="file_image2" type="file" name="img[]" class="file" accept="image/*">
+                                        <input id="image2" type="file" name="image2" class="file" accept="image/*">
                                         <div class="input-group">
                                             <input type="text" class="form-control" disabled placeholder="Upload File" id="file2">
                                             <div class="input-group-append">
@@ -316,15 +319,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <img style="width: 100%; height: 400px; display: none; margin: 16px 0px; border: 1px solid;" id="preview2">
+                                    <img style="margin: 0 auto; width: 50%; height: 256px; display: none; border: 1px solid;" id="preview2">
+                                </div>
+                                <div class="col-md-12">
+                                    <div style="display: none;" id="alert_image" class="alert alert-danger">Bạn chưa chọn ảnh cho sản phẩm</div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="description">Mô tả chi tiết:</label>
-                                        <textarea rows="8" class="form-control" id="description"></textarea>
+                                        <textarea rows="8" class="form-control" id="description" name="description"></textarea>
                                     </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div style="display: none;" id="alert_description" class="alert alert-danger">Bạn chưa thêm tóm tắt nội dung sách</div>
                                 </div>
                             </div>
 
@@ -354,14 +363,12 @@
 <div class="modal fade" id="message">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
             <!-- Modal body -->
             <div class="modal-body" style="text-align: center;">
+                <img>
+                <p></p>
+                <button type="button" class="btn btn btn-primary" data-dismiss="modal">OK</button>
             </div>
-
         </div>
     </div>
 </div>
@@ -393,109 +400,94 @@
 
 <script>
 
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        getAllCategory();
+    });
+
+    function checkValidate() {
+        let flag = true;
+        let title = $("#name").val();
+        let authors = $("#authors").val();
+        let price = $("#price").val();
+        let description = $("#description").val();
+        let image1 = $("#image1")[0].files.length;
+        let image2 = $("#image2")[0].files.length;
+
+        if (title === "") {
+            $("#alert_title").css("display", "block");
+            flag = false;
+        } else {
+            $("#alert_title").css("display", "none");
+        }
+        if (authors === "") {
+            $("#alert_author").css("display", "block");
+            flag = false;
+        } else {
+            $("#alert_author").css("display", "none");
+        }
+        if (price === "") {
+            $("#alert_price").css("display", "block");
+            flag = false;
+        } else {
+            $("#alert_price").css("display", "none");
+        }
+        if (image1 === 0 || image2 === 0) {
+            $("#alert_image").css("display", "block");
+            flag = false;
+        } else {
+            $("#alert_image").css("display", "none");
+        }
+        if (description === "") {
+            $("#alert_description").css("display", "block");
+            flag = false;
+        } else {
+            $("#alert_description").css("display", "none");
+        }
+        return flag;
+    }
+
     $("#btn-add-product").on("click", function (e) {
         e.preventDefault();
-        let data = new FormData($("#addNewProduct")[0]);
-        $.ajax({
-            url: "/api/admin/product/add",
-            data: data,
-            type: "POST",
-            enctype: 'multipart/form-data',
-            // prevent jQuery from automatically transforming the data into a query string
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 1000000,
-            success: function (result) {
-                $("#btn-add-product").prop("disabled", false);
-                $('#addNewProduct')[0].reset();
-                $('#message').find("div.modal-body").text("Thêm sản phẩm thành công!")
-                $('#message').modal('show');
-                $('#message').on('hidden.bs.modal', function () {
-                    window.location.replace("/admin/manager_products");
-                });
-            },
-            error: function () {
-                alert("có lỗi xảy ra");
-            }
-        });
-    });
-
-    $("#category").change(function () {
-        let parentCategoryId = $("#category option:selected").val();
-        let categories = JSON.parse(localStorage.getItem("categories"));
-        $.each(categories, function (index, item) {
-            if (parseInt(parentCategoryId) === parseInt(item["id"])) {
-                $('#sub-category').empty();
-                if (item.hasOwnProperty("subCategory")) {
-                    $.each(item["subCategory"], function (index, subItem) {
-                        $('#sub-category').append(new Option(subItem["categoryName"], subItem["id"]));
+        if (checkValidate() === true) {
+            let data = new FormData($("#addNewProduct")[0]);
+            $.ajax({
+                url: "/api/admin/product/add",
+                data: data,
+                type: "POST",
+                enctype: 'multipart/form-data',
+                // prevent jQuery from automatically transforming the data into a query string
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 1000000,
+                success: function (result) {
+                    console.log(result);
+                    $("#btn-add-product").prop("disabled", false);
+                    $('#addNewProduct')[0].reset();
+                    $("#message").find("div.modal-body > img").attr("src", "/images/check-success-icon.png");
+                    $('#message').find("div.modal-body > p").text("Thêm sản phẩm thành công").css("color", "green");
+                    $('#message').modal('show');
+                    $('#message').on('hidden.bs.modal', function () {
+                        window.location.replace("/admin/manager_products/product/" + result["id"]);
                     });
-                } else {
-                    $('#sub-category').append(new Option(item["categoryName"], item["id"]));
+                },
+                error: function () {
+                    alert("có lỗi xảy ra");
                 }
-                $('#sub-category > option:first-child').prop('selected', true);
-                return;
-            }
-        });
-
-    });
-
-    $("#btn-add-category").on("click", function () {
-        let categoryName = $("#add-category").val();
-        alert(categoryName);
-        $.ajax({
-            url: "/api/categories/insert",
-            type: "POST",
-            data: JSON.stringify({
-                "categoryName": categoryName,
-                "categoryUrl": removeAccents(categoryName.toLowerCase()).replaceAll(" ", "-")
-            }),
-            contentType: "application/json",
-            success: function (data) {
-                getListCategoryAndSupplier();
-            },
-            error: function () {
-                alert("có lỗi xảy ra");
-            }
-        });
-        $("#add-category-supplier").hide();
-        $("#select-category-supplier").show();
-
-    });
-
-    $("#btn-add-sub-category").on("click", function () {
-        let parentId = $("#category option:selected").val();
-        let categoryName = $("#add-sub-category").val();
-        $.ajax({
-            url: "/api/categories/insert",
-            type: "POST",
-            data: JSON.stringify({
-                "parentId": parentId,
-                "categoryName": categoryName,
-                "categoryUrl": removeAccents(categoryName.toLowerCase()).replace(" ", "-")
-            }),
-            contentType: "application/json",
-            success: function (data) {
-                console.log(data);
-            },
-            error: function () {
-                alert("có lỗi xảy ra");
-            }
-        });
-        $("#add-category-supplier").hide();
-        $("#select-category-supplier").show();
+            });
+        }
     });
 
     $(document).on("click", "#browse1", function() {
-        var file = $(this).parents().find("#file_image1");
+        let file = $(this).parents().find("#image1");
         file.trigger("click");
     });
-    $('input[id="file_image1"]').change(function(e) {
-        var fileName = e.target.files[0].name;
+    $('input[id="image1"]').change(function(e) {
+        let fileName = e.target.files[0].name;
         $("#file1").val(fileName);
 
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = function(e) {
             // get loaded data and render thumbnail.
             document.getElementById("preview1").src = e.target.result;
@@ -506,14 +498,14 @@
     });
 
     $(document).on("click", "#browse2", function() {
-        var file = $(this).parents().find("#file_image2");
+        let file = $(this).parents().find("#image2");
         file.trigger("click");
     });
-    $('input[id="file_image2"]').change(function(e) {
-        var fileName = e.target.files[0].name;
+    $('input[id="image2"]').change(function(e) {
+        let fileName = e.target.files[0].name;
         $("#file2").val(fileName);
 
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = function(e) {
             // get loaded data and render thumbnail.
             document.getElementById("preview2").src = e.target.result;
@@ -523,21 +515,30 @@
         reader.readAsDataURL(this.files[0]);
     });
 
-    let loadFile = function (event) {
-        let output = document.getElementById('output');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function () {
-            URL.revokeObjectURL(output.src) // free memory
-        }
-        output.style.display = "block";
-    };
-
 
     function removeAccents(str) {
         return str.normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .replace(/đ/g, 'd').replace(/Đ/g, 'D');
     }
+
+    function getAllCategory() {
+        $.ajax({
+            url: "/api/categories/get",
+            type: "GET",
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data, function (index, item) {
+                    $("#categoryId").append("<option value='" + item["id"] + "'>" + item["categoryName"] + "</option>");
+                });
+            },
+            error: function () {
+                alert("có lỗi xảy ra, không lấy được danh sách danh mục");
+            }
+        });
+    }
+
+    /*]]>*/
 </script>
 
 </body>

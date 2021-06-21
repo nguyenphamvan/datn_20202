@@ -34,7 +34,7 @@ public class Review {
     @Column(name = "numbers_of_like")
     private int numbersOfLike;
 
-    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubReview> subReviews;
 
     @ManyToOne(fetch = FetchType.LAZY)

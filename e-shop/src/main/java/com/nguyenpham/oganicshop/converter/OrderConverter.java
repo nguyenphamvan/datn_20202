@@ -29,7 +29,6 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
         orderDto.setTotal(order.getTotal());
         orderDto.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(order.getStatus()));
         orderDto.setMessage(order.getMessage());
-        orderDto.setPaymentMethod(order.getPaymentMethod());
         orderDto.setNote(order.getNote());
         orderDto.setOrderDate(DateTimeUtil.dateTimeFormat(order.getOrderDate()));
         orderDto.setDeliveryDate(DateTimeUtil.dateTimeFormat((order.getDeliveryDate())));
@@ -50,20 +49,20 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
         return null;
     }
 
-    public Order dtoToEntity(User user, HashMap<Long, CartItem> cart, OrderRequest orderDto) {
+    public Order dtoToEntity(User user, HashMap<Long, CartItem> cart, OrderRequest request) {
         Order order = new Order();
         order.setUser(user);
-        order.setContactReceiver(orderDto.getAddress().getContactReceiver());
-        order.setContactAddress(orderDto.getAddress().getContactAddress());
-        order.setContactPhone(orderDto.getAddress().getContactPhone());
-        order.setNote(orderDto.getNote());
+        order.setContactReceiver(request.getAddress().getContactReceiver());
+        order.setContactAddress(request.getAddress().getContactAddress());
+        order.setContactPhone(request.getAddress().getContactPhone());
+        order.setNote(request.getNote());
         order.setStatus(0);
-        order.setPaymentMethod(orderDto.getPaymentMethod());
-        order.setDeliveryMethod(orderDto.getDeliveryMethod());
+//        order.setPaymentMethod(request.getPaymentMethod());
+//        order.setDeliveryMethod(request.getDeliveryMethod());
         order.setMessage(DateTimeUtil.dateTimeFormat(new Timestamp(System.currentTimeMillis())) + " - " + Constant.MAP_ORDER_TRACKING_STATUS.get(1));
-        order.setSubTotal(orderDto.getSubTotal());
-        order.setShipFee(orderDto.getShipFee());
-        order.setDiscount(orderDto.getDiscount());
+        order.setSubTotal(request.getSubTotal());
+        order.setShipFee(request.getShipFee());
+        order.setDiscount(request.getDiscount());
         order.setTotal(order.getSubTotal() + order.getShipFee() - order.getDiscount());
         for (CartItem item : cart.values()) {
             OrderItem orderItem = new OrderItem();

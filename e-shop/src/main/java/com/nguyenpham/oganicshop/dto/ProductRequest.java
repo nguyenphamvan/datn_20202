@@ -15,13 +15,14 @@ public class ProductRequest {
     private long id;
     private String name;
     private String url;
-    private MultipartFile images;
+    private String publishYear;
+    private String authors;
+    private MultipartFile image1;
+    private MultipartFile image2;
     private String description;
     private Double price;
     private Double discount;
     private Double finalPrice;
     private int amount;
     private long categoryId;
-    private long parentCategoryId;
-    private long supplierId;
 }

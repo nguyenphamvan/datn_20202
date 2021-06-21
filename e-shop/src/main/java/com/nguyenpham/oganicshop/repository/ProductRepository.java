@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByProductUrl(String productUrl);
+    Product findTopByOrderByIdDesc();
     List<Product> findAll();
 
     @Query(value = "SELECT p FROM Product p  WHERE p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%",
@@ -24,5 +25,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT p FROM Product p WHERE (p.category.id =:categoryId) AND (p.finalPrice BETWEEN :minPrice AND :maxPrice)",
             countQuery = "SELECT COUNT(p) FROM Product p WHERE (p.category.id =:categoryId) AND (p.finalPrice BETWEEN :minPrice AND :maxPrice)")
-    Page findProductsByCategoryCategoryAndFilterPrice(@Param("categoryId") long categoryId, @Param("minPrice") int minPrice, @Param("maxPrice") int maxPrice, Pageable pageable);
+    Page findProductsByCategoryCategoryAndFilterPrice(@Param("categoryId") long categoryId, @Param("minPrice") double minPrice, @Param("maxPrice") double maxPrice, Pageable pageable);
 }

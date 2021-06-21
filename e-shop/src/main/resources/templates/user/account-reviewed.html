@@ -7,6 +7,8 @@
     <th:block th:include="user/common/header_tag_common"/>
     <!-- custom css  -->
     <link rel="stylesheet" th:href="@{/css/custom2.css}">
+    <link rel="stylesheet" th:href="@{/css/style-alert.css}" />
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
     <style>
         html {
             font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -48,28 +50,31 @@
                     <div class="heading">Nhận xét của tôi (<span></span>)</div>
                     <div class="inner">
                         <div class="list">
-                            <div class="item" style="display: none;">
-                                <div class="thumb">
-                                    <div class="Picture__StyledPicture loaded">
-                                        <img class="image">
+                            <div class="item">
+                                <div style="display: flex;">
+                                    <div class="thumb">
+                                        <div class="Picture__StyledPicture loaded">
+                                            <img class="image">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="info">
-                                    <a class="name" style="font-weight: bold;"></a>
-                                    <div class="date"></div>
-                                    <div class="wrap">
-                                        <span class="title"></span>
-                                        <div class="rating">
-                                            <div class="ratting-wrap" style="display: flex;">
-                                                <div class="ratting-star">
+                                    <div class="info">
+                                        <a class="name" style="font-weight: bold;"></a>
+                                        <div class="date"></div>
+                                        <div class="wrap">
+                                            <span class="title"></span>
+                                            <div class="rating">
+                                                <div class="ratting-wrap" style="display: flex;">
+                                                    <div class="ratting-star">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="content-review"></div>
                                     </div>
-                                    <div class="content-review"></div>
                                 </div>
                                 <div class="action" style="float: right;">
-                                    <a class="edit">Chỉnh sửa</a><button class="delete">Xóa</button>
+                                    <a class="edit">Chỉnh sửa</a>
+                                    <button class="delete">Xóa</button>
                                 </div>
                             </div>
                         </div>
@@ -99,6 +104,11 @@
             $(".Pagination__StyledPagination").children("li").removeClass("is-active");
             $(this).addClass("is-active");
             getListMyReview(parseInt($(this).text()), 5);
+        });
+
+        $(document).on("click", "div.action > button.delete", function () {
+            let reviewId = $(this).closest("div.item").attr("review_id");
+            deleteReview($(this), reviewId);
         });
     });
     /*]]>*/

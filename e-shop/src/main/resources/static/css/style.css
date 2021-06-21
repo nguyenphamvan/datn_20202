@@ -1744,7 +1744,7 @@ Version:1.0
 }
 /* Sinlge Product */
 .single-product{
-    margin-top:50px;
+    margin-top:20px;
 }
 .single-product .product-img {
     position: relative;
@@ -2918,7 +2918,7 @@ Version:1.0
 }
 .shopping-cart {
     background: #f6f6f6;
-    padding: 50px 0;
+    padding: 20px 0;
 }
 .shopping-summery thead .main-hading{
     padding:0px 50px;
@@ -3039,7 +3039,7 @@ Version:1.0
     color:#F7941D;
 }
 .shopping-cart .total-amount{
-    margin-top:50px;
+    margin-top:10px;
 }
 .shopping-cart .total-amount .left{}
 .shopping-cart .total-amount .left .coupon{}
