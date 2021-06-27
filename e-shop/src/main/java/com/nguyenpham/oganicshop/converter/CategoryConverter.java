@@ -1,20 +1,20 @@
 package com.nguyenpham.oganicshop.converter;
 
-import com.nguyenpham.oganicshop.dto.CategoryDto;
+import com.nguyenpham.oganicshop.dto.CategoryResponse;
 import com.nguyenpham.oganicshop.entity.Category;
 
-public class CategoryConverter implements GeneralConverter<Category, CategoryDto, CategoryDto>{
+public class CategoryConverter implements GeneralConverter<Category, CategoryResponse, CategoryResponse>{
 
     @Override
-    public CategoryDto entityToDto(Category category) {
-        CategoryDto response = new CategoryDto();
+    public CategoryResponse entityToDto(Category category) {
+        CategoryResponse response = new CategoryResponse();
         response.setId(category.getId());
         response.setCategoryName(category.getCategoryName());
         return response;
     }
 
     @Override
-    public Category dtoToEntity(CategoryDto d) {
+    public Category dtoToEntity(CategoryResponse d) {
         return null;
     }
 }

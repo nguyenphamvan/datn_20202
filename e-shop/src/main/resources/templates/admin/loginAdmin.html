@@ -18,10 +18,10 @@
         <div class="container">
             <div class="signin-content">
                 <form th:action="@{/admin/doLogin}" method="POST" id="signin-form" class="signin-form">
-                    <h1 class="title-website">E-SHOP</h1>
+                    <h1 class="title-website">E-SHOP MANAGEMENT</h1>
                     <h2 class="form-title">Đăng nhập</h2>
                     <div th:if="${param.error}" class="alert alert-danger">
-                        <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                        <p class="text-danger">Tài khoản hoặc mật khẩu không đúng, vui lòng thử lại!</p>
                     </div>
                     <div class="form-group">
                         <input type="email" class="form-input" name="email" id="email" placeholder="Nhập email"/>

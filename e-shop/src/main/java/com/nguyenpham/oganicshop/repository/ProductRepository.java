@@ -14,10 +14,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByProductUrl(String productUrl);
     Product findTopByOrderByIdDesc();
     List<Product> findAll();
+    Product findByBookId(long bookId);
 
-    @Query(value = "SELECT p FROM Product p  WHERE p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%",
-           countQuery = "SELECT COUNT(p) FROM Product p WHERE p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword%")
+    @Query(value = "SELECT p FROM Product p  WHERE (p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword% OR p.authors LIKE %:keyword%)",
+           countQuery = "SELECT COUNT(p) FROM Product p WHERE (p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword% OR p.authors LIKE %:keyword%)")
     Page findProductsByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query(value = "SELECT p FROM Product p  WHERE (p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword% OR p.authors LIKE %:keyword%) AND (p.finalPrice BETWEEN :minPrice AND :maxPrice)",
+            countQuery = "SELECT COUNT(p) FROM Product p WHERE (p.title LIKE %:keyword% OR p.category.categoryName LIKE %:keyword% OR p.authors LIKE %:keyword%) AND (p.finalPrice BETWEEN :minPrice AND :maxPrice)")
+    Page findProductsByKeywordAndPrice(@Param("keyword") String keyword, @Param("minPrice") double minPrice, @Param("maxPrice") double maxPrice, Pageable pageable);
 
     @Query(value = "SELECT p FROM Product p WHERE p.category.id =:categoryId ",
             countQuery = "SELECT COUNT(p) FROM Product p WHERE p.category.id =:categoryId")

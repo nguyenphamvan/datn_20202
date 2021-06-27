@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nguyenpham.oganicshop.converter.CategoryConverter;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.BaseResponse;
-import com.nguyenpham.oganicshop.dto.CategoryDto;
+import com.nguyenpham.oganicshop.dto.CategoryResponse;
 import com.nguyenpham.oganicshop.dto.ProductRequest;
 import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.entity.Product;
+import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import com.nguyenpham.oganicshop.service.OrderService;
 import com.nguyenpham.oganicshop.service.ProductService;
@@ -17,11 +19,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @RestController
@@ -127,12 +132,25 @@ public class ProductControllerApi {
         if (!(categoryId == 0)) {
             Category category = categoryService.getByCategory(categoryId);
             page = productService.getProductsByCategory(categoryId, minPrice, maxPrice, pageNum, pageSize, filed, sort);
-            result.put("categories", Arrays.asList(new CategoryConverter().entityToDto(category)));
+            result.put("category", new CategoryConverter().entityToDto(category));
         }
 
         ProductConverter productConverter = new ProductConverter();
         List<ProductResponse> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
-
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+            if (user.getWishlist() != null) {
+                Set<Long> wishlistProductIdSet = Stream.of(user.getWishlist().split(",")).map(Long::valueOf).collect(Collectors.toSet());
+                products.forEach(p -> {
+                    if (wishlistProductIdSet.contains(p.getId())) {
+                        p.setFavorite(true);
+                    }
+                    else {
+                        p.setFavorite(false);
+                    }
+                });
+            }
+        }
         BaseResponse br = new BaseResponse();
         if (products.size() > 0) {
             result.put("products", products);
@@ -159,6 +177,18 @@ public class ProductControllerApi {
         BaseResponse br = new BaseResponse();
         Map<String, Object> response = new HashMap<>();
         ProductResponse product = productService.getProductByUrl(productUrl);
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+            if (user.getWishlist() != null) {
+                Set<Long> wishlistProductIdSet = Stream.of(user.getWishlist().split(",")).map(Long::valueOf).collect(Collectors.toSet());
+                if (wishlistProductIdSet.contains(product.getId())) {
+                    product.setFavorite(true);
+                }
+                else {
+                    product.setFavorite(false);
+                }
+            }
+        }
         response.put("product", product);
         if (product != null) {
             br.setData(response);
@@ -188,6 +218,8 @@ public class ProductControllerApi {
         String filed = "finalPrice";
         int pageNum = 1;
         int pageSize = 6;
+        double minPrice = 0.0;
+        double maxPrice = 0.0;
         if (object.has("keyword")) {
             keyword = object.get("keyword").asText();
         }
@@ -203,12 +235,35 @@ public class ProductControllerApi {
         if (object.has("pageSize")) {
             pageSize = object.get("pageSize").asInt();
         }
+        if (object.has("minPrice")) {
+            minPrice = object.get("minPrice").asInt();
+        }
+        if (object.has("maxPrice")) {
+            maxPrice = object.get("maxPrice").asInt();
+        }
 
         CategoryConverter converter = new CategoryConverter();
         Map<String, Object> result = new HashMap<>();
-        Page<Product> page = productService.getProductsByKeyword(keyword, pageNum, pageSize, filed, sort);;
+        Page<Product> page = productService.getProductsByKeyword(keyword.toLowerCase(), minPrice, maxPrice, pageNum, pageSize, filed, sort);;
         ProductConverter productConverter = new ProductConverter();
+        List<CategoryResponse> categories = page.getContent().stream().map(product -> converter.entityToDto(product.getCategory())).collect(Collectors.toList());
         List<ProductResponse> products = page.getContent().stream().map(product -> productConverter.entityToDtoNotReviews(product)).collect(Collectors.toList());
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+            User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+            if (user.getWishlist() != null) {
+                Set<Long> wishlistProductIdSet = Stream.of(user.getWishlist().split(",")).map(Long::valueOf).collect(Collectors.toSet());
+                products.forEach(p -> {
+                    if (wishlistProductIdSet.contains(p.getId())) {
+                        p.setFavorite(true);
+                    }
+                    else {
+                        p.setFavorite(false);
+                    }
+                });
+            }
+        }
+
+        result.put("categories", categories);
         result.put("products", products);
         result.put("page", pageNum);
         result.put("totalPages", page.getTotalPages());

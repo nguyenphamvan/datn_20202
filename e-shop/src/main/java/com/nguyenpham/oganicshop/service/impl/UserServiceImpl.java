@@ -16,6 +16,9 @@ import net.bytebuddy.utility.RandomString;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -203,8 +206,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse updateInfoAccount(UserRequest userRequest) {
-        User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        User userDb = userRepository.findById(user.getId()).get();
+        MyUserDetail loggedUser = (MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userDb = userRepository.findById(loggedUser.getUser().getId()).get();
         userDb.setFullName(userRequest.getFullName());
         userDb.setPhone(userRequest.getPhone());
         userDb.setGender(userRequest.getGender());
@@ -214,6 +217,7 @@ public class UserServiceImpl implements UserService {
             userDb.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         }
         User userUpdated = userRepository.save(userDb);
+        loggedUser.setUser(userUpdated);
         return userConverter.entityToDto(userUpdated);
     }
 

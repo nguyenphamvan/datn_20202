@@ -16,7 +16,7 @@ public interface OrderService {
     List<OrderResponse> getAll();
     Order save(Order order);
     void updateProductReviewed(long userId, long productId);
-    int getTotalOrderPage(Long userId, int pageSize);
+    int countTotalOrderPage(Long userId, int pageSize);
     OrderResponse getOrderDetail(long orderId);
     boolean updatedOrderStatus(long orderId, int statusId, String note);
     List<OrderResponse> getAllOrderByUserId(long userId);

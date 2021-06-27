@@ -30,8 +30,8 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
         orderDto.setStatus(Constant.MAP_ORDER_TRACKING_STATUS.get(order.getStatus()));
         orderDto.setMessage(order.getMessage());
         orderDto.setNote(order.getNote());
-        orderDto.setOrderDate(DateTimeUtil.dateTimeFormat(order.getOrderDate()));
-        orderDto.setDeliveryDate(DateTimeUtil.dateTimeFormat((order.getDeliveryDate())));
+        orderDto.setOrderDate(order.getOrderDate());
+        orderDto.setDeliveryDate(order.getDeliveryDate());
         List<OrderItemDto> orderItemDtoList = new ArrayList<>();
         StringBuilder summaryProductName = new StringBuilder("");
         order.getOrderItems().forEach(item -> {

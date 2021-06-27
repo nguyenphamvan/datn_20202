@@ -7,14 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.TimeZone;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OrderResponse{
+public class OrderResponse implements Comparable<OrderResponse>{
 
     private Long id;
     private AddressRequest address;
@@ -26,9 +28,15 @@ public class OrderResponse{
     private String message;
     private String status;
     private String note;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private String orderDate;
-    private String deliveryDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    private Timestamp orderDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    private Timestamp deliveryDate;
     private List<OrderItemDto> listOrderDetail;
     private OrderStatusDto orderStatus;
+
+    @Override
+    public int compareTo(OrderResponse od) {
+        return od.getOrderDate().compareTo(this.getOrderDate());
+    }
 }

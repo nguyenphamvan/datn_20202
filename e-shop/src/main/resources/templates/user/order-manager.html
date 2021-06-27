@@ -36,7 +36,7 @@
 <!-- End Breadcrumbs -->
 
 <!-- Product Style -->
-<section class="product-area shop-sidebar shop section" style="padding-top: 15px;">
+<section class="product-area shop-sidebar shop section" style="padding-top: 15px; min-height: 650px;">
     <div class="container">
         <div class="row">
             <!-- Start account items manager Area -->
@@ -50,14 +50,21 @@
                         <table>
                             <thead>
                             <tr>
-                                <th style="min-width: 135px;">Mã đơn hàng</th>
+                                <th style="min-width: 132px;">Mã đơn hàng</th>
                                 <th style="min-width: 145px;">Ngày mua</th>
                                 <th>Sản phẩm</th>
                                 <th>Tổng tiền</th>
-                                <th style="min-width: 186px;">Trạng thái đơn hàng</th>
+                                <th>Trạng thái</th>
                             </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td><a style="color: rgb(0, 127, 240)"></a></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align: center;"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -86,7 +93,6 @@
         $(document).on('click', 'ul.Pagination__StyledPagination > li', function () {
             $(".Pagination__StyledPagination").children("li").removeClass("is-active");
             $(this).addClass("is-active");
-            $('tbody').empty();
             getOrdersHistory(parseInt($(this).text()), 5);
         });
     });

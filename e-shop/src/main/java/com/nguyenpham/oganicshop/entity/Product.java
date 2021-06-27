@@ -25,7 +25,11 @@ public class Product {
     @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
+    private long bookId;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
+    private String originalTitle;
     @Column(nullable = false)
     private String productUrl;
     @Column(nullable = false)

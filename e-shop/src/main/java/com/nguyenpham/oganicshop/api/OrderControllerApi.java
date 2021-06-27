@@ -53,29 +53,34 @@ public class OrderControllerApi {
     }
 
     @PutMapping("/api/order/cancel/{orderId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> cancel(@PathVariable("orderId") long orderId, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
         return ResponseEntity.ok(orderService.cancelOrder(orderId));
     }
 
     @GetMapping("/api/order/history")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrdersHistory(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
         return ResponseEntity.ok(orderService.getOrdersHistory(user.getId(), pageNum, pageSize));
     }
 
     @GetMapping("/api/order/paging")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getTotalOrderPage(@RequestParam("pageSize") int pageSize, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
-        return ResponseEntity.ok(orderService.getTotalOrderPage(user.getId(), pageSize));
+        return ResponseEntity.ok(orderService.countTotalOrderPage(user.getId(), pageSize));
     }
 
     @GetMapping("/api/order/view/{orderId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrderDetail1(@PathVariable("orderId") long orderId) {
         return ResponseEntity.ok(orderService.getOrderDetail(orderId));
     }
 
     @GetMapping("/api/order/{orderId}/list-item")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getListOrderItem(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
         response.put("orderItems", orderService.getListOrderItem(orderId));
@@ -83,6 +88,7 @@ public class OrderControllerApi {
     }
 
     @GetMapping("/api/order/tracking/{orderId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getOrderTracking(@PathVariable("orderId") long orderId) {
         Map<String, Object> response = new HashMap<>();
         response.put("order", orderService.getOrderDetail(orderId));
@@ -90,6 +96,7 @@ public class OrderControllerApi {
     }
 
     @GetMapping("/api/order/product-not-reviewed")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> getProductsUnreviewed(@AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
         Map<String, Object> response = new HashMap<>();

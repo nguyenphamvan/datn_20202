@@ -161,6 +161,8 @@ $(document).ready(function () {
     $(document).on("click", "div.product-action >  a[title='Wishlist']", function (e) {
         e.preventDefault();
         addProductFromWishlist($(this).attr("href"));
+        $(this).css("color", "#F7941D").prop( "disabled", true );
+        $(this).text("Đã thêm vào Wishlist");
     });
 
     $(document).on("click", "#add-wishlist", function (e) {
@@ -270,6 +272,22 @@ function searchProduct() {
     window.location.href = "/search?keyword=" + keyword;
 }
 
+$(document).on("click", "div.product-action-2 > a", function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: $(this).attr("href"),
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        success: function (res) {
+            window.location = res["data"];
+        },
+        error: function (xhr) {
+            alert(xhr.responseText);
+        }
+    })
+});
+
 function addProductFromWishlist(url) {
     $.ajax({
         url: url,
@@ -277,6 +295,7 @@ function addProductFromWishlist(url) {
         dataType: 'json',
         success: function (result) {
             if (result === true) {
+                $("#add-wishlist").text("Sản phẩm yêu thích").prop("disable", true);
                 $("#myModal").css("display", "block");
                 $("#myModal > div.modal-content > p").text("Đã thêm vào danh sách yêu thích!!");
                 $("#myModal").delay(3000).fadeOut();
@@ -331,6 +350,17 @@ function getListCategory2() {
     });
 }
 
+function getListCategorySearch(categories) {
+    $("ul.category-list").empty();
+    let html = "";
+    $.each(categories, function (index, item) {
+        html += "<li style='margin-bottom: 10px;'>\n" +
+            "        <a href='/collections.html?category=" + item["id"] + "'>" + item["categoryName"] + "</a>\n" +
+            "    </li>";
+    });
+    $("ul.category-list").append(html);
+}
+
 function getListCategoryHome() {
     $.ajax({
         url: "/api/categories/get",
@@ -364,16 +394,23 @@ function getListCategoryHome() {
 
 function genListProduct(products) {
     let firstItem = $("#list-product > div:first-child");
+    firstItem.nextAll().remove();
     $.each(products, function (index, item) {
         let itemClone = firstItem.clone();
         itemClone.show();
         if (item.hasOwnProperty("mainImage")) {
-            itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"] + ".html");
+            itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
             itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
             itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
         }
-        itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"] + ".html").text(item["productName"]);
-        itemClone.find("div.product-action-2 > a").attr("href", "/products/" + item["productUrl"] + ".html");
+        itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
+        itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
+        itemClone.find("div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
+        if (item["favorite"] === true) {
+            itemClone.find("div.product-img > div > div.product-action > a").removeAttr("href");
+            itemClone.find("div.product-action > a").css("color", "#F7941D").prop( "disabled", true );
+            itemClone.find("div.product-action > a > span").text("Đã thêm vào Wishlist");
+        }
         itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
         itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
         $("#list-product").append(itemClone);
@@ -389,22 +426,36 @@ function getListProductByKeyword(data) {
         dataType: "json",
         contentType: "application/json",
         success: function (result) {
+            console.log(result["products"]);
             if (result["products"].length > 0) {
                 genListProduct(result["products"]);
-
-                $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
+                getListCategorySearch(result["categories"]);
+                $("div.pagination-nav.text-center.mt_50 > ul")
                     .empty();
-                let html = "<li page='1'><a>First</a></li>\n";
+                let startPage = 0;
+                let endPage = 0;
+                if ((parseInt(result["page"]) -5) <= 0) {
+                    startPage = 1;
+                    endPage = 10;
+                } else {
+                    startPage = 1 + (parseInt(result["page"]) - 5);
+                    endPage = 10 + (parseInt(result["page"]) - 5);
+                    if (endPage > parseInt(result["totalPages"])) {
+                        endPage = parseInt(result["totalPages"]);
+                        startPage = endPage - 10;
+                    }
+                }
+                let html = "<li page='1'><a>Trang đầu</a></li>\n";
                 if (result["page"] > 1) {
-                    html += "<li page=" + (parseInt(result["page"]) - 1) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
+                    html += "<li page=" + (parseInt(result["page"]) - 1 ) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
                 } else {
                     html += "<li page='1'><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
                 }
-                for (let i = 1; i <= result["totalPages"]; ++i) {
+                for(let i=startPage; i <= endPage ; ++i) {
                     if (i === result["page"]) {
-                        html += "<li page=" + i + " class='active'><a>" + i + "</a></li>";
+                        html += "<li page=" + i +" class='active'><a>" + i + "</a></li>";
                     } else {
-                        html += "<li page=" + i + "><a>" + i + "</a></li>";
+                        html += "<li page=" + i +"><a>" + i + "</a></li>";
                     }
                 }
                 if (parseInt(result["page"]) < parseInt(result["totalPages"])) {
@@ -412,11 +463,26 @@ function getListProductByKeyword(data) {
                 } else {
                     html += "<li page=" + parseInt(result["page"]) + "><a ><i class=\"fa fa-angle-right\"></i></a></li>\n";
                 }
-                html += "<li page=" + parseInt(result["totalPages"]) + "><a>Last</a></li>";
+                html += "<li page=" + parseInt(result["totalPages"]) + "><a>Trang cuối</a></li>";
                 $("div.pagination-nav.text-center.mt_50 > ul")
                     .append(html);
             } else {
-                $("body > section > div > div").empty().text("Không tìm thấy sản phẩm nào cho từ khóa " + result["keyword"]);
+                let html2 = "<div class=\"container-fluid\" style=\"padding: 0px\">\n" +
+                    "    <div class=\"error404-banner\" style='margin-bottom: 0px;'>\n" +
+                    "        <div class=\"error404-banner-top\"></div>\n" +
+                    "        <div class=\"error404-banner-bottom\"></div>\n" +
+                    "        <div class=\"error404-banner-content\">\n" +
+                    "            <div class=\"error404-banner-content-item eshop_404\">\n" +
+                    "                <img src=\"/images/search.png\" class=\"img-responsive\">\n" +
+                    "            </div>\n" +
+                    "            <div class=\"error404-banner-content-item alert_404\">\n" +
+                    "                <h1>Xin lỗi, Không có kết quả tìm kiếm<br class=\"hidden-xs\">cho từ khóa " + result["keyword"] + "!</h1>\n" +
+                    "            </div>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "</div>";
+                $("body > section.product-area.shop-sidebar.shop.section").after(html2);
+                $("body > section.product-area.shop-sidebar.shop.section").remove();
             }
         },
         error: function (xhr) {
@@ -453,6 +519,7 @@ function getInfoAccount() {
 }
 
 function updateInfoAccount(data) {
+    $("#user_info").find("input[type=text], input[type=radio], input[type=password], input[type=date], input[type=checkbox]").val("");
     $.ajax({
         url: "/api/account/update",
         data: JSON.stringify(data),
@@ -461,12 +528,10 @@ function updateInfoAccount(data) {
         contentType: "application/json",
         cache: false,
         success: function (data) {
+            console.log(data["userInfo"]);
             if (data["status"] === true) {
-                $("#myModal").fadeIn();
-                $("#myModal > div.modal-content > p").text("Cập nhật thông tin thành công!");
-                $("#myModal").delay(3000).fadeOut();
-
                 // user info
+                $("div.Account__StyledSideBar > div > div > strong").text(data["userInfo"]["fullName"]);
                 $("input[name='fullName']").val(data["userInfo"]["fullName"]);
                 $("input[name='phoneNumber']").val(data["userInfo"]["phone"]);
                 $("input[name='email']").val(data["userInfo"]["email"]);
@@ -477,6 +542,11 @@ function updateInfoAccount(data) {
                 } else {
                     $radios.filter('[value=female]').prop('checked', true);
                 }
+                $("#input_group_password").hide();
+
+                $("#myModal").fadeIn();
+                $("#myModal > div.modal-content > p").text("Cập nhật thông tin thành công!");
+                $("#myModal").delay(2000).fadeOut();
             }
         },
         error: function (xhr) {
@@ -489,23 +559,23 @@ function validatePassword() {
     let oldPassword = $("input[name='oldPassword']").val();
     let password = $("input[name='password']").val();
     let passwordConfirm = $("input[name='passwordConfirm']").val();
-    let token = true;
+    $(".alert").remove();
     if (oldPassword.length === 0) {
-        token = false;
         $("input[name='oldPassword']").closest("div.div-form-control").addClass("has-error");
-        $("<div class=\"error-message\">Vui lòng nhập mật khẩu cũ</div>").insertAfter($("input[name='oldPassword']"));
+        $("<div style='padding: 0.25rem 1.25rem; margin-top: 5px;' class=\"alert alert-danger\">Vui lòng nhập mật khẩu cũ</div>").insertAfter($("input[name='oldPassword']"));
+        return false;
     }
 
     if (password.length === 0) {
-        token = false;
         $("input[name='password']").closest("div.div-form-control").addClass("has-error");
-        $("<div class=\"error-message\">Vui lòng nhập mật khẩu mới</div>").insertAfter($("input[name='password']"));
+        $("<div style='padding: 0.25rem 1.25rem; margin-top: 5px;' class=\"alert alert-danger\">Vui lòng nhập mật khẩu mới</div>").insertAfter($("input[name='password']"));
+        return false;
     }
 
     if (passwordConfirm.length === 0) {
-        token = false;
         $("input[name='passwordConfirm']").closest("div.div-form-control").addClass("has-error");
-        $("<div class=\"error-message\">Bạn chưa xác nhận mật khẩu mới</div>").insertAfter($("input[name='passwordConfirm']"));
+        $("<div style='padding: 0.25rem 1.25rem; margin-top: 5px;' class=\"alert alert-danger\">Bạn chưa xác nhận mật khẩu mới</div>").insertAfter($("input[name='passwordConfirm']"));
+        return false;
     }
 
     if (oldPassword.length > 0 && password.length > 0 && passwordConfirm.length > 0) {
@@ -514,22 +584,23 @@ function validatePassword() {
             type: "GET",
             success: function (isMatch) {
                 if (isMatch === false) {
-                    token = false;
                     $("input[name='oldPassword']").closest("div.div-form-control").addClass("has-error");
-                    $("<div class=\"error-message\">Mật khẩu cũ không đúng</div>").insertAfter($("input[name='oldPassword']"));
+                    $("<div style='padding: 0.25rem 1.25rem; margin-top: 5px;' class=\"alert alert-danger\">Mật khẩu cũ không đúng</div>").insertAfter($("input[name='oldPassword']"));
+                    return false;
                 }
                 if (password !== passwordConfirm) {
-                    token = false;
                     $("input[name='passwordConfirm']").closest("div.div-form-control").addClass("has-error");
-                    $("<div class=\"error-message\">Mật khẩu không trùng khớp</div>").insertAfter($("input[name='passwordConfirm']"));
+                    $("<div style='padding: 0.25rem 1.25rem; margin-top: 5px;' class=\"alert alert-danger\">Mật khẩu không trùng khớp</div>").insertAfter($("input[name='passwordConfirm']"));
+                    return false;
                 }
             },
             error: function (xhr) {
                 alert(xhr.responseText);
+                return false;
             }
         });
     }
-    return token;
+    return true;
 }
 
 function getProductsIsUnReviewed() {
@@ -600,7 +671,7 @@ function getListMyReview(currentPage, pageSize) {
             let listMyReview = data["reviews"];
             if (listMyReview.length > 0) {
                 let firstItem = $(".styles__StyledReviewList div.list .item:first-child");
-                $(".styles__StyledReviewList div.list .item:first-child").nextAll().remove();
+                firstItem.nextAll().remove();
                 $.each(listMyReview, function (index, item) {
                     let itemClone = firstItem.clone();
                     itemClone.attr("review_id", item["id"]);
@@ -978,8 +1049,10 @@ function getInfoOrder(orderId) {
                 genreListOrderDetail(order["listOrderDetail"]);
                 $("table tfoot tr:first-child td:nth-child(2)").text("$" + order["subTotal"]);
                 $("table tfoot tr:nth-child(2) td:nth-child(2)").text("- $" + order["discount"]);
+                $("#shipFee").text("$" + order["shipFee"])
                 $("table tfoot tr:nth-child(3) td:nth-child(2)").text("$" + order["shipFee"]);
                 $("table tfoot tr:nth-child(4) td:nth-child(2) span.sum").text("$" + order["total"]);
+                $("#total-price").text("$" + order["total"])
             } else {
                 $(".styles__StyledAccountOrderDetail").empty();
                 $(".styles__StyledAccountOrderDetail").append("<div style='margin: auto;'>Không tìm thấy đơn hàng</div>")
@@ -1041,26 +1114,29 @@ function getOrdersHistory(pageNum, pageSize) {
         },
         contentType: "application/json",
         success: function (orders) {
+            console.log(orders);
             if (orders.length > 0) {
+                let firstRow = $(".Account__StyledAccountLayoutInner > div > div.inner > table > tbody > tr:nth-child(1)")
+                firstRow.nextAll().remove();
                 $.each(orders, function (index, value) {
-                    let node = "<tr>\n" +
-                        "           <td><a style='color: rgb(0, 127, 240)' href='/sales/order/view/" + value["id"] + "'>" + value["id"] + "</a></td>\n" +
-                        "           <td>" + value["orderDate"] + "</td>\n" +
-                        "           <td>" + value["summaryProductName"] + "</td>\n" +
-                        "           <td>$" + value["total"] + "</td>\n";
+                    let rowClone = firstRow.clone();
+                    rowClone.find("td:nth-child(1) > a").attr("href", "/sales/order/view/" + value["id"]).text(value["id"]);
+                    rowClone.find("td:nth-child(2)").text(value["orderDate"]);
+                    rowClone.find("td:nth-child(3)").text(value["summaryProductName"]);
+                    rowClone.find("td:nth-child(4)").text("$" + value["total"]);
                     if (value["status"] === "Giao hàng thành công") {
-                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-success'>Giao hàng thành công</span></td>\n";
+                        rowClone.find("td:nth-child(5)").append("<span class='badge badge-pill badge-success'>Giao hàng thành công</span>")
                     } else if (value["status"] === "Đang xử lý") {
-                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-warning'>Đang xử lý</span></td>\n";
+                        rowClone.find("td:nth-child(5)").append("<span class='badge badge-pill badge-warning'>Đang xử lý</span>");
                     } else if (value["status"] === "Đã hủy") {
-                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-danger'>Đã hủy</span></td>\n";
+                        rowClone.find("td:nth-child(5)").append("<span class='badge badge-pill badge-danger'>Đã hủy</span>");
                     } else {
-                        node += "<td style='text-align: center;'><span class='badge badge-pill badge-dark'>" + value["status"] + "</span></td>\n";
+                        rowClone.find("td:nth-child(5)").append("<span class='badge badge-pill badge-dark'>" + value["status"] + "</span>");
                     }
-                    node +=    "       </tr>";
-
-                    $('tbody').append(node);
+                    rowClone.show();
+                    $("tbody").append(rowClone);
                 });
+                firstRow.hide();
             } else {
                 $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner").empty();
                 $("section.product-area.shop-sidebar.shop.section > div > div > div.Account__StyledAccountLayoutInner")
@@ -1173,9 +1249,13 @@ function displayProduct(productUrl) {
         type: "GET",
         dataType: 'json',
         success: function (res) {
+
             if (res["status"] === true) {
                 let product = res["data"]["product"];
+                console.log(product);
                 // set image
+                localStorage.setItem("product_id", product["id"]);
+
                 $("div.quickview-slider-active-1").append(
                     "<div class=\"single-slider\">\n" +
                     "           <img src='" + product["mainImage"] + "'>\n" +
@@ -1204,15 +1284,17 @@ function displayProduct(productUrl) {
                 $("#since").text(product["since"]);
                 $("#rating_count").text(product["numberOfReviews"]);
                 $("#amount").text(product["amount"]);
-                $("div.modal-body > div > div:nth-child(2) > div").attr("product-url", product["productUrl"]);
                 $("div.modal-body > div > div > div > div > h2").text(product["productName"]).attr("product-url", product["productUrl"]);
                 $("#final-price").text("$" + product["finalPrice"]);
                 $("#discount-percent").text("-" + (parseFloat(product["discount"])*100) + "%");
                 $("#price").text("$" + product["price"]);
                 $("#add-cart").attr("productUrl", product["productUrl"]);
-                $("div.modal-body > div > div:nth-child(2) > div > div.quantity > div.add-to-cart > a.btn.min").attr("href", "/api/account/wishlist/add/" + product["id"]);
+                if (product["favorite"] === true) {
+                    $("#add-wishlist").text("Sản phẩm yêu thích").prop( "disabled", true );;
+                } else {
+                    $("#add-wishlist").attr("href", "/api/account/wishlist/add/" + product["id"]);
+                }
                 $("#tabs-1 > div > h6").text(product["productName"]);
-                // $("#tabs-1 > div > p").html(product["detailDescription"]);
                 $("div.quickview-ratting-review > div > span").text("("+ product["rating"] + ")");
                 // ratting
                 if (parseInt(product["rating"]) > 0) {

@@ -101,6 +101,8 @@
 
 </head>
 <body class="js" style="background-color: #e0e6eb;">
+<div></div>
+<input type="hidden" id="id_user_logged" >
 
 <!-- Header -->
 <th:block th:include="user/common/header"/>
@@ -125,7 +127,7 @@
 <!-- End Breadcrumbs -->
 
 <!-- Product Style -->
-<section class="product-area shop-sidebar shop section" style="paddind: 0px;">
+<section class="product-area shop-sidebar shop section" style="paddind: 0px; min-height: 650px;">
     <div class="container">
         <div class="modal-body" style="padding: 0px;">
             <div class="row no-gutters" style="background: white; padding: 15px 0px; border-radius: 5px;">
@@ -332,107 +334,34 @@
     <div class="container">
         <div class="row" style="background: #FFFFFF; border-radius: 5px;margin: 0px;">
             <div class="col-12">
-                <div class="section-title" style="margin-bottom: 0px;">
-                    <h2>Gợi ý sản phẩm tương tự</h2>
+                <div class="section-title">
+                    <h2>Gợi ý cho bạn</h2>
                 </div>
             </div>
             <div class="col-12">
-                <div class="owl-carousel popular-slider">
+                <div class="owl-carousel popular-slider-2">
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-img">
                             <a href="product-details.html">
-                                <img style="max-height: 369px;" class="default-img" src="https://images.gr-assets.com/books/1306787560m/1067.jpg" alt="#">
-                                <img style="max-height: 369px;" class="hover-img" src="https://images.gr-assets.com/books/1306787560m/1067.jpg" alt="#">
-                                <span class="out-of-stock">Hot</span>
+                                <img class="default-img" alt="#">
+                                <img class="hover-img" alt="#">
                             </a>
                             <div class="button-head">
                                 <div class="product-action">
-                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
+                                    <a title="Wishlist"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
                                 </div>
                                 <div class="product-action-2">
-                                    <a title="Add to cart" href="#">Thêm vào giỏ hàng</a>
+                                    <a title="Add to cart">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
                         <div class="product-content">
-                            <h3><a href="product-details.html">Black Sunglass For Women</a></h3>
+                            <h3><a href="product-details.html"></a></h3>
                             <div class="product-price">
-                                <span class="old">$60.00</span>
-                                <span>$50.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-img">
-                            <a href="product-details.html">
-                                <img style="max-height: 369px;" class="default-img" src="https://images.gr-assets.com/books/1353173297m/13547180.jpg" alt="#">
-                                <img style="max-height: 369px;" class="hover-img" src="https://images.gr-assets.com/books/1353173297m/13547180.jpg" alt="#">
-                            </a>
-                            <div class="button-head">
-                                <div class="product-action">
-                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
-                                </div>
-                                <div class="product-action-2">
-                                    <a title="Add to cart" href="#">Thêm vào giỏ hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h3><a href="product-details.html">Women Hot Collection</a></h3>
-                            <div class="product-price">
-                                <span>$50.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-img">
-                            <a>
-                                <img style="max-height: 369px;" class="default-img" src="https://images.gr-assets.com/books/1359853842m/16101128.jpg" alt="#">
-                                <img style="max-height: 369px;" class="hover-img" src="https://images.gr-assets.com/books/1359853842m/16101128.jpg" alt="#">
-                                <span class="new">New</span>
-                            </a>
-                            <div class="button-head">
-                                <div class="product-action">
-                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
-                                </div>
-                                <div class="product-action-2">
-                                    <a title="Add to cart" href="#">Thêm vào giỏ hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h3><a href="product-details.html">Awesome Pink Show</a></h3>
-                            <div class="product-price">
-                                <span>$50.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-img">
-                            <a href="product-details.html">
-                                <img style="max-height: 369px;" class="default-img" src="https://images.gr-assets.com/books/1372086100s/15749186.jpg" alt="#">
-                                <img style="max-height: 369px;" class="hover-img" src="https://images.gr-assets.com/books/1372086100s/15749186.jpg" alt="#">
-                            </a>
-                            <div class="button-head">
-                                <div class="product-action">
-                                    <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
-                                </div>
-                                <div class="product-action-2">
-                                    <a title="Add to cart" href="#">Thêm vào giỏ hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h3><a href="product-details.html">Awesome Bags Collection</a></h3>
-                            <div class="product-price">
-                                <span>$50.00</span>
+                                <span></span>
+                                <span class="old"></span>
+
                             </div>
                         </div>
                     </div>
@@ -466,6 +395,9 @@
         displayProduct(productUrl);
         displayReviewOfProduct(productUrl)
         actionForModal();
+
+        let productId = localStorage.getItem("product_id");
+        getHybridRecommendation(productId);
 
         $(document).on("click", "div.view-reply-more", function () {
             $(this).hide();
@@ -514,7 +446,7 @@
                 url: "/api/products/check-provide-enough-quantity",
                 data: {
                     "quantity": $(".quickview-content .quantity .input-number").val(),
-                    "productUrl": $(".quickview-content").attr("product-url")
+                    "productUrl": productUrl
                 },
                 type: "GET",
                 dataType: 'json',
@@ -535,7 +467,7 @@
                 url: "/api/products/check-provide-enough-quantity",
                 data: {
                     "quantity": $(".quickview-content .quantity .input-number").val(),
-                    "productUrl": $(".quickview-content").attr("product-url")
+                    "productUrl": productUrl
                 },
                 type: "GET",
                 dataType: 'json',
@@ -572,6 +504,74 @@
             });
             likeComment(thisLikeButton, data);
         });
+
+        function getHybridRecommendation(productId) {
+            $.ajax({
+                url: "/api/recommendation/similarity/" + productId,
+                type: "GET",
+                dataType : "json",
+                contentType: "application/json",
+                success: function (products) {
+
+                    console.log(products);
+
+                    $("div.popular-slider-2 > div:nth-child(1)").nextAll().remove();
+                    let firstItem = $("div.popular-slider-2 > div:nth-child(1)");
+                    $.each(products, function (index, item) {
+                        let itemClone = firstItem.clone();
+                        itemClone.removeClass("active");
+                        itemClone.show();
+                        if (item.hasOwnProperty("mainImage")) {
+                            itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
+                            itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
+                            itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
+                        }
+                        itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
+                        itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
+                        itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
+                        itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
+                        itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
+                        $("div.popular-slider-2").append(itemClone);
+                    });
+                    firstItem.remove();
+
+                    $(".popular-slider-2").owlCarousel({
+                        items:1,
+                        autoplay:true,
+                        autoplayTimeout:5000,
+                        smartSpeed: 400,
+                        animateIn: 'fadeIn',
+                        animateOut: 'fadeOut',
+                        autoplayHoverPause:true,
+                        loop:true,
+                        nav:true,
+                        merge:true,
+                        dots:false,
+                        navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+                        responsive:{
+                            0: {
+                                items:1,
+                            },
+                            300: {
+                                items:1,
+                            },
+                            480: {
+                                items:2,
+                            },
+                            768: {
+                                items:3,
+                            },
+                            1170: {
+                                items:4,
+                            },
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
     });
     /*]]>*/
 </script>

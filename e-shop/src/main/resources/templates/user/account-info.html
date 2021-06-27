@@ -37,7 +37,7 @@
 <!-- End Breadcrumbs -->
 
 <!-- Product Style -->
-<section class="product-area shop-sidebar shop section" style="padding-top: 15px;">
+<section class="product-area shop-sidebar shop section" style="padding-top: 15px; min-height: 650px;">
     <div class="container">
         <div class="row">
 
@@ -89,22 +89,19 @@
                             <div class="div-form-control">
                                 <label class="input-label">Mật khẩu cũ</label>
                                 <div>
-                                    <input class="form-control" type="password" required="true" name="oldPassword"
-                                           placeholder="Nhập mật khẩu cũ" value="">
+                                    <input class="form-control" type="password" required="true" name="oldPassword" placeholder="Nhập mật khẩu cũ">
                                 </div>
                             </div>
                             <div class="div-form-control">
                                 <label class="input-label">Mật khẩu mới</label>
                                 <div>
-                                    <input class="form-control" type="password" required="true" name="password"
-                                           placeholder="Mật khẩu từ 6 đến 32 ký tự" value="">
+                                    <input class="form-control" type="password" required="true" name="password" placeholder="Mật khẩu từ 6 đến 32 ký tự">
                                 </div>
                             </div>
                             <div class="div-form-control">
                                 <label class="input-label">Nhập lại</label>
                                 <div>
-                                    <input class="form-control" type="password" required="true" name="passwordConfirm"
-                                           placeholder="Nhập lại mật khẩu mới" value="">
+                                    <input class="form-control" type="password" required="true" name="passwordConfirm" placeholder="Nhập lại mật khẩu mới">
                                 </div>
                             </div>
                         </div>
@@ -177,12 +174,9 @@
             if ($("input[name='edit_password']").is(':checked')) {
                 if (validatePassword() === true) {
                     data["password"] = $("input[name='password']").val();
-                    updateInfoAccount(data);
                 }
-                alert(data["password"]);
-            } else {
-                updateInfoAccount(data);
             }
+            updateInfoAccount(data);
         });
         /* end edit password function*/
 
@@ -194,13 +188,6 @@
             $(this).addClass("is-active");
         });
 
-        $(document).on('click', '.my-reviews__button', function (e) {
-            e.preventDefault();
-            $(".write-review__product img").attr("src", $(this).siblings(".my-reviews__info").find("img").attr("src"));
-            $(".write-review__product-name").text($(this).siblings(".my-reviews__info").find(".my-reviews__name").text());
-            $("input[name='orderItem-id']").val($(this).siblings(".my-reviews__info").attr("orderItem-id"));
-            $("input[name='product-id']").val($(this).siblings(".my-reviews__info").attr("product-id"));
-        });
     });
 
     /*]]>*/

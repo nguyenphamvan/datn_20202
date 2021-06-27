@@ -52,6 +52,10 @@ public class MyUserDetail implements UserDetails {
         return (user.isEnabled() && !user.isBlocked());
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public User getUser() {
         return user;
     }

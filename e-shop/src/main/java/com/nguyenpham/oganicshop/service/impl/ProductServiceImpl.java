@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +41,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll(List<Long> listId) {
         return productRepository.findAllById(listId);
+    }
+
+    @Override
+    public List<ProductResponse> getProductRecommend(List<Long> listBookIds) {
+        ProductConverter converter = new ProductConverter();
+        List<ProductResponse> responses = new ArrayList<>();
+        listBookIds.forEach(bookId -> {
+            responses.add(converter.entityToDto(productRepository.findByBookId(bookId)));
+        });
+        return responses;
     }
 
     @Override
@@ -73,8 +84,8 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-
     @Override
+    @Transactional
     public int importProduct(long productId, int amount) {
         Product product = productRepository.findById(productId).get();
         product.setAmount(product.getAmount() + amount);
@@ -162,9 +173,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir) {
+    public Page<Product> getProductsByKeyword(String keyword, double minPrice, double maxPrice, int pageNum, int pageSize, String sortField, String sortDir) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize,
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending());
+        if (((minPrice > 0) || (maxPrice > 0)) && (minPrice < maxPrice)) {
+            return productRepository.findProductsByKeywordAndPrice(keyword, minPrice, maxPrice, pageable);
+        }
         return productRepository.findProductsByKeyword(keyword, pageable);
     }
 

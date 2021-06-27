@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <!-- Title Tag  -->
+    <title>Không tìm thấy trang yêu cầu | 404</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <!-- Web Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+    <!--     StyleSheet-->
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.min.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <!-- Fancybox -->
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <!-- Themify Icons -->
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <!-- Flex Slider CSS -->
+    <link rel="stylesheet" th:href="@{/css/flex-slider.min.css}">
+
+    <!-- Eshop StyleSheet -->
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <style>
+
+        .error404-banner {
+            margin-bottom: 80px;
+            background: #fdba13;
+            position: relative;
+            text-align: center;
+        }
+
+        .error404-banner .error404-banner-top {
+            height: 140px;
+            background-color: #3fc6f5;
+            background-image: url('/images/city-cloud.png');
+            background-repeat: repeat-x;
+            background-position: bottom center;
+            background-size: contain;
+        }
+
+        .error404-banner .error404-banner-bottom {
+            height: 130px;
+        }
+
+        .error404-banner .error404-banner-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 0;
+            padding-top: 50px;
+            white-space: nowrap;
+        }
+
+        .error404-banner .eshop_404 {
+            position: relative;
+            width: 110px;
+        }
+
+        .error404-banner .image_404 {
+            width: 106px;
+        }
+
+        @media (max-width: 767px) {
+            .hidden-xs {
+                display: none!important;
+            }
+        }
+
+        .error404-banner .alert_404 h1 {
+            font-size: 16px;
+            letter-spacing: .2rem;
+            margin-top: 0;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        @media (min-width: 480px) {
+            .error404-banner .error404-banner-bottom {
+                height: 120px;
+            }
+
+            .error404-banner .error404-banner-top {
+                height: 160px;
+            }
+
+            .error404-banner .alert_404 {
+                font-size: 22px;
+            }
+        }
+
+        .error404-banner .error404-banner-content-item {
+            display: inline-block;
+            margin-bottom: 10px;
+            vertical-align: bottom;
+            white-space: normal;
+        }
+
+        .error404-banner .alert_404 {
+            color: #fff;
+            display: block;
+            margin-top: 15px;
+        }
+
+        .error404-nav {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .error404-nav-item {
+            color: #000;
+            display: block;
+            position: relative;
+            border-color: #ccc;
+            background: -webkit-gradient(linear,left top,left bottom,from(#fff),to(#f7f7f7));
+            background: linear-gradient(#fff,#f7f7f7);
+            font-size: 12px;
+        }
+
+
+        @media (min-width: 768px) {
+            .error404-banner .error404-banner-bottom {
+                height: 200px;
+            }
+
+            .error404-banner .error404-banner-top {
+                height: 230px;
+            }
+
+            .error404-banner .eshop_404 {
+                width: 219px;
+            }
+
+            .error404-banner .image_404 {
+                width: 212px;
+            }
+
+            .error404-banner .alert_404 h1 {
+                font-size: 22px;
+            }
+
+            .error404-nav-item {
+                display: inline-block;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .error404-banner .alert_404 {
+                display: inline-block;
+                margin-top: 0;
+                margin-left: 50px;
+                text-align: left;
+            }
+
+            .error404-banner .error404-banner-bottom {
+                height: 130px;
+            }
+
+            .error404-banner .alert_404 h1 {
+                font-size: 27px;
+            }
+        }
+
+        .img-responsive {
+            display: block;
+            height: auto;
+        }
+
+        .btn-404 {
+            cursor: pointer;
+            border: 1px solid #888;
+            white-space: nowrap;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        body {
+            min-height: 100%;
+            line-height: normal;
+            font-family: Roboto,Helvetica,Arial,sans-serif;
+            padding: 0!important;
+        }
+
+    </style>
+</head>
+<body class="js">
+
+<!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-inner">
+        <div class="preloader-icon">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!-- End Preloader -->
+
+<!-- Header -->
+<th:block th:include="user/common/header"/>
+<!--/ End Header -->
+
+<!-- Start Most Popular -->
+<div class="container-fluid" style="padding: 0px">
+    <div class="error404-banner">
+        <div class="error404-banner-top"></div>
+        <div class="error404-banner-bottom"></div>
+        <div class="error404-banner-content">
+            <div class="error404-banner-content-item eshop_404">
+                <img th:src="@{/images/search.png}" class="img-responsive"/>
+            </div>
+            <div class="error404-banner-content-item image_404">
+                <img th:src="@{/images/404.png}" class="img-responsive"/>
+            </div>
+            <div class="error404-banner-content-item alert_404">
+                <h1>Xin lỗi, trang bạn đang tìm kiếm <br class="hidden-xs">Không tồn tại</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="error404-nav">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 text-right-sm">
+                    <a th:href="@{/}" class="btn-404 error404-nav-item left">
+                        <i class="fa fa-angle-left"></i> Tiếp tục mua hàng
+                    </a>
+                </div>
+                <div class="col-sm-6 text-left-sm">
+                    <a th:href="@{/customer/account/info}" class="btn-404 error404-nav-item right">
+                        Xem thông tin tài khoản <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Most Popular Area -->
+
+<!-- Start Footer Area -->
+<th:block th:include="user/common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        getListCategory();
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

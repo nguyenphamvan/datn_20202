@@ -166,7 +166,7 @@ body {
 }
 
 .div-form-control > div {
-    display: flex;
+    /*display: flex;*/
     position: relative;
     flex: 1 1 0%;
     z-index: 1;
@@ -322,14 +322,13 @@ textarea {
 .styles__StyledAccountListOrder th, .styles__StyledAccountListOrder td {
     min-width: 130px;
     padding: 20px 15px;
-    color: rgb(120, 120, 120);
-    font-size: 15px;
     font-weight: 400;
-    text-align: left;
+    text-align: center;
 }
 
 .styles__StyledAccountListOrder th {
     color: black;
+    font-size: 15px;
     font-weight: 600;
 }
 
@@ -589,7 +588,7 @@ a {
     height: 40px;
     padding: 0px;
     background: 0px center;
-    color: rgb(153, 153, 153);
+    color: rgb(255, 0, 0);
     position: absolute;
     right: 0px;
     top: 0px;
@@ -689,7 +688,7 @@ img {
 }
 
 .styles__StyledAccountWishList .footer_favourite .discount {
-    padding-left: 20px;
+    padding-left: 5px;
     position: relative;
     z-index: 1;
 }
@@ -707,13 +706,14 @@ img {
 }
 
 .Picture__StyledPicture .image {
+    width: 100%;
+    max-height: 100%;
     position: absolute;
     left: 0px;
     top: 0px;
-    height: 100%;
     z-index: 2;
-    display: none;
     vertical-align: middle;
+    display: inline-block;
 }
 
 .styles__StyledReviewList .info {
@@ -722,7 +722,6 @@ img {
 
 .styles__StyledReviewList .name {
     font-size: 13px;
-    margin: 0px 0px 15px;
     display: inline-block;
 }
 
@@ -796,20 +795,12 @@ img {
 }
 
 .Picture__StyledPicture {
+    width: 67px;
+    height: 90px;
     position: relative;
     z-index: 1;
     display: block;
     padding-top: 100%;
-}
-
-.Picture__StyledPicture .image {
-    display: inline-block;
-}
-
-.styles__StyledReviewList .name {
-    font-size: 13px;
-    margin: 0px 0px 15px;
-    display: inline-block;
 }
 
 .styles__StyledReviewList .date {
@@ -896,10 +887,11 @@ img {
 
 .my-reviews__name {
     margin: 15px 0px 0px;
+    text-align: center;
     color: rgb(36, 36, 36);
     font-size: 13px;
     line-height: 1.38;
-    font-weight: 300;
+    font-weight: 400;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -1072,7 +1064,7 @@ img {
 }
 
 .styles__StyledProductList tbody tr {
-    border-bottom: 1px solid rgb(244, 244, 244);
+    border-bottom: 1px solid rgb(222 220 220);
 }
 
 .styles__StyledProductList tbody tr td:first-child {
@@ -1101,7 +1093,7 @@ img {
 
 .styles__StyledProductList tbody tr td .product-item img {
     width: 60px;
-    height: 60px;
+    height: 80px;
     margin-right: 15px;
 }
 
@@ -1333,8 +1325,8 @@ img {
 
 .styles__StyledOrderItems .items .item .image {
     margin-right: 30px;
-    width: 90px;
-    height: 90px;
+    width: 60px;
+    height: 80px;
 }
 
 .styles__StyledOrderItems .items .item .info .name {
@@ -1436,11 +1428,11 @@ img {
 
 .write-review__buttons {
     flex: 1 1 0%;
-    align-items: flex-end;
     display: flex;
     -webkit-box-pack: justify;
     padding: 0px 0px 16px;
     margin: 12px 0px 0px;
+    justify-content: center;
 }
 
 .write-review__file {
@@ -1480,7 +1472,6 @@ img {
     line-height: 36px;
     cursor: pointer;
     border-radius: 4px;
-    display: flex;
     -webkit-box-pack: center;
     justify-content: center;
     -webkit-box-align: center;
@@ -1492,6 +1483,14 @@ img {
     width: 20px;
     height: 20px;
     margin: 0px 4px 0px 0px;
+}
+
+#reviewModal {
+    overflow-y: hidden;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    height: 450px;
+    padding-right: 16px;
 }
 
 button, input, optgroup, select, textarea {

@@ -79,17 +79,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int getTotalOrderPage(Long userId, int pageSize) {
-        List<Order> allOrder = orderRepository.findAllByUserId(userId);
-        if (allOrder.size() <= pageSize) {
-            return 1;
-        } else {
-            return (allOrder.size() / pageSize + 1);
-        }
-
-    }
-
-    @Override
     public List<OrderResponse> getAllOrderByUserId(long userId) {
         OrderConverter converter = new OrderConverter();
         return orderRepository.findAllByUserId(userId).stream()
@@ -115,7 +104,6 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(statusId);
         order.setMessage(DateTimeUtil.dateTimeFormat(new Date()) + " - " + message);
         order.addLogOrder(orderStatus);
-
         try {
             orderRepository.save(order);
             return true;
@@ -140,10 +128,10 @@ public class OrderServiceImpl implements OrderService {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("orderDate").descending());
         Page<Order> page = orderRepository.findOrdersByUserId(userId, pageable);
         List<Order> ordersHistory = page.getContent();
-        List<OrderResponse> ordersDtoHistory = new ArrayList<>();
-        ordersHistory.forEach(order -> {
-            ordersDtoHistory.add(converter.entityToDto(order));
-        });
+        List<OrderResponse> ordersDtoHistory = ordersHistory.stream()
+                .map(order -> converter.entityToDto(order))
+                .collect(Collectors.toList());
+        Collections.sort(ordersDtoHistory);
         return ordersDtoHistory;
     }
 
@@ -226,6 +214,17 @@ public class OrderServiceImpl implements OrderService {
 //        orderResponse.setPaymentMethod("cod");
 
         return orderResponse;
+    }
+
+    @Override
+    public int countTotalOrderPage(Long userId, int pageSize) {
+        List<Order> allOrder = orderRepository.findAllByUserId(userId);
+        if (allOrder.size() <= pageSize) {
+            return 1;
+        } else {
+            return (allOrder.size() / pageSize + 1);
+        }
+
     }
 
     @Override

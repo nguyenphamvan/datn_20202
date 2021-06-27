@@ -123,7 +123,8 @@
                 <div class="bread-inner">
                     <ul class="bread-list">
                         <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li><a>Bộ sưu tập</a></li>
+                        <li><a>Danh mục<i class="ti-arrow-right"></i></a></li>
+                        <li><a></a></li>
                     </ul>
                 </div>
             </div>
@@ -133,7 +134,7 @@
 <!-- End Breadcrumbs -->
 
 <!-- Product Style -->
-<section class="product-area shop-sidebar shop section">
+<section class="product-area shop-sidebar shop section" style="min-height: 650px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-4 col-12">
@@ -181,12 +182,12 @@
                         <!--/ End Shop Top -->
                     </div>
                 </div>
-                <div class="row" id="list-product">
+                <div class="row" id="list-product" style="min-height: 960px;">
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="single-product">
                             <div class="product-img">
                                 <a>
-                                    <img class="default-img" alt="#" style="max-height: 369px;">
+                                    <img class="default-img" alt="#" style="height: 369px;">
 <!--                                    <img class="hover-img" alt="#">-->
                                 </a>
                                 <div class="button-head">
@@ -360,21 +361,39 @@
                 console.log(res);
                 if (res["status"] === true) {
                     let result = res["data"];
-                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
+                    $("ul.bread-list > li:nth-child(3) > a").text(result["category"]["categoryName"]).attr("href", "/collections.html?category=" + result["category"]["id"]);
+                    $("ul.category-list > li").each(function (index) {
+                        if ($(this).find("a").text() === result["category"]["categoryName"].toLowerCase()) {
+                            $(this).find("a").css("color", "#F7941D");
+                        }
+                    });
 
+
+                    $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-3.col-md-4.col-12 > div > div.single-widget.category > ul > li:first-child").nextAll().remove();
                     $("#list-product > div:nth-child(1)").nextAll().remove();
                     genListProduct(result["products"]);
-
-
                     $("section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul")
                         .empty();
+                    let startPage = 0;
+                    let endPage = 0;
+                    if ((parseInt(result["page"]) -5) <= 0) {
+                        startPage = 1;
+                        endPage = 10;
+                    } else {
+                        startPage = 1 + (parseInt(result["page"]) - 5);
+                        endPage = 10 + (parseInt(result["page"]) - 5);
+                        if (endPage > parseInt(result["totalPages"])) {
+                            endPage = parseInt(result["totalPages"]);
+                            startPage = endPage - 10;
+                        }
+                    }
                     let html = "<li page='1'><a>Trang đầu</a></li>\n";
                     if (result["page"] > 1) {
                         html += "<li page=" + (parseInt(result["page"]) - 1 ) + "><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
                     } else {
                         html += "<li page='1'><a ><i class=\"fa fa-angle-left\"></i></a></li>\n";
                     }
-                    for(let i=1; i <= result["totalPages"] ; ++i) {
+                    for(let i=startPage; i <= endPage ; ++i) {
                         if (i === result["page"]) {
                             html += "<li page=" + i +" class='active'><a>" + i + "</a></li>";
                         } else {
@@ -409,8 +428,13 @@
                 itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
                 // itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
             }
-            itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["productName"]);
+            itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
             itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
+            if (item["favorite"] === true) {
+                itemClone.find("div.product-img > div > div.product-action > a").removeAttr("href");
+                itemClone.find("div.product-img > div > div.product-action > a").css("color", "#F7941D").prop( "disabled", true );
+                itemClone.find("div.product-img > div > div.product-action > a > span").text("Đã thêm vào Wishlist");
+            }
             itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
             itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
             itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
@@ -419,21 +443,7 @@
         firstItem.hide();
     }
 
-    $(document).on("click", "div.product-action-2 > a", function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: $(this).attr("href"),
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            success: function (res) {
-                window.location = res["data"];
-            },
-            error: function (xhr) {
-                alert(xhr.responseText);
-            }
-        })
-    });
+
     /*]]>*/
 </script>
 

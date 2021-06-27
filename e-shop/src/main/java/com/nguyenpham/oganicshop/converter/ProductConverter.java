@@ -28,6 +28,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         ProductResponse productResponse = new ProductResponse();
         productResponse.setId(product.getId());
         productResponse.setProductName(product.getTitle());
+        productResponse.setOriginalTitle(product.getOriginalTitle());
         productResponse.setProductUrl(product.getProductUrl());
         productResponse.setAuthor(product.getAuthors());
         productResponse.setSince(product.getOriginalPublicationYear());

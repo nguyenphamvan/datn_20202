@@ -15,6 +15,7 @@ public class ProductResponse {
 
     private Long id;
     private String productName;
+    private String originalTitle;
     private String productUrl;
     private String author;
     private String since;
@@ -25,6 +26,7 @@ public class ProductResponse {
     private Double discount;
     private Double finalPrice;
     private double rating;
+    private boolean isFavorite;
     private int numberOfReviews;
     private int amount;
     private int amountSold;

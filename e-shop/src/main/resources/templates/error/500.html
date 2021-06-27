@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <!-- Title Tag  -->
+    <title>Lỗi hệ thống</title>
+    <th:block th:include="user/common/header_tag_common"/>
+</head>
+<body class="js">
+
+<!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-inner">
+        <div class="preloader-icon">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!-- End Preloader -->
+
+<!-- Header -->
+<th:block th:include="user/common/header"/>
+<!--/ End Header -->
+
+<!-- Start Most Popular -->
+<div class="product-area most-popular section" style="min-height: 650px;">
+    <div class="container">
+        <div class="row">
+            Hệ thống đang gặp lỗi, vui lòng thử lại sau
+        </div>
+    </div>
+</div>
+<!-- End Most Popular Area -->
+
+<!-- Start Footer Area -->
+<th:block th:include="user/common/footer"/>
+<!-- /End Footer Area -->
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        getListCategory();
+    });
+    /*]]>*/
+</script>
+
+</body>
+</html>

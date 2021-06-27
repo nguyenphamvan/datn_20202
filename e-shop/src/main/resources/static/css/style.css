@@ -1658,7 +1658,7 @@ Version:1.0
     text-align: center;
 }
 .most-popular .section-title{
-    margin-bottom:40px;
+    margin: 20px;
 }
 .pro-tab-viewmore-wrap .pro-viewmore {
     position: absolute;
@@ -1666,7 +1666,7 @@ Version:1.0
     top: 0;
 }
 .most-popular .single-product{
-    margin:15px 15px 0 15px;
+    margin:15px;
 }
 /* Slider Nav */
 .most-popular .owl-nav{
@@ -1929,7 +1929,7 @@ Version:1.0
     position: absolute;
     left: 0;
     bottom: -50px;
-    z-index: 9;
+    z-index: 1;
     height: 50px;
     line-height: 50px;
     -webkit-transition:all 0.4s ease;
@@ -2939,7 +2939,7 @@ Version:1.0
 }
 .shopping-summery tbody tr img {
     border-radius: 0;
-    width: 80px;
+    width: 60px;
     height: 80px;
 }
 .shopping-summery tbody tr:last-child{

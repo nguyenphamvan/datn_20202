@@ -6,6 +6,7 @@
     <!-- Title Tag  -->
     <title>Tìm kiếm sản phẩm</title>
     <th:block th:include="user/common/header_tag_common"/>
+    <link rel="stylesheet" th:href="@{/css/modal-alert.css}">
     <style type="text/css">
         ul {
             list-style: none;
@@ -34,6 +35,16 @@
             cursor: pointer;
         }
 
+        .pagination-nav ul li:first-child a {
+            width: 100%;
+            padding: 2px;
+        }
+
+        .pagination-nav ul li:last-child a {
+            width: 100%;
+            padding: 2px;
+        }
+
         a, a:focus, a:active, a:link, img {
             outline: none;
             text-decoration: none;
@@ -46,6 +57,167 @@
 
         .mt_50 {
             margin-top: 50px;
+        }
+
+        /*copy 404 page*/
+        .error404-banner {
+            margin-bottom: 80px;
+            background: #fdba13;
+            position: relative;
+            text-align: center;
+        }
+
+        .error404-banner .error404-banner-top {
+            height: 140px;
+            background-color: #3fc6f5;
+            background-image: url('/images/city-cloud.png');
+            background-repeat: repeat-x;
+            background-position: bottom center;
+            background-size: contain;
+        }
+
+        .error404-banner .error404-banner-bottom {
+            height: 130px;
+        }
+
+        .error404-banner .error404-banner-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 0;
+            padding-top: 50px;
+            white-space: nowrap;
+        }
+
+        .error404-banner .eshop_404 {
+            position: relative;
+            width: 110px;
+        }
+
+        .error404-banner .image_404 {
+            width: 106px;
+        }
+
+        @media (max-width: 767px) {
+            .hidden-xs {
+                display: none!important;
+            }
+        }
+
+        .error404-banner .alert_404 h1 {
+            font-size: 16px;
+            letter-spacing: .2rem;
+            margin-top: 0;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        @media (min-width: 480px) {
+            .error404-banner .error404-banner-bottom {
+                height: 120px;
+            }
+
+            .error404-banner .error404-banner-top {
+                height: 160px;
+            }
+
+            .error404-banner .alert_404 {
+                font-size: 22px;
+            }
+        }
+
+        .error404-banner .error404-banner-content-item {
+            display: inline-block;
+            margin-bottom: 10px;
+            vertical-align: bottom;
+            white-space: normal;
+        }
+
+        .error404-banner .alert_404 {
+            color: #fff;
+            display: block;
+            margin-top: 15px;
+        }
+
+        .error404-nav {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .error404-nav-item {
+            color: #000;
+            display: block;
+            position: relative;
+            border-color: #ccc;
+            background: -webkit-gradient(linear,left top,left bottom,from(#fff),to(#f7f7f7));
+            background: linear-gradient(#fff,#f7f7f7);
+            font-size: 12px;
+        }
+
+
+        @media (min-width: 768px) {
+            .error404-banner .error404-banner-bottom {
+                height: 200px;
+            }
+
+            .error404-banner .error404-banner-top {
+                height: 230px;
+            }
+
+            .error404-banner .eshop_404 {
+                width: 219px;
+            }
+
+            .error404-banner .image_404 {
+                width: 212px;
+            }
+
+            .error404-banner .alert_404 h1 {
+                font-size: 22px;
+            }
+
+            .error404-nav-item {
+                display: inline-block;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .error404-banner .alert_404 {
+                display: inline-block;
+                margin-top: 0;
+                margin-left: 50px;
+                text-align: left;
+            }
+
+            .error404-banner .error404-banner-bottom {
+                height: 130px;
+            }
+
+            .error404-banner .alert_404 h1 {
+                font-size: 27px;
+            }
+        }
+
+        .img-responsive {
+            display: block;
+            height: auto;
+        }
+
+        .btn-404 {
+            cursor: pointer;
+            border: 1px solid #888;
+            white-space: nowrap;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        body {
+            min-height: 100%;
+            line-height: normal;
+            font-family: Roboto,Helvetica,Arial,sans-serif;
+            padding: 0!important;
         }
     </style>
 
@@ -75,7 +247,8 @@
                 <div class="bread-inner">
                     <ul class="bread-list">
                         <li><a th:href="@{/}">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li><a>Bộ sưu tập</a></li>
+                        <li>Tìm kiếm<i class="ti-arrow-right"></i></li>
+                        <li>Kết quả cho từ khóa : <a></a></li>
                     </ul>
                 </div>
             </div>
@@ -85,22 +258,21 @@
 <!-- End Breadcrumbs -->
 
 <!-- Product Style -->
-<section class="product-area shop-sidebar shop section">
+<section class="product-area shop-sidebar shop section" style="min-height: 650px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-4 col-12">
                 <div class="shop-sidebar">
                     <!-- Single Widget -->
                     <div class="single-widget category">
-                        <h3 class="title"></h3>
+                        <h3 class="title">Danh mục liên quan</h3>
                         <ul class="category-list">
-                            <li>
-                                <a></a>
-                            </li>
                         </ul>
                     </div>
                     <!--/ End Single Widget -->
-
+                    <div class="single-widget recent-post">
+                        <h3 class="title">Sản phẩm Hot</h3>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-9 col-md-8 col-12">
@@ -132,26 +304,23 @@
                                 <label style="margin-right: 5px;">Giá từ </label>
                                 <input type="text" name="min-price" value="0" style="width: 80px;"/>
                                 <label style="margin-right: 5px;"> Đến </label>
-                                <input type="text" name="max-price" value="1000" style="width: 80px;"/>
+                                <input type="text" name="max-price" value="10000" style="width: 80px;"/>
                                 <button id="filter-range-price" style="height: 30px; width: 60px; text-align: center;">Lọc</button>
                             </div>
                         </div>
                         <!--/ End Shop Top -->
                     </div>
                 </div>
-                <div class="row" id="list-product">
+                <div class="row" id="list-product" style="min-height: 960px;">
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="single-product">
                             <div class="product-img">
                                 <a>
-                                    <img class="default-img" th:src="@{https://via.placeholder.com/550x750}" alt="#">
-                                    <img class="hover-img" th:src="@{https://via.placeholder.com/550x750}" alt="#">
+                                    <img class="default-img" alt="#" style="height: 369px;">
+                                    <!--                                    <img class="hover-img" alt="#">-->
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action" style="margin-right: 10px;">
-                                        <!--                                        <a title="Quick View">-->
-                                        <!--                                            <i class=" ti-eye"></i><span>Xem nhanh</span>-->
-                                        <!--                                        </a>-->
                                         <a th:if="${#request.userPrincipal}" title="Wishlist" style="margin-right: 15px;">
                                             <i class="ti-heart"></i><span>Thêm vào Wishlist</span>
                                         </a>
@@ -161,17 +330,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-content">
+                            <div class="product-content" style="text-align: center;">
                                 <h3><a></a></h3>
                                 <div class="product-price">
-                                    <span></span>
+                                    <span style="font-size: 18px;"></span>
                                     <span class="old"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="pagination-nav text-center mt_50">
+                <div class="pagination-nav text-center mt_50" style="margin-top: 25px; margin-bottom: 25px;">
                     <ul>
                     </ul>
                 </div>
@@ -181,89 +350,60 @@
 </section>
 <!--/ End Product Style 1  -->
 
-<!-- Modal -->
-<div class="modal fade" id="productModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span class="ti-close" aria-hidden="true"></span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row no-gutters">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <!-- Product Slider -->
-                        <div class="product-gallery">
-                            <div class="quickview-slider-active">
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                                <div class="single-slider">
-                                    <img src="https://via.placeholder.com/569x528" alt="#">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Product slider -->
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div class="quickview-content">
-                            <h2>Flared Shift Dress</h2>
-                            <div class="quickview-ratting-review">
-                                <div class="quickview-ratting-wrap">
-                                    <div class="quickview-ratting">
-                                    </div>
-                                    <span>( <span id="num-customer-review"></span> customer review)</span>
-                                </div>
-                                <div class="quickview-stock">
-                                    <span id="in-stock"><i class="fa fa-check-circle-o"></i> in stock</span>
-                                    <span id="out-stock"><i class="fa fa-check-circle-o"
-                                                            style="background-color: #bd2130"></i> out of stock</span>
-                                </div>
-                            </div>
-                            <h3></h3>
-                            <div class="quickview-peragraph">
-                                <p></p>
-                            </div>
-                            <div class="quantity">
-                                <!-- Input Order -->
-                                <div class="input-group">
-                                    <div class="button minus">
-                                        <button type="button" class="btn btn-primary btn-number" disabled="disabled"
-                                                data-type="minus" data-field="quant[1]">
-                                            <i class="ti-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000"
-                                           value="1">
-                                    <div class="button plus">
-                                        <button type="button" class="btn btn-primary btn-number" data-type="plus"
-                                                data-field="quant[1]">
-                                            <i class="ti-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <!--/ End Input Order -->
-                            </div>
-                            <div class="add-to-cart">
-                                <a id="add-cart" class="btn">Thêm vào giỏ hàng</a>
-                                <a th:if="${#request.userPrincipal}" class="btn min"><i class="ti-heart"></i></a>
-                            </div>
-                        </div>
-                    </div>
+<!-- Start Shop Services Area  -->
+<section class="shop-services section home">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-rocket"></i>
+                    <h4>Miễn phí giao hàng</h4>
+                    <p>Đơn đặt hàng trên $ 100</p>
                 </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-reload"></i>
+                    <h4>MIỄN PHÍ ĐỔI TRẢ</h4>
+                    <p>Trong vòng 30 ngày trở lại</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-lock"></i>
+                    <h4>BẢO MẬT THANH TOÁN</h4>
+                    <p>Thanh toán an toàn 100%</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-tag"></i>
+                    <h4>GIÁ CẢ TỐT NHẤT</h4>
+                    <p>Giá đảm bảo</p>
+                </div>
+                <!-- End Single Service -->
             </div>
         </div>
     </div>
-</div>
-<!-- Modal end -->
+</section>
+<!-- End Shop Services -->
 
+<!-- The Modal -->
+<div id="myModal" class="myModal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/check-success-icon.png">
+        <p></p>
+    </div>
+</div>
 
 <!-- Start Footer Area -->
 <th:block th:include="user/common/footer"/>
@@ -274,22 +414,31 @@
     // A $( document ).ready() block.
     $(document).ready(function () {
         const params = new URLSearchParams(window.location.search);
+        actionForModal();
+        getListCategory();
+        getProductPopularSearch();
         let keyword = params.get("keyword") !== null ? params.get("keyword") : "";
+        $('input[id="input-search-bar"]').val(keyword);
+        $("ul.bread-list > li:nth-child(3) > a").text(keyword);
         let data = {
             "keyword": keyword,
             "sort": $("#sort-by option:selected").val().split("-")[1],
             "sortBy": $("#sort-by option:selected").val().split("-")[0],
-            "pageSize": $("#page-size option:selected").val()
+            "pageSize": $("#page-size option:selected").val(),
+            "minPrice" : $('input[name="min-price"]').val(),
+            "maxPrice" : $('input[name="max-price"]').val()
         }
         getListProductByKeyword(data);
 
         $("#page-size").change(function () {
             let sort = $("#sort-by option:selected").val().split("-");
             let data = {
-                "keyword": /*[[${keyword}]]*/,
+                "keyword": keyword,
                 "sort": sort[1],
                 "sortBy": sort[0],
-                "pageSize": $("#page-size option:selected").val()
+                "pageSize": $("#page-size option:selected").val(),
+                "minPrice" : $('input[name="min-price"]').val(),
+                "maxPrice" : $('input[name="max-price"]').val()
             }
             getListProductByKeyword(data);
 
@@ -298,31 +447,86 @@
         $("#sort-by").change(function () {
             let sort = $("#sort-by option:selected").val().split("-");
             let data = {
-                "keyword": /*[[${keyword}]]*/,
+                "keyword": keyword,
                 "sort": sort[1],
                 "sortBy": sort[0],
-                "pageSize": $("#page-size option:selected").val()
+                "pageSize": $("#page-size option:selected").val(),
+                "minPrice" : $('input[name="min-price"]').val(),
+                "maxPrice" : $('input[name="max-price"]').val()
             }
             getListProductByKeyword(data);
 
         });
 
-        $(document).on("click", "section.product-area.shop-sidebar.shop.section > div > div > div.col-lg-9.col-md-8.col-12 > div.pagination-nav.text-center.mt_50 > ul > li", function () {
+        $("#filter-range-price").on("click", function () {
+            let data = {
+                "keyword": keyword,
+                "sort" : $("#sort-by option:selected").val().split("-")[1],
+                "sortBy" : $("#sort-by option:selected").val().split("-")[0],
+                "pageSize": $("#page-size option:selected").val(),
+                "minPrice" : $('input[name="min-price"]').val(),
+                "maxPrice" : $('input[name="max-price"]').val()
+            }
+            $('input[name="min-price"]').val($('input[name="min-price"]').val());
+            $('input[name="max-price"]').val($('input[name="max-price"]').val());
+            getListProductByKeyword(data);
+        });
+
+        $(document).on("click", "div.pagination-nav.text-center.mt_50 > ul > li", function () {
             let sort = $("#sort-by option:selected").val().split("-");
             let data = {
-                "keyword": /*[[${keyword}]]*/,
+                "keyword": keyword,
                 "sort": sort[1],
                 "sortBy": sort[0],
                 "page": $(this).attr("page"),
-                "pageSize": $("#page-size option:selected").val()
+                "pageSize": $("#page-size option:selected").val(),
+                "minPrice" : $('input[name="min-price"]').val(),
+                "maxPrice" : $('input[name="max-price"]').val()
             }
             getListProductByKeyword(data);
         });
     });
 
-
-
-
+    function getProductPopularSearch() {
+        $.ajax({
+            url: "/api/recommendation/get_trending/3",
+            type: "GET",
+            dataType : "json",
+            contentType: "application/json",
+            success: function (products) {
+                $("div.shop-sidebar > div.single-widget.recent-post > div:first-child").nextAll().remove();
+                let firstItem = $("div.shop-sidebar > div.single-widget.recent-post > div.single-post:first-child");
+                $.each(products, function (index, item) {
+                    let html = "<div class=\"single-post first\">\n" +
+                        "            <div class=\"image\">\n" +
+                        "                 <img src='" + item["mainImage"] + "' alt=\"#\">\n" +
+                        "            </div>\n" +
+                        "            <div class=\"content\">\n" +
+                        "                 <h5><a href='/products/" + item["productUrl"] + "'>" + item["originalTitle"] + "</a></h5>\n" +
+                        "                 <p class=\"price\">$" + item["finalPrice"] + "</p>\n" +
+                        "                 <ul class=\"reviews\">\n";
+                    if (parseInt(item["rating"]) > 0) {
+                        for (let i = 0; i < parseInt(item["rating"]); i++) {
+                            html +="<li class=\"yellow\"><i class=\"ti-star\"></i></li>";
+                        }
+                    }
+                    if ((5 - parseInt(item["rating"])) > 0) {
+                        for (let i = 0; i < (5 - parseInt(item["rating"])); i++) {
+                            html += "<li><i class=\"ti-star\"></i></li>";
+                        }
+                    }
+                    html +="</ul>\n" +
+                        "            </div>\n" +
+                        "        </div>";
+                    $("div.recent-post").append(html);
+                });
+                firstItem.hide();
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
 
     /*]]>*/
 </script>

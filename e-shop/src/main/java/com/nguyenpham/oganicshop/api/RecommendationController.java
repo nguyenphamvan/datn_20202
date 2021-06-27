@@ -2,16 +2,18 @@ package com.nguyenpham.oganicshop.api;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nguyenpham.oganicshop.dto.ProductResponse;
 import com.nguyenpham.oganicshop.entity.Product;
+import com.nguyenpham.oganicshop.entity.User;
+import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.ProductService;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -28,9 +30,9 @@ public class RecommendationController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/get_trending")
-    public ResponseEntity<?> recommendPopularity() throws IOException {
-        String UrlRoot =  "http://127.0.0.1:5000/get_trending";
+    @GetMapping("/get_trending/{topN}")
+    public ResponseEntity<?> recommendPopularity(@PathVariable("topN") String topN) throws IOException {
+        String UrlRoot =  "http://127.0.0.1:5000/get_trending/" + topN;
         HttpUrl.Builder urlBuilder = HttpUrl.parse(UrlRoot).newBuilder();
         // Create body request
         Request request = new Request.Builder()
@@ -39,22 +41,29 @@ public class RecommendationController {
         Response response = client.newCall(request).execute();
         Gson gson = new Gson();
         Type type = new TypeToken<List<Long>>(){}.getType();
-        List<Long> idProductList = gson.fromJson(response.body().string(), type);
-        return new ResponseEntity<Object>(idProductList, HttpStatus.OK);
-//        List<Long> longList = Stream.of(idProducts).map(Long::valueOf).collect(Collectors.toList());
-//        List<Product> productList = productService.findAll(longList);
+        List<Long> listProductId = gson.fromJson(response.body().string(), type);
+        List<ProductResponse> responses = productService.getProductRecommend(listProductId);
+        return new ResponseEntity<Object>(responses, HttpStatus.OK);
     }
 
-    @GetMapping("/similarity/{userId}/{bookId}")
-    public ResponseEntity<?> recommendForUser(@PathVariable("userId") String userId, @PathVariable("bookId") String bookId) throws IOException{
-        String UrlRoot =  "http://127.0.0.1:5000/get_hybridRecommendations/" + userId + "/" + bookId;
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(UrlRoot).newBuilder();
+    @GetMapping("/similarity/{bookId}")
+    public ResponseEntity<?> recommendForUser(@PathVariable("bookId") String bookId) throws IOException{
+        String url = "";
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+            url = "http://127.0.0.1:5000/get_hybridRecommendations/1/" + bookId;
+        } else {
+            User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+            url = "http://127.0.0.1:5000/get_hybridRecommendations/" + user.getId() + "/" + bookId;
+        }
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(url).newBuilder();
         Request request = new Request.Builder()
                 .url(urlBuilder.build().toString())
                 .build();
         Response response = client.newCall(request).execute();
-        return new ResponseEntity<Object>(response.body().string(), HttpStatus.OK);
-//        List<Long> longList = Stream.of(idProducts).map(Long::valueOf).collect(Collectors.toList());
-//        List<Product> productList = productService.findAll(longList);
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Long>>(){}.getType();
+        List<Long> listProductId = gson.fromJson(response.body().string(), type);
+        List<ProductResponse> responses = productService.getProductRecommend(listProductId);
+        return new ResponseEntity<Object>(responses, HttpStatus.OK);
     }
 }

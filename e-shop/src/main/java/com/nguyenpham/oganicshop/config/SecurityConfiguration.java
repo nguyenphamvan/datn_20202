@@ -65,11 +65,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .passwordParameter("password")
                     .loginProcessingUrl("/doLogin")
                     .defaultSuccessUrl("/")//
-                    .failureUrl("/doLogin?error=true")//
                 .and()
                 .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/logout_success").and()
-                    .exceptionHandling().accessDeniedPage("/403");
+                    .exceptionHandling().accessDeniedPage("/403")
+                .and()
+                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(86400);
     }
 }

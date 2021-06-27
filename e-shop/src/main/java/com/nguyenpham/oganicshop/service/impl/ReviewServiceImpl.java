@@ -127,7 +127,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Page<Review> getMyReviews(long userId, int pageNum, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("id"));
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by("createdAt").descending());
         Page<Review> listReviews = reviewRepository.findAllByUserId(userId, pageable);
         return listReviews;
     }

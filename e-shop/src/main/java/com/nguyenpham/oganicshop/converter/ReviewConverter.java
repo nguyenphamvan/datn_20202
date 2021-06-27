@@ -1,6 +1,6 @@
 package com.nguyenpham.oganicshop.converter;
 
-import com.nguyenpham.oganicshop.dto.MyReviewDto;
+import com.nguyenpham.oganicshop.dto.MyReviewResponse;
 import com.nguyenpham.oganicshop.dto.ReviewRequest;
 import com.nguyenpham.oganicshop.dto.ReviewResponse;
 import com.nguyenpham.oganicshop.dto.SubReviewResponse;
@@ -35,8 +35,8 @@ public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, 
         return response;
     }
 
-    public MyReviewDto entityToMyReview(Review review) {
-        MyReviewDto response = new MyReviewDto();
+    public MyReviewResponse entityToMyReview(Review review) {
+        MyReviewResponse response = new MyReviewResponse();
         response.setId(review.getId());
         response.setProductUrl(review.getProduct().getProductUrl());
         response.setComment(review.getComment());
@@ -45,11 +45,10 @@ public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, 
         response.setProductImg(review.getProduct().getMainImage());
         response.setReviewerName(review.getUser().getFullName());
         response.setUserId(review.getUser().getId());
-
         response.setProductUrl(review.getProduct().getProductUrl());
         response.setProductName(review.getProduct().getTitle());
-        response.setCreatedAt(DateTimeUtil.dateTimeFormat(review.getCreatedAt()));
-        response.setUpdatedAt(DateTimeUtil.dateTimeFormat(review.getUpdatedAt()));
+        response.setCreatedAt(review.getCreatedAt());
+        response.setUpdatedAt(review.getUpdatedAt());
 
         return response;
     }

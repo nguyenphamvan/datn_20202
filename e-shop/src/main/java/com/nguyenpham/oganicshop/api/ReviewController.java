@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,9 @@ public class ReviewController {
         Map<String, Object> response = new HashMap<>();
         Page<Review> pageReview = reviewService.getMyReviews(user.getId(), currentPage, pageSize);
         ReviewConverter converter = new ReviewConverter();
-        List<MyReviewDto> listMyReview = pageReview.getContent().stream().map(rv -> converter.entityToMyReview(rv))
+        List<MyReviewResponse> listMyReview = pageReview.getContent().stream().map(rv -> converter.entityToMyReview(rv))
                 .collect(Collectors.toList());
+        Collections.sort(listMyReview);
         response.put("reviews", listMyReview);
         response.put("totalPage", pageReview.getTotalPages());
         response.put("currentPage", pageReview.getNumber() + 1);

@@ -1,15 +1,10 @@
 package com.nguyenpham.oganicshop.api;
 
-import com.nguyenpham.oganicshop.dto.CategoryDto;
-import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")

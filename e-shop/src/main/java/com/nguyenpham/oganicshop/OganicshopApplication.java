@@ -23,20 +23,22 @@ public class OganicshopApplication{
     public static void main(String[] args) {
         SpringApplication.run(OganicshopApplication.class, args);
     }
-//
 //    @Autowired
 //    private ProductRepository productRepository;
 //
 //    @Override
 //    public void run(String... args) throws Exception {
-////        List<Product> products = productRepository.findAll();
-////        products.forEach(product -> {
-////            String[] proUrl = product.getTitle().replace("/","").replace("\"", "").replace("#", "")
-////                    .replace("*","").trim().toLowerCase().split(" ");
-////            String newUrl = String.join("_", proUrl) + "_" + product.getId();
-////            product.setProductUrl(newUrl);
-////        });
-////
-////        productRepository.saveAll(products);
+//        List<Product> products = productRepository.findAll();
+//        products.forEach(product -> {
+//            String[] proUrl = product.getOriginalTitle().replace("/","").replace("\"", "").replace("#", "")
+//                    .replace("*","").replace("(","").replace(")","")
+//                    .replace(",","").replace("'","").replace(":","")
+//                    .replace(".","")
+//                    .trim().toLowerCase().split(" ");
+//            String newUrl = String.join("_", proUrl) + "_" + product.getBookId();
+//            product.setProductUrl(newUrl);
+//        });
+//
+//        productRepository.saveAll(products);
 //    }
 }

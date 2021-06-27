@@ -1,7 +1,7 @@
 package com.nguyenpham.oganicshop.service.impl;
 
 import com.nguyenpham.oganicshop.converter.CategoryConverter;
-import com.nguyenpham.oganicshop.dto.CategoryDto;
+import com.nguyenpham.oganicshop.dto.CategoryResponse;
 import com.nguyenpham.oganicshop.entity.Category;
 import com.nguyenpham.oganicshop.repository.CategoryRepository;
 import com.nguyenpham.oganicshop.service.CategoryService;
@@ -32,15 +32,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Cacheable(cacheNames = "listCategory")
-    public List<CategoryDto> getListCategory() {
+    public List<CategoryResponse> getListCategory() {
         CategoryConverter converter = new CategoryConverter();
-        List<CategoryDto> categories = categoryRepository.findAll().stream()
+        List<CategoryResponse> categories = categoryRepository.findAll().stream()
                 .map(c -> converter.entityToDto(c)).collect(Collectors.toList());
         return categories;
     }
 
     @Override
-    public CategoryDto getByCategoryId(long categoryId) {
+    public CategoryResponse getByCategoryId(long categoryId) {
         Optional<Category> category = categoryRepository.findById(categoryId);
         if (category.isPresent()) {
             return new CategoryConverter().entityToDto(category.get());

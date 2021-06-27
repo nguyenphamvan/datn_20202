@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"hibernateLazyInitializer"})
-@EqualsAndHashCode(exclude = {"rootComment", "subReviews", "product", "user", "replyReviewSet"})
-@ToString(exclude = {"rootComment", "subReviews", "product", "user", "replyReviewSet"})
+@EqualsAndHashCode(exclude = {"subReviews", "product", "user"})
+@ToString(exclude = {"subReviews", "product", "user"})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +28,11 @@ public class Review {
     private String title;
     private String comment;
     private int rating;
-    @CreationTimestamp
-    private Date createdAt;
-    @UpdateTimestamp
-    private Date updatedAt;
-    @Column(name = "numbers_of_like")
     private int numbersOfLike;
+    @CreationTimestamp
+    private Timestamp createdAt;
+    @UpdateTimestamp
+    private Timestamp updatedAt;
 
     @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubReview> subReviews;

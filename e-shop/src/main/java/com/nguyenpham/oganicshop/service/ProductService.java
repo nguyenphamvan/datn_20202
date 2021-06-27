@@ -10,11 +10,12 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> findAll(List<Long> listId);
+    List<ProductResponse> getProductRecommend(List<Long> listBookIds);
     Product save(Product product);
     long countNumberProduct();
     List<ProductResponse> getAllProduct();
     Page<Product> getProductsByCategory(long categoryId, double minPrice, double maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
-    Page<Product> getProductsByKeyword(String keyword, int pageNum, int pageSize, String sortField, String sortDir);
+    Page<Product> getProductsByKeyword(String keyword, double minPrice, double maxPrice, int pageNum, int pageSize, String sortField, String sortDir);
     int getAmountAvailable(String productUrl);
     boolean isProvideEnoughQuantity(String productUrl, int quantity);
     ProductResponse getProductById(long productId);

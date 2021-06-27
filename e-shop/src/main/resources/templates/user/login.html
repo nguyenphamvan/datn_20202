@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Đăng nhập</title>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Font Icon -->
     <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
 
@@ -28,9 +30,12 @@
                 <div class="signin-form" style="margin-left: 25px;">
                     <h2 class="form-title" style="font-size: 27px">Đăng nhập hệ thống</h2>
                     <div th:if="${param.error}" class="alert alert-danger">
-                        <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                        <p class="text-danger">Tài khoản hoặc mật khẩu không đúng, vui lòng thử lại!</p>
                     </div>
-                        <form th:action="@{/doLogin}" method="POST" class="login-form" id="login-form">
+                    <div th:if="${param.logout}">
+                        <p class="text-warning">You have been logged out.</p>
+                    </div>
+                    <form th:action="@{/doLogin}" method="POST" class="login-form" id="login-form">
                         <div class="form-group">
                             <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i></label>
                             <input type="email" name="email" id="email" placeholder="Your Email"/>
