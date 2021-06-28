@@ -1,12 +1,10 @@
 package com.nguyenpham.oganicshop.api;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.nguyenpham.oganicshop.converter.UserConverter;
 import com.nguyenpham.oganicshop.dto.OrderResponse;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.OrderService;
-import com.nguyenpham.oganicshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

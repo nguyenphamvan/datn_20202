@@ -1,6 +1,5 @@
 package com.nguyenpham.oganicshop.service.impl;
 
-import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.converter.ProductConverter;
 import com.nguyenpham.oganicshop.dto.ProductRequest;
 import com.nguyenpham.oganicshop.dto.ProductResponse;
@@ -9,21 +8,18 @@ import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.repository.CategoryRepository;
 import com.nguyenpham.oganicshop.repository.ProductRepository;
 import com.nguyenpham.oganicshop.service.ProductService;
-import com.nguyenpham.oganicshop.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,6 +57,8 @@ public class ProductServiceImpl implements ProductService {
         product = new ProductConverter().dtoToEntity(product, productRequest, lastProductInDb.getId());
         Category category = categoryRepository.findById(productRequest.getCategoryId()).get();
         product.setCategory(category);
+        Random rd = new Random();
+        product.setBookId(rd.nextInt(1000000) + 1);
         product = productRepository.save(product);
         ProductResponse productResponse = new ProductConverter().entityToDtoNotReviews(product);
         if (productResponse != null) {

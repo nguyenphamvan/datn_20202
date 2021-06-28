@@ -32,7 +32,7 @@ public class CartController {
     @GetMapping("/all")
     public ResponseEntity<?> getListProductInCart(HttpSession session) {
         BaseResponse br = new BaseResponse();
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         if (cart != null && cart.size() > 0) {
             List<CartItemDto> listItem = new ArrayList<>(cart.values().stream().map(item -> item.convertDto()).collect(Collectors.toList()));
             br.setStatus(true);
@@ -100,7 +100,7 @@ public class CartController {
 
     @GetMapping("/total-money-cart")
     public int getTotalPrice(HttpSession session) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         if (cart == null) {
             return 0;
         }
@@ -111,7 +111,7 @@ public class CartController {
     @GetMapping("/load-info-cart")
     public ResponseEntity<?> getNumberOfProductsInCart(HttpSession session) {
         BaseResponse br = new BaseResponse();
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         Map<String, Object> infoCart = new HashMap<>();
         if (cart == null) {
             br.setData(null);

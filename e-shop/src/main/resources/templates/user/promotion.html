@@ -16,7 +16,7 @@
             border-radius: 10px;
         }
 
-        .box-detail.details.detail {
+        .box-detail.detail {
             padding: 43px;
             border-left: 1px dashed grey;
             display: flex;
@@ -27,14 +27,14 @@
             color: #f11;
         }
 
-        .box-detail.details.detail > p.title {
+        .box-detail.detail > p.title {
             text-transform: uppercase;
             color: rgb(36, 36, 36);
             font-size: 18px;
             font-weight: 500;
         }
 
-        .box-detail.details.detail > p.expires {
+        .box-detail.detail > p.expires {
             margin-top: auto;
         }
 
@@ -90,17 +90,16 @@
                         </div>
 
                         <div class="col-md-8 col-sm-8 col-xs-12">
-                            <div class="box-detail details detail">
+                            <div class="box-detail detail">
                                 <p class="title"></p>
                                 <p class="code">Mã khuyến mãi : <span></span></p>
-
                                 <p class="expires">Ngày hết hạn :<span class="red"></span></p>
+                                <button type="button" class="btn cache_promotion" style="width: 20%; border-radius: 10px; margin-top: 10px;">Lưu mã</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -109,13 +108,47 @@
 <th:block th:include="user/common/footer"/>
 <!-- /End Footer Area -->
 
+<!-- The Modal -->
+<div id="myModal" class="myModal" style="z-index: 9999;">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="closeModal">&times;</span>
+        <img src="/images/coupon.png">
+        <p></p>
+    </div>
+</div>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     $(document).ready(function () {
         getListCategory();
         getAllCouponUser();
+        actionForModal();
+
+        $(document).on("click", "button.cache_promotion", function () {
+            let promotionId = $(this).attr("promotionid");
+            cachePromotion(promotionId);
+        });
     });
 
+    function cachePromotion(promotionId) {
+        $.ajax({
+            url: "/api/promotion/cache/" + promotionId,
+            type: "GET",
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (result) {
+                if (result === true) {
+                    $("#myModal").css("display", "block");
+                    $("#myModal > div.modal-content > p").text("Đã lưu mã khuyến mãi");
+                    $("#myModal").delay(3000).fadeOut();
+                }
+            },
+            error: function (xhr) {
+                alert("có lỗi xảy ra, không lưu được cache promotion")
+            }
+        });
+    }
     /*]]>*/
 </script>
 </body>

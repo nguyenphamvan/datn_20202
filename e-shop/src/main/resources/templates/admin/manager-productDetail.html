@@ -132,7 +132,7 @@
                                 <div class="col-md-12" style="margin-bottom: 30px;">
                                     <div class="card" style="    border: none; text-align: center; background: none;">
                                         <a data-size="710x823">
-                                            <img style="width: 65%;" class="img-fluid z-depth-1">
+                                            <img style="width: 100%;" class="img-fluid z-depth-1">
                                         </a>
                                     </div>
                                 </div>
@@ -282,7 +282,7 @@
     /*<![CDATA[*/
     $(document).ready(function () {
 
-        let productId = /*[[${productId}]]*/;
+        let productId = window.location.pathname.replace("/admin/manager_products/product/", "");
 
         getInfoProduct(productId);
 

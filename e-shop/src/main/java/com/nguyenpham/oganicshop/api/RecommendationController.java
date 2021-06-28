@@ -3,7 +3,6 @@ package com.nguyenpham.oganicshop.api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nguyenpham.oganicshop.dto.ProductResponse;
-import com.nguyenpham.oganicshop.entity.Product;
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.security.MyUserDetail;
 import com.nguyenpham.oganicshop.service.ProductService;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/recommendation")
@@ -50,7 +47,7 @@ public class RecommendationController {
     public ResponseEntity<?> recommendForUser(@PathVariable("bookId") String bookId) throws IOException{
         String url = "";
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-            url = "http://127.0.0.1:5000/get_hybridRecommendations/1/" + bookId;
+            url = "http://127.0.0.1:5000/get_books_similarity/" + bookId;
         } else {
             User user = ((MyUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
             url = "http://127.0.0.1:5000/get_hybridRecommendations/" + user.getId() + "/" + bookId;

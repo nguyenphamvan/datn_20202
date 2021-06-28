@@ -407,7 +407,7 @@
 
     /*<![CDATA[*/
     $(document).ready(function () {
-        let productId = /*[[${productId}]]*/;
+        let productId = window.location.pathname.replace("/admin/manager_products/updateProduct/", "");
         getInfoProduct(productId);
         getAllCategory();
     });

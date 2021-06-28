@@ -25,7 +25,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean addItemCart(HttpSession session, String productUrl, int quantity) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         if (cart == null) {
             cart = new HashMap<>();
         }
@@ -47,7 +47,7 @@ public class CartServiceImpl implements CartService {
                 item.setQuantity(quantity);
             }
             cart.put(product.getId(), item);
-            session.setAttribute(Constant.CART_SESSION_NAME, cart);
+            session.setAttribute(Constant.CART_SESSION, cart);
             session.setAttribute("subCart", totalSubCart(cart));
             return true;
         }
@@ -56,7 +56,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean editItemCart(HttpSession session, String productUrl, String changeMethod) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         if (cart == null) {
             return false;
         } else {
@@ -76,7 +76,7 @@ public class CartServiceImpl implements CartService {
                     }
                 }
                 cart.put(product.getId(), item);
-                session.setAttribute(Constant.CART_SESSION_NAME, cart);
+                session.setAttribute(Constant.CART_SESSION, cart);
                 session.setAttribute("subCart", totalSubCart(cart));
                 return true;
             }
@@ -86,7 +86,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean removeItemCart(HttpSession session, String productUrl) {
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         if (cart == null) {
             return false;
         } else {
@@ -94,7 +94,7 @@ public class CartServiceImpl implements CartService {
             if (cart.containsKey(product.getId())) {
                 cart.remove(product.getId());
             }
-            session.setAttribute(Constant.CART_SESSION_NAME, cart);
+            session.setAttribute(Constant.CART_SESSION, cart);
             session.setAttribute("subCart", totalSubCart(cart));
             return true;
         }

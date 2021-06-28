@@ -10,7 +10,7 @@ import java.util.HashMap;
 @Controller
 public class CheckoutController {
 
-    @GetMapping("/checkout.html")
+    @GetMapping("/checkout")
     public String getCheckoutPage(HttpSession session) {
         HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute("myCart");
         if (cart == null) {

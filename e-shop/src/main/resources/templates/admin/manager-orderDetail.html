@@ -285,9 +285,8 @@
 
     /*<![CDATA[*/
     $(document).ready(function () {
-        let orderId = /*[[${orderId}]]*/;
-        let userOrderHistory = /*[[${userOrderHistory}]]*/;
-        getOrdersDetail(orderId, userOrderHistory);
+        let orderId = window.location.pathname.replace("/admin/manager_orders/", "");
+        getOrdersDetail(orderId);
 
         $("#btn-update-status").on("click", function (e) {
             e.preventDefault();
@@ -322,7 +321,7 @@
         });
     });
 
-    function getOrdersDetail(orderId, userOrderHistory) {
+    function getOrdersDetail(orderId) {
         $.ajax({
             url: "/api/admin/order/" + orderId,
             type: "GET",

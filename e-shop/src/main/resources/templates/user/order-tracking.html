@@ -97,7 +97,7 @@
     // A $( document ).ready() block.
     $(document).ready(function() {
         getListCategory();
-        var orderId = /*[[${orderId}]]*/;
+        var orderId = window.location.pathname.replace("/sales/order/tracking/", "");
         getOrderLogging(orderId);
     });
 

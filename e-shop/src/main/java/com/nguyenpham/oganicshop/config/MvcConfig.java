@@ -30,5 +30,34 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addViewController("/search").setViewName("user/search");
         registry.addViewController("/promotion.html").setViewName("user/promotion");
+        registry.addViewController("/products/{productUrl}").setViewName("user/product");
+
+        registry.addViewController("/sales/order/history").setViewName("user/order-manager");
+        registry.addViewController("/sales/order/view/{orderId}").setViewName("user/order-detail");
+        registry.addViewController("/sales/order/tracking/{orderId}").setViewName("user/order-tracking");
+
+        registry.addViewController("/admin").setViewName("admin/dashboard");
+        registry.addViewController("/admin/manager_users").setViewName("admin/manager_users");
+        registry.addViewController("/admin/manager_users/user/{userId}").setViewName("admin/manager-userDetail");
+        registry.addViewController("/admin/manager_users/user/{userId}/orderHistory").setViewName("admin/manager-orderHistory");
+        registry.addViewController("/admin/manager_users/user/{userId}/maxOrderHistory").setViewName("admin/manager-maxOrderHistory");
+        registry.addViewController("/admin/manager_users/user/{userId}/reviews").setViewName("admin/manager-reviewsHistory");
+        registry.addViewController("/admin/manager_users/user/{userId}/wishlist").setViewName("admin/manager-wishlist");
+
+        registry.addViewController("/admin/manager_promotions").setViewName("admin/manager-promotion");
+        registry.addViewController("/admin/manager_promotions/add").setViewName("admin/manager-addPromotion");
+        registry.addViewController("/admin/manager_promotions/edit/{promotionId}").setViewName("admin/manager-updatePromotion");
+
+        registry.addViewController("/admin/manager_products").setViewName("admin/manager-product");
+        registry.addViewController("/admin/manager_products/addProduct").setViewName("admin/manager-addProduct");
+        registry.addViewController("/admin/manager_products/updateProduct/{productId}").setViewName("admin/manager-updateProduct");
+        registry.addViewController("/admin/manager_products/product/{productId}").setViewName("admin/manager-productDetail");
+
+        registry.addViewController("/admin/manager_orders").setViewName("admin/manager-order");
+        registry.addViewController("/admin/manager_orders/{orderId}").setViewName("admin/manager-orderDetail");
+
+        registry.addViewController("/logout_success").setViewName("redirect:/");
+        registry.addViewController("/forgot_password").setViewName("user/forgot_password_form");
+        registry.addViewController("/forgot_password").setViewName("user/forgot_password_form");
     }
 }

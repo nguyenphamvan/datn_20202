@@ -193,7 +193,7 @@
 
     /*<![CDATA[*/
     $(document).ready(function () {
-        let userId = /*[[${userId}]]*/;
+        let userId = window.location.pathname.replace("/admin/manager_users/user/", "").replace("/orderHistory", "");
         getOrdersHistory(userId);
     });
 

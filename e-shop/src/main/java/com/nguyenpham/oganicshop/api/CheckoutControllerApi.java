@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 //import com.nguyenpham.oganicshop.config.PaypalPaymentMethod;
 import com.nguyenpham.oganicshop.constant.Constant;
 import com.nguyenpham.oganicshop.dto.BaseResponse;
+import com.nguyenpham.oganicshop.dto.PromotionDto;
 import com.nguyenpham.oganicshop.entity.CartItem;
 import com.nguyenpham.oganicshop.dto.OrderRequest;
 import com.nguyenpham.oganicshop.dto.OrderResponse;
@@ -26,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -56,7 +56,7 @@ public class CheckoutControllerApi {
     @GetMapping("/getInfo")
     public ResponseEntity<?> getInfoPayment(HttpSession session) {
         BaseResponse br = new BaseResponse();
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         Map<String, Object> response = new HashMap<>();
         if (cart != null) {
             response.put("order", orderService.getInfoCheckout(cart));
@@ -73,14 +73,14 @@ public class CheckoutControllerApi {
     @PostMapping("/payment")
     public ResponseEntity<?> payOrder(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail, @RequestBody OrderRequest order) {
         User user = myUserDetail.getUser();
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         if (cart != null) {
             try {
                 BaseResponse br = new BaseResponse();
                 Order orderSaved = orderService.paymentOrder(user, cart, order);
                 // sau bước thanh toán thành công sẽ gửi email thông báo cho người dùng
                 emailSender.sendEmailOrderSuccess(user.getEmail(), orderSaved);
-                session.removeAttribute(Constant.CART_SESSION_NAME);
+                session.removeAttribute(Constant.CART_SESSION);
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("urlRedirect", "/payment_success");
                 hashMap.put("orderId", orderSaved.getId());
@@ -99,7 +99,7 @@ public class CheckoutControllerApi {
     @PostMapping("/apply-couponCode")
     public ResponseEntity<?> applyCoupon(HttpSession session, @RequestBody ObjectNode object, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         String couponCode = object.get("couponCode").asText();
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
+        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION);
         if (cart != null) {
             Promotion promotion = promotionService.findCoupon(couponCode);
             if (promotion != null) {
@@ -120,17 +120,10 @@ public class CheckoutControllerApi {
     public ResponseEntity<?> getMyDiscount(HttpSession session, @AuthenticationPrincipal MyUserDetail myUserDetail) {
         User user = myUserDetail.getUser();
         User userDb = userService.findUserByEmail(user.getEmail());
-        HashMap<Long, CartItem> cart = (HashMap<Long, CartItem>) session.getAttribute(Constant.CART_SESSION_NAME);
-        List<Promotion> myPromotions = new ArrayList<>();
-        if (userDb.getOrders().size() == 0) {
-            Promotion promotionFirstOrder = promotionService.findCoupon("FIRSTORDER50");
-            myPromotions.add(promotionFirstOrder);
-        }
-
         // select các dis count theo hạn còn áp dụng và số lượt sử dụng
-        List<Promotion> loadPromotionList = promotionService.getAllCouponForOrder(cartService.totalSubCart(cart));
+//        List<Promotion> loadPromotionList = promotionService.getAllCouponForOrder(cartService.totalSubCart(cart));
+        List<PromotionDto> loadPromotionList = promotionService.getMyPromotion(session, userDb);
         loadPromotionList.remove(promotionService.findCoupon("FIRSTORDER50"));
-        myPromotions.addAll(loadPromotionList);
-        return ResponseEntity.ok(new HashSet<>(myPromotions));
+        return ResponseEntity.ok(new HashSet<>(loadPromotionList));
     }
 }

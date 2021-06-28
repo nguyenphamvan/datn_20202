@@ -194,7 +194,7 @@ public class ProductControllerApi {
             br.setData(response);
             br.setStatus(true);
         } else {
-            br.setErrMessage("Sản phẩm không tồn tạio");
+            br.setErrMessage("Sản phẩm không tồn tại");
             br.setStatus(false);
         }
         return new ResponseEntity<Object>(br, HttpStatus.OK);

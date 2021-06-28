@@ -3,7 +3,9 @@ package com.nguyenpham.oganicshop.service;
 import com.nguyenpham.oganicshop.dto.DiscountDto;
 import com.nguyenpham.oganicshop.dto.PromotionDto;
 import com.nguyenpham.oganicshop.entity.Promotion;
+import com.nguyenpham.oganicshop.entity.User;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface PromotionService {
@@ -15,4 +17,6 @@ public interface PromotionService {
     PromotionDto addNewCoupon(PromotionDto newPromotion);
     PromotionDto editCoupon(PromotionDto PromotionRequest);
     void deleteCoupon(long promotionId);
+    boolean cacheMyPromotion(HttpSession session, long promotionId);
+    List<PromotionDto> getMyPromotion(HttpSession session, User user);
 }

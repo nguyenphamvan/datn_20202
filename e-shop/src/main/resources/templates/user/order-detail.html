@@ -165,7 +165,7 @@
     /*<![CDATA[*/
     // A $( document ).ready() block.
     $(document).ready(function() {
-        var orderId = /*[[${orderId}]]*/;
+        var orderId = window.location.pathname.replace("/sales/order/view/", "");
         getInfoOrder(orderId);
         actionForModal();
         getListCategory();

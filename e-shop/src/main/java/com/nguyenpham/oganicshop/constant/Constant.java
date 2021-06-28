@@ -9,7 +9,8 @@ public class Constant {
     public static final String URL_PAYPAL_SUCCESS = "pay/success";
     public static final String URL_PAYPAL_CANCEL = "pay/cancel";
 
-    public static final String  CART_SESSION_NAME = "myCart";
+    public static final String  CART_SESSION = "myCart";
+    public static final String  PROMOTION_SESSION= "myPromotion";
     public static final int SHIP_FEE_STANDARD = 100;
     public static final String PAYMENT_METHOD_DEFAULT = "cod";
     public static final String PAYMENT_METHOD_STANDARD = "standard";

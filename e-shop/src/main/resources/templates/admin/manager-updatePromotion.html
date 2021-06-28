@@ -248,7 +248,7 @@
     /*<![CDATA[*/
     $(document).ready(function () {
 
-        let promotionId = /*[[${promotionId}]]*/;
+        let promotionId = window.location.pathname.replace("/admin/manager_promotions/edit/", "");
         getInfoPromotion(promotionId);
         $("#update-promotion > button:nth-child(5)").on("click", function (e) {
             e.preventDefault();

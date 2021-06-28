@@ -14,16 +14,6 @@ public class LoginRegisterController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/logout_success")
-    public String logoutSuccessfulPage() {
-        return "redirect:/";
-    }
-
-    @GetMapping("/forgot_password")
-    public String showForgotPasswordForm() {
-        return "user/forgot_password_form";
-    }
-
     @GetMapping("/reset_password")
     public String showResetPasswordForm(@Param(value = "token") String token,  Model model) {
         User user = userService.getUserByResetToken(token);
