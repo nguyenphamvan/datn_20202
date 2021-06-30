@@ -4,7 +4,29 @@
 
 <th:block th:include="admin/common/header"/>
 <head>
-    <title>Lịch sử đơn hàng</title>
+    <title>Chi tiết đơn hàng - Admin</title>
+    <style>
+        label {
+            color: black !important;
+            font-weight: 500 !important;
+        }
+
+        table > thead > tr {
+            color: #0b0b0b;
+        }
+        table > tbody > tr > td {
+            text-align: center;
+        }
+
+        .table td, .table th {
+            text-align: center;
+            vertical-align: center;
+        }
+
+        .table {
+            color: #000000;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -127,7 +149,7 @@
 
                 <div class="row" id="div-info-2" style="margin-bottom: 40px;">
                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-6 col-md-6 mb-6">
+                    <div class="col-md-7 mb-6">
                         <div class="card border-left-primary shadow h-100">
                             <div class="card-header font-weight-bold">Địa chỉ người nhận</div>
                             <div class="card-body">
@@ -143,16 +165,16 @@
                     </div>
 
                     <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-6 col-md-6 mb-6">
+                    <div class="col-md-5 mb-6">
                         <div class="card border-left-success shadow h-100">
                             <div class="card-header font-weight-bold">Thông tin đơn hàng</div>
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div><b>Tổng giá trị các mặt hàng : </b><span>$1000</span></div>
-                                        <div id="shipFee"><b>Phí vận chuyển: </b><span>$50</span></div>
-                                        <div><b>Giảm giá : </b><span>$50</span></div>
-                                        <div><b>Tổng thanh toán : </b><span>$1000</span></div>
+                                        <div><b>Tổng giá trị các mặt hàng : </b><span id="sub_total">$1000</span></div>
+                                        <div id="shipFee"><b>Phí vận chuyển: </b><span id="ship_fee">$50</span></div>
+                                        <div><b>Giảm giá : </b><span id="discount">$50</span></div>
+                                        <div><b>Tổng thanh toán : </b><span id="total">$1000</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -160,40 +182,11 @@
                     </div>
                 </div>
 
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4" id="div-info-3">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Kiện hàng gồm có</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="list-order-detail" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Tên</th>
-                                    <th>Đơn giá</th>
-                                    <th>Số lượng</th>
-                                    <th>Tổng</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row" id="admin-update-orderStatus">
-                    <div class="col-xl-12 col-md-12" sec:authorize="hasRole('ADMIN')">
-                        <div class="form-inline">
+                    <div class="col-md-12">
+                        <div class="form-inline" sec:authorize="hasRole('ADMIN')" >
                             <label for="status" class="mr-sm-2">Trạng thái</label>
                             <select class="form-control mb-2 mr-sm-2" name="status" id="status">
-                                <option value="0">Đang xử lý</option>
-                                <option value="1">Đang vận chuyển</option>
-                                <option value="2">Giao hàng thành công</option>
-                                <option value="3">Hủy</option>
-                                <option value="4">Giao hàng không thành công</option>
                             </select>
                             <label for="message" class="mr-sm-2">Thông báo</label>
                             <input type="text" class="form-control mb-2 mr-sm-2" name="message" id="message">
@@ -202,24 +195,52 @@
                     </div>
                 </div>
 
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3" style="display: flex; justify-content: space-between;">
-                        <h6 class="m-0 font-weight-bold text-primary">Lịch sử trạng thái</h6>
+                <div class="row card-deck">
+                    <div class="col-md-7">
+                        <!-- DataTales Example -->
+                        <div class="shadow mb-4" id="div-info-3">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Kiện hàng gồm có</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="list-order-detail" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Tên</th>
+                                            <th>Đơn giá</th>
+                                            <th>Số lượng</th>
+                                            <th>Tổng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="logging-status" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th>Thời gian</th>
-                                    <th>Trạng thái đơn hàng</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                    <div class="col-md-5">
+                        <!-- DataTales Example -->
+                        <div class="shadow mb-4">
+                            <div class="card-header py-3" style="display: flex; justify-content: space-between;">
+                                <h6 class="m-0 font-weight-bold text-primary">Lịch sử trạng thái</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="logging-status" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th>Thời gian</th>
+                                            <th>Trạng thái đơn hàng</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,12 +269,11 @@
 <div class="modal fade" id="messageModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
             <!-- Modal body -->
             <div class="modal-body" style="text-align: center;">
+                <span><i class="fa fa-refresh" aria-hidden="true"></i></span>
+                <span id="msg"></span>
             </div>
         </div>
     </div>
@@ -304,7 +324,7 @@
                 contentType: "application/json",
                 success: function (result) {
                     if (result === true) {
-                        $('#messageModal').find("div.modal-body").text("Trạng thái đơn hàng đã cập nhật thành công");
+                        $('#messageModal').find("#msg").text("Trạng thái đơn hàng đã cập nhật thành công");
                         $('#messageModal').modal('show');
                         $('#messageModal').on('hidden.bs.modal', function () {
                             window.location = "/admin/manager_orders";
@@ -328,27 +348,41 @@
             contentType: "application/json",
             success: function (data) {
                 let order = data["order"];
+                console.log(order);
+
                 let contact = order["address"];
                 let listOrderDetail = order["listOrderDetail"];
                 let loggingStatus = order["orderStatus"]["loggingStatus"];
                 $("#orderId").text(order["id"]);
+
+                $("#sub_total").text("$" + order["subTotal"]);
+                $("#discount").text("$" + order["discount"]);
+                $("#ship_fee").text("$" + order["shipFee"]);
+                $("#total").text("$" + order["total"]);
 
                 // order status
                 if (order["status"] === "Đã hủy") {
                     $("#orderStatus").text(order["status"]).addClass("text-danger");
                 } else if (order["status"] === "Giao hàng thành công") {
                     $("#orderStatus").text(order["status"]).addClass("text-success");
+                } else if (order["status"] === "Đang vận chuyển") {
+                    $("#status").append("<option value=\"2\">Giao hàng thành công</option>");
+                    $("#status").append("<option value=\"3\">Hủy đơn hàng</option>");
+                    $("#orderStatus").text(order["status"]).addClass("text-dark");
+                } else if (order["status"] === "Đang xử lý") {
+                    $("#status").append("<option value=\"1\">Đang vận chuyển</option>");
+                    $("#status").append("<option value=\"3\">Hủy đơn hàng</option>");
+                    $("#orderStatus").text(order["status"]).addClass("text-warning");
                 }
 
                 $("#deliveryDate").text(order["deliveryDate"]);
-
                 $("#contactReceiver").text(contact["contactReceiver"]);
                 $("#contactAddress").text("Địa chỉ : " + contact["contactAddress"]);
                 $("#contactPhone").text("SĐT : " + contact["contactPhone"]);
 
                 $.each(listOrderDetail, function (index, product) {
                     let row = "<tr>\n" +
-                        "           <td><img style='width: 80px; height: 80px;' src='/images/products/2/laptop-asus.jpg'></td>\n" +
+                        "           <td><a href='/admin/manager_products/product/" + product["productId"] + "' ><img style='width: 60px; height: 80px;' src='" + product["image"] + "'></a></td>\n" +
                         "           <td>" + product["productName"] + "</td>\n" +
                         "           <td>$" + product["price"] + "</td>\n" +
                         "           <td>" + product["quantity"] + "</td>\n" +

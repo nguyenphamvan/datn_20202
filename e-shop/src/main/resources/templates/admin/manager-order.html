@@ -5,10 +5,30 @@
 <head>
     <title>Quản lý đơn hàng</title>
     <style>
+        label {
+            color: black !important;
+            font-weight: 500 !important;
+        }
         th, td { text-align: center; margin: 0 auto;}
 
         .badge {
             padding: 10px 15px;
+        }
+
+        table > thead > tr {
+            color: #0b0b0b;
+        }
+        table > tbody > tr > td {
+            text-align: center;
+        }
+
+        .table td, .table th {
+            text-align: center;
+            vertical-align: center;
+        }
+
+        .table {
+            color: #000000;
         }
     </style>
 </head>
@@ -212,11 +232,11 @@
                         {data: 'id'},
                         {data: 'summaryProductName'},
                         {data: 'orderDate'},
-                        {data: "total", "render": function (data, type, row) {
+                        {data: "total", "render": function (data) {
                                 return "<span>$" + data + "</span>";
                             }
                         },
-                        {data: "address", "render": function (data, type, row) {
+                        {data: "address", "render": function (data) {
                                 return data['contactPhone'];
                             }
                         },

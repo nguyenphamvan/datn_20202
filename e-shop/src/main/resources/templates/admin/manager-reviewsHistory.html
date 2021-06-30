@@ -5,6 +5,27 @@
 <head>
     <title>Lịch sử bình luận</title>
 </head>
+<style>
+    label {
+        color: black !important;
+        font-weight: 500 !important;
+    }
+    table > thead > tr {
+        color: #0b0b0b;
+    }
+    table > tbody > tr > td {
+        text-align: center;
+    }
+
+    .table td, .table th {
+        text-align: center;
+        vertical-align: center;
+    }
+
+    .table {
+        color: #000000;
+    }
+</style>
 
 <body id="page-top">
 
@@ -75,12 +96,8 @@
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-
     </ul>
     <!-- Sidebar -->
-
-    <!-- End of Sidebar -->
-    <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -92,6 +109,10 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
+
+                <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <h6 class="text-body" style="color: black!important;">Người dùng: <span id="user_name"></span></h6>
+                </div>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -109,35 +130,31 @@
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <p class="h3 mb-0 text-gray-800">Quản lý người dùng > Danh sách bình luận</p>
-                </div>
 
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h6 class="h3 mb-0 text-gray-800">email tài khoản</h6>
-                </div>
-
-                <!-- DataTales Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Danh sách bình luận</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                <tr>
-                                    <th style="width: 20%;">Ảnh sản phẩm</th>
-                                    <th style="width: 40%;">Nội dung</th>
-                                    <th style="width: 10%;">Đánh giá</th>
-                                    <th style="width: 10%;">Số lượt like</th>
-                                    <th style="width: 20%;">Thời gian</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-11">
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Danh sách bình luận</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 5%;">Sách</th>
+                                            <th style="width: 15%;">Điểm (thang 5)</th>
+                                            <th style="width: 15%;">Số lượt like</th>
+                                            <th style="width: 20%;">Thời gian post</th>
+                                            <th>Nội dung</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,10 +165,7 @@
                     </span>
                     <span class="text">Quay lại</span>
                 </a>
-
             </div>
-            <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
 
@@ -207,21 +221,37 @@
             type: "GET",
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
+                $("#user_name").text(data["user"]["fullName"]);
                 $("#dataTable").dataTable({
                     destroy: true,
                     data: data["reviews"],
                     columns: [
                         {
-                            data: "productId", "render": function (data, type, row) {
-                                return "<a href='/admin/manager_products/product/" + data + "'><img src='/product/" + data +
-                                    "' style='width: 80px; height: 80px; display: block; margin: 0 auto;'></img></a>";
+                            data: "product", "render": function (data) {
+                                return "<a href='/admin/manager_products/product/" + data["productId"] + "'><img src='" + data["productImg"] +
+                                    "' style='width: 60px; height: 80px; display: block; margin: 0 auto;'></a>";
                             }
                         },
-                        {data: 'comment'},
-                        {data: 'rating'},
+                        {
+                            data: "rating", "render": function (data) {
+                                let html = "<ul id='rating' className='rating' style='display: inline-flex; list-style-type: none; padding: 0;'>";
+                                if (parseInt(data) > 0) {
+                                    for (let i = 0; i < parseInt(data); i++) {
+                                        html += "<li><i class=\"fas fa-star fa-sm text-warning\"></i></li>";
+                                    }
+                                }
+                                if ((5 - parseInt(data)) > 0) {
+                                    for (let i = 0; i < (5 - parseInt(data)); i++) {
+                                        html += "<li><i class=\"far fa-star fa-sm text-warning\"></i></li>";
+                                    }
+                                }
+                                html += "</ul>";
+                                return html;
+                            }
+                        },
                         {data: 'numbersOfLike'},
-                        {data: "createdAt"}
+                        {data: "createdAt"},
+                        {data: 'comment'}
                     ]
                 });
             },

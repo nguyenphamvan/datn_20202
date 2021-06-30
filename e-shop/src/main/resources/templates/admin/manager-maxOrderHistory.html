@@ -301,7 +301,7 @@
 
                 $.each(listOrderDetail, function (index, product) {
                     let row = "<tr>\n" +
-                        "           <td><img style='width: 80px; height: 80px;' src='/images/products/2/laptop-asus.jpg'></td>\n" +
+                        "           <td><img style='width: 80px; height: 80px;' src='" + product["image"] + "'></td>\n" +
                         "           <td><a>" + product["productName"] + "</a></td>\n" +
                         "           <td>" + product["price"] + "</td>\n" +
                         "           <td>" + product["discount"] + "</td>\n" +

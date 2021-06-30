@@ -19,8 +19,7 @@ public class ReviewResponse {
     private Long id;
     private Long idRootReview;
     private Long userId;
-    private Long productId;
-    private String productImg;
+    private InfoProduct product;
     private String reviewerName;
     private String title;
     private String comment;
@@ -34,6 +33,12 @@ public class ReviewResponse {
             this.subReviews = new HashSet<>();
         }
         this.subReviews.add(subReview);
+    }
+
+    @Data
+    public static class InfoProduct {
+        Long productId;
+        String productImg;
     }
 
 

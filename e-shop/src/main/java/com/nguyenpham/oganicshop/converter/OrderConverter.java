@@ -33,13 +33,19 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
         orderDto.setOrderDate(order.getOrderDate());
         orderDto.setDeliveryDate(order.getDeliveryDate());
         List<OrderItemDto> orderItemDtoList = new ArrayList<>();
-        StringBuilder summaryProductName = new StringBuilder("");
         order.getOrderItems().forEach(item -> {
-            summaryProductName.append(item.getProduct().getTitle());
             orderItemDtoList.add(odConverter.entityToDto(item));
         });
+
         orderDto.setOrderStatus(order.convertOrderLoggingToOrderLoggingDto());
-        orderDto.setSummaryProductName(summaryProductName.toString());
+        String summaryListItem = "";
+        if (order.getOrderItems().size() > 1) {
+            summaryListItem = new ArrayList<>(order.getOrderItems()).get(0).getProduct().getTitle()
+                    + " và " + (order.getOrderItems().size() - 1) + " sản phẩm khác";
+        } else {
+            summaryListItem = new ArrayList<>(order.getOrderItems()).get(0).getProduct().getTitle();
+        }
+        orderDto.setSummaryProductName(summaryListItem);
         orderDto.setListOrderDetail(orderItemDtoList);
         return orderDto;
     }
@@ -57,8 +63,6 @@ public class OrderConverter implements GeneralConverter<Order, OrderRequest, Ord
         order.setContactPhone(request.getAddress().getContactPhone());
         order.setNote(request.getNote());
         order.setStatus(0);
-//        order.setPaymentMethod(request.getPaymentMethod());
-//        order.setDeliveryMethod(request.getDeliveryMethod());
         order.setMessage(DateTimeUtil.dateTimeFormat(new Timestamp(System.currentTimeMillis())) + " - " + Constant.MAP_ORDER_TRACKING_STATUS.get(1));
         order.setSubTotal(request.getSubTotal());
         order.setShipFee(request.getShipFee());

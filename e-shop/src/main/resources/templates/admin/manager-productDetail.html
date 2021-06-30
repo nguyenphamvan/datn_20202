@@ -4,6 +4,12 @@
 <th:block th:include="admin/common/header"/>
 <head>
     <title>Chi tiết sản phẩm</title>
+    <style>
+        label {
+            color: black !important;
+            font-weight: 500 !important;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -358,12 +364,12 @@
                 // rating
                 if (parseInt(data["rating"]) > 0) {
                     for (let i = 0; i < parseInt(data["rating"]); i++) {
-                        $("#rating").append("<li><i class=\"fas fa-star fa-sm text-primary\"></i></li>");
+                        $("#rating").append("<li><i class=\"fas fa-star fa-sm text-warning\"></i></li>");
                     }
                 }
                 if ((5 - parseInt(data["rating"])) > 0) {
                     for (let i = 0; i < (5 - parseInt(data["rating"])); i++) {
-                        $("#rating").append("<li><i class=\"far fa-star fa-sm text-primary\"></i></li>");
+                        $("#rating").append("<li><i class=\"far fa-star fa-sm text-warning\"></i></li>");
                     }
                 }
                 $("#numbers-of-review").text(data['numberOfReviews'] + " lượt nhận xét"); // number of reviews

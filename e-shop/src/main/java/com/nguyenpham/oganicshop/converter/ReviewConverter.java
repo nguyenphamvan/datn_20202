@@ -18,7 +18,10 @@ public class ReviewConverter implements GeneralConverter<Review, ReviewRequest, 
         response.setRating(review.getRating());
         response.setReviewerName(review.getUser().getFullName());
         response.setUserId(review.getUser().getId());
-        response.setProductId(review.getProduct().getId());
+        ReviewResponse.InfoProduct infoProduct = new ReviewResponse.InfoProduct();
+        infoProduct.setProductId(review.getProduct().getId());
+        infoProduct.setProductImg(review.getProduct().getMainImage());
+        response.setProduct(infoProduct);
         response.setCreatedAt(review.getCreatedAt());
         response.setNumbersOfLike(review.getNumbersOfLike());
         if (review.getSubReviews() != null) {
