@@ -10,6 +10,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Font Icon -->
     <link rel="stylesheet" th:href="@{/css/font-awesome.css}">
+    <style>
+        .loader {
+            margin-left: auto;
+            margin-right: auto;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #424646;
+            border-bottom: 16px solid #424646;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+    </style>
 
     <!-- Main css -->
     <link rel="stylesheet" href="css/style1.css">
@@ -24,7 +38,7 @@
             <div class="signin-content">
                 <div class="signin-image" style="margin-left: 65px;">
                     <figure><img th:src="@{/images/signin-image.png}" alt="sing up image"></figure>
-                    <a th:href="@{/signup}" class="signup-image-link">Tạo tài khoản mới</a>
+                    <a th:href="@{/signup}" class="signup-image-link" style="text-decoration: none;">Tạo tài khoản mới</a>
                 </div>
 
                 <div class="signin-form" style="margin-left: 25px;">
@@ -47,7 +61,7 @@
                         <div class="form-group">
                             <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                             <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
-                            <a href="/user/forgot_password_form.html" class="signup-image-link" style="float: right;">Quên mật khẩu?</a>
+                            <a href="/forgot_password" class="signup-image-link" style="float: right; text-decoration: none;">Quên mật khẩu?</a>
                         </div>
                         <div class="form-group form-button">
                             <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>

@@ -149,10 +149,10 @@
                 <div class="row">
                     <div class="col-12">
                         <!-- Shop Top -->
-                        <div style="padding: 10px; display: flex; align-items: center; background: #dfe6ec;
+                        <div style="padding: 10px; display: flex; align-items: center; background: #e7ebee;
                         justify-content: space-between; height: 80px; filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 1px 3px);">
-                            <div style="display: flex;">
-                                <label style="margin-right: 5px;">Hiển thị </label>
+                            <div style="display: flex; align-items: center;">
+                                <label style="margin-right: 5px; margin-bottom: 0px;">Hiển thị </label>
                                 <select id="page-size">
                                     <option value="6">06</option>
                                     <option value="9">09</option>
@@ -162,7 +162,7 @@
                             </div>
 
                             <div style="align-items: center; display: flex;">
-                                <label style="margin-right: 5px;">Sắp xếp</label>
+                                <label style="margin-right: 5px; margin-bottom: 0px;">Sắp xếp</label>
                                 <select id="sort-by">
                                     <option value="title-asc">Name (A - Z)</option>
                                     <option value="title-desc">Name (Z - A)</option>
@@ -188,7 +188,7 @@
                             <div class="product-img">
                                 <a>
                                     <img class="default-img" alt="#" style="height: 369px;">
-<!--                                    <img class="hover-img" alt="#">-->
+                                    <!--                                    <img class="hover-img" alt="#">-->
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action" style="margin-right: 10px;">
@@ -426,7 +426,7 @@
             if (item.hasOwnProperty("mainImage")) {
                 itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
                 itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
-                // itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
+                itemClone.find("div.product-img > a > img.hover-img").attr("src", item["smallImage"]);
             }
             itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
             itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);

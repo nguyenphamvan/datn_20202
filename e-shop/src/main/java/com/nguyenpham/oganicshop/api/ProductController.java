@@ -30,14 +30,14 @@ import java.util.stream.Stream;
 
 
 @RestController
-public class ProductControllerApi {
+public class ProductController {
 
     private OrderService orderService;
     private ProductService productService;
     private CategoryService categoryService;
 
     @Autowired
-    public ProductControllerApi(OrderService orderService, ProductService productService, CategoryService categoryService) {
+    public ProductController(OrderService orderService, ProductService productService, CategoryService categoryService) {
         this.orderService = orderService;
         this.productService = productService;
         this.categoryService = categoryService;

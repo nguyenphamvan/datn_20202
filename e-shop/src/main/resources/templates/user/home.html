@@ -71,13 +71,13 @@
                     <div class="single-product">
                         <div class="product-img">
                             <a>
-                                <img class="default-img" alt="#">
-                                <!--                                    <img class="hover-img" alt="#">-->
+                                <img class="default-img" style="height: 371px;">
+                                <img class="hover-img">
                                 <span class="out-of-stock">Hot</span>
                             </a>
                             <div class="button-head">
                                 <div class="product-action" style="margin-right: 10px;">
-                                    <a title="Wishlist" style="margin-right: 15px;">
+                                    <a th:if="${#request.userPrincipal}" title="Wishlist" style="margin-right: 15px;">
                                         <i class="ti-heart"></i><span>Thêm vào Wishlist</span>
                                     </a>
                                 </div>
@@ -161,7 +161,7 @@
 
     function getProductPopular() {
         $.ajax({
-            url: "/api/recommendation/get_trending/6",
+            url: "/api/recommendation/popularity/6",
             type: "GET",
             dataType : "json",
             contentType: "application/json",
@@ -178,7 +178,7 @@
                     if (item.hasOwnProperty("mainImage")) {
                         itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
                         itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
-                        // itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
+                        itemClone.find("div.product-img > a > img.hover-img").attr("src", item["smallImage"]);
                     }
                     itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
                     itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);

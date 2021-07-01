@@ -131,25 +131,21 @@
             <div class="container">
 
                 <!--Section: Block Content-->
-                <section>
+                <section style="margin-top: 100px;">
                     <div class="row">
-                        <div class="col-lg-5">
-                            <div class="row">
-                                <div class="col-md-12" style="margin-bottom: 30px;">
-                                    <div class="card" style="    border: none; text-align: center; background: none;">
-                                        <a data-size="710x823">
-                                            <img style="width: 100%;" class="img-fluid z-depth-1">
-                                        </a>
-                                    </div>
-                                </div>
+                        <div class="col-lg-5" style="margin-bottom: 30px;">
+                            <div style="  margin-bottom: 30px;  border: none; text-align: center; background: none;">
+                                <a data-size="710x823">
+                                    <img style="width: 70%;" class="img-fluid z-depth-1">
+                                </a>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-md-12 d-flex justify-content-center" style="margin: 20px 0px 20px 0px;">
                                     <a id="btn-import-product" class="btn btn-info btn-sm shadow-sm" style="margin-right: 10px;"><i class="fas fa-plus-circle"></i> Nhập thêm</a>
-                                    <a th:href="@{'/admin/manager_products/updateProduct/' + ${productId}}" class="btn btn-primary btn-sm shadow-sm" style="margin-right: 10px;"><i class="fas fa-edit"></i> Cập nhật</a>
-                                    <button id="stop-business" th:attr="product-id=${productId}" class="btn btn-danger btn-sm shadow-sm" style="margin-right: 10px;">
+                                    <a class="btn btn-primary btn-sm shadow-sm" style="margin-right: 10px;"><i class="fas fa-edit"></i> Cập nhật</a>
+                                    <button id="stop-business" class="btn btn-danger btn-sm shadow-sm" style="margin-right: 10px;">
                                         Ngừng bán
                                     </button>
                                 </div>
@@ -232,7 +228,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div id="description">
-                                        <p>Nội dung chính: Bộ truyện Harry Potter kể về sự đấu tranh giữa cái thiện và cái ác trong thế giới phép thuật đầy huyền bí, mà tiêu biểu là cuộc chiến vĩ đại chống lại tên trùm phù thủy hắc ám Voldemort của cậu bé phù thủy Harry Potter và hai người bạn thân thiết Hermione Granger, Ronald Weasley.</p>
+                                        <p></p>
                                     </div>
                                 </div>
                             </div>
@@ -248,10 +244,10 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <footer class="sticky-footer bg-white shadow">
+        <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2020</span>
+                    <span>Copyright &copy; My Website 2021</span>
                 </div>
             </div>
         </footer>
@@ -289,6 +285,8 @@
     $(document).ready(function () {
 
         let productId = window.location.pathname.replace("/admin/manager_products/product/", "");
+        $("#content > div > section > div > div.col-lg-6 > div:nth-child(1) > div > a.btn.btn-primary.btn-sm.shadow-sm").attr("href", "/admin/manager_products/updateProduct/" + productId);
+        $("#stop-business").attr("product-id", productId);
 
         getInfoProduct(productId);
 
@@ -353,7 +351,7 @@
             success: function (data) {
                 console.log(data);
                 //image
-                let mainImage = $("#content > div > section > div > div.col-lg-5 > div > div:nth-child(1) > div > a > img");
+                let mainImage = $("#content > div > section > div > div.col-lg-5 > div > a > img");
 
                 if (data.hasOwnProperty("mainImage")) {
                     mainImage.closest("a").attr("href", data["mainImage"]);

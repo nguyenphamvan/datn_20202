@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.controller.user;
+package com.nguyenpham.oganicshop.api;
 
 import com.nguyenpham.oganicshop.entity.User;
 import com.nguyenpham.oganicshop.service.UserService;

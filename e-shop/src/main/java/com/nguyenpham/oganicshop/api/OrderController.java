@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class OrderControllerApi {
+public class OrderController {
 
     private OrderService orderService;
 
     @Autowired
-    public OrderControllerApi(OrderService orderService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 

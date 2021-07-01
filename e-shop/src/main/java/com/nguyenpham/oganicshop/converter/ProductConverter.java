@@ -87,17 +87,17 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         product.setAuthors(request.getAuthors());
         if (!request.getImage1().getOriginalFilename().equals("")) {
             if (product.getId() > 0) {
-                product.setMainImage(setImageForProduct(product, request.getImage1(), lastId));
+                product.setMainImage(setImageForProduct(request.getImage1(), lastId));
             } else {
-                product.setMainImage(setImageForProduct(product, request.getImage1(), lastId + 1));
+                product.setMainImage(setImageForProduct(request.getImage1(), lastId + 1));
             }
 
         }
         if (!request.getImage2().getOriginalFilename().equals("")) {
             if (product.getId() > 0) {
-                product.setSmallImage(setImageForProduct(product, request.getImage2(), lastId));
+                product.setSmallImage(setImageForProduct(request.getImage2(), lastId));
             } else {
-                product.setSmallImage(setImageForProduct(product, request.getImage2(), lastId + 1));
+                product.setSmallImage(setImageForProduct(request.getImage2(), lastId + 1));
             }
         }
         product.setDescription(request.getDescription());
@@ -113,7 +113,7 @@ public class ProductConverter implements GeneralConverter<Product, ProductReques
         return null;
     }
 
-    public String setImageForProduct(Product product, MultipartFile image, long idProduct) throws IOException {
+    public String setImageForProduct(MultipartFile image, long idProduct) throws IOException {
         String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         String uploadDir = Constant.DIR_UPLOAD_IMAGE_PRODUCT + idProduct;
         FileUploadUtil.saveFile(uploadDir, fileName, image);

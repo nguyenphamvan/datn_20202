@@ -1294,7 +1294,9 @@ function displayProduct(productUrl) {
                 } else {
                     $("#add-wishlist").attr("href", "/api/account/wishlist/add/" + product["id"]);
                 }
-                $("#tabs-1 > div > h6").text(product["productName"]);
+                $("#title").text(product["productName"]);
+                $("#authors").text(product["author"]);
+                $("#publish_year").text("since");
                 $("div.quickview-ratting-review > div > span").text("("+ product["rating"] + ")");
                 // ratting
                 if (parseInt(product["rating"]) > 0) {

@@ -187,7 +187,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2020</span>
+                    <span>Copyright &copy; My Website 2021</span>
                 </div>
             </div>
         </footer>
@@ -227,6 +227,27 @@
     /*<![CDATA[*/
     $(document).ready(function () {
         getAllProduct();
+
+        $(document).on("click", "#open-business", function () {
+            let productId = $(this).attr("product-id");
+            $.ajax({
+                url: "/api/admin/product/openBusiness/" + productId,
+                type: "PUT",
+                contentType: "application/json",
+                success: function (data) {
+                    if (data === true) {
+                        alert("sản phẩm đã mở bán bán");
+                        $("#open-business").removeClass("btn-success").addClass("btn-danger")
+                            .attr("id", "stop-business").text("Ngừng bán");
+                        $("#status").removeClass().empty();
+                        $("#status").addClass("text-primary").text("Đang bán");
+                    }
+                },
+                error: function () {
+                    alert("có lỗi xảy ra");
+                }
+            });
+        });
     });
 
     function getAllProduct() {
@@ -279,13 +300,10 @@
                             data: "id", "render": function (data, type, row) {
                                 return "<span style='display: flex'>" +
                                     "<a href='/admin/manager_products/product/" + data + "'>" +
-                                    "<button id='manageBtn' type='button' class='btn btn-success btn-sm shadow-sm'> <i class=\"far fa-eye\"></i></button>" +
+                                    "<button type='button' class='btn btn-success btn-sm shadow-sm'> <i class=\"far fa-eye\"></i></button>" +
                                     "</a>" +
                                     "<a href='/admin/manager_products/updateProduct/" + data + "'>" +
-                                    "<button id='manageBtn' type='button' class='btn btn-primary btn-sm shadow-sm'> <i class=\"fas fa-edit\"></i></button>"+
-                                    "</a>" +
-                                    "<a>" +
-                                    "<button id='manageBtn' type='button' class='btn btn-danger btn-sm shadow-sm'><i class=\"fas fa-lock\"></i></button>"+
+                                    "<button type='button' class='btn btn-primary btn-sm shadow-sm'> <i class=\"fas fa-edit\"></i></button>"+
                                     "</a>" +
                                     "</span>";
                             }

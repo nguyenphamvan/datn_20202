@@ -42,10 +42,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> getProductRecommend(List<Long> listBookIds) {
         ProductConverter converter = new ProductConverter();
-        List<ProductResponse> responses = new ArrayList<>();
-        listBookIds.forEach(bookId -> {
-            responses.add(converter.entityToDto(productRepository.findByBookId(bookId)));
-        });
+        List<Product> products = productRepository.findAllById(listBookIds);
+        List<ProductResponse> responses = products.stream().map(product -> converter.entityToDto(product)).collect(Collectors.toList());
         return responses;
     }
 

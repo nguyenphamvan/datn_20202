@@ -126,6 +126,9 @@
 </div>
 <!-- End Breadcrumbs -->
 
+<input th:if="${#request.userPrincipal}" type="hidden" id="user_logged" value="user_logged">
+<input th:unless="${#request.userPrincipal}" type="hidden" id="user_logged" value="not_user_logged">
+
 <!-- Product Style -->
 <section class="product-area shop-sidebar shop section" style="paddind: 0px; min-height: 650px;">
     <div class="container">
@@ -147,10 +150,10 @@
                         </div>
 
                         <p style="margin-bottom: 20px;">Tác giả: <span id="author"
-                                                                       style="color: #0b0b0b; font-weight: 500;">dsfdsfsdf</span>
+                                                                       style="color: #0b0b0b; font-weight: 500;"></span>
                         </p>
                         <p style="margin-bottom: 20px;">Năm xuất bản: <span id="since"
-                                                                            style="color: #0b0b0b; font-weight: 500;">2346</span>
+                                                                            style="color: #0b0b0b; font-weight: 500;"></span>
                         </p>
                         <div class="quickview-ratting-review" style="margin-bottom: 20px;">
                             <div class="quickview-ratting-wrap">
@@ -225,7 +228,9 @@
                     <div class="tab-content" style="background-color: white;">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc" style="padding: 25px; min-height: 200px;">
-                                <h6 style="margin-bottom: 16px;"></h6>
+                                <h6 id="title" style="margin-bottom: 16px;"></h6>
+                                <p>Tác giả : <span id="authors"></span></p>
+                                <p>Năm xuất bản : <span id="publish_year"></span></p>
                                 <p>Nội dung chính: Bộ truyện Harry Potter kể về sự đấu tranh giữa cái thiện và cái ác
                                     trong thế giới phép thuật đầy huyền bí, mà tiêu biểu là cuộc chiến vĩ đại chống lại
                                     tên trùm phù thủy hắc ám Voldemort của cậu bé phù thủy Harry Potter và hai người bạn
@@ -234,25 +239,6 @@
                         </div>
                         <div class="tab-pane blog-single" id="tabs-3" role="tabpanel"
                              style="padding: 20px 0px 20px 0px;">
-                            <div class="col-12">
-                                <div class="share-social">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="content-tags"
-                                                 style="display: flex; margin-left: 55px; margin-top: 0px; margin-bottom: 20px; float: right;">
-                                                <span style="margin-bottom: auto; margin-top: auto;">Lọc theo</span>
-                                                <ul class="tag-inner">
-                                                    <li><a href="#">1 <i class="ti-star"></i></a></li>
-                                                    <li><a href="#">2 <i class="ti-star"></i></a></li>
-                                                    <li><a href="#">3 <i class="ti-star"></i></a></li>
-                                                    <li><a href="#">4 <i class="ti-star"></i></a></li>
-                                                    <li><a href="#">5 <i class="ti-star"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-12">
                                 <div class="comments">
                                     <!-- Single Comment -->
@@ -297,8 +283,8 @@
                                                                       placeholder="Viết câu trả lời" style="width: 86%;"
                                                                       rows="1"></textarea>
                                                             <input type="hidden" class="id-root-review">
-                                                            <button type="button"
-                                                                    class="btn btn-md btn-link send-reply-comment">
+                                                            <button type="button" style="margin-left: 5px;width: 50px;height: 37px; background: #cccccc;"
+                                                                    class="send-reply-comment">
                                                                 Gửi
                                                             </button>
                                                         </form>
@@ -330,7 +316,51 @@
 <!--/ End Product Style 1  -->
 
 <!-- Start Most Popular -->
-<div class="product-area most-popular section" style="padding-top: 10px; padding-bottom: 50px;">
+<div class="product-area most-popular section" style="padding-top: 10px;">
+    <div class="container">
+        <div class="row" style="background: #FFFFFF; border-radius: 5px;margin: 0px;">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>sản phẩm tương tự</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="owl-carousel popular-slider-2">
+                    <!-- Start Single Product -->
+                    <div class="single-product">
+                        <div class="product-img" style="height: 371px;">
+                            <a>
+                                <img class="default-img" style="height: 371px;">
+                                <img class="hover-img" style="height: 371px;">
+                            </a>
+                            <div class="button-head">
+                                <div class="product-action">
+                                    <a th:if="${#request.userPrincipal}" title="Wishlist" style="margin-right: 15px;"><i class="ti-heart"></i><span>Thêm vào Wishlist</span></a>
+                                </div>
+                                <div class="product-action-2">
+                                    <a title="Add to cart">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-content" style="text-align: center;">
+                            <h3><a href="product-details.html"></a></h3>
+                            <div class="product-price">
+                                <span></span>
+                                <span class="old"></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Product -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Most Popular Area -->
+
+<!-- Start Most Popular -->
+<div class="product-area most-popular section" style="padding-top: 10px; padding-bottom: 50px; display: none;">
     <div class="container">
         <div class="row" style="background: #FFFFFF; border-radius: 5px;margin: 0px;">
             <div class="col-12">
@@ -339,29 +369,28 @@
                 </div>
             </div>
             <div class="col-12">
-                <div class="owl-carousel popular-slider-2">
+                <div class="owl-carousel popular-slider-3">
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-img">
-                            <a href="product-details.html">
-                                <img class="default-img" alt="#">
-                                <img class="hover-img" alt="#">
+                            <a>
+                                <img class="default-img" style="height: 371px;">
+                                <img class="hover-img" style="height: 371px;">
                             </a>
                             <div class="button-head">
                                 <div class="product-action">
-                                    <a title="Wishlist"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
+                                    <a th:if="${#request.userPrincipal}" title="Wishlist" style="margin-right: 15px;"><i class=" ti-heart "></i><span>Thêm vào Wishlist</span></a>
                                 </div>
                                 <div class="product-action-2">
                                     <a title="Add to cart">Thêm vào giỏ hàng</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="product-content">
+                        <div class="product-content" style="text-align: center;">
                             <h3><a href="product-details.html"></a></h3>
                             <div class="product-price">
                                 <span></span>
                                 <span class="old"></span>
-
                             </div>
                         </div>
                     </div>
@@ -397,7 +426,11 @@
         actionForModal();
 
         let productId = localStorage.getItem("product_id");
-        getHybridRecommendation(productId);
+        recommendSimilarity(productId);
+
+        if ($("#user_logged").val() === "user_logged") {
+            hybridRecommend(productId)
+        }
 
         $(document).on("click", "div.view-reply-more", function () {
             $(this).hide();
@@ -504,75 +537,142 @@
             });
             likeComment(thisLikeButton, data);
         });
-
-        function getHybridRecommendation(productId) {
-            $.ajax({
-                url: "/api/recommendation/similarity/" + productId,
-                type: "GET",
-                dataType : "json",
-                contentType: "application/json",
-                success: function (products) {
-
-                    console.log(products);
-
-                    $("div.popular-slider-2 > div:nth-child(1)").nextAll().remove();
-                    let firstItem = $("div.popular-slider-2 > div:nth-child(1)");
-                    $.each(products, function (index, item) {
-                        let itemClone = firstItem.clone();
-                        itemClone.removeClass("active");
-                        itemClone.show();
-                        if (item.hasOwnProperty("mainImage")) {
-                            itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
-                            itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
-                            itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
-                        }
-                        itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
-                        itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
-                        itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
-                        itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
-                        itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
-                        $("div.popular-slider-2").append(itemClone);
-                    });
-                    firstItem.remove();
-
-                    $(".popular-slider-2").owlCarousel({
-                        items:1,
-                        autoplay:true,
-                        autoplayTimeout:5000,
-                        smartSpeed: 400,
-                        animateIn: 'fadeIn',
-                        animateOut: 'fadeOut',
-                        autoplayHoverPause:true,
-                        loop:true,
-                        nav:true,
-                        merge:true,
-                        dots:false,
-                        navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
-                        responsive:{
-                            0: {
-                                items:1,
-                            },
-                            300: {
-                                items:1,
-                            },
-                            480: {
-                                items:2,
-                            },
-                            768: {
-                                items:3,
-                            },
-                            1170: {
-                                items:4,
-                            },
-                        }
-                    });
-                },
-                error: function (xhr) {
-                    alert(xhr.responseText);
-                }
-            });
-        }
     });
+
+    function recommendSimilarity(productId) {
+        $.ajax({
+            url: "/api/recommendation/similarity/" + productId,
+            type: "GET",
+            dataType : "json",
+            contentType: "application/json",
+            success: function (products) {
+
+                console.log(products);
+
+                $("div.popular-slider-2 > div:nth-child(1)").nextAll().remove();
+                let firstItem = $("div.popular-slider-2 > div:nth-child(1)");
+                $.each(products, function (index, item) {
+                    let itemClone = firstItem.clone();
+                    itemClone.removeClass("active");
+                    itemClone.show();
+                    if (item.hasOwnProperty("mainImage")) {
+                        itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
+                        itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
+                        itemClone.find("div.product-img > a > img.hover-img").attr("src", item["smallImage"]);
+                    }
+                    itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
+                    itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
+                    itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
+                    itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
+                    itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
+                    $("div.popular-slider-2").append(itemClone);
+                });
+                firstItem.remove();
+
+                $(".popular-slider-2").owlCarousel({
+                    items:1,
+                    autoplay:true,
+                    autoplayTimeout:5000,
+                    smartSpeed: 400,
+                    animateIn: 'fadeIn',
+                    animateOut: 'fadeOut',
+                    autoplayHoverPause:true,
+                    loop:true,
+                    nav:true,
+                    merge:true,
+                    dots:false,
+                    navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+                    responsive:{
+                        0: {
+                            items:1,
+                        },
+                        300: {
+                            items:1,
+                        },
+                        480: {
+                            items:2,
+                        },
+                        768: {
+                            items:3,
+                        },
+                        1170: {
+                            items:4,
+                        },
+                    }
+                });
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function hybridRecommend(productId) {
+        $.ajax({
+            url: "/api/recommendation/hybridRecommend/" + productId,
+            type: "GET",
+            dataType : "json",
+            contentType: "application/json",
+            success: function (products) {
+                console.log(products);
+                $("div.popular-slider-3").closest("div.most-popular").show();
+                $("div.popular-slider-3 > div:nth-child(1)").nextAll().remove();
+                let firstItem = $("div.popular-slider-3 > div:nth-child(1)");
+                $.each(products, function (index, item) {
+                    let itemClone = firstItem.clone();
+                    itemClone.removeClass("active");
+                    itemClone.show();
+                    if (item.hasOwnProperty("mainImage")) {
+                        itemClone.find("div.product-img > a").attr("href", "/products/" + item["productUrl"]);
+                        itemClone.find("div.product-img > a > img.default-img").attr("src", item["mainImage"]);
+                        itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
+                    }
+                    itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
+                    itemClone.find("div.product-img > div > div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
+                    itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
+                    itemClone.find("div.product-content > div > span:nth-child(1)").text("$" + item["finalPrice"]);
+                    itemClone.find("div.product-content > div > span.old").text("$" + item["price"]);
+                    $("div.popular-slider-3").append(itemClone);
+                });
+                firstItem.remove();
+
+                $(".popular-slider-3").owlCarousel({
+                    items:1,
+                    autoplay:true,
+                    autoplayTimeout:5000,
+                    smartSpeed: 400,
+                    animateIn: 'fadeIn',
+                    animateOut: 'fadeOut',
+                    autoplayHoverPause:true,
+                    loop:true,
+                    nav:true,
+                    merge:true,
+                    dots:false,
+                    navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
+                    responsive:{
+                        0: {
+                            items:1,
+                        },
+                        300: {
+                            items:1,
+                        },
+                        480: {
+                            items:2,
+                        },
+                        768: {
+                            items:3,
+                        },
+                        1170: {
+                            items:4,
+                        },
+                    }
+                });
+            },
+            error: function (xhr) {
+                alert(xhr.responseText);
+            }
+        });
+    }
     /*]]>*/
 </script>
 </body>

@@ -32,13 +32,11 @@ public class OganicshopApplication{
 //    public void run(String... args) throws Exception {
 //        List<Product> products = productRepository.findAll();
 //        products.forEach(product -> {
-//            String[] proUrl = product.getOriginalTitle().replace("/","").replace("\"", "").replace("#", "")
-//                    .replace("*","").replace("(","").replace(")","")
-//                    .replace(",","").replace("'","").replace(":","")
-//                    .replace(".","")
-//                    .trim().toLowerCase().split(" ");
-//            String newUrl = String.join("_", proUrl) + "_" + product.getBookId();
-//            product.setProductUrl(newUrl);
+//            if ( (product.getId() > 5000) & (product.getId() <= 6000)) {
+//                System.out.println(product.getId());
+//                product.setPrice(950.0);
+//                product.setFinalPrice(product.getPrice() - (product.getPrice() * product.getDiscount()));
+//            }
 //        });
 //
 //        productRepository.saveAll(products);
