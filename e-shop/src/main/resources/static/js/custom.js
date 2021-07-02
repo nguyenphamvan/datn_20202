@@ -404,7 +404,7 @@ function genListProduct(products) {
             itemClone.find("div.product-img > a > img.hover-img").attr("src", item["mainImage"]);
         }
         itemClone.find("div.product-content > h3 > a").attr("href", "/products/" + item["productUrl"]).text(item["originalTitle"]);
-        itemClone.find("div.product-action-2 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
+        itemClone.find("div.product-action-3 > a").attr("href", "/api/cart/quick-addToCart/" + item["productUrl"]);
         itemClone.find("div.product-action > a").attr("href", "/api/account/wishlist/add/" + item["id"]);
         if (item["favorite"] === true) {
             itemClone.find("div.product-img > div > div.product-action > a").removeAttr("href");
@@ -923,9 +923,9 @@ function getProductsInCart() {
                     totalCart = totalCart + parseInt(item["totalItem"]);
                     let trClone = firstTr.clone();
                     trClone.attr("data-url", item["product"]["productUrl"]);
-                    trClone.find("td.image > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html");
+                    trClone.find("td.image > a").attr("href", "/products/" + item["product"]["productUrl"]);
                     trClone.find("td.image > a > img").attr("src", item["product"]["mainImage"]);
-                    trClone.find("td.product-des > p.product-name > a").attr("href", "/products/" + item["product"]["productUrl"] + ".html")
+                    trClone.find("td.product-des > p.product-name > a").attr("href", "/products/" + item["product"]["productUrl"])
                         .text(item["product"]["productName"]);
                     trClone.find("td.price > span").text("$" + item["product"]["finalPrice"]);
                     trClone.find("td.qty > div > input").val(item["quantity"]);
@@ -1201,11 +1201,13 @@ function getAllCouponUser() {
         type: "GET",
         contentType: "application/json",
         success: function (data) {
+            console.log(data);
             let itemClone = $("body > section > div.container > div > div:nth-child(1)");
             $.each(data, function (index, item) {
                 let coupon = itemClone.clone();
                 coupon.find("p.code > span").text(item["code"]);
                 coupon.find("p.title").text(item["title"]);
+                coupon.find("button.cache_promotion").attr("promotionid", item["id"]);
                 if (item.hasOwnProperty("startDate") && item.hasOwnProperty("endDate")) {
                     coupon.find("p.expires > span").text(item["endDate"]);
                 } else {
@@ -1296,7 +1298,8 @@ function displayProduct(productUrl) {
                 }
                 $("#title").text(product["productName"]);
                 $("#authors").text(product["author"]);
-                $("#publish_year").text("since");
+                $("#publish_year").text(product["since"]);
+                $("#content").text(product["description"]);
                 $("div.quickview-ratting-review > div > span").text("("+ product["rating"] + ")");
                 // ratting
                 if (parseInt(product["rating"]) > 0) {
@@ -1326,10 +1329,11 @@ function displayReviewOfProduct(productUrl) {
         type: "GET",
         dataType: 'json',
         success: function (res) {
+            console.log(res);
             if (res["status"] === true) {
                 $("section.product-area.shop-sidebar.shop.section > div > div.row > div > div > ul > li:nth-child(2) > a > span").text("(" + res["data"].length + ")");
 
-                let firstUl = $("#tabs-3 > div:nth-child(2) > div > div:nth-child(1)");
+                let firstUl = $("#tabs-3 > div > div > div:nth-child(1)");
                 $.each(res["data"], function (index, item) {
                     let rowClone = firstUl.clone();
                     rowClone.attr("data-id_comment", item["id"])
@@ -1399,7 +1403,6 @@ function displayReviewOfProduct(productUrl) {
             alert(xhr.responseText);
         }
     });
-
 }
 
 function applyCoupon(couponCode) {

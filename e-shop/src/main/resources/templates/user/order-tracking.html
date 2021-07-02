@@ -53,7 +53,7 @@
             <div class="Account__StyledAccountLayoutInner">
                 <div class="styles__StyledTrackingDetail">
                     <div class="order-heading"><h3></h3>
-                        <div class="view-detail"><a th:href="@{'/sales/order/view/' + ${orderId}}">Xem chi tiết đơn hàng</a></div>
+                        <div class="view-detail"><a>Xem chi tiết đơn hàng</a></div>
                     </div>
                     <div>
 <!--                        <div class="styles__StyledOrderStatus"><p class="title">Trạng thái đơn-->
@@ -98,6 +98,7 @@
     $(document).ready(function() {
         getListCategory();
         var orderId = window.location.pathname.replace("/sales/order/tracking/", "");
+        $(".view-detail > a").attr("href", "/sales/order/view/" + orderId);
         getOrderLogging(orderId);
     });
 

@@ -15,31 +15,31 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
 @SpringBootApplication(scanBasePackages = "com.nguyenpham.oganicshop")
 @EnableCaching
-public class OganicshopApplication{
+public class OganicshopApplication implements CommandLineRunner{
 
     public static void main(String[] args) throws ParseException {
         SpringApplication.run(OganicshopApplication.class, args);
     }
-//    @Autowired
-//    private ProductRepository productRepository;
-//
-//    @Override
-//    public void run(String... args) throws Exception {
-//        List<Product> products = productRepository.findAll();
-//        products.forEach(product -> {
-//            if ( (product.getId() > 5000) & (product.getId() <= 6000)) {
-//                System.out.println(product.getId());
-//                product.setPrice(950.0);
-//                product.setFinalPrice(product.getPrice() - (product.getPrice() * product.getDiscount()));
-//            }
-//        });
-//
-//        productRepository.saveAll(products);
-//    }
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Override
+    public void run(String... args) throws Exception {
+        String date = "2021-07-03T05:35:30Z";
+        System.out.println(date);
+        date = convertDatetime2(date, null);
+        System.out.println(date);
+    }
+
+    public static String convertDatetime2(String inputDate, String pattern) {
+        Instant instant = Instant.parse(inputDate);
+        return instant.plus(7, ChronoUnit.HOURS).toString();
+    }
 
 }

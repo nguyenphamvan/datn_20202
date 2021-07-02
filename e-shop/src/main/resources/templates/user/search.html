@@ -141,22 +141,6 @@
             margin-top: 15px;
         }
 
-        .error404-nav {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .error404-nav-item {
-            color: #000;
-            display: block;
-            position: relative;
-            border-color: #ccc;
-            background: -webkit-gradient(linear,left top,left bottom,from(#fff),to(#f7f7f7));
-            background: linear-gradient(#fff,#f7f7f7);
-            font-size: 12px;
-        }
-
-
         @media (min-width: 768px) {
             .error404-banner .error404-banner-bottom {
                 height: 200px;
@@ -198,19 +182,6 @@
             .error404-banner .alert_404 h1 {
                 font-size: 27px;
             }
-        }
-
-        .img-responsive {
-            display: block;
-            height: auto;
-        }
-
-        .btn-404 {
-            cursor: pointer;
-            border: 1px solid #888;
-            white-space: nowrap;
-            padding: 6px 12px;
-            border-radius: 4px;
         }
 
         body {
@@ -325,7 +296,7 @@
                                             <i class="ti-heart"></i><span>Thêm vào Wishlist</span>
                                         </a>
                                     </div>
-                                    <div class="product-action-2">
+                                    <div class="product-action-3">
                                         <a title="Add to cart">Thêm vào giỏ hàng</a>
                                     </div>
                                 </div>
@@ -485,6 +456,22 @@
             }
             getListProductByKeyword(data);
         });
+
+        // $(document).on("click", "div.product-action-3 > a", function (e) {
+        //     e.preventDefault();
+        //     $.ajax({
+        //         url: $(this).attr("href"),
+        //         type: "POST",
+        //         dataType: "json",
+        //         contentType: "application/json",
+        //         success: function (res) {
+        //             window.location = res["data"];
+        //         },
+        //         error: function (xhr) {
+        //             alert(xhr.responseText);
+        //         }
+        //     });
+        // });
     });
 
     function getProductPopularSearch() {

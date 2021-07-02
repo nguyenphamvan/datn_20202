@@ -1,4 +1,4 @@
-package com.nguyenpham.oganicshop.api;
+package com.nguyenpham.oganicshop.controller;
 
 import com.nguyenpham.oganicshop.dto.ErrorMessage;
 import org.springframework.http.HttpStatus;

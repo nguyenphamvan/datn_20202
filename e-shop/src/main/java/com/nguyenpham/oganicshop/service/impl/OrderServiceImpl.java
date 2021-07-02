@@ -170,6 +170,7 @@ public class OrderServiceImpl implements OrderService {
     public Order paymentOrder(User user, HashMap<Long, CartItem> cart, OrderRequest orderDto) {
         Order order = new OrderConverter().dtoToEntity(user, cart, orderDto);
         OrderStatus orderStatus = new OrderStatus(0); // 0: đơn hàng đang được xử lý
+        orderStatus.setOrder(order);
         order.addLogOrder(orderStatus);
         return this.save(order);
     }

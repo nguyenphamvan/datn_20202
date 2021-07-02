@@ -139,7 +139,7 @@
                         </tfoot>
                     </table>
                     <a class="view-list-order" th:href="@{/sales/order/history}">&lt;&lt; Quay lại đơn hàng của tôi</a>
-                    <a class="view-tracking-detail" th:href="@{'/sales/order/tracking/' + ${orderId}}">Theo dõi đơn hàng</a>
+                    <a id="tracking-order" class="view-tracking-detail">Theo dõi đơn hàng</a>
                 </div>
             </div>
         </div>
@@ -166,6 +166,7 @@
     // A $( document ).ready() block.
     $(document).ready(function() {
         var orderId = window.location.pathname.replace("/sales/order/view/", "");
+        $("#tracking-order").attr( "href","/sales/order/tracking/" + orderId);
         getInfoOrder(orderId);
         actionForModal();
         getListCategory();
