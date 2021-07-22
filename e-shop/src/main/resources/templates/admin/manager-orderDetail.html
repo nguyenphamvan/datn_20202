@@ -26,6 +26,10 @@
         .table {
             color: #000000;
         }
+
+        b {
+            color: black;
+         }
     </style>
 </head>
 
@@ -139,7 +143,7 @@
                 <!-- Page Heading -->
                 <div class="row justify-content-between" id="div-info-1">
                     <div class="col-xl-4 col-md-4">
-                        <p class="mb-0 text-gray-800">Mã đơn hàng  : #<span id="orderId"></span> - <span id="orderStatus"></span></p>
+                        <p class="mb-0" style="color: black; font-size: 20px;">Mã đơn hàng  : #<span id="orderId"></span> - <span id="orderStatus"></span></p>
                     </div>
                     <div class="col-xl-4 col-md-4" style="text-align: end;">
                         <p>Ngày giao hàng : <span id="deliveryDate"></span></p>
@@ -151,13 +155,13 @@
                     <!-- Earnings (Monthly) Card Example -->
                     <div class="col-md-7 mb-6">
                         <div class="card border-left-primary shadow h-100">
-                            <div class="card-header font-weight-bold">Địa chỉ người nhận</div>
+                            <div class="card-header font-weight-bold" style="color: black;">Địa chỉ người nhận</div>
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div style="text-transform: uppercase;"><b id="contactReceiver"></b></div>
-                                        <div id="contactAddress"></div>
-                                        <div id="contactPhone"></div>
+                                        <div><span style="color: black;">Địa chỉ : </span><span id="contactAddress"></span></div>
+                                        <div><span style="color: black;">SĐT : </span><span id="contactPhone"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -167,14 +171,14 @@
                     <!-- Earnings (Monthly) Card Example -->
                     <div class="col-md-5 mb-6">
                         <div class="card border-left-success shadow h-100">
-                            <div class="card-header font-weight-bold">Thông tin đơn hàng</div>
+                            <div class="card-header font-weight-bold" style="color: black;">Thông tin đơn hàng</div>
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div><b>Tổng giá trị các mặt hàng : </b><span id="sub_total">$1000</span></div>
-                                        <div id="shipFee"><b>Phí vận chuyển: </b><span id="ship_fee">$50</span></div>
-                                        <div><b>Giảm giá : </b><span id="discount">$50</span></div>
-                                        <div><b>Tổng thanh toán : </b><span id="total">$1000</span></div>
+                                        <div id="shipFee"><b>Phí vận chuyển: </b><span id="ship_fee" style="margin-left: 82px;">$50</span></div>
+                                        <div><b>Giảm giá : </b><span id="discount" style="margin-left: 124px;">$50</span></div>
+                                        <div><b>Tổng thanh toán : </b><span id="total" style="margin-left: 68px;">$1000</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -377,8 +381,8 @@
 
                 $("#deliveryDate").text(order["deliveryDate"]);
                 $("#contactReceiver").text(contact["contactReceiver"]);
-                $("#contactAddress").text("Địa chỉ : " + contact["contactAddress"]);
-                $("#contactPhone").text("SĐT : " + contact["contactPhone"]);
+                $("#contactAddress").text(contact["contactAddress"]);
+                $("#contactPhone").text(contact["contactPhone"]);
 
                 $.each(listOrderDetail, function (index, product) {
                     let row = "<tr>\n" +

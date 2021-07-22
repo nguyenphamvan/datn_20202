@@ -21,25 +21,10 @@ import java.util.*;
 
 @SpringBootApplication(scanBasePackages = "com.nguyenpham.oganicshop")
 @EnableCaching
-public class OganicshopApplication implements CommandLineRunner{
+public class OganicshopApplication{
 
     public static void main(String[] args) throws ParseException {
         SpringApplication.run(OganicshopApplication.class, args);
     }
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Override
-    public void run(String... args) throws Exception {
-        String date = "2021-07-03T05:35:30Z";
-        System.out.println(date);
-        date = convertDatetime2(date, null);
-        System.out.println(date);
-    }
-
-    public static String convertDatetime2(String inputDate, String pattern) {
-        Instant instant = Instant.parse(inputDate);
-        return instant.plus(7, ChronoUnit.HOURS).toString();
-    }
-
+    
 }
